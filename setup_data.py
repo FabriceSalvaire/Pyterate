@@ -86,7 +86,6 @@ setup_dict = dict(
     ],
     packages=[  # Fixme:
         'AutoSphinx',
-        'AutoSphinx.Doc',
     ],
     # package_dir = {'AutoSphinx': 'AutoSphinx'},
     package_data={
