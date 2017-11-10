@@ -3,13 +3,13 @@
 .. -*- Mode: rst -*-
 
 ..
-   |@package_name@Url|
-   |@package_name@HomePage|_
-   |@package_name@Doc|_
-   |@package_name@@github|_
-   |@package_name@@readthedocs|_
-   |@package_name@@readthedocs-badge|
-   |@package_name@@pypi|_
+   |AutoSphinxUrl|
+   |AutoSphinxHomePage|_
+   |AutoSphinxDoc|_
+   |AutoSphinx@github|_
+   |AutoSphinx@readthedocs|_
+   |AutoSphinx@readthedocs-badge|
+   |AutoSphinx@pypi|_
 
 .. |ohloh| image:: https://www.openhub.net/accounts/230426/widgets/account_tiny.gif
    :target: https://www.openhub.net/accounts/fabricesalvaire
@@ -17,35 +17,35 @@
    :height: 15px
    :width:  80px
 
-.. |@package_name@Url| replace:: @project_url@
+.. |AutoSphinxUrl| replace:: @project_url@
 
-.. |@package_name@HomePage| replace:: @package_name@ Home Page
-.. _@package_name@HomePage: @project_url@
+.. |AutoSphinxHomePage| replace:: AutoSphinx Home Page
+.. _AutoSphinxHomePage: @project_url@
 
-.. |@package_name@@readthedocs-badge| image:: https://readthedocs.org/projects/@package_name@/badge/?version=latest
-   :target: http://@package_name@.readthedocs.org/en/latest
+.. |AutoSphinx@readthedocs-badge| image:: https://readthedocs.org/projects/AutoSphinx/badge/?version=latest
+   :target: http://AutoSphinx.readthedocs.org/en/latest
 
-.. |@package_name@@github| replace:: https://github.com/FabriceSalvaire/@package_name@
-.. .. _@package_name@@github: https://github.com/FabriceSalvaire/@package_name@
+.. |AutoSphinx@github| replace:: https://github.com/FabriceSalvaire/AutoSphinx
+.. .. _AutoSphinx@github: https://github.com/FabriceSalvaire/AutoSphinx
 
-.. |@package_name@@pypi| replace:: https://pypi.python.org/pypi/@package_name@
-.. .. _@package_name@@pypi: https://pypi.python.org/pypi/@package_name@
+.. |AutoSphinx@pypi| replace:: https://pypi.python.org/pypi/AutoSphinx
+.. .. _AutoSphinx@pypi: https://pypi.python.org/pypi/AutoSphinx
 
-.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/@package_name@.svg?branch=master
-   :target: https://travis-ci.org/FabriceSalvaire/@package_name@
-   :alt: @package_name@ build status @travis-ci.org
+.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/AutoSphinx.svg?branch=master
+   :target: https://travis-ci.org/FabriceSalvaire/AutoSphinx
+   :alt: AutoSphinx build status @travis-ci.org
 
-.. |Pypi Version| image:: https://img.shields.io/pypi/v/@package_name@.svg
-   :target: https://pypi.python.org/pypi/@package_name@
-   :alt: @package_name@ last version
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/AutoSphinx.svg
+   :target: https://pypi.python.org/pypi/AutoSphinx
+   :alt: AutoSphinx last version
 
-.. |Pypi License| image:: https://img.shields.io/pypi/l/@package_name@.svg
-   :target: https://pypi.python.org/pypi/@package_name@
-   :alt: @package_name@ license
+.. |Pypi License| image:: https://img.shields.io/pypi/l/AutoSphinx.svg
+   :target: https://pypi.python.org/pypi/AutoSphinx
+   :alt: AutoSphinx license
 
-.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/@package_name@.svg
-   :target: https://pypi.python.org/pypi/@package_name@
-   :alt: @package_name@ python version
+.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/AutoSphinx.svg
+   :target: https://pypi.python.org/pypi/AutoSphinx
+   :alt: AutoSphinx python version
 
 ..  coverage test
 ..  https://img.shields.io/pypi/status/Django.svg
@@ -72,7 +72,7 @@
 .. End
 
 ============
- @package_name@
+ AutoSphinx
 ============
 
 |Pypi License|
@@ -80,21 +80,21 @@
 
 |Pypi Version|
 
-* Quick Link to `Production Branch <https://github.com/FabriceSalvaire/@package_name@/tree/master>`_
-* Quick Link to `Devel Branch <https://github.com/FabriceSalvaire/@package_name@/tree/devel>`_
+* Quick Link to `Production Branch <https://github.com/FabriceSalvaire/AutoSphinx/tree/master>`_
+* Quick Link to `Devel Branch <https://github.com/FabriceSalvaire/AutoSphinx/tree/devel>`_
 
 Overview
 ========
 
-What is @package_name@ ?
----------------------
+What is AutoSphinx ?
+--------------------
 
-@package_name@ is a Python module which implements a unit framework.
+AutoSphinx is a Python module which implements a unit framework.
 
 Where is the Documentation ?
 ----------------------------
 
-The documentation is available on the |@package_name@HomePage|_.
+The documentation is available on the |AutoSphinxHomePage|_.
 
 What are the main features ?
 ----------------------------
@@ -119,7 +119,7 @@ News
 
 .. no title here
 
-V0 @year@-10-01
+V0 2017-10-01
 -------------
 
 Started project

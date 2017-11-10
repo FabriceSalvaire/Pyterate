@@ -19,7 +19,7 @@ Overview
 ========
 
 What is AutoSphinx ?
----------------------
+--------------------
 
 AutoSphinx is a Python module which implements a unit framework.
 
