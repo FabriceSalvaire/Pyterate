@@ -77,14 +77,16 @@ setup_dict = dict(
     version='0.1.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
-    description='...',
+    description='AutoSphinx is Sphinx add-ons to create API documentation for Python projects.',
     license='GPLv3',
-    keywords= 'foo bar',
+    keywords= 'sphinx documentation autogen',
     url='https://github.com/FabriceSalvaire/AutoSphinx',
-    scripts=[],
-    packages=[
-        'AutoSphinx', # Fixme:
-        'AutoSphinx.Foo',
+    scripts=[
+        'generate-rst-api',
+    ],
+    packages=[  # Fixme:
+        'AutoSphinx',
+        'AutoSphinx.Doc',
     ],
     # package_dir = {'AutoSphinx': 'AutoSphinx'},
     package_data={
@@ -95,8 +97,7 @@ setup_dict = dict(
     classifiers=[
         'Topic :: Scientific/Engineering',
         'Intended Audience :: Education',
-        'Development Status :: 2 - Pre-Alpha',
-        # 'Development Status :: 5 - Production/Stable',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.6',
