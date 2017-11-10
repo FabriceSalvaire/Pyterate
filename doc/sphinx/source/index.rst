@@ -37,9 +37,9 @@
 
    <div class="reduced-width">
 
-#########
- Simulate
-#########
+############
+ AutoSphinx
+############
 
 .. image:: /_static/logo.png
    :alt: AutoSphinx logo
@@ -49,7 +49,7 @@
 Overview
 ********
 
-AutoSphinx is a free and open source (*) Python module which interface |Python|_ ...
+AutoSphinx is free and open source (*) |Sphinx|_ add-ons to create API documentation for |Python|_ projects.
 
 .. rst-class:: small-text
 

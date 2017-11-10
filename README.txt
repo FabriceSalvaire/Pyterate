@@ -21,7 +21,7 @@ Overview
 What is AutoSphinx ?
 --------------------
 
-AutoSphinx is a Python module which implements a unit framework.
+AutoSphinx is Sphinx add-ons to create API documentation for Python projects.
 
 Where is the Documentation ?
 ----------------------------
