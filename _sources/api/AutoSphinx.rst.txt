@@ -1,0 +1,12 @@
+*******************
+ :mod:`AutoSphinx`
+*******************
+
+.. toctree::
+  AutoSphinx/RstFactory
+
+.. automodule:: AutoSphinx
+   :members:
+   :show-inheritance:
+
+.. End
