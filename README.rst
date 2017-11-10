@@ -17,10 +17,10 @@
    :height: 15px
    :width:  80px
 
-.. |AutoSphinxUrl| replace:: @project_url@
+.. |AutoSphinxUrl| replace:: https://fabricesalvaire.github.io/AutoSphinx
 
 .. |AutoSphinxHomePage| replace:: AutoSphinx Home Page
-.. _AutoSphinxHomePage: @project_url@
+.. _AutoSphinxHomePage: https://fabricesalvaire.github.io/AutoSphinx
 
 .. |AutoSphinx@readthedocs-badge| image:: https://readthedocs.org/projects/AutoSphinx/badge/?version=latest
    :target: http://AutoSphinx.readthedocs.org/en/latest
@@ -89,7 +89,7 @@ Overview
 What is AutoSphinx ?
 --------------------
 
-AutoSphinx is a Python module which implements a unit framework.
+AutoSphinx is Sphinx add-ons to create API documentation for Python projects.
 
 Where is the Documentation ?
 ----------------------------
@@ -104,7 +104,7 @@ What are the main features ?
 How to install it ?
 -------------------
 
-Look at the `installation <@project_url@/installation.html>`_ section in the documentation.
+Look at the `installation <https://fabricesalvaire.github.io/AutoSphinx/installation.html>`_ section in the documentation.
 
 Credits
 =======

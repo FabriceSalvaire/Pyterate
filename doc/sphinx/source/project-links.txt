@@ -15,10 +15,10 @@
    :height: 15px
    :width:  80px
 
-.. |AutoSphinxUrl| replace:: @project_url@
+.. |AutoSphinxUrl| replace:: https://fabricesalvaire.github.io/AutoSphinx
 
 .. |AutoSphinxHomePage| replace:: AutoSphinx Home Page
-.. _AutoSphinxHomePage: @project_url@
+.. _AutoSphinxHomePage: https://fabricesalvaire.github.io/AutoSphinx
 
 .. |AutoSphinx@readthedocs-badge| image:: https://readthedocs.org/projects/AutoSphinx/badge/?version=latest
    :target: http://AutoSphinx.readthedocs.org/en/latest
