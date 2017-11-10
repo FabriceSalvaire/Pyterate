@@ -1,0 +1,375 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>4. Installation &mdash; AutoSphinx 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="static/css/AutoSphinx.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
+    <link rel="top" title="AutoSphinx 0.1.0 documentation" href="index.html"/>
+        <link rel="next" title="5. User FAQ" href="faq.html"/>
+        <link rel="prev" title="3. Roadmap" href="roadmap.html"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
+<script>
+window.addEventListener("load", function(){
+window.cookieconsent.initialise({
+  "palette": {
+    "popup": {
+      "background": "#000"
+    },
+    "button": {
+      "background": "#f1d600"
+    }
+  },
+  "theme": "classic",
+  "position": "bottom-right"
+})});
+</script>
+
+
+  
+  <script src="static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> AutoSphinx
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">3. Roadmap</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#on-windows">4.1. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-linux">4.2. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-osx">4.3. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-pypi-repository">4.4. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-a-more-recent-version-from-github">4.5. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-source">4.6. Installation from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">4.7. Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">5. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design-notes.html">6. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">7. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">8. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-refer.html">9. How to Refer to AutoSphinx ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="donate.html">10. How to Help Further ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="related-projects.html">11. Related Projects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">12. Bibliography</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">AutoSphinx</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>4. Installation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/installation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="installation">
+<span id="installation-page"></span><h1>4. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Note to Packagers: Please don’t create AutoSphinx package (PiPY do the job)</strong></p>
+<div class="section" id="on-windows">
+<h2>4.1. On Windows<a class="headerlink" href="#on-windows" title="Permalink to this headline">¶</a></h2>
+<p>Firstly, you have to install the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda Distribution</a> so
+as to get a full featured Python 3 environment.</p>
+<p>Then open the <a class="reference external" href="https://docs.continuum.io/anaconda/navigator/">Anaconda Navigator</a> and launch a console for your root environment.</p>
+<p>You can now run <em>pip</em> to install AutoSphinx in your root environment using this command:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install AutoSphinx
+</pre></div>
+</div>
+</div>
+<div class="section" id="on-linux">
+<h2>4.2. On Linux<a class="headerlink" href="#on-linux" title="Permalink to this headline">¶</a></h2>
+<p>Firstly, you have to install Python 3 from your distribution.</p>
+<p>Then you can install AutoSphinx using <em>pip</em> or from source. See supra.</p>
+</div>
+<div class="section" id="on-osx">
+<h2>4.3. On OSX<a class="headerlink" href="#on-osx" title="Permalink to this headline">¶</a></h2>
+<p>There are several ways to get Python on OSX:</p>
+<blockquote>
+<div><ul class="simple">
+<li>use the built in Python</li>
+<li>install <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a></li>
+<li>install the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda Distribution</a>.</li>
+<li>install from Brew <cite>brew install python3</cite> <strong>(reported to work)</strong></li>
+</ul>
+</div></blockquote>
+<p>You can install AutoSphinx using <em>pip</em> or from source. See supra.</p>
+</div>
+<div class="section" id="installation-from-pypi-repository">
+<h2>4.4. Installation from PyPi Repository<a class="headerlink" href="#installation-from-pypi-repository" title="Permalink to this headline">¶</a></h2>
+<p>AutoSphinx is available on the Python Packages <a class="reference external" href="https://pypi.python.org/pypi">PyPI</a> repository at <a class="reference external" href="https://pypi.python.org/pypi/AutoSphinx">https://pypi.python.org/pypi/AutoSphinx</a></p>
+<p>Run this command in the console to install the latest release:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install AutoSphinx
+</pre></div>
+</div>
+</div>
+<div class="section" id="install-a-more-recent-version-from-github">
+<h2>4.5. Install a more recent version from Github<a class="headerlink" href="#install-a-more-recent-version-from-github" title="Permalink to this headline">¶</a></h2>
+<p>If you want to install a version which is not yet released on Pypi, you can use one of theses
+commands to install the stable or devel branch:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install git+https://github.com/FabriceSalvaire/AutoSphinx
+
+pip install git+https://github.com/FabriceSalvaire/AutoSphinx@devel
+</pre></div>
+</div>
+</div>
+<div class="section" id="installation-from-source">
+<h2>4.6. Installation from Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
+<p>The AutoSphinx source code is hosted at <a class="reference external" href="https://github.com/FabriceSalvaire/AutoSphinx">https://github.com/FabriceSalvaire/AutoSphinx</a></p>
+<p>You have to solution to get the source code, the first one is to clone the repository, but if you
+are not familiar with Git then you can simply download an archive either from the AutoSphinx Pypi page
+(at the bottom) or the GitHub page (see clone or download button).</p>
+<p>To clone the Git repository, run this command in a console:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>git clone https://github.com/FabriceSalvaire/AutoSphinx.git
+</pre></div>
+</div>
+<p>Then to build and install AutoSphinx run these commands:</p>
+<div class="highlight-sh"><div class="highlight"><pre><span></span>python setup.py build
+python setup.py install
+</pre></div>
+</div>
+</div>
+<div class="section" id="dependencies">
+<h2>4.7. Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>AutoSphinx requires the following dependencies:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://python.org">Python</a> 3</li>
+<li><a class="reference external" href="http://www.numpy.org">Numpy</a></li>
+</ul>
+</div></blockquote>
+<p>Also it is recommanded to have these Python modules:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://ipython.org">IPython</a></li>
+</ul>
+</div></blockquote>
+<p>To generate the documentation, you will need in addition:</p>
+<blockquote>
+<div><ul class="simple">
+<li><a class="reference external" href="http://sphinx-doc.org">Sphinx</a></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="faq.html" class="btn btn-neutral float-right" title="5. User FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="roadmap.html" class="btn btn-neutral" title="3. Roadmap" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="static/jquery.js"></script>
+      <script type="text/javascript" src="static/underscore.js"></script>
+      <script type="text/javascript" src="static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="static/hidecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+  
+<script type="text/javascript">
+  var _paq = _paq || [];
+  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+  _paq.push(['trackPageView']);
+  _paq.push(['enableLinkTracking']);
+  (function() {
+    var u="https://stats.fabrice-salvaire.fr/";
+    _paq.push(['setTrackerUrl', u+'kiwi']);
+    _paq.push(['setSiteId', 6]);
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'kiwi.js';
+  s.parentNode.insertBefore(g,s);
+  })();
+</script>
+<noscript><p><img src="https://stats.fabrice-salvaire.fr/kiwi?idsite=6&rec=1" style="border:0;" alt="" /></p></noscript>
+
+
+</body>
+</html>
