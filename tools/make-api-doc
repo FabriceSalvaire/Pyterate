@@ -1,0 +1,16 @@
+#! /usr/bin/bash
+
+find AutoSphinx -name "flycheck*.py" -exec rm {} \;
+find AutoSphinx -name "parsetab.py" -exec rm {} \;
+
+api=doc/sphinx/source/api
+
+echo
+echo Generate RST API files
+./tools/generate-rst-api AutoSphinx
+
+echo
+echo Run Sphinx
+pushd doc/sphinx/
+./make-html #--clean
+popd
