@@ -1,10 +1,10 @@
 .. _how-to-refer-page:
 
-===========================
+=============================
  How to Refer to AutoSphinx ?
-===========================
+=============================
 
-Up to now, the official url for AutoSphinx is @project_url@
+Up to now, the official url for AutoSphinx is https://fabricesalvaire.github.io/AutoSphinx
 
 *A permanent redirection will be implemented if the domain change in the future.*
 
@@ -17,7 +17,7 @@ A typical `BibTeX <https://en.wikipedia.org/wiki/BibTeX>`_ citation would be, fo
     @software{AutoSphinx,
       author = {Fabrice Salvaire}, % actual author and maintainer
       title = {AutoSphinx},
-      url = {@project_url@},
+      url = {https://fabricesalvaire.github.io/AutoSphinx},
       version = {x.y},
       date = {yyyy-mm-dd}, % set to the release date
     }
@@ -25,6 +25,6 @@ A typical `BibTeX <https://en.wikipedia.org/wiki/BibTeX>`_ citation would be, fo
     @Misc{AutoSphinx,
       author = {Fabrice Salvaire},
       title = {AutoSphinx},
-      howpublished = {\url{@project_url@}},
+      howpublished = {\url{https://fabricesalvaire.github.io/AutoSphinx}},
       year = {yyyy}
     }
