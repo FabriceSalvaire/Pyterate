@@ -95,11 +95,7 @@ Dependencies
 AutoSphinx requires the following dependencies:
 
  * |Python|_ 3
- * |Numpy|_
-
-Also it is recommanded to have these Python modules:
-
- * |IPython|_
+ * PyYAML
 
 .. * pip
 .. * virtualenv

@@ -41,7 +41,8 @@
  AutoSphinx
 ############
 
-.. image:: /_static/logo.png
+..
+   image:: /_static/logo.png
    :alt: AutoSphinx logo
    :width: 750
 
@@ -49,7 +50,10 @@
 Overview
 ********
 
-AutoSphinx is free and open source (*) |Sphinx|_ add-ons to create API documentation for |Python|_ projects.
+AutoSphinx is free and open source (*) |Sphinx|_ add-ons which provide two tools for |Python|_
+projects.  The first one generates automatically the RST files for an API documentation based on the
+*autogen* extension.  The second one provides a document generator based on the concept of literate
+programming which can be used to make an example's based documentation.
 
 .. rst-class:: small-text
 
@@ -91,14 +95,14 @@ Answers to frequent questions
 :ref:`examples-page`
 ====================
 
-Many examples to learn how to use AutoSphinx.
+Document Generator Showcase
 
 .. rst-class:: column column2
 
-:ref:`development-page`
-=======================
+:ref:`user-guide-page`
+======================
 
-How to contribute to the project
+User manual to read first
 
 .. rst-class:: column column2
 
@@ -109,6 +113,13 @@ Technical reference material, for classes, methods, APIs, commands.
 
 .. rst-class:: column column2
 
+:ref:`development-page`
+=======================
+
+How to contribute to the project
+
+.. rst-class:: column column2
+
 :ref:`how-to-refer-page`
 ========================
 
@@ -116,10 +127,11 @@ Guidelines to cite AutoSphinx
 
 .. rst-class:: column column2
 
-:ref:`donate-page`
-==================
+..
+    :ref:`donate-page`
+    ==================
 
-If you want to donate to the project or need a more professional support.
+    If you want to donate to the project or need a more professional support.
 
 .. raw:: html
 
@@ -143,16 +155,17 @@ If you want to donate to the project or need a more professional support.
 
   overview.rst
   news.rst
-  roadmap.rst
   installation.rst
   faq.rst
-  design-notes.rst
+  user-guide.rst
   examples/index.rst
+  design-notes.rst
   reference-manual.rst
   development.rst
   how-to-refer.rst
+
+..
+  roadmap.rst
   donate.rst
   related-projects.rst
   bibliography.rst
-
-.. End

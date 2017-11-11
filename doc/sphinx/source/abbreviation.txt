@@ -15,4 +15,13 @@
 .. |Sphinx| replace:: Sphinx
 .. _Sphinx: http://sphinx-doc.org
 
+.. |Matplotlib| replace:: Matplotlib
+.. _Matplotlib: http://matplotlib.org
+
+.. |Circuit_macros| replace:: Circuit_macros
+.. _Circuit_macros: http://ece.uwaterloo.ca/~aplevich/Circuit_macros
+
+.. |Tikz| replace:: Tikz
+.. _Tikz: http://www.texample.net/tikz
+
 .. End

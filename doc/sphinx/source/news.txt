@@ -5,9 +5,9 @@
 
 .. no title here
 
-V0 2017-10-01
+V1 2017-11-10
 -------------
 
-Started project
+Extracted source from https://github.com/FabriceSalvaire/PySpice
 
 .. End
