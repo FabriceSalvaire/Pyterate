@@ -71,9 +71,36 @@ class TikzImage:
 
         self._logger.info("\nMake Tikz figure " + self._tex_path)
         try:
-            generate(self._tex_path, self._rst_directory)
+            self._generate(self._tex_path, self._rst_directory)
         except subprocess.CalledProcessError:
             self._logger.error("Failed to make Tikz figure example", self._tex_path)
+
+    ##############################################
+
+    def _generate(tex_path, dst_path):
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            # _module_logger.info('Temporary directory ' + tmp_dir)
+
+            # current_dir = os.curdir
+            os.chdir(tmp_dir)
+            shutil.copy(tex_path, '.')
+
+            # Run LaTeX to generate PDF
+            command = (
+                LATEX_COMMAND,
+                '-shell-escape',
+                '-interaction=batchmode',
+                # '-output-directory=' + tmp_dir,
+                os.path.basename(tex_path),
+            )
+            dev_null = open(os.devnull, 'w')
+            subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
+
+            basename = os.path.splitext(os.path.basename(tex_path))[0]
+            svg_basename = basename + '.svg'
+            svg_path = os.path.join(dst_path, svg_basename)
+            shutil.copy(svg_basename, svg_path)
 
 ####################################################################################################
 
@@ -88,30 +115,3 @@ class TikzImageChunk(TikzImage, ImageChunk):
         tex_filename, kwargs = ImageChunk.parse_args(line[len('#tz# '):].strip())
         ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
         TikzImage.__init__(self, tex_filename, source_directory, rst_directory)
-
-####################################################################################################
-
-def generate(tex_path, dst_path):
-
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        # _module_logger.info('Temporary directory ' + tmp_dir)
-
-        # current_dir = os.curdir
-        os.chdir(tmp_dir)
-        shutil.copy(tex_path, '.')
-
-        # Run LaTeX to generate PDF
-        command = (
-            LATEX_COMMAND,
-            '-shell-escape',
-            '-interaction=batchmode',
-            # '-output-directory=' + tmp_dir,
-            os.path.basename(tex_path),
-        )
-        dev_null = open(os.devnull, 'w')
-        subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
-
-        basename = os.path.splitext(os.path.basename(tex_path))[0]
-        svg_basename = basename + '.svg'
-        svg_path = os.path.join(dst_path, svg_basename)
-        shutil.copy(svg_basename, svg_path)
