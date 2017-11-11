@@ -7,7 +7,7 @@ api=doc/sphinx/source/api
 
 echo
 echo Generate RST API files
-./tools/generate-rst-api AutoSphinx
+./bin/generate-rst-api AutoSphinx
 
 echo
 echo Run Sphinx

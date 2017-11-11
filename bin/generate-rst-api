@@ -30,16 +30,16 @@ from AutoSphinx.RstFactory import RstFactory
 
 ####################################################################################################
 
-argument_parser = argparse.ArgumentParser(description='Generate API Documentation')
+parser = argparse.ArgumentParser(description='Generate API Documentation')
 
-argument_parser.add_argument('module_path', metavar='ModulePath',
-                             help='module path')
+parser.add_argument('module_path', metavar='ModulePath',
+                    help='module path')
 
-argument_parser.add_argument('--rst-api-path',
-                             default=os.path.join('doc', 'sphinx', 'source', 'api'),
-                             help='rst API path')
+parser.add_argument('--rst-api-path',
+                    default=os.path.join('doc', 'sphinx', 'source', 'api'),
+                    help='rst API path')
 
-args = argument_parser.parse_args()
+args = parser.parse_args()
 
 ####################################################################################################
 
