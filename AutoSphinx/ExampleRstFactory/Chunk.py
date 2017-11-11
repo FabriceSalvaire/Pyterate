@@ -213,7 +213,10 @@ class ImageChunk(Chunk):
     ##############################################
 
     @staticmethod
-    def parse_args(line):
+    def parse_args(line, markup):
+
+        start = len(markup) + 2
+        line = line[start:].strip()
 
         parts = [x for x in line.split(' ') if x]
         figure_path = parts[0]
@@ -282,7 +285,7 @@ class LocaleFigureChunk(ImageChunk):
 
     def __init__(self, line, source_directory, rst_directory):
 
-        figure_path, kwargs = ImageChunk.parse_args(line[len('#lfig# '):].strip())
+        figure_path, kwargs = ImageChunk.parse_args(line, 'lfig')
         figure_filename = os.path.basename(figure_path)
         figure_absolut_path = os.path.join(source_directory, figure_path)
         link_path = os.path.join(rst_directory, figure_filename)

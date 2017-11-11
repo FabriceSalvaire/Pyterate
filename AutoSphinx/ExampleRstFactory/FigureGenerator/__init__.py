@@ -20,4 +20,5 @@
 
 ####################################################################################################
 
-from . import TikzGenerator
+from . import Tikz
+from . import CircuitMacros

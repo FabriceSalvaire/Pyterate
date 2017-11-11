@@ -89,6 +89,9 @@ class Example:
 
     def __init__(self, topic, filename):
 
+        self.__figure_markups__ = ['fig', 'lfig', 'i', 'itxt', 'o']
+        self.__figure_markups__ += ExtensionMetaclass.extension_markups()
+
         self._topic = topic
         self._basename = remove_extension(filename)
 
@@ -266,10 +269,7 @@ class Example:
 
     def _line_starts_by_figure_markup(self, line):
 
-        markups = ['fig', 'lfig', 'i', 'itxt', 'o']
-        markups += ExtensionMetaclass.extension_markups()
-
-        for markup in markups:
+        for markup in self.__figure_markups__:
             if self._line_start_by_markup(line, markup):
                 return True
         return False

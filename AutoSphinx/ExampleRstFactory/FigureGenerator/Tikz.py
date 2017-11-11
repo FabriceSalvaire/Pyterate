@@ -78,7 +78,7 @@ class TikzImage:
 
     ##############################################
 
-    def _generate(tex_path, dst_path):
+    def _generate(self, tex_path, dst_path):
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             # _module_logger.info('Temporary directory ' + tmp_dir)
@@ -109,12 +109,12 @@ class TikzImageChunk(TikzImage, ImageChunk, metaclass=ExtensionMetaclass):
 
     """ This class represents an image block for a Tikz figure. """
 
-    __markup__ = '#tz#'
+    __markup__ = 'tz'
 
     ##############################################
 
     def __init__(self, line, source_directory, rst_directory):
 
-        tex_filename, kwargs = ImageChunk.parse_args(line[len(self.__markup__):].strip())
+        tex_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
         ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
         TikzImage.__init__(self, tex_filename, source_directory, rst_directory)
