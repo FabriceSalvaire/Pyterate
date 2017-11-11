@@ -20,20 +20,74 @@
 
 ####################################################################################################
 
-# import logging
+import logging
 import os
-import subprocess
 import shutil
+import subprocess
 import tempfile
+
+from ..Chunk import ImageChunk
+from ..Tools import timestamp
 
 ####################################################################################################
 
-# _module_logger = logging.getLogger(__name__)
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
 LATEX_COMMAND = 'pdflatex'
 # LATEX_COMMAND = 'lualatex'
+
+####################################################################################################
+
+class TikzImage:
+
+    """ This class represents a Tikz figure. """
+
+    _logger = _module_logger.getChild('TikzImage')
+
+    ##############################################
+
+    def __init__(self, tex_filename, source_directory, rst_directory):
+
+        svg_filename = tex_filename.replace('.tex', '.svg')
+        self._tex_path = os.path.join(source_directory, 'tex', tex_filename)
+        self._rst_directory = rst_directory
+        self._figure_path = svg_filename
+        self._figure_real_path = os.path.join(rst_directory, svg_filename)
+
+    ##############################################
+
+    def __bool__(self):
+
+        if os.path.exists(self._figure_real_path):
+            return timestamp(self._tex_path) > timestamp(self._figure_real_path)
+        else:
+            return True
+
+    ##############################################
+
+    def make_figure(self):
+
+        self._logger.info("\nMake Tikz figure " + self._tex_path)
+        try:
+            generate(self._tex_path, self._rst_directory)
+        except subprocess.CalledProcessError:
+            self._logger.error("Failed to make Tikz figure example", self._tex_path)
+
+####################################################################################################
+
+class TikzImageChunk(TikzImage, ImageChunk):
+
+    """ This class represents an image block for a Tikz figure. """
+
+    ##############################################
+
+    def __init__(self, line, source_directory, rst_directory):
+
+        tex_filename, kwargs = ImageChunk.parse_args(line[len('#tz# '):].strip())
+        ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
+        TikzImage.__init__(self, tex_filename, source_directory, rst_directory)
 
 ####################################################################################################
 
