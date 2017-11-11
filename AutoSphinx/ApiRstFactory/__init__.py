@@ -40,7 +40,7 @@ class ApiRstFactory:
 
     """This class build recursively a Sphinx API documentation from a Python root module."""
 
-    __init_file_name__ = '__init__.py'
+    INIT_FILE_NAME = '__init__.py'
 
     _logger = _module_logger.getChild('ApiRstFactory')
 
@@ -72,18 +72,25 @@ class ApiRstFactory:
         """ Process recursively the inner Python files and directories. """
 
         for module_path, sub_directories, files in os.walk(self._root_module_path, followlinks=True):
-            for sub_directory in list(sub_directories):
-                if os.path.join(module_path, sub_directory) in self._excluded_directory:
-                    del sub_directories[sub_directories.index(sub_directory)]
+
+            sub_directories = [
+                sub_directory
+                for sub_directory in sub_directories
+                if os.path.join(module_path, sub_directory) not in self._excluded_directory
+            ]
+
             if self.is_python_directory_module(module_path):
-                python_files = [file_name
-                                for file_name in files
-                                if self.is_python_file(file_name)]
-                sub_modules = [sub_directory
-                               for sub_directory in sub_directories
-                               if self.is_python_directory_module(os.path.join(module_path, sub_directory))]
-                if python_files or sub_modules:
-                    self._process_directory_module(module_path, sorted(python_files), sorted(sub_modules))
+                python_files = [
+                    file_name
+                    for file_name in files
+                    if self.is_python_file(file_name)
+                ]
+                sub_modules = [
+                    sub_directory
+                    for sub_directory in sub_directories
+                    if self.is_python_directory_module(os.path.join(module_path, sub_directory))
+                ]
+                self._process_directory_module(module_path, sorted(python_files), sorted(sub_modules))
 
     ##############################################
 
@@ -96,7 +103,7 @@ class ApiRstFactory:
         self._logger.info('Directory Module Python Path: {}'.format(directory_module_python_path))
         self._logger.info('Dest Path: {}'.format(dst_directory))
 
-        if not os.path.exists(dst_directory):
+        if (python_files or sub_modules) and not os.path.exists(dst_directory):
             os.mkdir(dst_directory)
 
         # Generate a RST file per module
@@ -123,16 +130,20 @@ class ApiRstFactory:
     @classmethod
     def is_python_directory_module(cls, path):
 
-        return os.path.exists(os.path.join(path, cls.__init_file_name__))
+        # path has __init__.py
+
+        return os.path.exists(os.path.join(path, cls.INIT_FILE_NAME))
 
     ##############################################
 
     @classmethod
     def is_python_file(cls, file_name):
 
-        return (file_name.endswith('.py') and
-                file_name != cls.__init_file_name__ and
-                'flymake'not in file_name)
+        return (
+            file_name.endswith('.py') and
+            file_name != cls.INIT_FILE_NAME and
+            'flymake'not in file_name
+        )
 
     ##############################################
 
