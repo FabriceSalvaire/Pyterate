@@ -31,8 +31,11 @@ import sys
 import tempfile
 
 from .Chunk import *
-from .FigureGenerator import TikzGenerator
 from .Tools import timestamp
+
+# Load default extensions
+from . import FigureGenerator
+from .FigureGenerator.Registry import ExtensionMetaclass
 
 ####################################################################################################
 
@@ -227,7 +230,7 @@ class Example:
     def make_external_figure(self, force):
 
         for chunck in self._chuncks:
-            if isinstance(chunck, (TikzGenerator.TikzImageChunk,)):
+            if isinstance(chunck, ExtensionMetaclass.extensions()):
                 if force or chunck:
                     chunck.make_figure()
 
@@ -255,6 +258,24 @@ class Example:
 
     ##############################################
 
+    def _line_start_by_markup(self, line, markup):
+
+        return line.startswith('#{}#'.format(markup))
+
+    ##############################################
+
+    def _line_starts_by_figure_markup(self, line):
+
+        markups = ['fig', 'lfig', 'i', 'itxt', 'o']
+        markups += ExtensionMetaclass.extension_markups()
+
+        for markup in markups:
+            if self._line_start_by_markup(line, markup):
+                return True
+        return False
+
+    ##############################################
+
     def _parse_source(self):
 
         """Parse the Python source code and extract chunks of codes, RST contents, plot and Tikz figures.
@@ -279,33 +300,31 @@ class Example:
             line = self._source[i]
             i += 1
             remove_next_blanck_line = True
-            if (line.startswith('#?#')
+            if (self._line_start_by_markup(line, '?')
                 or line.startswith('#'*10)
                 or line.startswith(' '*4 + '#'*10)):
                 pass # these comments
-            elif (line.startswith('#fig# ')
-                  or line.startswith('#lfig# ')
-                  or line.startswith('#tz# ')
-                  or line.startswith('#i# ')
-                  or line.startswith('#itxt# ')
-                  or line.startswith('#o#')):
+            elif self._line_starts_by_figure_markup(line):
                 if self._rst_chunck:
                     self._append_rst_chunck()
                 elif self._code_chunck:
                     self._append_code_chunck()
-                if line.startswith('#fig# '):
+                if self._line_start_by_markup(line, 'fig'):
                     self._chuncks.append(FigureChunk(line))
-                elif line.startswith('#lfig# '):
+                elif self._line_start_by_markup(line, 'lfig'):
                     self._chuncks.append(LocaleFigureChunk(line, self._topic.path, self._topic.rst_path))
-                elif line.startswith('#tz# '):
-                    self._chuncks.append(TikzGenerator.TikzImageChunk(line, self._topic.path, self._topic.rst_path))
-                elif line.startswith('#i# '):
+                elif self._line_start_by_markup(line, 'i'):
                     self._chuncks.append(PythonIncludeChunk(self, line))
-                elif line.startswith('#itxt# '):
+                elif self._line_start_by_markup(line, 'itxt'):
                     self._chuncks.append(LitteralIncludeChunk(self, line))
-                elif line.startswith('#o#'):
+                elif self._line_start_by_markup(line, 'o'):
                     self._chuncks.append(OutputChunk(self, line, self.increment_stdout_chunk_counter()))
-            elif line.startswith('#!#'): # RST content
+                else:
+                    for markup, cls in ExtensionMetaclass.iter():
+                        if self._line_start_by_markup(line, markup):
+                            self._chuncks.append(cls(line, self._topic.path, self._topic.rst_path))
+                            break
+            elif self._line_start_by_markup(line, '!'): # RST content
                 if self._code_chunck:
                     self._append_code_chunck()
                 self._rst_chunck.append(line.strip()[4:] + '\n') # hack to get blank line
@@ -315,7 +334,7 @@ class Example:
                 remove_next_blanck_line = False
                 if self._rst_chunck:
                     self._append_rst_chunck()
-                if line.startswith('#h#') and isinstance(self._code_chunck, CodeChunk):
+                if self._line_start_by_markup(line, 'h') and isinstance(self._code_chunck, CodeChunk):
                     self._append_code_chunck(True)
                 elif isinstance(self._code_chunck, HiddenCodeChunk):
                     self._append_code_chunck(False)
