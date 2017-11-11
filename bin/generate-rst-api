@@ -26,7 +26,7 @@
 import argparse
 import os
 
-from AutoSphinx.RstFactory import RstFactory
+from AutoSphinx.ApiRstFactory import ApiRstFactory
 
 ####################################################################################################
 
@@ -46,4 +46,5 @@ args = parser.parse_args()
 # Fixme:
 excluded_directory = ()
 
-rst_factory = RstFactory(args.module_path, args.rst_api_path, excluded_directory)
+rst_factory = ApiRstFactory(args.module_path, args.rst_api_path, excluded_directory)
+# Fixme: API ???

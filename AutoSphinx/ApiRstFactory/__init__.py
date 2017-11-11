@@ -31,7 +31,7 @@ import os
 
 ####################################################################################################
 
-class RstFactory:
+class ApiRstFactory:
 
     """This class build recursively a Sphinx API documentation from a Python root module."""
 
@@ -113,18 +113,18 @@ class RstFactory:
 
     ##############################################
 
-    @staticmethod
-    def is_python_directory_module(path):
+    @classmethod
+    def is_python_directory_module(cls, path):
 
-        return os.path.exists(os.path.join(path, RstFactory.__init_file_name__))
+        return os.path.exists(os.path.join(path, cls.__init_file_name__))
 
     ##############################################
 
-    @staticmethod
-    def is_python_file(file_name):
+    @classmethod
+    def is_python_file(cls, file_name):
 
         return (file_name.endswith('.py') and
-                file_name != RstFactory.__init_file_name__ and
+                file_name != cls.__init_file_name__ and
                 'flymake'not in file_name)
 
     ##############################################
@@ -241,7 +241,7 @@ class RstFactory:
 
         rst = template.lstrip().format(
             title=self._generate_title(module_name),
-            automodule=self._generate_automodule(RstFactory.join_python_path(module_path, module_name))
+            automodule=self._generate_automodule(self.join_python_path(module_path, module_name))
             )
 
         return rst

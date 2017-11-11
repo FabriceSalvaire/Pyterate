@@ -30,14 +30,9 @@ logger = Logging.setup_logging()
 
 import argparse
 
-####################################################################################################
-
 from AutoSphinx.ExampleRstFactory import ExampleRstFactory
 
 ####################################################################################################
-#
-# Options
-#
 
 parser = argparse.ArgumentParser(description='Generate Examples RST files')
 
