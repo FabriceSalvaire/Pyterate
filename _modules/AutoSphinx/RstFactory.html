@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AutoSphinx.RstFactory &mdash; AutoSphinx 0.1.0 documentation</title>
+  <title>AutoSphinx.RstFactory &mdash; AutoSphinx 1.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="AutoSphinx 0.1.0 documentation" href="../../index.html"/>
+    <link rel="top" title="AutoSphinx 1.0.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
@@ -83,7 +83,7 @@ window.cookieconsent.initialise({
             
             
               <div class="version">
-                0.1
+                1.0
               </div>
             
           
@@ -110,16 +110,14 @@ window.cookieconsent.initialise({
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../overview.html">1. Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../news.html">2. News</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">3. Roadmap</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../installation.html">4. Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../faq.html">5. User FAQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../design-notes.html">6. Design Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../reference-manual.html">7. API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../development.html">8. Development &amp; Community</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../how-to-refer.html">9. How to Refer to AutoSphinx ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../donate.html">10. How to Help Further ?</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../related-projects.html">11. Related Projects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">12. Bibliography</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">4. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user-guide.html">5. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">6. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../design-notes.html">7. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference-manual.html">8. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../development.html">9. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../how-to-refer.html">10. How to Refer to AutoSphinx ?</a></li>
 </ul>
 
             
@@ -204,7 +202,12 @@ window.cookieconsent.initialise({
 <span class="c1">#</span>
 <span class="c1">####################################################################################################</span>
 
-<span class="sd">&quot;&quot;&quot; This module provides tools to build a Sphinx API documentation. &quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;This module provides tools to build a Sphinx API documentation.</span>
+
+<span class="sd">See http://www.sphinx-doc.org/en/stable/ext/autodoc.html for further information on Sphinx autodoc</span>
+<span class="sd">extension.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -214,13 +217,9 @@ window.cookieconsent.initialise({
 
 <div class="viewcode-block" id="RstFactory"><a class="viewcode-back" href="../../api/AutoSphinx/RstFactory.html#AutoSphinx.RstFactory.RstFactory">[docs]</a><span class="k">class</span> <span class="nc">RstFactory</span><span class="p">:</span>
 
-    <span class="sd">&quot;&quot;&quot; This class build recursively a Sphinx API documentation from a Python root module. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;This class build recursively a Sphinx API documentation from a Python root module.&quot;&quot;&quot;</span>
 
-    <span class="n">init_file_name</span> <span class="o">=</span> <span class="s1">&#39;__init__.py&#39;</span>
-
-    <span class="n">end_marker</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">.. End</span>
-<span class="s2">&quot;&quot;&quot;</span>
+    <span class="n">__init_file_name__</span> <span class="o">=</span> <span class="s1">&#39;__init__.py&#39;</span>
 
     <span class="c1">##############################################</span>
 
@@ -238,7 +237,7 @@ window.cookieconsent.initialise({
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Exclude:&#39;</span><span class="p">,</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_directory</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_process_recursively</span><span class="p">()</span>
 
@@ -292,7 +291,6 @@ window.cookieconsent.initialise({
         <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_toc</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">module_names</span> <span class="o">+</span> <span class="n">sub_modules</span><span class="p">))</span>
         <span class="n">rst</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_automodule</span><span class="p">(</span><span class="n">directory_module_python_path</span><span class="p">)</span>
-        <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_marker</span>
         <span class="n">rst_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst_directory</span><span class="p">),</span> <span class="n">directory_module_name</span> <span class="o">+</span> <span class="s1">&#39;.rst&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">rst_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
@@ -302,7 +300,7 @@ window.cookieconsent.initialise({
 <div class="viewcode-block" id="RstFactory.is_python_directory_module"><a class="viewcode-back" href="../../api/AutoSphinx/RstFactory.html#AutoSphinx.RstFactory.RstFactory.is_python_directory_module">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_python_directory_module</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">RstFactory</span><span class="o">.</span><span class="n">init_file_name</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">RstFactory</span><span class="o">.</span><span class="n">__init_file_name__</span><span class="p">))</span></div>
 
     <span class="c1">##############################################</span>
 
@@ -310,7 +308,7 @@ window.cookieconsent.initialise({
     <span class="k">def</span> <span class="nf">is_python_file</span><span class="p">(</span><span class="n">file_name</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="p">(</span><span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.py&#39;</span><span class="p">)</span> <span class="ow">and</span>
-                <span class="n">file_name</span> <span class="o">!=</span> <span class="n">RstFactory</span><span class="o">.</span><span class="n">init_file_name</span> <span class="ow">and</span>
+                <span class="n">file_name</span> <span class="o">!=</span> <span class="n">RstFactory</span><span class="o">.</span><span class="n">__init_file_name__</span> <span class="ow">and</span>
                 <span class="s1">&#39;flymake&#39;</span><span class="ow">not</span> <span class="ow">in</span> <span class="n">file_name</span><span class="p">)</span></div>
 
     <span class="c1">##############################################</span>
@@ -360,11 +358,11 @@ window.cookieconsent.initialise({
         <span class="n">mod_rst</span> <span class="o">=</span> <span class="s1">&#39; :mod:`&#39;</span>
 
         <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="si">%(header_line)s</span><span class="s2"></span>
-<span class="si">%(mod)s%(module_name)s</span><span class="s2">`</span>
-<span class="si">%(header_line)s</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="si">{header_line}</span><span class="s2"></span>
+<span class="si">{mod}{module_name}</span><span class="s2">`</span>
+<span class="si">{header_line}</span><span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
             <span class="n">mod</span><span class="o">=</span><span class="n">mod_rst</span><span class="p">,</span>
             <span class="n">header_line</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">mod_rst</span><span class="p">)</span> <span class="o">+</span><span class="mi">2</span><span class="p">),</span>
@@ -376,12 +374,12 @@ window.cookieconsent.initialise({
 
     <span class="k">def</span> <span class="nf">_generate_toc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory_module_name</span><span class="p">,</span> <span class="n">module_names</span><span class="p">):</span>
 
-        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">%(title)s</span><span class="s2"></span>
+        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">{title}</span><span class="s2"></span>
 
 <span class="s2">.. toctree::</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_title</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">),</span>
             <span class="p">)</span>
 
@@ -394,13 +392,23 @@ window.cookieconsent.initialise({
 
     <span class="k">def</span> <span class="nf">_generate_automodule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_path</span><span class="p">):</span>
 
+        <span class="c1">#</span>
+        <span class="c1"># For default set autodoc_default_flags in conf.py</span>
+        <span class="c1">#</span>
+        <span class="c1"># :members:           include members</span>
+        <span class="c1"># :undoc-members:     include members without docstrings</span>
+        <span class="c1"># :private-members:   include private</span>
+        <span class="c1"># :special-members:   include __special__</span>
+        <span class="c1"># :inherited-members: include inherited members</span>
+        <span class="c1"># :no-undoc-members:</span>
+
         <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">.. automodule:: </span><span class="si">%(module_path)s</span><span class="s2"></span>
+<span class="s2">.. automodule:: </span><span class="si">{module_path}</span><span class="s2"></span>
 <span class="s2">   :members:</span>
 <span class="s2">   :show-inheritance:</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">module_path</span><span class="o">=</span><span class="n">module_path</span><span class="p">,</span>
             <span class="p">)</span>
 
@@ -410,16 +418,15 @@ window.cookieconsent.initialise({
 
     <span class="k">def</span> <span class="nf">_generate_rst_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
 
-        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">%(title)s</span><span class="s2"></span>
+        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">{title}</span><span class="s2"></span>
 
-<span class="si">%(automodule)s</span><span class="s2"></span>
+<span class="si">{automodule}</span><span class="s2"></span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span> <span class="o">%</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_title</span><span class="p">(</span><span class="n">module_name</span><span class="p">),</span>
             <span class="n">automodule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_automodule</span><span class="p">(</span><span class="n">RstFactory</span><span class="o">.</span><span class="n">join_python_path</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
             <span class="p">)</span>
-        <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end_marker</span>
 
         <span class="k">return</span> <span class="n">rst</span></div>
 </pre></div>
@@ -458,7 +465,7 @@ window.cookieconsent.initialise({
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.1.0',
+            VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

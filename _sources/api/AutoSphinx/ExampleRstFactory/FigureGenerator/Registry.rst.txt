@@ -1,0 +1,8 @@
+*****************
+ :mod:`Registry`
+*****************
+
+.. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.Registry
+   :members:
+   :show-inheritance:
+

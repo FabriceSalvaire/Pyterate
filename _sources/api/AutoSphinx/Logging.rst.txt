@@ -1,0 +1,10 @@
+****************
+ :mod:`Logging`
+****************
+
+.. toctree::
+  Logging/Logging
+
+.. automodule:: AutoSphinx.Logging
+   :members:
+   :show-inheritance:

@@ -1,0 +1,8 @@
+**********************
+ :mod:`CircuitMacros`
+**********************
+
+.. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.CircuitMacros
+   :members:
+   :show-inheritance:
+

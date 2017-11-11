@@ -1,0 +1,8 @@
+**********************
+ :mod:`ConfigInstall`
+**********************
+
+.. automodule:: AutoSphinx.Config.ConfigInstall
+   :members:
+   :show-inheritance:
+

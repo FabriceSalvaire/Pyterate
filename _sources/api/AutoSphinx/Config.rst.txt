@@ -1,0 +1,10 @@
+***************
+ :mod:`Config`
+***************
+
+.. toctree::
+  Config/ConfigInstall
+
+.. automodule:: AutoSphinx.Config
+   :members:
+   :show-inheritance:

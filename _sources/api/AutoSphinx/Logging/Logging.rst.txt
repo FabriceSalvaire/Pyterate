@@ -1,0 +1,8 @@
+****************
+ :mod:`Logging`
+****************
+
+.. automodule:: AutoSphinx.Logging.Logging
+   :members:
+   :show-inheritance:
+

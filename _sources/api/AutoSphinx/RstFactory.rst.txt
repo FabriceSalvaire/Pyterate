@@ -6,5 +6,3 @@
    :members:
    :show-inheritance:
 
-
-.. End

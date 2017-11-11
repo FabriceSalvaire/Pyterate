@@ -1,0 +1,10 @@
+**************************
+ :mod:`ExempleRstFactory`
+**************************
+
+.. toctree::
+  ExempleRstFactory/FigureGenerator
+
+.. automodule:: AutoSphinx.ExempleRstFactory
+   :members:
+   :show-inheritance:

@@ -1,0 +1,8 @@
+**************
+ :mod:`Chunk`
+**************
+
+.. automodule:: AutoSphinx.ExampleRstFactory.Chunk
+   :members:
+   :show-inheritance:
+

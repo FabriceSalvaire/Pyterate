@@ -1,0 +1,10 @@
+************************
+ :mod:`FigureGenerator`
+************************
+
+.. toctree::
+  FigureGenerator/TikzGenerator
+
+.. automodule:: AutoSphinx.ExempleRstFactory.FigureGenerator
+   :members:
+   :show-inheritance:

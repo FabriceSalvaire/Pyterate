@@ -1,0 +1,8 @@
+**********************
+ :mod:`TikzGenerator`
+**********************
+
+.. automodule:: AutoSphinx.ExempleRstFactory.FigureGenerator.TikzGenerator
+   :members:
+   :show-inheritance:
+

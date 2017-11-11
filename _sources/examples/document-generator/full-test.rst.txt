@@ -1,0 +1,118 @@
+
+.. include:: /project-links.txt
+.. include:: /abbreviation.txt
+
+.. getthecode:: full-test.py
+    :language: python
+
+
+.. code-block:: python
+
+    # A source code comment
+    foo = 1
+    
+
+==========================
+ A Restructuredtext Title
+==========================
+
+.. code-block:: python
+
+    foo = 1
+    
+
+
+Some reStructuredText contents
+
+
+.. code-block:: python
+
+    foo = 1
+    
+    # Insert the output of the following python code
+    print(foo)
+
+
+.. literalinclude:: full-test.stdout
+    :lines: 1-1
+
+
+.. code-block:: python
+
+    foo = 1
+    
+    # Hidden Python code
+
+
+.. code-block:: python
+
+    
+    foo = 1
+    
+
+Format RST content with current locals dictionary using @<@...@>@ instead of {...}.
+
+.. math::
+
+    I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
+
+.. code-block:: python
+
+    # Add the file content as literal block
+
+
+.. literalinclude:: kicad-pyspice-example.cir
+
+
+.. code-block:: python
+
+    # Add a Python file as a literal block
+
+
+.. getthecode:: RingModulator.py
+  :language: python
+
+
+.. code-block:: python
+
+    # Insert an image
+
+
+.. image:: kicad-pyspice-example.sch.svg
+  :align: center
+
+
+.. code-block:: python
+
+    # Insert Circuit_macros diagram
+
+
+.. image:: circuit.png
+  :align: center
+
+
+.. code-block:: python
+
+    # Insert Tikz figure
+
+
+.. image:: diode.svg
+  :align: center
+
+
+.. code-block:: python
+
+    import matplotlib.pyplot as plt
+    figure = plt.figure(1, (20, 10))
+    
+    # Insert a Matplotlib figure
+
+
+.. image:: my-figure.png
+  :align: center
+
+
+.. code-block:: python
+
+    foo = 1
+

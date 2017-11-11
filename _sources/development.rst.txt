@@ -24,7 +24,6 @@ As an open source project, anyone is welcome to contribute in whatever form they
 * Check for errors on the documentation
 * Propose improvements
 * Implement missing features
-* Provides additional examples
 
 Contributors
 ------------

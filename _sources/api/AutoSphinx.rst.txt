@@ -3,10 +3,11 @@
 *******************
 
 .. toctree::
-  AutoSphinx/RstFactory
+  AutoSphinx/ApiRstFactory
+  AutoSphinx/Config
+  AutoSphinx/ExampleRstFactory
+  AutoSphinx/Logging
 
 .. automodule:: AutoSphinx
    :members:
    :show-inheritance:
-
-.. End
