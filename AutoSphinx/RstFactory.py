@@ -18,7 +18,12 @@
 #
 ####################################################################################################
 
-""" This module provides tools to build a Sphinx API documentation. """
+"""This module provides tools to build a Sphinx API documentation.
+
+See http://www.sphinx-doc.org/en/stable/ext/autodoc.html for further information on Sphinx autodoc
+extension.
+
+"""
 
 ####################################################################################################
 
@@ -28,13 +33,9 @@ import os
 
 class RstFactory:
 
-    """ This class build recursively a Sphinx API documentation from a Python root module. """
+    """This class build recursively a Sphinx API documentation from a Python root module."""
 
-    init_file_name = '__init__.py'
-
-    end_marker = """
-.. End
-"""
+    __init_file_name__ = '__init__.py'
 
     ##############################################
 
@@ -52,7 +53,7 @@ class RstFactory:
         print('Exclude:', '\n  '.join(self._excluded_directory))
 
         if not os.path.exists(self._rst_directory):
-            os.mkdir(self._rst_directory)
+            os.makedirs(self._rst_directory)
 
         self._process_recursively()
 
@@ -106,7 +107,6 @@ class RstFactory:
         rst = self._generate_toc(directory_module_name, sorted(module_names + sub_modules))
         rst += '\n'
         rst += self._generate_automodule(directory_module_python_path)
-        rst += self.end_marker
         rst_file_name = os.path.join(os.path.dirname(dst_directory), directory_module_name + '.rst')
         with open(rst_file_name, 'w') as f:
             f.write(rst)
@@ -116,7 +116,7 @@ class RstFactory:
     @staticmethod
     def is_python_directory_module(path):
 
-        return os.path.exists(os.path.join(path, RstFactory.init_file_name))
+        return os.path.exists(os.path.join(path, RstFactory.__init_file_name__))
 
     ##############################################
 
@@ -124,7 +124,7 @@ class RstFactory:
     def is_python_file(file_name):
 
         return (file_name.endswith('.py') and
-                file_name != RstFactory.init_file_name and
+                file_name != RstFactory.__init_file_name__ and
                 'flymake'not in file_name)
 
     ##############################################
@@ -174,11 +174,11 @@ class RstFactory:
         mod_rst = ' :mod:`'
 
         template = """
-%(header_line)s
-%(mod)s%(module_name)s`
-%(header_line)s"""
+{header_line}
+{mod}{module_name}`
+{header_line}"""
 
-        rst = template.lstrip() % dict(
+        rst = template.lstrip().format(
             module_name=module_name,
             mod=mod_rst,
             header_line='*'*(len(module_name) + len(mod_rst) +2),
@@ -190,12 +190,12 @@ class RstFactory:
 
     def _generate_toc(self, directory_module_name, module_names):
 
-        template = """%(title)s
+        template = """{title}
 
 .. toctree::
 """
 
-        rst = template.lstrip() % dict(
+        rst = template.lstrip().format(
             title=self._generate_title(directory_module_name),
             )
 
@@ -208,13 +208,23 @@ class RstFactory:
 
     def _generate_automodule(self, module_path):
 
+        #
+        # For default set autodoc_default_flags in conf.py
+        #
+        # :members:           include members
+        # :undoc-members:     include members without docstrings
+        # :private-members:   include private
+        # :special-members:   include __special__
+        # :inherited-members: include inherited members
+        # :no-undoc-members:
+
         template = """
-.. automodule:: %(module_path)s
+.. automodule:: {module_path}
    :members:
    :show-inheritance:
 """
 
-        rst = template.lstrip() % dict(
+        rst = template.lstrip().format(
             module_path=module_path,
             )
 
@@ -224,15 +234,14 @@ class RstFactory:
 
     def _generate_rst_module(self, module_path, module_name):
 
-        template = """%(title)s
+        template = """{title}
 
-%(automodule)s
+{automodule}
 """
 
-        rst = template.lstrip() % dict(
+        rst = template.lstrip().format(
             title=self._generate_title(module_name),
             automodule=self._generate_automodule(RstFactory.join_python_path(module_path, module_name))
             )
-        rst += self.end_marker
 
         return rst
