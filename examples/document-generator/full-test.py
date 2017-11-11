@@ -41,6 +41,9 @@ foo = 1
 # Insert an image
 #lfig# kicad-pyspice-example.sch.svg
 
+# Insert Circuit_macros diagram
+#cm# circuit.m4
+
 # Insert Tikz figure
 #tz# diode.tex
 
