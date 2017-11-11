@@ -4,6 +4,7 @@ find AutoSphinx -name "flycheck*.py" -exec rm {} \;
 find AutoSphinx -name "parsetab.py" -exec rm {} \;
 
 api=doc/sphinx/source/api
+rm -rf api
 
 echo
 echo Generate RST API files

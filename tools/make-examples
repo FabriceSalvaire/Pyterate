@@ -1,7 +1,8 @@
 #! /usr/bin/bash
 
-# examples=doc/sphinx/source/examples
-# rm -rf ${examples}
+# Regenerate from scratch
+examples=doc/sphinx/source/examples
+rm -rf ${examples}
 
 echo
 echo Generate RST examples files
