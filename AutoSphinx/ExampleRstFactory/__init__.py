@@ -1069,7 +1069,6 @@ class ExampleRstFactory:
 
         """
         Parameters:
-        -----------
 
         examples_path: string
             path of the examples
