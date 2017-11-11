@@ -27,7 +27,12 @@ extension.
 
 ####################################################################################################
 
+import logging
 import os
+
+####################################################################################################
+
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
@@ -37,6 +42,8 @@ class ApiRstFactory:
 
     __init_file_name__ = '__init__.py'
 
+    _logger = _module_logger.getChild('ApiRstFactory')
+
     ##############################################
 
     def __init__(self, module_path, rst_directory, excluded_directory):
@@ -44,13 +51,14 @@ class ApiRstFactory:
         self._rst_directory = os.path.realpath(rst_directory)
         self._root_module_path = os.path.realpath(module_path)
 
-        self._excluded_directory = [os.path.join(self._root_module_path, x) for x in excluded_directory]
+        self._excluded_directory = [os.path.join(self._root_module_path, x)
+                                    for x in excluded_directory]
         self._root_module_name = os.path.basename(self._root_module_path)
 
-        print("RST API Path:    ", self._rst_directory)
-        print("Root Module Path:", self._root_module_path)
-        print("Root Module Name:", self._root_module_name)
-        print('Exclude:', '\n  '.join(self._excluded_directory))
+        self._logger.info('RST API Path:     {}'.format(self._rst_directory))
+        self._logger.info('Root Module Path: {}'.format(self._root_module_path))
+        self._logger.info('Root Module Name: {}'.format(self._root_module_name))
+        self._logger.info('Exclude:' + '\n  '.join(self._excluded_directory))
 
         if not os.path.exists(self._rst_directory):
             os.makedirs(self._rst_directory)
@@ -84,10 +92,9 @@ class ApiRstFactory:
         directory_module_name = os.path.basename(module_path)
         directory_module_python_path = self.module_path_to_python_path(module_path)
         dst_directory = self.join_rst_path(self.python_path_to_path(directory_module_python_path))
-        print()
-        print("Directory Module Name:", directory_module_name)
-        print("Directory Module Python Path:", directory_module_python_path)
-        print("Dest Path:", dst_directory)
+        self._logger.info('Directory Module Name: {}'.format(directory_module_name))
+        self._logger.info('Directory Module Python Path: {}'.format(directory_module_python_path))
+        self._logger.info('Dest Path: {}'.format(dst_directory))
 
         if not os.path.exists(dst_directory):
             os.mkdir(dst_directory)
@@ -97,7 +104,7 @@ class ApiRstFactory:
         for file_name in python_files:
             module_name = self.filename_to_module(file_name)
             module_names.append(module_name)
-            print("  Module:", module_name)
+            self._logger.info('  Module: {}'.format(module_name))
             rst = self._generate_rst_module(directory_module_python_path, module_name)
             rst_file_name = os.path.join(dst_directory, module_name + '.rst')
             with open(rst_file_name, 'w') as f:
@@ -169,7 +176,8 @@ class ApiRstFactory:
 
     ##############################################
 
-    def _generate_title(self, module_name):
+    @staticmethod
+    def _generate_title(module_name):
 
         mod_rst = ' :mod:`'
 
