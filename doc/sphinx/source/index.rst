@@ -147,6 +147,7 @@ If you want to donate to the project or need a more professional support.
   installation.rst
   faq.rst
   design-notes.rst
+  examples/index.rst
   reference-manual.rst
   development.rst
   how-to-refer.rst
