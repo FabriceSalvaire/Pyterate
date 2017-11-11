@@ -15,6 +15,7 @@ include setup_data.py
 include requirements.txt requirements-dev.txt
 include .travis.yml
 include bower/bower.json
+include bin/generate-rst-api
 recursive-include AutoSphinx *.py *.yml *py.in
 recursive-include doc *
 recursive-include doc/sphinx/source/_static *

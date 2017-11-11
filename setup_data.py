@@ -74,7 +74,7 @@ else:
 
 setup_dict = dict(
     name='AutoSphinx',
-    version='0.1.0',
+    version='0.2.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='AutoSphinx is Sphinx add-ons to create API documentation for Python projects.',
@@ -82,7 +82,7 @@ setup_dict = dict(
     keywords= 'sphinx documentation autogen',
     url='https://github.com/FabriceSalvaire/AutoSphinx',
     scripts=[
-        'generate-rst-api',
+        'bin/generate-rst-api',
     ],
     packages=[  # Fixme:
         'AutoSphinx',
