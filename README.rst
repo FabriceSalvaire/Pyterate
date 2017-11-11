@@ -69,6 +69,15 @@
 .. |Sphinx| replace:: Sphinx
 .. _Sphinx: http://sphinx-doc.org
 
+.. |Matplotlib| replace:: Matplotlib
+.. _Matplotlib: http://matplotlib.org
+
+.. |Circuit_macros| replace:: Circuit_macros
+.. _Circuit_macros: http://ece.uwaterloo.ca/~aplevich/Circuit_macros
+
+.. |Tikz| replace:: Tikz
+.. _Tikz: http://www.texample.net/tikz
+
 .. End
 
 ============
@@ -119,10 +128,10 @@ News
 
 .. no title here
 
-V0 2017-10-01
+V1 2017-11-10
 -------------
 
-Started project
+Extracted source from https://github.com/FabriceSalvaire/PySpice
 
 .. End
 
