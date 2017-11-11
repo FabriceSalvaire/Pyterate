@@ -1,0 +1,15 @@
+#! /usr/bin/bash
+
+# examples=doc/sphinx/source/examples
+# rm -rf ${examples}
+
+echo
+echo Generate RST examples files
+# ./bin/generate-rst-examples --skip-external-figure --skip-figure
+./bin/generate-rst-examples # --force
+
+echo
+echo Run Sphinx
+pushd doc/sphinx/
+./make-html # --clean
+popd

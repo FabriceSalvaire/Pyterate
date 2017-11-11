@@ -1,0 +1,82 @@
+#! /usr/bin/env python
+# -*- Python -*-
+
+####################################################################################################
+#
+# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Copyright (C) 2017 Salvaire Fabrice
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+####################################################################################################
+
+import AutoSphinx.Logging.Logging as Logging
+logger = Logging.setup_logging()
+
+####################################################################################################
+
+import argparse
+
+####################################################################################################
+
+from AutoSphinx.ExampleRstFactory import ExampleRstFactory
+
+####################################################################################################
+#
+# Options
+#
+
+parser = argparse.ArgumentParser(description='Generate Examples RST files')
+
+parser.add_argument('--examples-path',
+                    default='examples',
+                    help="Examples path")
+
+parser.add_argument('--rst-source-directory',
+                    default='doc/sphinx/source',
+                    help="RST source path")
+
+parser.add_argument('--rst-example-directory',
+                    default='examples',
+                    help="RST examples directory")
+
+parser.add_argument('--skip-figure',
+                    action='store_true', default=False,
+                    help="Don't generate figures")
+
+parser.add_argument('--skip-external-figure',
+                    action='store_true', default=False,
+                    help="Don't generate external figures")
+
+parser.add_argument('--force',
+                    action='store_true', default=False,
+                    help="Force the figure generation")
+
+args = parser.parse_args()
+
+####################################################################################################
+
+rst_factory = ExampleRstFactory(
+    args.examples_path,
+    args.rst_source_directory,
+    args.rst_example_directory,
+)
+
+rst_factory.process_recursively(
+    make_figure=not args.skip_figure,
+    make_external_figure=not args.skip_external_figure,
+    force=args.force,
+)
