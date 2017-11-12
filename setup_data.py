@@ -74,12 +74,12 @@ else:
 
 setup_dict = dict(
     name='AutoSphinx',
-    version='1.0.0',
+    version='1.0.1',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='AutoSphinx is a Sphinx add-ons to generate API documentation using autogen and litterate programming documentation for Python projects.',
     license='GPLv3',
-    keywords= 'sphinx autogen documentation generator builder literate programming',
+    keywords='sphinx autogen documentation generator builder literate programming',
     url='https://github.com/FabriceSalvaire/AutoSphinx',
     scripts=[
         'bin/generate-rst-api',
@@ -93,7 +93,7 @@ setup_dict = dict(
         'AutoSphinx.ExampleRstFactory.FigureGenerator',
         'AutoSphinx.Logging',
     ],
-    # package_dir = {'AutoSphinx': 'AutoSphinx'},
+    # package_dir={'AutoSphinx': 'AutoSphinx'},
     package_data={
         'AutoSphinx.Config': ['logging.yml'],
     },
