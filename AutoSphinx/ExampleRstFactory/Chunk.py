@@ -42,6 +42,11 @@ import os
 
 ####################################################################################################
 
+OPENING_FORMAT_MARKUP = '@<@'
+CLOSING_FORMAT_MARKUP = '@>@'
+
+####################################################################################################
+
 class Chunk:
 
     """ This class represents a chunk of lines in the source. """
@@ -81,7 +86,7 @@ class RstChunk(Chunk):
     def has_format(self):
 
         for line in self._lines:
-            if '@<@' in line:
+            if OPENING_FORMAT_MARKUP in line:
                 return True
         return False
 
@@ -373,12 +378,12 @@ class RstFormatChunk(StdoutChunk):
     def to_python(self):
 
         rst = ''.join(self._lines)
-        rst = rst.replace('{', '{{')
+        rst = rst.replace('{', '{{') # to escape them
         rst = rst.replace('}', '}}')
-        rst = rst.replace('@<@', '{')
-        rst = rst.replace('@>@', '}')
-        rst = rst.replace('@@<<@@', '@<@')
-        rst = rst.replace('@@>>@@', '@>@')
+        rst = rst.replace(OPENING_FORMAT_MARKUP, '{')
+        rst = rst.replace(CLOSING_FORMAT_MARKUP, '}')
+        rst = rst.replace('@@<<@@', OPENING_FORMAT_MARKUP)
+        rst = rst.replace('@@>>@@', CLOSING_FORMAT_MARKUP)
         marker = "\f #{}".format(self._stdout_chunk_index)
         return 'print(r"""' + rst + '""".format(**locals()))\n' + 'print("' + marker + '")\n'
 
