@@ -309,6 +309,7 @@ class Example:
                     self._append_rst_chunck()
                 elif self._code_chunck:
                     self._append_code_chunck()
+                # Fixme: use generic map ?
                 if self._line_start_by_markup(line, 'fig'):
                     self._chuncks.append(FigureChunk(line))
                 elif self._line_start_by_markup(line, 'lfig'):
@@ -447,7 +448,7 @@ class Topic:
         self._examples = []
         self._links = []
         python_files = [filename for filename in self._python_files_iterator()
-                        if self._filter_python_files(filename)]
+                        if self._filter_python_files(self._path, filename)]
         if python_files:
             self._logger.info("\nProcess Topic: " + relative_path)
             self._make_hierarchy()
@@ -509,8 +510,21 @@ class Topic:
     ##############################################
 
     @staticmethod
-    def _filter_python_files(filename):
-        return filename[0].islower() and filename.endswith('.py') and 'flymake' not in filename
+    def _filter_python_files(path, filename):
+
+        if filename.endswith('.py'):
+            # these file should be flymake temporary file
+            for pattern in ('flymake_', 'flycheck_'):
+                if filename.startswith(pattern):
+                    return False
+            absolut_path = os.path.join(path, filename)
+            with open(absolut_path, 'r') as fh:
+                first_line = fh.readline()
+                second_line = fh.readline()
+                pattern = '#skip#'
+                return not (first_line.startswith(pattern) or second_line.startswith(pattern))
+
+        return False
 
     ##############################################
 
