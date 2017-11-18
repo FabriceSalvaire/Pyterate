@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.1. ApiRstFactory &mdash; AutoSphinx 1.0.1 documentation</title>
+  <title>8.1.1. ApiRstFactory &mdash; AutoSphinx 1.1.0 documentation</title>
   
 
   
@@ -35,28 +35,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="AutoSphinx 1.0.1 documentation" href="../../index.html"/>
+    <link rel="top" title="AutoSphinx 1.1.0 documentation" href="../../index.html"/>
         <link rel="up" title="8.1. AutoSphinx" href="../AutoSphinx.html"/>
         <link rel="next" title="8.1.2. Config" href="Config.html"/>
-        <link rel="prev" title="8.1. AutoSphinx" href="../AutoSphinx.html"/>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": {
-    "popup": {
-      "background": "#000"
-    },
-    "button": {
-      "background": "#f1d600"
-    }
-  },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
-
+        <link rel="prev" title="8.1. AutoSphinx" href="../AutoSphinx.html"/> 
 
   
   <script src="../../static/js/modernizr.min.js"></script>
@@ -85,7 +67,7 @@ window.cookieconsent.initialise({
             
             
               <div class="version">
-                1.0
+                1.1
               </div>
             
           
@@ -203,9 +185,9 @@ window.cookieconsent.initialise({
 <h1>8.1.1. <code class="xref py py-mod docutils literal"><span class="pre">ApiRstFactory</span></code><a class="headerlink" href="#apirstfactory" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
-<span class="target" id="module-AutoSphinx.ApiRstFactory"></span><p>This module provides tools to build a Sphinx API documentation.</p>
-<p>See <a class="reference external" href="http://www.sphinx-doc.org/en/stable/ext/autodoc.html">http://www.sphinx-doc.org/en/stable/ext/autodoc.html</a> for further information on Sphinx autodoc
-extension.</p>
+<span class="target" id="module-AutoSphinx.ApiRstFactory"></span><p>This module provides a tool similar to <a class="reference external" href="http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html">sphinx-apidoc</a> to generate automatically the Sphinx
+sources for an API documentation using the <a class="reference external" href="http://www.sphinx-doc.org/en/master/ext/autodoc.html">autodoc extension</a>.</p>
+<p>In comparison to <em>sphinx-apidoc</em>, it generates sorter titles.</p>
 <dl class="class">
 <dt id="AutoSphinx.ApiRstFactory.ApiRstFactory">
 <em class="property">class </em><code class="descclassname">AutoSphinx.ApiRstFactory.</code><code class="descname">ApiRstFactory</code><span class="sig-paren">(</span><em>module_path</em>, <em>rst_directory</em>, <em>excluded_directory</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/AutoSphinx/ApiRstFactory.html#ApiRstFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#AutoSphinx.ApiRstFactory.ApiRstFactory" title="Permalink to this definition">¶</a></dt>
@@ -304,7 +286,7 @@ extension.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.1',
+            VERSION:'1.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -331,23 +313,7 @@ extension.</p>
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-<script type="text/javascript">
-  var _paq = _paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="https://stats.fabrice-salvaire.fr/";
-    _paq.push(['setTrackerUrl', u+'kiwi']);
-    _paq.push(['setSiteId', 6]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'kiwi.js';
-  s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<noscript><p><img src="https://stats.fabrice-salvaire.fr/kiwi?idsite=6&rec=1" style="border:0;" alt="" /></p></noscript>
-
+   
 
 </body>
 </html>

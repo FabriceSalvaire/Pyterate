@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AutoSphinx.ApiRstFactory &mdash; AutoSphinx 1.0.1 documentation</title>
+  <title>AutoSphinx.ApiRstFactory &mdash; AutoSphinx 1.1.0 documentation</title>
   
 
   
@@ -35,26 +35,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="AutoSphinx 1.0.1 documentation" href="../../index.html"/>
-        <link rel="up" title="Module code" href="../index.html"/>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": {
-    "popup": {
-      "background": "#000"
-    },
-    "button": {
-      "background": "#f1d600"
-    }
-  },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
-
+    <link rel="top" title="AutoSphinx 1.1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
 
   
   <script src="../../static/js/modernizr.min.js"></script>
@@ -83,7 +65,7 @@ window.cookieconsent.initialise({
             
             
               <div class="version">
-                1.0
+                1.1
               </div>
             
           
@@ -202,12 +184,21 @@ window.cookieconsent.initialise({
 <span class="c1">#</span>
 <span class="c1">####################################################################################################</span>
 
-<span class="sd">&quot;&quot;&quot;This module provides tools to build a Sphinx API documentation.</span>
+<span class="sd">&quot;&quot;&quot;This module provides a tool similar to `sphinx-apidoc</span>
+<span class="sd">&lt;http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html&gt;`_ to generate automatically the Sphinx</span>
+<span class="sd">sources for an API documentation using the `autodoc extension</span>
+<span class="sd">&lt;http://www.sphinx-doc.org/en/master/ext/autodoc.html&gt;`_.</span>
 
-<span class="sd">See http://www.sphinx-doc.org/en/stable/ext/autodoc.html for further information on Sphinx autodoc</span>
-<span class="sd">extension.</span>
+<span class="sd">In comparison to *sphinx-apidoc*, it generates sorter titles.</span>
+
+<span class="sd">.. a tool for automatic generation of Sphinx sources using the autodoc extension.</span>
+
+<span class="sd">.. See http://www.sphinx-doc.org/en/stable/ext/autodoc.html for further information on Sphinx</span>
+<span class="sd">.. autodoc extension.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Fixme: could use Jinja</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -217,6 +208,11 @@ window.cookieconsent.initialise({
 <span class="c1">####################################################################################################</span>
 
 <span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="k">def</span> <span class="nf">_format_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -298,16 +294,16 @@ window.cookieconsent.initialise({
             <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;  Module: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">module_name</span><span class="p">))</span>
             <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_rst_module</span><span class="p">(</span><span class="n">directory_module_python_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span>
             <span class="n">rst_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_directory</span><span class="p">,</span> <span class="n">module_name</span> <span class="o">+</span> <span class="s1">&#39;.rst&#39;</span><span class="p">)</span>
-            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">rst_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">rst_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
 
         <span class="c1"># Generate the TOC RST file</span>
         <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_toc</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">module_names</span> <span class="o">+</span> <span class="n">sub_modules</span><span class="p">))</span>
         <span class="n">rst</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_automodule</span><span class="p">(</span><span class="n">directory_module_python_path</span><span class="p">)</span>
         <span class="n">rst_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst_directory</span><span class="p">),</span> <span class="n">directory_module_name</span> <span class="o">+</span> <span class="s1">&#39;.rst&#39;</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">rst_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">rst_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
@@ -374,20 +370,16 @@ window.cookieconsent.initialise({
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_generate_title</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
 
-        <span class="n">mod_rst</span> <span class="o">=</span> <span class="s1">&#39; :mod:`&#39;</span>
-
         <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="si">{header_line}</span><span class="s2"></span>
-<span class="si">{mod}{module_name}</span><span class="s2">`</span>
+<span class="si">{module_name}</span><span class="s2"></span>
 <span class="si">{header_line}</span><span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_format_template</span><span class="p">(</span>
+            <span class="n">template</span><span class="p">,</span>
             <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
-            <span class="n">mod</span><span class="o">=</span><span class="n">mod_rst</span><span class="p">,</span>
-            <span class="n">header_line</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">mod_rst</span><span class="p">)</span> <span class="o">+</span><span class="mi">2</span><span class="p">),</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">rst</span>
+            <span class="n">header_line</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span> <span class="o">+</span><span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
@@ -398,9 +390,10 @@ window.cookieconsent.initialise({
 <span class="s2">.. toctree::</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">_format_template</span><span class="p">(</span>
+            <span class="n">template</span><span class="p">,</span>
             <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_title</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">),</span>
-            <span class="p">)</span>
+        <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">module_names</span><span class="p">:</span>
             <span class="n">rst</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
@@ -427,11 +420,10 @@ window.cookieconsent.initialise({
 <span class="s2">   :show-inheritance:</span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_format_template</span><span class="p">(</span>
+            <span class="n">template</span><span class="p">,</span>
             <span class="n">module_path</span><span class="o">=</span><span class="n">module_path</span><span class="p">,</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">rst</span>
+        <span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
@@ -442,12 +434,11 @@ window.cookieconsent.initialise({
 <span class="si">{automodule}</span><span class="s2"></span>
 <span class="s2">&quot;&quot;&quot;</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="k">return</span> <span class="n">_format_template</span><span class="p">(</span>
+            <span class="n">template</span><span class="p">,</span>
             <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_title</span><span class="p">(</span><span class="n">module_name</span><span class="p">),</span>
             <span class="n">automodule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_automodule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_python_path</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
-            <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">rst</span></div>
+        <span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -484,7 +475,7 @@ window.cookieconsent.initialise({
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.1',
+            VERSION:'1.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -511,23 +502,7 @@ window.cookieconsent.initialise({
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-<script type="text/javascript">
-  var _paq = _paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="https://stats.fabrice-salvaire.fr/";
-    _paq.push(['setTrackerUrl', u+'kiwi']);
-    _paq.push(['setSiteId', 6]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'kiwi.js';
-  s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<noscript><p><img src="https://stats.fabrice-salvaire.fr/kiwi?idsite=6&rec=1" style="border:0;" alt="" /></p></noscript>
-
+   
 
 </body>
 </html>

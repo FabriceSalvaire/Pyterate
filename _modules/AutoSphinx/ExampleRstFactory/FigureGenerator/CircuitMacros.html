@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AutoSphinx.ExampleRstFactory.FigureGenerator.CircuitMacros &mdash; AutoSphinx 1.0.1 documentation</title>
+  <title>AutoSphinx.ExampleRstFactory.FigureGenerator.CircuitMacros &mdash; AutoSphinx 1.1.0 documentation</title>
   
 
   
@@ -35,26 +35,8 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="AutoSphinx 1.0.1 documentation" href="../../../../index.html"/>
-        <link rel="up" title="AutoSphinx.ExampleRstFactory" href="../../ExampleRstFactory.html"/>
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.0.3/cookieconsent.min.js"></script>
-<script>
-window.addEventListener("load", function(){
-window.cookieconsent.initialise({
-  "palette": {
-    "popup": {
-      "background": "#000"
-    },
-    "button": {
-      "background": "#f1d600"
-    }
-  },
-  "theme": "classic",
-  "position": "bottom-right"
-})});
-</script>
-
+    <link rel="top" title="AutoSphinx 1.1.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="AutoSphinx.ExampleRstFactory" href="../../ExampleRstFactory.html"/> 
 
   
   <script src="../../../../static/js/modernizr.min.js"></script>
@@ -83,7 +65,7 @@ window.cookieconsent.initialise({
             
             
               <div class="version">
-                1.0
+                1.1
               </div>
             
           
@@ -256,24 +238,24 @@ window.cookieconsent.initialise({
 
 <div class="viewcode-block" id="CircuitMacrosImage.make_figure"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/CircuitMacros.html#AutoSphinx.ExampleRstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make circuit figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make circuit macros figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_make_figure</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to make circuit figure example&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to make circuit macros figure&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">)</span></div>
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                  <span class="n">m4_path</span><span class="p">,</span>
-                  <span class="n">dst_path</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">_make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                   <span class="c1"># density=300,</span>
                   <span class="c1"># transparent=&#39;white&#39;,</span>
                   <span class="n">circuit_macros_path</span><span class="o">=</span><span class="n">CIRCUIT_MACROS_PATH</span><span class="p">):</span>
 
+        <span class="n">dst_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span>
+
         <span class="c1"># Create a temporary directory, it is automatically deleted</span>
         <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span>
-        <span class="n">_module_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Temporary directory &#39;</span> <span class="o">+</span> <span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Temporary directory &#39;</span> <span class="o">+</span> <span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
         <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
 
@@ -299,7 +281,7 @@ window.cookieconsent.initialise({
                 <span class="s1">&#39;-I&#39;</span> <span class="o">+</span> <span class="n">circuit_macros_path</span><span class="p">,</span>
                 <span class="s1">&#39;pgf.m4&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;libcct.m4&#39;</span><span class="p">,</span>
-                <span class="n">m4_path</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">dpic_command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;dpic&#39;</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">)</span>
 
@@ -331,12 +313,12 @@ window.cookieconsent.initialise({
         <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">latex_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
 
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
-        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">m4_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_m4_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">pdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_path</span><span class="p">,</span> <span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
         <span class="n">png_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_path</span><span class="p">,</span> <span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
 
-        <span class="n">_module_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generate &#39;</span> <span class="o">+</span> <span class="n">png_path</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Generate &#39;</span> <span class="o">+</span> <span class="n">png_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generate &#39;</span> <span class="o">+</span> <span class="n">png_path</span><span class="p">)</span>
+        <span class="c1"># print(&#39;Generate &#39; + png_path)</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;picture-figure0.pdf&#39;</span><span class="p">),</span> <span class="n">pdf_path</span><span class="p">)</span>
 
         <span class="c1"># Convert PDF to PNG</span>
@@ -411,7 +393,7 @@ window.cookieconsent.initialise({
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1.0.1',
+            VERSION:'1.1.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -438,23 +420,7 @@ window.cookieconsent.initialise({
           SphinxRtdTheme.StickyNav.enable();
       });
   </script>
-  
-<script type="text/javascript">
-  var _paq = _paq || [];
-  /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
-  _paq.push(['trackPageView']);
-  _paq.push(['enableLinkTracking']);
-  (function() {
-    var u="https://stats.fabrice-salvaire.fr/";
-    _paq.push(['setTrackerUrl', u+'kiwi']);
-    _paq.push(['setSiteId', 6]);
-    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-    g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'kiwi.js';
-  s.parentNode.insertBefore(g,s);
-  })();
-</script>
-<noscript><p><img src="https://stats.fabrice-salvaire.fr/kiwi?idsite=6&rec=1" style="border:0;" alt="" /></p></noscript>
-
+   
 
 </body>
 </html>
