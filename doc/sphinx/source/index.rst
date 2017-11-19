@@ -51,9 +51,13 @@ Overview
 ********
 
 AutoSphinx is free and open source (*) |Sphinx|_ add-ons which provide two tools for |Python|_
-projects.  The first one generates automatically the RST files for an API documentation based on the
-*autogen* extension.  The second one provides a document generator based on the concept of literate
-programming which can be used to make an example's based documentation.
+projects.  The first one provides a Sphinx source generator based on the concept of literate
+programming which can be used to make an example's based documentation.  The second one is a tool
+similar to `sphinx-apidoc <http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html>`_ to generate
+automatically the Sphinx sources for an API documentation using the `autodoc extension
+<http://www.sphinx-doc.org/en/master/ext/autodoc.html>`_.
+
+.. a tool for automatic generation of Sphinx sources using the autodoc extension.
 
 .. rst-class:: small-text
 
