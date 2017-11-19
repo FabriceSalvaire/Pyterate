@@ -18,12 +18,21 @@
 #
 ####################################################################################################
 
-"""This module provides tools to build a Sphinx API documentation.
+"""This module provides a tool similar to `sphinx-apidoc
+<http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html>`_ to generate automatically the Sphinx
+sources for an API documentation using the `autodoc extension
+<http://www.sphinx-doc.org/en/master/ext/autodoc.html>`_.
 
-See http://www.sphinx-doc.org/en/stable/ext/autodoc.html for further information on Sphinx autodoc
-extension.
+In comparison to *sphinx-apidoc*, it generates sorter titles.
+
+.. a tool for automatic generation of Sphinx sources using the autodoc extension.
+
+.. See http://www.sphinx-doc.org/en/stable/ext/autodoc.html for further information on Sphinx
+.. autodoc extension.
 
 """
+
+# Fixme: could use Jinja
 
 ####################################################################################################
 
@@ -33,6 +42,11 @@ import os
 ####################################################################################################
 
 _module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
+def _format_template(template, *arg, **kwargs):
+    return template.lstrip().format(*arg, **kwargs)
 
 ####################################################################################################
 
@@ -114,16 +128,16 @@ class ApiRstFactory:
             self._logger.info('  Module: {}'.format(module_name))
             rst = self._generate_rst_module(directory_module_python_path, module_name)
             rst_file_name = os.path.join(dst_directory, module_name + '.rst')
-            with open(rst_file_name, 'w') as f:
-                f.write(rst)
+            with open(rst_file_name, 'w') as fh:
+                fh.write(rst)
 
         # Generate the TOC RST file
         rst = self._generate_toc(directory_module_name, sorted(module_names + sub_modules))
         rst += '\n'
         rst += self._generate_automodule(directory_module_python_path)
         rst_file_name = os.path.join(os.path.dirname(dst_directory), directory_module_name + '.rst')
-        with open(rst_file_name, 'w') as f:
-            f.write(rst)
+        with open(rst_file_name, 'w') as fh:
+            fh.write(rst)
 
     ##############################################
 
@@ -190,20 +204,16 @@ class ApiRstFactory:
     @staticmethod
     def _generate_title(module_name):
 
-        mod_rst = ' :mod:`'
-
         template = """
 {header_line}
-{mod}{module_name}`
+{module_name}
 {header_line}"""
 
-        rst = template.lstrip().format(
+        return _format_template(
+            template,
             module_name=module_name,
-            mod=mod_rst,
-            header_line='*'*(len(module_name) + len(mod_rst) +2),
-            )
-
-        return rst
+            header_line='*'*(len(module_name) +2),
+        )
 
     ##############################################
 
@@ -214,9 +224,10 @@ class ApiRstFactory:
 .. toctree::
 """
 
-        rst = template.lstrip().format(
+        rst = _format_template(
+            template,
             title=self._generate_title(directory_module_name),
-            )
+        )
 
         for module_name in module_names:
             rst += ' '*2 + os.path.join(directory_module_name, module_name) + '\n'
@@ -243,11 +254,10 @@ class ApiRstFactory:
    :show-inheritance:
 """
 
-        rst = template.lstrip().format(
+        return _format_template(
+            template,
             module_path=module_path,
-            )
-
-        return rst
+        )
 
     ##############################################
 
@@ -258,9 +268,8 @@ class ApiRstFactory:
 {automodule}
 """
 
-        rst = template.lstrip().format(
+        return _format_template(
+            template,
             title=self._generate_title(module_name),
             automodule=self._generate_automodule(self.join_python_path(module_path, module_name))
-            )
-
-        return rst
+        )
