@@ -47,6 +47,34 @@ FIGURE_DIRECTORY = None
 
 ####################################################################################################
 
+# Fixme: harcoded !!!
+INCLUDES_TEMPLATE = """
+.. include:: /project-links.txt
+.. include:: /abbreviation.txt
+"""
+
+TITLE_TEMPLATE = """
+{title_line}
+ {title}
+{title_line}
+
+"""
+
+TOC_TEMPLATE = """
+
+.. toctree::
+  :maxdepth: 1
+
+"""
+
+GET_CODE_TEMPLATE = """
+.. getthecode:: {filename}
+    :language: python
+
+"""
+
+####################################################################################################
+
 def remove_extension(filename):
     return os.path.splitext(filename)[0]
 
@@ -163,8 +191,8 @@ class Example:
 
         # Must be called first !
 
-        with open(self._path) as f:
-            self._source = f.readlines()
+        with open(self._path) as fh:
+            self._source = fh.readlines()
         self._parse_source()
 
     ##############################################
@@ -212,8 +240,8 @@ class Example:
         tmp_file.flush()
 
         self._logger.info("\nRun example " + self._path)
-        # with open(tmp_file.name, 'r') as f:
-        #     print(f.read())
+        # with open(tmp_file.name, 'r') as fh:
+        #     print(fh.read())
         with open(self.stdout_path, 'w') as stdout:
             with open(self.stderr_path, 'w') as stderr:
                 env = dict(os.environ)
@@ -352,8 +380,8 @@ class Example:
     def _read_output_chunk(self):
 
         # Read the stdout and split in chunck
-        with open(self.stdout_path) as f:
-            self._stdout = f.read()
+        with open(self.stdout_path) as fh:
+            self._stdout = fh.read()
         self._stdout_chunks = []
         start = 0
         last_i = -1
@@ -389,15 +417,10 @@ class Example:
                 break
 
         if not has_title:
+            # Fixme: duplicated code
             title = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
             title_line = '='*(len(title)+2)
-            template = """
-{title_line}
- {title}
-{title_line}
-
-"""
-            header = template.format(title=title, title_line=title_line)
+            header = TITLE_TEMPLATE.format(title=title, title_line=title_line)
         else:
             header = ''
 
@@ -407,25 +430,15 @@ class Example:
         if not os.path.exists(link_path):
             os.symlink(self._path, link_path)
 
-        includes = """
-.. include:: /project-links.txt
-.. include:: /abbreviation.txt
-"""
-
-        with open(self._rst_path, 'w') as f:
-            f.write(includes)
+        with open(self._rst_path, 'w') as fh:
+            fh.write(INCLUDES_TEMPLATE)
             if not has_title:
-                f.write(header)
-            template = """
-.. getthecode:: {filename}
-    :language: python
-
-"""
-            f.write(template.format(filename=python_file_name))
+                fh.write(header)
+            fh.write(GET_CODE_TEMPLATE.format(filename=python_file_name))
             for chunck in self._chuncks:
-                f.write(str(chunck))
+                fh.write(str(chunck))
 
-            # f.write(self._output)
+            # fh.write(self._output)
 
 ####################################################################################################
 
@@ -540,17 +553,17 @@ class Topic:
 
     def _read_readme(self, make_external_figure):
 
-        figures = []
+        figures = [] # Fixme: unused, purpose (*) ???
         image_directive = '.. image:: '
         image_directive_length = len(image_directive)
-        with open(self._readme_path()) as f:
-            content = f.read()
+        with open(self._readme_path()) as fh:
+            content = fh.read()
             for line in content.split('\n'):
                 if line.startswith(image_directive):
                     figure = line[image_directive_length:]
                     figures.append(figure)
 
-        # Fixme: tikz ???
+        # Fixme: (*) tikz ???
         # if make_external_figure:
         # ...
 
@@ -618,75 +631,61 @@ class Topic:
 
         """ Create the TOC. """
 
-        if not self:
+        if not self: # Fixme: when ???
             return
 
         toc_path = self.join_rst_path('index.rst')
         self._logger.info("\nCreate TOC " + toc_path)
 
-        title = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
-        title_line = '='*(len(title)+2)
-
-        if not title:
-            template = """
-.. include:: ../examples.txt
-"""
-        else:
-            template = """
-{title_line}
- {title}
-{title_line}
-"""
+        content = ''
 
         if self._has_readme():
-            content = self._read_readme(make_external_figure)
-            # protect for .format()
-            content = content.replace('{', '{{').replace('}', '}}')
-            template += content + '\n' # insert a new line for '.. End'
+            content += self._read_readme(make_external_figure)
+        else:
+            title = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
+            title_line = '='*(len(title)+2)
+            if title:
+                content += TITLE_TEMPLATE.format(title=title, title_line=title_line)
 
         # Sort the TOC
-        file_dict = {x.basename:x.rst_filename for x in self._examples}
-        file_dict.update({x.basename:x.rst_inner_path for x in self._links})
-        keys = sorted(file_dict.keys())
+        # Fixme: sometimes we want a particular order !
+        file_dict = {example.basename:example.rst_filename for example in self._examples}
+        file_dict.update({link.basename:link.rst_inner_path for link in self._links})
+        toc_items = sorted(file_dict.keys())
 
         self._retrieve_subtopics()
         subtopics = [topic.basename for topic in self._subtopics]
 
-        self._number_of_examples = len(self._examples) # don't count links twice
-        number_of_links = len(self._links)
-        number_of_examples = self._number_of_examples + sum([topic._number_of_examples
-                                                             for topic in self._subtopics])
-        counter_strings = []
-        if self._subtopics:
-            counter_strings.append('{} sub-topics'.format(len(self._subtopics)))
-        if number_of_examples:
-            counter_strings.append('{} examples'.format(number_of_examples))
-        if number_of_links:
-            counter_strings.append('{} related examples'.format(number_of_links))
-        if counter_strings:
-            template += 'This section has '
-            if len(counter_strings) == 1:
-                template += counter_strings[0]
-            elif len(counter_strings) == 2:
-                template += counter_strings[0] + ' and ' + counter_strings[1]
-            elif len(counter_strings) == 3:
-                template += counter_strings[0] + ', ' + counter_strings[1] + ' and ' + counter_strings[2]
-            template += '.\n'
+        if self._factory.show_counter:
+            self._number_of_examples = len(self._examples) # don't count links twice
+            number_of_links = len(self._links)
+            number_of_subtopics = sum([topic._number_of_examples for topic in self._subtopics])
+            number_of_examples = self._number_of_examples + number_of_subtopics
+            counter_strings = []
+            if self._subtopics:
+                counter_strings.append('{} sub-topics'.format(len(self._subtopics)))
+            if number_of_examples:
+                counter_strings.append('{} examples'.format(number_of_examples))
+            if number_of_links:
+                counter_strings.append('{} related examples'.format(number_of_links))
+            if counter_strings:
+                content += 'This section has '
+                if len(counter_strings) == 1:
+                    content += counter_strings[0]
+                elif len(counter_strings) == 2:
+                    content += counter_strings[0] + ' and ' + counter_strings[1]
+                elif len(counter_strings) == 3:
+                    content += counter_strings[0] + ', ' + counter_strings[1] + ' and ' + counter_strings[2]
+                content += '.\n'
 
-        toc_template = """
-
-.. toctree::
-  :maxdepth: 1
-
-"""
-
-        with open(toc_path, 'w') as f:
-            f.write((template + toc_template).format(title=title, title_line=title_line))
+        with open(toc_path, 'w') as fh:
+            fh.write(content)
+            fh.write(TOC_TEMPLATE)
             for subtopic in sorted(subtopics):
-                f.write('  {}/index.rst\n'.format(subtopic))
-            for key in keys:
+                fh.write('  {}/index.rst\n'.format(subtopic))
+            for key in toc_items:
                 filename = file_dict[key]
-                f.write('  {}\n'.format(filename))
+                fh.write('  {}\n'.format(filename))
 
 ####################################################################################################
 
@@ -698,7 +697,8 @@ class ExampleRstFactory:
 
     ##############################################
 
-    def __init__(self, examples_path, rst_source_directory, rst_example_directory):
+    def __init__(self, examples_path, rst_source_directory, rst_example_directory,
+                 show_counter=False):
 
         """
         Parameters:
@@ -711,6 +711,9 @@ class ExampleRstFactory:
 
         rst_example_directory: string
             relative path of the examples in the RST sources
+
+        show_counter: Boolean
+            show examples counters in toc
         """
 
         self._examples_path = os.path.realpath(examples_path)
@@ -719,6 +722,8 @@ class ExampleRstFactory:
         self._rst_example_directory = os.path.join(self._rst_source_directory, rst_example_directory)
         if not os.path.exists(self._rst_example_directory):
             os.mkdir(self._rst_example_directory)
+
+        self._show_counter = show_counter
 
         self._topics = {}
 
@@ -740,6 +745,10 @@ class ExampleRstFactory:
     @property
     def rst_example_directory(self):
         return self._rst_example_directory
+
+    @property
+    def show_counter(self):
+        return self._show_counter
 
     @property
     def topics(self):
