@@ -72,20 +72,22 @@ class TikzImage:
 
         self._logger.info("\nMake Tikz figure " + self._tex_path)
         try:
-            self._generate(self._tex_path, self._rst_directory)
+            self._make_figure()
         except subprocess.CalledProcessError:
-            self._logger.error("Failed to make Tikz figure example", self._tex_path)
+            self._logger.error("Failed to make Tikz figure", self._tex_path)
 
     ##############################################
 
-    def _generate(self, tex_path, dst_path):
+    def _make_figure(self):
+
+        dst_path = self._rst_directory
 
         with tempfile.TemporaryDirectory() as tmp_dir:
-            # _module_logger.info('Temporary directory ' + tmp_dir)
+            # self._logger.info('Temporary directory ' + tmp_dir)
 
             # current_dir = os.curdir
             os.chdir(tmp_dir)
-            shutil.copy(tex_path, '.')
+            shutil.copy(self._tex_path, '.')
 
             # Run LaTeX to generate PDF
             command = (
@@ -93,12 +95,12 @@ class TikzImage:
                 '-shell-escape',
                 '-interaction=batchmode',
                 # '-output-directory=' + tmp_dir,
-                os.path.basename(tex_path),
+                os.path.basename(self._tex_path),
             )
             dev_null = open(os.devnull, 'w')
             subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
 
-            basename = os.path.splitext(os.path.basename(tex_path))[0]
+            basename = os.path.splitext(os.path.basename(self._tex_path))[0]
             svg_basename = basename + '.svg'
             svg_path = os.path.join(dst_path, svg_basename)
             shutil.copy(svg_basename, svg_path)

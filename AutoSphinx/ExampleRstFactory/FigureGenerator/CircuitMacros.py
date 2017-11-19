@@ -70,24 +70,24 @@ class CircuitMacrosImage:
 
     def make_figure(self):
 
-        self._logger.info("\nMake circuit figure " + self._m4_path)
+        self._logger.info("\nMake circuit macros figure " + self._m4_path)
         try:
-            self._generate(self._m4_path, self._rst_directory)
+            self._make_figure()
         except subprocess.CalledProcessError:
-            self._logger.error("Failed to make circuit figure example", self._m4_path)
+            self._logger.error("Failed to make circuit macros figure", self._m4_path)
 
     ##############################################
 
-    def _generate(self,
-                  m4_path,
-                  dst_path,
+    def _make_figure(self,
                   # density=300,
                   # transparent='white',
                   circuit_macros_path=CIRCUIT_MACROS_PATH):
 
+        dst_path = self._rst_directory
+
         # Create a temporary directory, it is automatically deleted
         tmp_dir = tempfile.TemporaryDirectory()
-        _module_logger.info('Temporary directory ' + tmp_dir.name)
+        self._logger.info('Temporary directory ' + tmp_dir.name)
 
         dev_null = open(os.devnull, 'w')
 
@@ -113,7 +113,7 @@ class CircuitMacrosImage:
                 '-I' + circuit_macros_path,
                 'pgf.m4',
                 'libcct.m4',
-                m4_path,
+                self._m4_path,
             )
             dpic_command = ('dpic', '-g')
 
@@ -145,12 +145,12 @@ class CircuitMacrosImage:
         subprocess.check_call(latex_command, stdout=dev_null, stderr=subprocess.STDOUT)
 
         os.chdir(current_dir)
-        basename = os.path.splitext(os.path.basename(m4_path))[0]
+        basename = os.path.splitext(os.path.basename(self._m4_path))[0]
         pdf_path = os.path.join(dst_path, basename + '.pdf')
         png_path = os.path.join(dst_path, basename + '.png')
 
-        _module_logger.info('Generate ' + png_path)
-        print('Generate ' + png_path)
+        self._logger.info('Generate ' + png_path)
+        # print('Generate ' + png_path)
         shutil.copy(os.path.join(tmp_dir.name, 'picture-figure0.pdf'), pdf_path)
 
         # Convert PDF to PNG
