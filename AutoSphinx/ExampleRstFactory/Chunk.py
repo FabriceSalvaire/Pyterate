@@ -18,6 +18,9 @@
 #
 ####################################################################################################
 
+# Fixme: python console lexer pycon
+# Fixme: default lexer python3
+
 ####################################################################################################
 
 __all__ = [
@@ -123,7 +126,7 @@ class CodeChunk(Chunk):
 
         if bool(self):
             source = ''.join(['    ' + line for line in self._lines])
-            return '\n.. code-block:: python\n\n' + source + '\n'
+            return '\n.. code-block:: py3\n\n' + source + '\n'
         else:
             return ''
 
@@ -206,7 +209,7 @@ class PythonIncludeChunk(Chunk):
 
         template = '''
 .. getthecode:: {}
-  :language: python
+  :language: python3
 
 '''
         return template.format(self._include_path)
