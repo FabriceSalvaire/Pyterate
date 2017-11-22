@@ -47,8 +47,12 @@ foo = 1
 # Insert Tikz figure
 #tz# diode.tex
 
+import numpy as np
 import matplotlib.pyplot as plt
 figure = plt.figure(1, (20, 10))
+x = np.arange(1, 10, .1)
+y = np.sin(x)
+plt.plot(x, y)
 
 # Insert a Matplotlib figure
 #fig# save_figure(figure, 'my-figure.png')
