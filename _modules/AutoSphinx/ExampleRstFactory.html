@@ -213,6 +213,34 @@
 
 <span class="c1">####################################################################################################</span>
 
+<span class="c1"># Fixme: harcoded !!!</span>
+<span class="n">INCLUDES_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">.. include:: /project-links.txt</span>
+<span class="s2">.. include:: /abbreviation.txt</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">TITLE_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="si">{title_line}</span><span class="s2"></span>
+<span class="s2"> </span><span class="si">{title}</span><span class="s2"></span>
+<span class="si">{title_line}</span><span class="s2"></span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">TOC_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+
+<span class="s2">.. toctree::</span>
+<span class="s2">  :maxdepth: 1</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="n">GET_CODE_TEMPLATE</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">.. getthecode:: </span><span class="si">{filename}</span><span class="s2"></span>
+<span class="s2">    :language: python</span>
+
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1">####################################################################################################</span>
+
 <div class="viewcode-block" id="remove_extension"><a class="viewcode-back" href="../../api/AutoSphinx/ExampleRstFactory.html#AutoSphinx.ExampleRstFactory.remove_extension">[docs]</a><span class="k">def</span> <span class="nf">remove_extension</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span></div>
 
@@ -329,8 +357,8 @@
 
         <span class="c1"># Must be called first !</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_source</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_parse_source</span><span class="p">()</span></div>
 
     <span class="c1">##############################################</span>
@@ -378,8 +406,8 @@
         <span class="n">tmp_file</span><span class="o">.</span><span class="n">flush</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Run example &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
-        <span class="c1"># with open(tmp_file.name, &#39;r&#39;) as f:</span>
-        <span class="c1">#     print(f.read())</span>
+        <span class="c1"># with open(tmp_file.name, &#39;r&#39;) as fh:</span>
+        <span class="c1">#     print(fh.read())</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stdout</span><span class="p">:</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stderr_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stderr</span><span class="p">:</span>
                 <span class="n">env</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">)</span>
@@ -518,8 +546,8 @@
     <span class="k">def</span> <span class="nf">_read_output_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Read the stdout and split in chunck</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stdout_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_stdout</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_stdout_chunks</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">start</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="n">last_i</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
@@ -555,15 +583,10 @@
                 <span class="k">break</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">has_title</span><span class="p">:</span>
+            <span class="c1"># Fixme: duplicated code</span>
             <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_basename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="c1"># Fixme: Capitalize of</span>
             <span class="n">title_line</span> <span class="o">=</span> <span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="si">{title_line}</span><span class="s2"></span>
-<span class="s2"> </span><span class="si">{title}</span><span class="s2"></span>
-<span class="si">{title_line}</span><span class="s2"></span>
-
-<span class="s2">&quot;&quot;&quot;</span>
-            <span class="n">header</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">title_line</span><span class="o">=</span><span class="n">title_line</span><span class="p">)</span>
+            <span class="n">header</span> <span class="o">=</span> <span class="n">TITLE_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">title_line</span><span class="o">=</span><span class="n">title_line</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">header</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
@@ -573,25 +596,15 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">link_path</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="n">link_path</span><span class="p">)</span>
 
-        <span class="n">includes</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">.. include:: /project-links.txt</span>
-<span class="s2">.. include:: /abbreviation.txt</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">includes</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">INCLUDES_TEMPLATE</span><span class="p">)</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">has_title</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
-            <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">.. getthecode:: </span><span class="si">{filename}</span><span class="s2"></span>
-<span class="s2">    :language: python</span>
-
-<span class="s2">&quot;&quot;&quot;</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">python_file_name</span><span class="p">))</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">GET_CODE_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="n">python_file_name</span><span class="p">))</span>
             <span class="k">for</span> <span class="n">chunck</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chuncks</span><span class="p">:</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">chunck</span><span class="p">))</span></div></div>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">chunck</span><span class="p">))</span></div></div>
 
-            <span class="c1"># f.write(self._output)</span>
+            <span class="c1"># fh.write(self._output)</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -706,17 +719,17 @@
 
     <span class="k">def</span> <span class="nf">_read_readme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">make_external_figure</span><span class="p">):</span>
 
-        <span class="n">figures</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">figures</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Fixme: unused, purpose (*) ???</span>
         <span class="n">image_directive</span> <span class="o">=</span> <span class="s1">&#39;.. image:: &#39;</span>
         <span class="n">image_directive_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_directive</span><span class="p">)</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readme_path</span><span class="p">())</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_readme_path</span><span class="p">())</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">):</span>
                 <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">image_directive</span><span class="p">):</span>
                     <span class="n">figure</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">image_directive_length</span><span class="p">:]</span>
                     <span class="n">figures</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">figure</span><span class="p">)</span>
 
-        <span class="c1"># Fixme: tikz ???</span>
+        <span class="c1"># Fixme: (*) tikz ???</span>
         <span class="c1"># if make_external_figure:</span>
         <span class="c1"># ...</span>
 
@@ -784,75 +797,61 @@
 
         <span class="sd">&quot;&quot;&quot; Create the TOC. &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="p">:</span> <span class="c1"># Fixme: when ???</span>
             <span class="k">return</span>
 
         <span class="n">toc_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="s1">&#39;index.rst&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Create TOC &quot;</span> <span class="o">+</span> <span class="n">toc_path</span><span class="p">)</span>
 
-        <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_basename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="c1"># Fixme: Capitalize of</span>
-        <span class="n">title_line</span> <span class="o">=</span> <span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">title</span><span class="p">:</span>
-            <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">.. include:: ../examples.txt</span>
-<span class="s2">&quot;&quot;&quot;</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="si">{title_line}</span><span class="s2"></span>
-<span class="s2"> </span><span class="si">{title}</span><span class="s2"></span>
-<span class="si">{title_line}</span><span class="s2"></span>
-<span class="s2">&quot;&quot;&quot;</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_has_readme</span><span class="p">():</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_readme</span><span class="p">(</span><span class="n">make_external_figure</span><span class="p">)</span>
-            <span class="c1"># protect for .format()</span>
-            <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;{{&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;}}&#39;</span><span class="p">)</span>
-            <span class="n">template</span> <span class="o">+=</span> <span class="n">content</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="c1"># insert a new line for &#39;.. End&#39;</span>
+            <span class="n">content</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read_readme</span><span class="p">(</span><span class="n">make_external_figure</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">title</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_basename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span> <span class="c1"># Fixme: Capitalize of</span>
+            <span class="n">title_line</span> <span class="o">=</span> <span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">title</span><span class="p">)</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="n">TITLE_TEMPLATE</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">title_line</span><span class="o">=</span><span class="n">title_line</span><span class="p">)</span>
 
         <span class="c1"># Sort the TOC</span>
-        <span class="n">file_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="o">.</span><span class="n">basename</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">rst_filename</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">}</span>
-        <span class="n">file_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">x</span><span class="o">.</span><span class="n">basename</span><span class="p">:</span><span class="n">x</span><span class="o">.</span><span class="n">rst_inner_path</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="p">})</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">file_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+        <span class="c1"># Fixme: sometimes we want a particular order !</span>
+        <span class="n">file_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">example</span><span class="o">.</span><span class="n">basename</span><span class="p">:</span><span class="n">example</span><span class="o">.</span><span class="n">rst_filename</span> <span class="k">for</span> <span class="n">example</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">}</span>
+        <span class="n">file_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">link</span><span class="o">.</span><span class="n">basename</span><span class="p">:</span><span class="n">link</span><span class="o">.</span><span class="n">rst_inner_path</span> <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="p">})</span>
+        <span class="n">toc_items</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">file_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_retrieve_subtopics</span><span class="p">()</span>
         <span class="n">subtopics</span> <span class="o">=</span> <span class="p">[</span><span class="n">topic</span><span class="o">.</span><span class="n">basename</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">]</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_examples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)</span> <span class="c1"># don&#39;t count links twice</span>
-        <span class="n">number_of_links</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="p">)</span>
-        <span class="n">number_of_examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_examples</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="n">topic</span><span class="o">.</span><span class="n">_number_of_examples</span>
-                                                             <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">])</span>
-        <span class="n">counter_strings</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">:</span>
-            <span class="n">counter_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> sub-topics&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">number_of_examples</span><span class="p">:</span>
-            <span class="n">counter_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> examples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number_of_examples</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">number_of_links</span><span class="p">:</span>
-            <span class="n">counter_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> related examples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number_of_links</span><span class="p">))</span>
-        <span class="k">if</span> <span class="n">counter_strings</span><span class="p">:</span>
-            <span class="n">template</span> <span class="o">+=</span> <span class="s1">&#39;This section has &#39;</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">template</span> <span class="o">+=</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
-                <span class="n">template</span> <span class="o">+=</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
-                <span class="n">template</span> <span class="o">+=</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
-            <span class="n">template</span> <span class="o">+=</span> <span class="s1">&#39;.</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_factory</span><span class="o">.</span><span class="n">show_counter</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_examples</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_examples</span><span class="p">)</span> <span class="c1"># don&#39;t count links twice</span>
+            <span class="n">number_of_links</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_links</span><span class="p">)</span>
+            <span class="n">number_of_subtopics</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">topic</span><span class="o">.</span><span class="n">_number_of_examples</span> <span class="k">for</span> <span class="n">topic</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">])</span>
+            <span class="n">number_of_examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_examples</span> <span class="o">+</span> <span class="n">number_of_subtopics</span>
+            <span class="n">counter_strings</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">:</span>
+                <span class="n">counter_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> sub-topics&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_subtopics</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">number_of_examples</span><span class="p">:</span>
+                <span class="n">counter_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> examples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number_of_examples</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">number_of_links</span><span class="p">:</span>
+                <span class="n">counter_strings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> related examples&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">number_of_links</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">counter_strings</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;This section has &#39;</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">counter_strings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">content</span> <span class="o">+=</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span> <span class="o">+</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39; and &#39;</span> <span class="o">+</span> <span class="n">counter_strings</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="s1">&#39;.</span><span class="se">\n</span><span class="s1">&#39;</span>
 
-        <span class="n">toc_template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-
-<span class="s2">.. toctree::</span>
-<span class="s2">  :maxdepth: 1</span>
-
-<span class="s2">&quot;&quot;&quot;</span>
-
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">toc_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">((</span><span class="n">template</span> <span class="o">+</span> <span class="n">toc_template</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">,</span> <span class="n">title_line</span><span class="o">=</span><span class="n">title_line</span><span class="p">))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">toc_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">TOC_TEMPLATE</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">subtopic</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">subtopics</span><span class="p">):</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="s1">/index.rst</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subtopic</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys</span><span class="p">:</span>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="s1">/index.rst</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">subtopic</span><span class="p">))</span>
+            <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">toc_items</span><span class="p">:</span>
                 <span class="n">filename</span> <span class="o">=</span> <span class="n">file_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
-                <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div></div>
+                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39;  </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">))</span></div></div>
 
 <span class="c1">####################################################################################################</span>
 
@@ -864,7 +863,8 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">examples_path</span><span class="p">,</span> <span class="n">rst_source_directory</span><span class="p">,</span> <span class="n">rst_example_directory</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">examples_path</span><span class="p">,</span> <span class="n">rst_source_directory</span><span class="p">,</span> <span class="n">rst_example_directory</span><span class="p">,</span>
+                 <span class="n">show_counter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
@@ -877,6 +877,9 @@
 
 <span class="sd">        rst_example_directory: string</span>
 <span class="sd">            relative path of the examples in the RST sources</span>
+
+<span class="sd">        show_counter: Boolean</span>
+<span class="sd">            show examples counters in toc</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_examples_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">examples_path</span><span class="p">)</span>
@@ -885,6 +888,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_rst_example_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_source_directory</span><span class="p">,</span> <span class="n">rst_example_directory</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_example_directory</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_example_directory</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_show_counter</span> <span class="o">=</span> <span class="n">show_counter</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -906,6 +911,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rst_example_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_example_directory</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">show_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_counter</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">topics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

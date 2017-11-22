@@ -1,6 +1,6 @@
-**********************
- :mod:`CircuitMacros`
-**********************
+***************
+CircuitMacros
+***************
 
 .. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.CircuitMacros
    :members:

@@ -1,6 +1,6 @@
-*******************
- :mod:`AutoSphinx`
-*******************
+************
+AutoSphinx
+************
 
 .. toctree::
   AutoSphinx/ApiRstFactory

@@ -1,6 +1,6 @@
-**************************
- :mod:`ExampleRstFactory`
-**************************
+*******************
+ExampleRstFactory
+*******************
 
 .. toctree::
   ExampleRstFactory/Chunk

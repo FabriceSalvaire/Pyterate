@@ -1,6 +1,6 @@
-****************
- :mod:`Logging`
-****************
+*********
+Logging
+*********
 
 .. toctree::
   Logging/Logging

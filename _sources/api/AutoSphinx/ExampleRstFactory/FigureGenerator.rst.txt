@@ -1,9 +1,10 @@
-************************
- :mod:`FigureGenerator`
-************************
+*****************
+FigureGenerator
+*****************
 
 .. toctree::
   FigureGenerator/CircuitMacros
+  FigureGenerator/Generic
   FigureGenerator/Registry
   FigureGenerator/Tikz
 

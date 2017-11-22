@@ -1,6 +1,6 @@
-****************
- :mod:`Logging`
-****************
+*********
+Logging
+*********
 
 .. automodule:: AutoSphinx.Logging.Logging
    :members:

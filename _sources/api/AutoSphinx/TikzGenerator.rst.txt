@@ -1,8 +1,0 @@
-**********************
- :mod:`TikzGenerator`
-**********************
-
-.. automodule:: AutoSphinx.TikzGenerator
-   :members:
-   :show-inheritance:
-

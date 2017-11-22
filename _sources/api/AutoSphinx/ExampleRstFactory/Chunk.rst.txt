@@ -1,6 +1,6 @@
-**************
- :mod:`Chunk`
-**************
+*******
+Chunk
+*******
 
 .. automodule:: AutoSphinx.ExampleRstFactory.Chunk
    :members:

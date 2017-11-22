@@ -1,6 +1,6 @@
-**********************
- :mod:`ConfigInstall`
-**********************
+***************
+ConfigInstall
+***************
 
 .. automodule:: AutoSphinx.Config.ConfigInstall
    :members:

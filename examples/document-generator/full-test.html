@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6.1.1.1. A Restructuredtext Title &mdash; AutoSphinx 1.1.0 documentation</title>
+  <title>6.1.1. A Restructuredtext Title &mdash; AutoSphinx 1.1.0 documentation</title>
   
 
   
@@ -36,9 +36,9 @@
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="AutoSphinx 1.1.0 documentation" href="../../index.html"/>
-        <link rel="up" title="6.1.1. Document Generator" href="index.html"/>
+        <link rel="up" title="&lt;no title&gt;" href="index.html"/>
         <link rel="next" title="7. Design Notes" href="../../design-notes.html"/>
-        <link rel="prev" title="6.1.1. Document Generator" href="index.html"/> 
+        <link rel="prev" title="&lt;no title&gt;" href="index.html"/> 
 
   
   <script src="../../static/js/modernizr.min.js"></script>
@@ -99,10 +99,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide.html">5. User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#examples-embeded-in-autosphinx">6.1. Examples embeded in AutoSphinx</a><ul class="current">
-<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.1.1. Document Generator</a><ul class="current">
-<li class="toctree-l4 current"><a class="current reference internal" href="#">6.1.1.1. A Restructuredtext Title</a></li>
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">6.1.1. A Restructuredtext Title</a></li>
 </ul>
 </li>
 </ul>
@@ -157,9 +154,9 @@
         
           <li><a href="../index.html">6. Examples</a> &raquo;</li>
         
-          <li><a href="index.html">6.1.1. Document Generator</a> &raquo;</li>
+          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
         
-      <li>6.1.1.1. A Restructuredtext Title</li>
+      <li>6.1.1. A Restructuredtext Title</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -229,8 +226,12 @@
 <span class="c1"># Insert Tikz figure</span>
 <span class="c1">#tz# diode.tex</span>
 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="c1"># Insert a Matplotlib figure</span>
 <span class="c1">#fig# save_figure(figure, &#39;my-figure.png&#39;)</span>
@@ -239,37 +240,37 @@
 </pre></div>
 </div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <div class="section" id="a-restructuredtext-title">
-<h1>6.1.1.1. A Restructuredtext Title<a class="headerlink" href="#a-restructuredtext-title" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+<h1>6.1.1. A Restructuredtext Title<a class="headerlink" href="#a-restructuredtext-title" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>Some reStructuredText contents</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># Insert the output of the following python code</span>
-<span class="k">print</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># Hidden Python code</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 <p>Format RST content with current locals dictionary using &#64;&lt;&#64;…&#64;&gt;&#64; instead of {…}.</p>
 <div class="math">
 \[I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)\]</div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Add the file content as literal block</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add the file content as literal block</span>
 </pre></div>
 </div>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gv</span><span class="o">/</span><span class="n">fabrice</span><span class="o">/</span><span class="n">developpement</span><span class="o">/</span><span class="n">PySpice</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">spice</span><span class="o">-</span><span class="n">parser</span><span class="o">/</span><span class="n">kicad</span><span class="o">-</span><span class="n">pyspice</span><span class="o">-</span><span class="n">example</span><span class="o">/</span><span class="n">kicad</span><span class="o">-</span><span class="n">pyspice</span><span class="o">-</span><span class="n">example</span><span class="o">.</span><span class="n">cir</span>
@@ -291,15 +292,17 @@
 <span class="o">.</span><span class="n">end</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Add a Python file as a literal block</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add a Python file as a literal block</span>
 </pre></div>
 </div>
 <div class="getthecode">
 <div class="getthecode-header"><span class="getthecode-filename">RingModulator.py</span><a href="../../downloads/RingModulator.py"><span>RingModulator.py</span></a></div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1">####################################################################################################</span>
+<div class="highlight-python3"><div class="highlight"><pre><span></span><span class="c1">#skip#</span>
 
-<span class="kn">from</span> <span class="nn">PySpice.Spice.Netlist</span> <span class="kn">import</span> <span class="n">SubCircuitFactory</span>
-<span class="kn">from</span> <span class="nn">PySpice.Unit</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">from</span> <span class="nn">PySpice.Spice.Netlist</span> <span class="k">import</span> <span class="n">SubCircuitFactory</span>
+<span class="kn">from</span> <span class="nn">PySpice.Unit</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -312,7 +315,7 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">outer_inductance</span><span class="p">,</span>
                  <span class="n">inner_inductance</span><span class="p">,</span>
                  <span class="n">coupling</span><span class="p">,</span>
@@ -340,26 +343,30 @@
 </pre></div>
 </div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Insert an image</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert an image</span>
 </pre></div>
 </div>
 <div align="center" class="align-center"><img alt="../../images/kicad-pyspice-example.sch.svg" src="../../images/kicad-pyspice-example.sch.svg" /></div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Insert Circuit_macros diagram</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert Circuit_macros diagram</span>
 </pre></div>
 </div>
 <img alt="../../images/circuit.png" class="align-center" src="../../images/circuit.png" />
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Insert Tikz figure</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert Tikz figure</span>
 </pre></div>
 </div>
 <div align="center" class="align-center"><img alt="../../images/diode.svg" src="../../images/diode.svg" /></div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="c1"># Insert a Matplotlib figure</span>
 </pre></div>
 </div>
 <img alt="../../images/my-figure.png" class="align-center" src="../../images/my-figure.png" />
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
@@ -377,7 +384,7 @@
         <a href="../../design-notes.html" class="btn btn-neutral float-right" title="7. Design Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="6.1.1. Document Generator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AutoSphinx.ExampleRstFactory.FigureGenerator.TikzGenerator &mdash; AutoSphinx 1.1.0 documentation</title>
+  <title>AutoSphinx.ExampleRstFactory.FigureGenerator.Generic &mdash; AutoSphinx 1.1.0 documentation</title>
   
 
   
@@ -148,7 +148,7 @@
         
           <li><a href="../../ExampleRstFactory.html">AutoSphinx.ExampleRstFactory</a> &raquo;</li>
         
-      <li>AutoSphinx.ExampleRstFactory.FigureGenerator.TikzGenerator</li>
+      <li>AutoSphinx.ExampleRstFactory.FigureGenerator.Generic</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -165,7 +165,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for AutoSphinx.ExampleRstFactory.FigureGenerator.TikzGenerator</h1><div class="highlight"><pre>
+  <h1>Source code for AutoSphinx.ExampleRstFactory.FigureGenerator.Generic</h1><div class="highlight"><pre>
 <span></span><span class="c1">####################################################################################################</span>
 <span class="c1">#</span>
 <span class="c1"># AutoSphinx - Sphinx add-ons to create API documentation for Python projects</span>
@@ -190,12 +190,9 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
 
 <span class="kn">from</span> <span class="nn">..Chunk</span> <span class="k">import</span> <span class="n">ImageChunk</span>
-<span class="kn">from</span> <span class="nn">..Tools</span> <span class="k">import</span> <span class="n">timestamp</span>
 <span class="kn">from</span> <span class="nn">.Registry</span> <span class="k">import</span> <span class="n">ExtensionMetaclass</span>
 
 <span class="c1">####################################################################################################</span>
@@ -204,12 +201,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<span class="n">LATEX_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;pdflatex&#39;</span>
-<span class="c1"># LATEX_COMMAND = &#39;lualatex&#39;</span>
-
-<span class="c1">####################################################################################################</span>
-
-<div class="viewcode-block" id="TikzImage"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/TikzGenerator.html#AutoSphinx.ExampleRstFactory.FigureGenerator.TikzGenerator.TikzImage">[docs]</a><span class="k">class</span> <span class="nc">TikzImage</span><span class="p">:</span>
+<div class="viewcode-block" id="GeneratedImage"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/Generic.html#AutoSphinx.ExampleRstFactory.FigureGenerator.Generic.GeneratedImage">[docs]</a><span class="k">class</span> <span class="nc">GeneratedImage</span><span class="p">:</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a Tikz figure. &quot;&quot;&quot;</span>
 
@@ -217,75 +209,77 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tex_filename</span><span class="p">,</span> <span class="n">source_directory</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">figure_name</span><span class="p">,</span> <span class="n">source_directory</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">):</span>
 
-        <span class="n">svg_filename</span> <span class="o">=</span> <span class="n">tex_filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tex&#39;</span><span class="p">,</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tex_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">source_directory</span><span class="p">,</span> <span class="s1">&#39;tex&#39;</span><span class="p">,</span> <span class="n">tex_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_name</span> <span class="o">=</span> <span class="n">figure_name</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span> <span class="o">=</span> <span class="n">rst_directory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_path</span> <span class="o">=</span> <span class="n">svg_filename</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_real_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rst_directory</span><span class="p">,</span> <span class="n">svg_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_real_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rst_directory</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_name</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
+        <span class="c1"># return False # it is up to the generator to decide if it overwrite</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_real_path</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tex_path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_real_path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="kc">False</span>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="TikzImage.make_figure"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/TikzGenerator.html#AutoSphinx.ExampleRstFactory.FigureGenerator.TikzGenerator.TikzImage.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GeneratedImage.make_figure"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/Generic.html#AutoSphinx.ExampleRstFactory.FigureGenerator.Generic.GeneratedImage.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make Tikz figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tex_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_name</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tex_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to make Tikz figure example&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tex_path</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to make figure&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_figure_name</span><span class="p">)</span></div>
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span><span class="n">tex_path</span><span class="p">,</span> <span class="n">dst_path</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
-            <span class="c1"># _module_logger.info(&#39;Temporary directory &#39; + tmp_dir)</span>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">,</span>
+            <span class="s1">&#39;--query&#39;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_figure_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_figure_real_path</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">rc</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uptodate&#39;</span>
 
-            <span class="c1"># current_dir = os.curdir</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">)</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">tex_path</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="c1">##############################################</span>
 
-            <span class="c1"># Run LaTeX to generate PDF</span>
-            <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="n">LATEX_COMMAND</span><span class="p">,</span>
-                <span class="s1">&#39;-shell-escape&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;-interaction=batchmode&#39;</span><span class="p">,</span>
-                <span class="c1"># &#39;-output-directory=&#39; + tmp_dir,</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">tex_path</span><span class="p">),</span>
-            <span class="p">)</span>
-            <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_generate</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-            <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">tex_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">svg_basename</span> <span class="o">=</span> <span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span>
-            <span class="n">svg_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_path</span><span class="p">,</span> <span class="n">svg_basename</span><span class="p">)</span>
-            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">svg_basename</span><span class="p">,</span> <span class="n">svg_path</span><span class="p">)</span></div>
+        <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_figure_name</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_figure_real_path</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="TikzImageChunk"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/TikzGenerator.html#AutoSphinx.ExampleRstFactory.FigureGenerator.TikzGenerator.TikzImageChunk">[docs]</a><span class="k">class</span> <span class="nc">TikzImageChunk</span><span class="p">(</span><span class="n">TikzImage</span><span class="p">,</span> <span class="n">ImageChunk</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ExtensionMetaclass</span><span class="p">):</span>
+<div class="viewcode-block" id="GeneratorImageChunk"><a class="viewcode-back" href="../../../../api/AutoSphinx/ExampleRstFactory/FigureGenerator/Generic.html#AutoSphinx.ExampleRstFactory.FigureGenerator.Generic.GeneratorImageChunk">[docs]</a><span class="k">class</span> <span class="nc">GeneratorImageChunk</span><span class="p">(</span><span class="n">GeneratedImage</span><span class="p">,</span> <span class="n">ImageChunk</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">ExtensionMetaclass</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; This class represents an image block for a Tikz figure. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; This class represents an image block for a generic generator. &quot;&quot;&quot;</span>
 
-    <span class="n">__markup__</span> <span class="o">=</span> <span class="s1">&#39;#tz#&#39;</span>
+    <span class="n">__markup__</span> <span class="o">=</span> <span class="s1">&#39;gf&#39;</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">source_directory</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">):</span>
 
-        <span class="n">tex_filename</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">ImageChunk</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__markup__</span><span class="p">):]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="c1"># ./bin/make-figure --kwargs=&quot;instrument=&#39;Guitare&#39;,tuning=&#39;Standard&#39;&quot; Musica.Figure.Fretboard.Fretboard figures/guitare-fretboard.tex</span>
+
+        <span class="n">command</span><span class="p">,</span> <span class="n">figure_name</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">ImageChunk</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__markup__</span><span class="p">)</span>
         <span class="n">ImageChunk</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="c1"># Fixme: _figure_path</span>
-        <span class="n">TikzImage</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tex_filename</span><span class="p">,</span> <span class="n">source_directory</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">)</span></div>
+        <span class="n">GeneratedImage</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">figure_name</span><span class="p">,</span> <span class="n">source_directory</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

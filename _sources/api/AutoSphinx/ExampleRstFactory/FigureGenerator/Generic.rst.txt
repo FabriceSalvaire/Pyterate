@@ -1,0 +1,8 @@
+*********
+Generic
+*********
+
+.. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.Generic
+   :members:
+   :show-inheritance:
+

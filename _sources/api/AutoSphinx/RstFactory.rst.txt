@@ -1,8 +1,0 @@
-*******************
- :mod:`RstFactory`
-*******************
-
-.. automodule:: AutoSphinx.RstFactory
-   :members:
-   :show-inheritance:
-

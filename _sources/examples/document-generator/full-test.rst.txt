@@ -6,7 +6,7 @@
     :language: python
 
 
-.. code-block:: python
+.. code-block:: py3
 
     # A source code comment
     foo = 1
@@ -16,7 +16,7 @@
  A Restructuredtext Title
 ==========================
 
-.. code-block:: python
+.. code-block:: py3
 
     foo = 1
     
@@ -25,7 +25,7 @@
 Some reStructuredText contents
 
 
-.. code-block:: python
+.. code-block:: py3
 
     foo = 1
     
@@ -37,14 +37,14 @@ Some reStructuredText contents
     :lines: 1-1
 
 
-.. code-block:: python
+.. code-block:: py3
 
     foo = 1
     
     # Hidden Python code
 
 
-.. code-block:: python
+.. code-block:: py3
 
     
     foo = 1
@@ -56,7 +56,7 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
     I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
 
-.. code-block:: python
+.. code-block:: py3
 
     # Add the file content as literal block
 
@@ -64,16 +64,16 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 .. literalinclude:: kicad-pyspice-example.cir
 
 
-.. code-block:: python
+.. code-block:: py3
 
     # Add a Python file as a literal block
 
 
 .. getthecode:: RingModulator.py
-  :language: python
+  :language: python3
 
 
-.. code-block:: python
+.. code-block:: py3
 
     # Insert an image
 
@@ -82,7 +82,7 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
   :align: center
 
 
-.. code-block:: python
+.. code-block:: py3
 
     # Insert Circuit_macros diagram
 
@@ -91,7 +91,7 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
   :align: center
 
 
-.. code-block:: python
+.. code-block:: py3
 
     # Insert Tikz figure
 
@@ -100,10 +100,14 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
   :align: center
 
 
-.. code-block:: python
+.. code-block:: py3
 
+    import numpy as np
     import matplotlib.pyplot as plt
     figure = plt.figure(1, (20, 10))
+    x = np.arange(1, 10, .1)
+    y = np.sin(x)
+    plt.plot(x, y)
     
     # Insert a Matplotlib figure
 
@@ -112,7 +116,7 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
   :align: center
 
 
-.. code-block:: python
+.. code-block:: py3
 
     foo = 1
 

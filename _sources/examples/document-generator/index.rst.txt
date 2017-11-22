@@ -1,12 +1,6 @@
-
-====================
- Document Generator
-====================
 This section contains examples to test the document generator.
 
 .. end
-
-This section has 1 examples.
 
 
 .. toctree::

@@ -1,6 +1,6 @@
-*************
- :mod:`Tikz`
-*************
+******
+Tikz
+******
 
 .. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.Tikz
    :members:

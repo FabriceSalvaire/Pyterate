@@ -1,6 +1,6 @@
-***************
- :mod:`Config`
-***************
+********
+Config
+********
 
 .. toctree::
   Config/ConfigInstall

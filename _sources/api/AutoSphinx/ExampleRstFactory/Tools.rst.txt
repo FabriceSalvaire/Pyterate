@@ -1,6 +1,6 @@
-**************
- :mod:`Tools`
-**************
+*******
+Tools
+*******
 
 .. automodule:: AutoSphinx.ExampleRstFactory.Tools
    :members:

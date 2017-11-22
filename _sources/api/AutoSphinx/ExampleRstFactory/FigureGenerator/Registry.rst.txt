@@ -1,6 +1,6 @@
-*****************
- :mod:`Registry`
-*****************
+**********
+Registry
+**********
 
 .. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.Registry
    :members:
