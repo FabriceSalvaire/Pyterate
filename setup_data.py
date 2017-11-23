@@ -74,7 +74,7 @@ else:
 
 setup_dict = dict(
     name='AutoSphinx',
-    version='1.0.1',
+    version='1.1.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='AutoSphinx is a Sphinx add-ons to generate API documentation using autogen and litterate programming documentation for Python projects.',
