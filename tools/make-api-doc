@@ -1,14 +1,14 @@
 #! /usr/bin/bash
 
-find AutoSphinx -name "flycheck*.py" -exec rm {} \;
-find AutoSphinx -name "parsetab.py" -exec rm {} \;
+find Pyterate -name "flycheck*.py" -exec rm {} \;
+find Pyterate -name "parsetab.py" -exec rm {} \;
 
 api=doc/sphinx/source/api
 rm -rf ${api}
 
 echo
 echo Generate RST API files
-./bin/generate-rst-api AutoSphinx
+./bin/generate-rst-api Pyterate
 
 echo
 echo Run Sphinx

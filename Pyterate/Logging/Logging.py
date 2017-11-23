@@ -1,6 +1,6 @@
 ####################################################################################################
 #
-# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
 # Copyright (C) 2014 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ from ..Config import ConfigInstall as ConfigInstall
 
 ####################################################################################################
 
-APPLICATION_NAME = 'AutoSphinx'
+APPLICATION_NAME = 'Pyterate'
 LOG_LEVEL_ENV = APPLICATION_NAME + 'LogLevel'
 
 ####################################################################################################

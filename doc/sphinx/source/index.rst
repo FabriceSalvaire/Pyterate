@@ -38,19 +38,19 @@
    <div class="reduced-width">
 
 ############
- AutoSphinx
+ Pyterate
 ############
 
 ..
    image:: /_static/logo.png
-   :alt: AutoSphinx logo
+   :alt: Pyterate logo
    :width: 750
 
 ********
 Overview
 ********
 
-AutoSphinx is free and open source (*) |Sphinx|_ add-ons which provide two tools for |Python|_
+Pyterate is free and open source (*) |Sphinx|_ add-ons which provide two tools for |Python|_
 projects.  The first one provides a Sphinx source generator based on the concept of literate
 programming which can be used to make an example's based documentation.  The second one is a tool
 similar to `sphinx-apidoc <http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html>`_ to generate
@@ -61,11 +61,11 @@ automatically the Sphinx sources for an API documentation using the `autodoc ext
 
 .. rst-class:: small-text
 
-    (*) AutoSphinx is licensed under GPLv3 therms.
+    (*) Pyterate is licensed under GPLv3 therms.
 
-AutoSphinx requires Python 3 and works on Linux, Windows and OS X.
+Pyterate requires Python 3 and works on Linux, Windows and OS X.
 
-:ref:`To read more on AutoSphinx <overview-page>`
+:ref:`To read more on Pyterate <overview-page>`
 
 .. raw:: html
 
@@ -85,7 +85,7 @@ What's changed in versions
 :ref:`Installation-page`
 ========================
 
-How to install AutoSphinx on your system
+How to install Pyterate on your system
 
 .. rst-class:: column column2
 
@@ -127,7 +127,7 @@ How to contribute to the project
 :ref:`how-to-refer-page`
 ========================
 
-Guidelines to cite AutoSphinx
+Guidelines to cite Pyterate
 
 .. rst-class:: column column2
 

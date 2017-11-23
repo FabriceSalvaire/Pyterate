@@ -4,7 +4,7 @@
 .. include:: abbreviation.txt
 
 ============
- AutoSphinx
+ Pyterate
 ============
 
 |Pypi License|
@@ -12,16 +12,16 @@
 
 |Pypi Version|
 
-* Quick Link to `Production Branch <https://github.com/FabriceSalvaire/AutoSphinx/tree/master>`_
-* Quick Link to `Devel Branch <https://github.com/FabriceSalvaire/AutoSphinx/tree/devel>`_
+* Quick Link to `Production Branch <https://github.com/FabriceSalvaire/Pyterate/tree/master>`_
+* Quick Link to `Devel Branch <https://github.com/FabriceSalvaire/Pyterate/tree/devel>`_
 
 Overview
 ========
 
-What is AutoSphinx ?
+What is Pyterate ?
 --------------------
 
-AutoSphinx is open source |Sphinx|_ add-ons which provide two tools for |Python|_ projects.  The
+Pyterate is open source |Sphinx|_ add-ons which provide two tools for |Python|_ projects.  The
 first one generates automatically the RST files for an API documentation based on the *autogen*
 extension.  The second one provides a document generator based on the concept of literate
 programming which can be used to make an example's based documentation.
@@ -29,7 +29,7 @@ programming which can be used to make an example's based documentation.
 Where is the Documentation ?
 ----------------------------
 
-The documentation is available on the |AutoSphinxHomePage|_.
+The documentation is available on the |PyterateHomePage|_.
 
 What are the main features ?
 ----------------------------
@@ -47,7 +47,7 @@ The documentation generator features:
 How to install it ?
 -------------------
 
-Look at the `installation <https://fabricesalvaire.github.io/AutoSphinx/installation.html>`_ section in the documentation.
+Look at the `installation <https://fabricesalvaire.github.io/Pyterate/installation.html>`_ section in the documentation.
 
 Credits
 =======

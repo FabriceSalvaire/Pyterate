@@ -7,5 +7,5 @@
  Roadmap
 =========
 
-`Roadmap @Github <https://github.com/FabriceSalvaire/AutoSphinx/milestones>`_
+`Roadmap @Github <https://github.com/FabriceSalvaire/Pyterate/milestones>`_
 

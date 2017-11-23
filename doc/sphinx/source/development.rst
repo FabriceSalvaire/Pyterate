@@ -4,11 +4,11 @@
  Development & Community
 =========================
 
-AutoSphinx is an open-source project, and relies on its community of users to keep getting better.
+Pyterate is an open-source project, and relies on its community of users to keep getting better.
 
-AutoSphinx source code and issues are managed on `Github <https://github.com/FabriceSalvaire/AutoSphinx>`_.
+Pyterate source code and issues are managed on `Github <https://github.com/FabriceSalvaire/Pyterate>`_.
 
-**Note to Packagers: Please don't create AutoSphinx package (PiPY do the job)**
+**Note to Packagers: Please don't create Pyterate package (PiPY do the job)**
 
 How you can help ?
 ------------------
@@ -18,9 +18,9 @@ As an open source project, anyone is welcome to contribute in whatever form they
 .. , which can include taking part in discussions, filing bug reports, proposing improvements,
    contributing code or documentation, and testing it.
 
-* Promote AutoSphinx on the web and all around you
+* Promote Pyterate on the web and all around you
 * Fill bug reports
-* Test AutoSphinx on Linux, Windows and OS X
+* Test Pyterate on Linux, Windows and OS X
 * Check for errors on the documentation
 * Propose improvements
 * Implement missing features
@@ -28,4 +28,4 @@ As an open source project, anyone is welcome to contribute in whatever form they
 Contributors
 ------------
 
-The list of contributors is available at https://github.com/FabriceSalvaire/AutoSphinx/graphs/contributors
+The list of contributors is available at https://github.com/FabriceSalvaire/Pyterate/graphs/contributors

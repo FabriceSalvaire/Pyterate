@@ -2,7 +2,7 @@
 
 ####################################################################################################
 #
-# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
 # Copyright (C) 2017 Salvaire Fabrice
 #
 # This program is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ from distutils.core import setup
 ####################################################################################################
 
 if sys.version_info < (3,):
-    print('AutoSphinx requires Python 3', file=sys.stderr)
+    print('Pyterate requires Python 3', file=sys.stderr)
     sys.exit(1)
 
 exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))

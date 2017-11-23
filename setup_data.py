@@ -1,6 +1,6 @@
 ####################################################################################################
 #
-# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
 # Copyright (C) 2017 Salvaire Fabrice
 #
 # This program is free software: you can redistribute it and/or modify
@@ -73,29 +73,29 @@ else:
 ####################################################################################################
 
 setup_dict = dict(
-    name='AutoSphinx',
+    name='Pyterate',
     version='1.1.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
-    description='AutoSphinx is a Sphinx add-ons to generate API documentation using autogen and litterate programming documentation for Python projects.',
+    description='Pyterate is a Sphinx add-ons to generate API documentation using autogen and litterate programming documentation for Python projects.',
     license='GPLv3',
     keywords='sphinx autogen documentation generator builder literate programming',
-    url='https://github.com/FabriceSalvaire/AutoSphinx',
+    url='https://github.com/FabriceSalvaire/Pyterate',
     scripts=[
         'bin/generate-rst-api',
         'bin/generate-rst-examples',
     ],
     packages=[  # Fixme:
-        'AutoSphinx',
-        'AutoSphinx.ApiRstFactory',
-        'AutoSphinx.Config',
-        'AutoSphinx.ExampleRstFactory',
-        'AutoSphinx.ExampleRstFactory.FigureGenerator',
-        'AutoSphinx.Logging',
+        'Pyterate',
+        'Pyterate.ApiRstFactory',
+        'Pyterate.Config',
+        'Pyterate.ExampleRstFactory',
+        'Pyterate.ExampleRstFactory.FigureGenerator',
+        'Pyterate.Logging',
     ],
-    # package_dir={'AutoSphinx': 'AutoSphinx'},
+    # package_dir={'Pyterate': 'Pyterate'},
     package_data={
-        'AutoSphinx.Config': ['logging.yml'],
+        'Pyterate.Config': ['logging.yml'],
     },
     long_description=long_description,
     # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers

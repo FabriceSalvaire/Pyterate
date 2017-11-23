@@ -1,6 +1,6 @@
 ####################################################################################################
 #
-# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
 # Copyright (C) 2014 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify

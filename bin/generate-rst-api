@@ -3,7 +3,7 @@
 
 ####################################################################################################
 #
-# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
 # Copyright (C) 2017 Salvaire Fabrice
 #
 # This program is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 
 ####################################################################################################
 
-import AutoSphinx.Logging.Logging as Logging
+import Pyterate.Logging.Logging as Logging
 logger = Logging.setup_logging()
 
 ####################################################################################################
@@ -31,7 +31,7 @@ logger = Logging.setup_logging()
 import argparse
 import os
 
-from AutoSphinx.ApiRstFactory import ApiRstFactory
+from Pyterate.ApiRstFactory import ApiRstFactory
 
 ####################################################################################################
 

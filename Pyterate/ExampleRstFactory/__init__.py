@@ -1,6 +1,6 @@
 ####################################################################################################
 #
-# AutoSphinx - Sphinx add-ons to create API documentation for Python projects
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
 # Copyright (C) 2014 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
@@ -230,8 +230,8 @@ class Example:
 
         tmp_file = tempfile.NamedTemporaryFile(dir=working_directory,
                                                prefix='__example_rst_factory__', suffix='.py', mode='w')
-        tmp_file.write('from AutoSphinx import ExampleRstFactory\n')
-        tmp_file.write('from AutoSphinx.ExampleRstFactory import save_figure\n')
+        tmp_file.write('from Pyterate import ExampleRstFactory\n')
+        tmp_file.write('from Pyterate.ExampleRstFactory import save_figure\n')
         tmp_file.write('ExampleRstFactory.FIGURE_DIRECTORY = "{}"\n'.format(self._topic.rst_path))
         tmp_file.write('\n')
         for chunck in self._chuncks:
@@ -245,7 +245,7 @@ class Example:
         with open(self.stdout_path, 'w') as stdout:
             with open(self.stderr_path, 'w') as stderr:
                 env = dict(os.environ)
-                env['AutoSphinxLogLevel'] = 'WARNING'
+                env['PyterateLogLevel'] = 'WARNING'
                 process = subprocess.Popen((sys.executable, tmp_file.name),
                                            stdout=stdout,
                                            stderr=stderr,

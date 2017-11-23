@@ -3,13 +3,13 @@
 .. -*- Mode: rst -*-
 
 ..
-   |AutoSphinxUrl|
-   |AutoSphinxHomePage|_
-   |AutoSphinxDoc|_
-   |AutoSphinx@github|_
-   |AutoSphinx@readthedocs|_
-   |AutoSphinx@readthedocs-badge|
-   |AutoSphinx@pypi|_
+   |PyterateUrl|
+   |PyterateHomePage|_
+   |PyterateDoc|_
+   |Pyterate@github|_
+   |Pyterate@readthedocs|_
+   |Pyterate@readthedocs-badge|
+   |Pyterate@pypi|_
 
 .. |ohloh| image:: https://www.openhub.net/accounts/230426/widgets/account_tiny.gif
    :target: https://www.openhub.net/accounts/fabricesalvaire
@@ -17,35 +17,35 @@
    :height: 15px
    :width:  80px
 
-.. |AutoSphinxUrl| replace:: https://fabricesalvaire.github.io/AutoSphinx
+.. |PyterateUrl| replace:: https://fabricesalvaire.github.io/Pyterate
 
-.. |AutoSphinxHomePage| replace:: AutoSphinx Home Page
-.. _AutoSphinxHomePage: https://fabricesalvaire.github.io/AutoSphinx
+.. |PyterateHomePage| replace:: Pyterate Home Page
+.. _PyterateHomePage: https://fabricesalvaire.github.io/Pyterate
 
-.. |AutoSphinx@readthedocs-badge| image:: https://readthedocs.org/projects/AutoSphinx/badge/?version=latest
-   :target: http://AutoSphinx.readthedocs.org/en/latest
+.. |Pyterate@readthedocs-badge| image:: https://readthedocs.org/projects/Pyterate/badge/?version=latest
+   :target: http://Pyterate.readthedocs.org/en/latest
 
-.. |AutoSphinx@github| replace:: https://github.com/FabriceSalvaire/AutoSphinx
-.. .. _AutoSphinx@github: https://github.com/FabriceSalvaire/AutoSphinx
+.. |Pyterate@github| replace:: https://github.com/FabriceSalvaire/Pyterate
+.. .. _Pyterate@github: https://github.com/FabriceSalvaire/Pyterate
 
-.. |AutoSphinx@pypi| replace:: https://pypi.python.org/pypi/AutoSphinx
-.. .. _AutoSphinx@pypi: https://pypi.python.org/pypi/AutoSphinx
+.. |Pyterate@pypi| replace:: https://pypi.python.org/pypi/Pyterate
+.. .. _Pyterate@pypi: https://pypi.python.org/pypi/Pyterate
 
-.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/AutoSphinx.svg?branch=master
-   :target: https://travis-ci.org/FabriceSalvaire/AutoSphinx
-   :alt: AutoSphinx build status @travis-ci.org
+.. |Build Status| image:: https://travis-ci.org/FabriceSalvaire/Pyterate.svg?branch=master
+   :target: https://travis-ci.org/FabriceSalvaire/Pyterate
+   :alt: Pyterate build status @travis-ci.org
 
-.. |Pypi Version| image:: https://img.shields.io/pypi/v/AutoSphinx.svg
-   :target: https://pypi.python.org/pypi/AutoSphinx
-   :alt: AutoSphinx last version
+.. |Pypi Version| image:: https://img.shields.io/pypi/v/Pyterate.svg
+   :target: https://pypi.python.org/pypi/Pyterate
+   :alt: Pyterate last version
 
-.. |Pypi License| image:: https://img.shields.io/pypi/l/AutoSphinx.svg
-   :target: https://pypi.python.org/pypi/AutoSphinx
-   :alt: AutoSphinx license
+.. |Pypi License| image:: https://img.shields.io/pypi/l/Pyterate.svg
+   :target: https://pypi.python.org/pypi/Pyterate
+   :alt: Pyterate license
 
-.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/AutoSphinx.svg
-   :target: https://pypi.python.org/pypi/AutoSphinx
-   :alt: AutoSphinx python version
+.. |Pypi Python Version| image:: https://img.shields.io/pypi/pyversions/Pyterate.svg
+   :target: https://pypi.python.org/pypi/Pyterate
+   :alt: Pyterate python version
 
 ..  coverage test
 ..  https://img.shields.io/pypi/status/Django.svg
@@ -81,7 +81,7 @@
 .. End
 
 ============
- AutoSphinx
+ Pyterate
 ============
 
 |Pypi License|
@@ -89,16 +89,16 @@
 
 |Pypi Version|
 
-* Quick Link to `Production Branch <https://github.com/FabriceSalvaire/AutoSphinx/tree/master>`_
-* Quick Link to `Devel Branch <https://github.com/FabriceSalvaire/AutoSphinx/tree/devel>`_
+* Quick Link to `Production Branch <https://github.com/FabriceSalvaire/Pyterate/tree/master>`_
+* Quick Link to `Devel Branch <https://github.com/FabriceSalvaire/Pyterate/tree/devel>`_
 
 Overview
 ========
 
-What is AutoSphinx ?
+What is Pyterate ?
 --------------------
 
-AutoSphinx is open source |Sphinx|_ add-ons which provide two tools for |Python|_ projects.  The
+Pyterate is open source |Sphinx|_ add-ons which provide two tools for |Python|_ projects.  The
 first one generates automatically the RST files for an API documentation based on the *autogen*
 extension.  The second one provides a document generator based on the concept of literate
 programming which can be used to make an example's based documentation.
@@ -106,7 +106,7 @@ programming which can be used to make an example's based documentation.
 Where is the Documentation ?
 ----------------------------
 
-The documentation is available on the |AutoSphinxHomePage|_.
+The documentation is available on the |PyterateHomePage|_.
 
 What are the main features ?
 ----------------------------
@@ -124,7 +124,7 @@ The documentation generator features:
 How to install it ?
 -------------------
 
-Look at the `installation <https://fabricesalvaire.github.io/AutoSphinx/installation.html>`_ section in the documentation.
+Look at the `installation <https://fabricesalvaire.github.io/Pyterate/installation.html>`_ section in the documentation.
 
 Credits
 =======

@@ -7,10 +7,10 @@
  Overview
 ==========
 
-What is AutoSphinx ?
+What is Pyterate ?
 --------------------
 
-AutoSphinx is free and open source (*) |Sphinx|_ add-ons which provide two tools for |Python|_
+Pyterate is free and open source (*) |Sphinx|_ add-ons which provide two tools for |Python|_
 projects.  The first one provides a Sphinx source generator based on the concept of literate
 programming which can be used to make an example's based documentation.  The second one is a tool
 similar to `sphinx-apidoc <http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html>`_ to generate
@@ -19,18 +19,18 @@ automatically the Sphinx sources for an API documentation using the `autodoc ext
 
 .. a tool for automatic generation of Sphinx sources using the autodoc extension.
 
-How is AutoSphinx licensed ?
+How is Pyterate licensed ?
 ----------------------------
 
-AutoSphinx is licensed under the `GPLv3 <https://www.gnu.org/licenses/quick-guide-gplv3.en.html>`_.
+Pyterate is licensed under the `GPLv3 <https://www.gnu.org/licenses/quick-guide-gplv3.en.html>`_.
 
-Going further with AutoSphinx
+Going further with Pyterate
 -----------------------------
 
-The best way to know what you can do with AutoSphinx, and to learn it, is to look at the examples:
+The best way to know what you can do with Pyterate, and to learn it, is to look at the examples:
 
  * :ref:`Examples <examples-page>`
- * :ref:`AutoSphinx Reference Manual <reference-manual-page>`
+ * :ref:`Pyterate Reference Manual <reference-manual-page>`
 
 .. * :ref:`Bibliography <bibliography-page>`
 
@@ -50,17 +50,17 @@ The documentation generator features:
 Somehow, it is similar to an `Jupyter notebook <https://ipython.org/notebook.html>`_, but it works
 differently and provides specific features.
 
-Which platforms are supported by AutoSphinx ?
+Which platforms are supported by Pyterate ?
 ---------------------------------------------
 
-AutoSphinx runs on Linux, Windows 64-bit and Mac OS X.
+Pyterate runs on Linux, Windows 64-bit and Mac OS X.
 
-How to install AutoSphinx ?
+How to install Pyterate ?
 ---------------------------
 
-The procedure to install AutoSphinx is described in the :ref:`Installation Manual <installation-page>`.
+The procedure to install Pyterate is described in the :ref:`Installation Manual <installation-page>`.
 
 Which version of Python is required ?
 -------------------------------------
 
-AutoSphinx requires Python 3.
+Pyterate requires Python 3.
