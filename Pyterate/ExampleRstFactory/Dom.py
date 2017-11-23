@@ -24,7 +24,8 @@
 ####################################################################################################
 
 __all__ = [
-    'Chunk',
+    'Dom',
+    'Chunk', # Fixme: -> Node ???
     'RstChunk',
     'CodeChunk',
     'HiddenCodeChunk',
@@ -36,7 +37,6 @@ __all__ = [
     'StdoutChunk',
     'OutputChunk',
     'RstFormatChunk',
-    'Chunks',
 ]
 
 ####################################################################################################
@@ -47,6 +47,11 @@ import os
 
 OPENING_FORMAT_MARKUP = '@<@'
 CLOSING_FORMAT_MARKUP = '@>@'
+
+####################################################################################################
+
+class Dom(list):
+    pass
 
 ####################################################################################################
 
@@ -389,8 +394,3 @@ class RstFormatChunk(StdoutChunk):
         rst = rst.replace('@@>>@@', CLOSING_FORMAT_MARKUP)
         marker = "\f #{}".format(self._stdout_chunk_index)
         return 'print(r"""' + rst + '""".format(**locals()))\n' + 'print("' + marker + '")\n'
-
-####################################################################################################
-
-class Chunks(list):
-    pass

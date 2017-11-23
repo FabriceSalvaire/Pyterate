@@ -30,7 +30,7 @@ logger = Logging.setup_logging()
 
 import argparse
 
-from Pyterate.ExampleRstFactory import ExampleRstFactory
+from Pyterate.ExampleRstFactory.RstFactory import RstFactory
 
 ####################################################################################################
 
@@ -64,7 +64,7 @@ args = parser.parse_args()
 
 ####################################################################################################
 
-rst_factory = ExampleRstFactory(
+rst_factory = RstFactory(
     args.examples_path,
     args.rst_source_directory,
     args.rst_example_directory,
