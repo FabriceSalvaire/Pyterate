@@ -7,7 +7,7 @@
  Installation
 ==============
 
-**Note to Packagers: Please don't create AutoSphinx package (PiPY do the job)**
+**Note to Packagers: Please don't create Pyterate package (PiPY do the job)**
 
 On Windows
 ----------
@@ -17,18 +17,18 @@ as to get a full featured Python 3 environment.
 
 Then open the `Anaconda Navigator <https://docs.continuum.io/anaconda/navigator/>`_ and launch a console for your root environment.
 
-You can now run *pip* to install AutoSphinx in your root environment using this command:
+You can now run *pip* to install Pyterate in your root environment using this command:
 
 .. code-block:: sh
 
-  pip install AutoSphinx
+  pip install Pyterate
 
 On Linux
 --------
 
 Firstly, you have to install Python 3 from your distribution.
 
-Then you can install AutoSphinx using *pip* or from source. See supra.
+Then you can install Pyterate using *pip* or from source. See supra.
 
 On OSX
 ------
@@ -40,18 +40,18 @@ There are several ways to get Python on OSX:
  * install the `Anaconda Distribution <https://www.anaconda.com/download/>`_.
  * install from Brew `brew install python3` **(reported to work)**
 
-You can install AutoSphinx using *pip* or from source. See supra.
+You can install Pyterate using *pip* or from source. See supra.
 
 Installation from PyPi Repository
 ---------------------------------
 
-AutoSphinx is available on the Python Packages |Pypi|_ repository at |AutoSphinx@pypi|
+Pyterate is available on the Python Packages |Pypi|_ repository at |Pyterate@pypi|
 
 Run this command in the console to install the latest release:
 
 .. code-block:: sh
 
-  pip install AutoSphinx
+  pip install Pyterate
 
 Install a more recent version from Github
 -----------------------------------------
@@ -61,28 +61,28 @@ commands to install the stable or devel branch:
 
 .. code-block:: sh
 
-  pip install git+https://github.com/FabriceSalvaire/AutoSphinx
+  pip install git+https://github.com/FabriceSalvaire/Pyterate
 
-  pip install git+https://github.com/FabriceSalvaire/AutoSphinx@devel
+  pip install git+https://github.com/FabriceSalvaire/Pyterate@devel
 
 Installation from Source
 ------------------------
 
-The AutoSphinx source code is hosted at |AutoSphinx@github|
+The Pyterate source code is hosted at |Pyterate@github|
 
 .. add link to pages ...
 
 You have to solution to get the source code, the first one is to clone the repository, but if you
-are not familiar with Git then you can simply download an archive either from the AutoSphinx Pypi page
+are not familiar with Git then you can simply download an archive either from the Pyterate Pypi page
 (at the bottom) or the GitHub page (see clone or download button).
 
 To clone the Git repository, run this command in a console:
 
 .. code-block:: sh
 
-  git clone https://github.com/FabriceSalvaire/AutoSphinx.git
+  git clone https://github.com/FabriceSalvaire/Pyterate.git
 
-Then to build and install AutoSphinx run these commands:
+Then to build and install Pyterate run these commands:
 
 .. code-block:: sh
 
@@ -92,7 +92,7 @@ Then to build and install AutoSphinx run these commands:
 Dependencies
 ------------
 
-AutoSphinx requires the following dependencies:
+Pyterate requires the following dependencies:
 
  * |Python|_ 3
  * PyYAML

@@ -1,9 +1,0 @@
-***************
-ApiRstFactory
-***************
-
-.. toctree::
-
-.. automodule:: AutoSphinx.ApiRstFactory
-   :members:
-   :show-inheritance:

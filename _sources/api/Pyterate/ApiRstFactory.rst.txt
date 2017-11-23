@@ -1,0 +1,9 @@
+***************
+ApiRstFactory
+***************
+
+.. toctree::
+
+.. automodule:: Pyterate.ApiRstFactory
+   :members:
+   :show-inheritance:

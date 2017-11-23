@@ -1,0 +1,10 @@
+********
+Config
+********
+
+.. toctree::
+  Config/ConfigInstall
+
+.. automodule:: Pyterate.Config
+   :members:
+   :show-inheritance:

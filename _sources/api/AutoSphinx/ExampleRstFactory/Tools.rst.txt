@@ -1,8 +1,0 @@
-*******
-Tools
-*******
-
-.. automodule:: AutoSphinx.ExampleRstFactory.Tools
-   :members:
-   :show-inheritance:
-

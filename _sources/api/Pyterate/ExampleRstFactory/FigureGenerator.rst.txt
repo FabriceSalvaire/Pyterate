@@ -1,0 +1,13 @@
+*****************
+FigureGenerator
+*****************
+
+.. toctree::
+  FigureGenerator/CircuitMacros
+  FigureGenerator/Generic
+  FigureGenerator/Registry
+  FigureGenerator/Tikz
+
+.. automodule:: Pyterate.ExampleRstFactory.FigureGenerator
+   :members:
+   :show-inheritance:

@@ -1,0 +1,13 @@
+**********
+Pyterate
+**********
+
+.. toctree::
+  Pyterate/ApiRstFactory
+  Pyterate/Config
+  Pyterate/ExampleRstFactory
+  Pyterate/Logging
+
+.. automodule:: Pyterate
+   :members:
+   :show-inheritance:

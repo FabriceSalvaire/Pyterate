@@ -4,15 +4,15 @@
  Examples
 ==========
 
-.. Some examples of documentation generated using AutoSphinx:
+.. Some examples of documentation generated using Pyterate:
 
-Examples of projects using AutoSphinx:
+Examples of projects using Pyterate:
 
 * `PySpice <https://pyspice.fabrice-salvaire.fr/examples/index.html>`_
 * `Musica Toolkit <https://musica.fabrice-salvaire.fr/examples/index.html>`_
 * `Python 3 Memo <https://python-memo.fabrice-salvaire.fr/examples/index.html>`_
 
-Examples embeded in AutoSphinx
+Examples embeded in Pyterate
 ------------------------------
 
 

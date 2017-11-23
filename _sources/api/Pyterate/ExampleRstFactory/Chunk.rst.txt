@@ -1,0 +1,8 @@
+*******
+Chunk
+*******
+
+.. automodule:: Pyterate.ExampleRstFactory.Chunk
+   :members:
+   :show-inheritance:
+

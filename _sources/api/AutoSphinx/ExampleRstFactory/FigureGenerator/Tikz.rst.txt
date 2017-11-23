@@ -1,8 +1,0 @@
-******
-Tikz
-******
-
-.. automodule:: AutoSphinx.ExampleRstFactory.FigureGenerator.Tikz
-   :members:
-   :show-inheritance:
-

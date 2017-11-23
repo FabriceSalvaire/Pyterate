@@ -1,0 +1,12 @@
+*******************
+ExampleRstFactory
+*******************
+
+.. toctree::
+  ExampleRstFactory/Chunk
+  ExampleRstFactory/FigureGenerator
+  ExampleRstFactory/Tools
+
+.. automodule:: Pyterate.ExampleRstFactory
+   :members:
+   :show-inheritance:
