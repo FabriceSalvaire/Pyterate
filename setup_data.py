@@ -1,7 +1,7 @@
 ####################################################################################################
 #
 # Pyterate - Sphinx add-ons to create API documentation for Python projects
-# Copyright (C) 2017 Salvaire Fabrice
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -21,8 +21,6 @@
 ####################################################################################################
 
 import os
-import sys
-import subprocess
 
 ####################################################################################################
 
@@ -74,40 +72,12 @@ else:
 
 setup_dict = dict(
     name='Pyterate',
-    version='1.1.0',
+    version='1.0.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='Pyterate is a Sphinx add-ons to generate API documentation using autogen and litterate programming documentation for Python projects.',
     license='GPLv3',
     keywords='sphinx autogen documentation generator builder literate programming',
     url='https://github.com/FabriceSalvaire/Pyterate',
-    scripts=[
-        'bin/generate-rst-api',
-        'bin/generate-rst-examples',
-    ],
-    packages=[  # Fixme:
-        'Pyterate',
-        'Pyterate.ApiRstFactory',
-        'Pyterate.Config',
-        'Pyterate.ExampleRstFactory',
-        'Pyterate.ExampleRstFactory.FigureGenerator',
-        'Pyterate.Logging',
-    ],
-    # package_dir={'Pyterate': 'Pyterate'},
-    package_data={
-        'Pyterate.Config': ['logging.yml'],
-    },
     long_description=long_description,
-    # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=[
-        'Topic :: Scientific/Engineering',
-        'Intended Audience :: Education',
-        'Development Status :: 5 - Production/Stable',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.6',
-        ],
-    install_requires=[
-        'PyYAML',
-    ],
 )

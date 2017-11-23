@@ -1,9 +1,9 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 ####################################################################################################
 #
 # Pyterate - Sphinx add-ons to create API documentation for Python projects
-# Copyright (C) 2017 Salvaire Fabrice
+# Copyright (C) 2017 Fabrice Salvaire
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -22,10 +22,11 @@
 
 ####################################################################################################
 
+import glob
 import sys
 
-from distutils.core import setup
-# from setuptools import setup
+from setuptools import setup, find_packages
+setuptools_available = True
 
 ####################################################################################################
 
@@ -34,5 +35,38 @@ if sys.version_info < (3,):
     sys.exit(1)
 
 exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
+
+####################################################################################################
+
+setup_dict.update(dict(
+    # include_package_data=True, # Look in MANIFEST.in
+    packages=find_packages(exclude=['unit-test']),
+    scripts=glob.glob('bin/*'),
+    package_data={
+        'Pyterate.Config': ['logging.yml'],
+    },
+
+    platforms='any',
+    zip_safe=False, # due to data files
+
+    # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Framework :: Sphinx :: Extension',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Education',
+        'Intended Audience :: Science/Research',
+        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.4',
+        'Topic :: Software Development :: Documentation',
+        ],
+
+    install_requires=[
+        'PyYAML',
+    ],
+))
+
+####################################################################################################
 
 setup(**setup_dict)
