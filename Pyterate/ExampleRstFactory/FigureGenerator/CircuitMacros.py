@@ -26,7 +26,7 @@ import subprocess
 import shutil
 import tempfile
 
-from ..Chunk import ImageChunk
+from ..Dom import ImageChunk
 from ..Tools import timestamp
 from .Registry import ExtensionMetaclass
 

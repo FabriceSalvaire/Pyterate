@@ -24,7 +24,7 @@ import logging
 import os
 import subprocess
 
-from ..Chunk import ImageChunk
+from ..Dom import ImageChunk
 from .Registry import ExtensionMetaclass
 
 ####################################################################################################

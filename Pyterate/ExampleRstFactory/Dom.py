@@ -21,6 +21,12 @@
 # Fixme: python console lexer pycon
 # Fixme: default lexer python3
 
+# Fixme: These classes to several tasks
+#  decode input
+#  store data
+#  __str__ generate RST
+#  to_python
+
 ####################################################################################################
 
 __all__ = [
@@ -342,20 +348,23 @@ class OutputChunk(StdoutChunk):
     def __str__(self):
 
         # Fixme: use content ???
-        slice_, content = self._example.stdout_chunk(self._stdout_chunk_index)
-        lower = slice_.start
-        upper = slice_.stop -1
-        # Sphynx count \f as newline
-        if self._stdout_chunk_index:
-            lower += self._stdout_chunk_index
-            upper += self._stdout_chunk_index
+        try:
+            slice_, content = self._example.stdout_chunk(self._stdout_chunk_index)
+            lower = slice_.start
+            upper = slice_.stop -1
+            # Sphynx count \f as newline
+            if self._stdout_chunk_index:
+                lower += self._stdout_chunk_index
+                upper += self._stdout_chunk_index
 
-        template = '''
+            template = '''
 .. literalinclude:: {}
     :lines: {}-{}
 
 '''
-        return template.format(os.path.basename(self._example.stdout_path), lower+1, upper+1)
+            return template.format(os.path.basename(self._example.stdout_path), lower+1, upper+1)
+        except IndexError:
+            return 'OUTPUT ERROR'
 
     ##############################################
 
@@ -378,8 +387,11 @@ class RstFormatChunk(StdoutChunk):
 
     def __str__(self):
 
-        slice_, content = self._example.stdout_chunk(self._stdout_chunk_index)
-        return content
+        try:
+            slice_, content = self._example.stdout_chunk(self._stdout_chunk_index)
+            return content
+        except IndexError:
+            return 'OUTPUT ERROR'
 
     ##############################################
 
