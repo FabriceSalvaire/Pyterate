@@ -1,7 +1,7 @@
 {% if user_content %}
 {{user_content}}
 {% else %}
-{% set rule = title|rst_rule_title(character='~') %}
+{% set rule = title|rst_rule_title() %}
 {{rule}}
  {{title}}
 {{rule}}

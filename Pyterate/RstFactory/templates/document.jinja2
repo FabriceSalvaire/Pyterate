@@ -1,0 +1,13 @@
+.. include:: /project-links.txt
+.. include:: /abbreviation.txt
+
+{% if title %}
+{% set rule = title|rst_rule_title() %}
+{{rule}}
+ {{title}}
+{{rule}}
+{% endif %}
+
+.. getthecode:: {{python_file}}
+    :language: python
+

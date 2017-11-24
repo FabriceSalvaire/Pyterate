@@ -26,6 +26,9 @@ import subprocess
 import sys
 import tempfile
 
+from . import template_environment
+from ..Template import TemplateAggregator
+from ..Tools.Path import file_extension, remove_extension
 from ..Tools.Timestamp import timestamp
 from .Dom import *
 from .Template import *
@@ -40,14 +43,6 @@ _module_logger = logging.getLogger(__name__)
 ####################################################################################################
 
 FIGURE_DIRECTORY = None
-
-####################################################################################################
-
-def remove_extension(filename):
-    return os.path.splitext(filename)[0]
-
-def file_extension(filename):
-    return os.path.splitext(filename)[1]
 
 ####################################################################################################
 
@@ -74,19 +69,19 @@ class Document:
 
     _logger = _module_logger.getChild('Document')
 
+    FIGURE_MARKUPS = ['fig', 'lfig', 'i', 'itxt', 'o']
+    FIGURE_MARKUPS += ExtensionMetaclass.extension_markups()
+
     ##############################################
 
     def __init__(self, topic, filename):
 
-        self.__figure_markups__ = ['fig', 'lfig', 'i', 'itxt', 'o']
-        self.__figure_markups__ += ExtensionMetaclass.extension_markups()
-
         self._topic = topic
-        self._basename = remove_extension(filename)
+        self._basename = remove_extension(filename) # input basename
 
         path = topic.join_path(filename)
         self._is_link = os.path.islink(path)
-        self._path = os.path.realpath(path)
+        self._path = os.path.realpath(path) # input path
 
         if self._is_link:
             factory = self._topic.factory
@@ -96,7 +91,6 @@ class Document:
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
 
         self._stdout = None
-
         self._stdout_chunck_counter = -1
 
     ##############################################
@@ -160,7 +154,6 @@ class Document:
 
     @property
     def source_timestamp(self):
-
         return timestamp(self._path)
 
     ##############################################
@@ -176,7 +169,7 @@ class Document:
     ##############################################
 
     def __bool__(self):
-
+        """Return True if source is older than rst."""
         return self.source_timestamp > self.rst_timestamp
 
     ##############################################
@@ -258,7 +251,7 @@ class Document:
 
     def _line_starts_by_figure_markup(self, line):
 
-        for markup in self.__figure_markups__:
+        for markup in self.FIGURE_MARKUPS:
             if self._line_start_by_markup(line, markup):
                 return True
         return False
@@ -360,6 +353,21 @@ class Document:
 
     ##############################################
 
+    def _has_title(self):
+
+        """Return whether a title is defined."""
+
+        # Fixme: test if first chunck ?
+        for chunck in self._dom:
+            if isinstance(chunck, RstChunk):
+                content = str(chunck)
+                if '='*(3+2) in content: # Fixme: hardcoded !
+                    return True
+
+        return False
+
+    ##############################################
+
     def make_rst(self):
 
         """ Generate the document RST file. """
@@ -368,35 +376,25 @@ class Document:
 
         self._read_output_chunk()
 
-        has_title= False
-        for chunck in self._dom:
-            # self._logger.info('Chunck {0.__class__.__name__}'.format(chunck))
-            if isinstance(chunck, RstChunk):
-                content = str(chunck)
-                if '='*7 in content:
-                    has_title = True
-                break
-
-        if not has_title:
-            # Fixme: duplicated code
-            title = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
-            title_line = '='*(len(title)+2)
-            header = TITLE_TEMPLATE.format(title=title, title_line=title_line)
-        else:
-            header = ''
-
         # place the Python file in the rst path
         python_file_name = self._basename + '.py'
         link_path = self._topic.join_rst_path(python_file_name)
         if not os.path.exists(link_path):
             os.symlink(self._path, link_path)
 
+        kwargs = {
+            'python_file':python_file_name,
+        }
+
+        has_title = self._has_title()
+        if not has_title:
+            kwargs['title'] = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
+
+        template_aggregator = TemplateAggregator(template_environment)
+        template_aggregator.append('document', **kwargs)
+
         with open(self._rst_path, 'w') as fh:
-            fh.write(INCLUDES_TEMPLATE)
-            if not has_title:
-                fh.write(header)
-            fh.write(GET_CODE_TEMPLATE.format(filename=python_file_name))
+            fh.write(str(template_aggregator))
             for chunck in self._dom:
                 fh.write(str(chunck))
-
             # fh.write(self._output)
