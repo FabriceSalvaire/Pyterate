@@ -106,9 +106,9 @@ class RstChunk(Chunk):
 
     ##############################################
 
-    def to_rst_format_chunk(self, example, stdout_chunk_index):
+    def to_rst_format_chunk(self, document, stdout_chunk_index):
 
-        return RstFormatChunk(example, self, stdout_chunk_index)
+        return RstFormatChunk(document, self, stdout_chunk_index)
 
 ####################################################################################################
 
@@ -177,13 +177,13 @@ class LitteralIncludeChunk(Chunk):
 
     ##############################################
 
-    def __init__(self, example, line):
+    def __init__(self, document, line):
 
         # Fixme: duplicated code with figure etc. ???
         include_path = line.replace('#itxt# ', '').strip()
         self._include_filename = os.path.basename(include_path)
-        source = example.topic.join_path(include_path)
-        target = example.topic.join_rst_path(self._include_filename)
+        source = document.topic.join_path(include_path)
+        target = document.topic.join_rst_path(self._include_filename)
         if not os.path.exists(target):
             os.symlink(source, target)
 
@@ -205,12 +205,12 @@ class PythonIncludeChunk(Chunk):
 
     ##############################################
 
-    def __init__(self, example, line):
+    def __init__(self, document, line):
 
         self._include_path = line.replace('#i# ', '').strip()
         # Fixme: relpath right ?
-        source = os.path.relpath(example.topic.join_path(self._include_path), example.topic.rst_path)
-        target = example.topic.join_rst_path(self._include_path)
+        source = os.path.relpath(document.topic.join_path(self._include_path), document.topic.rst_path)
+        target = document.topic.join_rst_path(self._include_path)
         if not os.path.exists(target):
             os.symlink(source, target)
 
@@ -321,9 +321,9 @@ class StdoutChunk(Chunk):
 
     ##############################################
 
-    def __init__(self, example, stdout_chunk_index):
+    def __init__(self, document, stdout_chunk_index):
 
-        self._example = example
+        self._document = document
         self._stdout_chunk_index = stdout_chunk_index
 
     ##############################################
@@ -338,9 +338,9 @@ class OutputChunk(StdoutChunk):
 
     ##############################################
 
-    def __init__(self, example, line, stdout_chunk_index):
+    def __init__(self, document, line, stdout_chunk_index):
 
-        StdoutChunk.__init__(self, example, stdout_chunk_index)
+        StdoutChunk.__init__(self, document, stdout_chunk_index)
         self._line = line
 
     ##############################################
@@ -349,7 +349,7 @@ class OutputChunk(StdoutChunk):
 
         # Fixme: use content ???
         try:
-            slice_, content = self._example.stdout_chunk(self._stdout_chunk_index)
+            slice_, content = self._document.stdout_chunk(self._stdout_chunk_index)
             lower = slice_.start
             upper = slice_.stop -1
             # Sphynx count \f as newline
@@ -362,7 +362,7 @@ class OutputChunk(StdoutChunk):
     :lines: {}-{}
 
 '''
-            return template.format(os.path.basename(self._example.stdout_path), lower+1, upper+1)
+            return template.format(os.path.basename(self._document.stdout_path), lower+1, upper+1)
         except IndexError:
             return 'OUTPUT ERROR'
 
@@ -378,9 +378,9 @@ class RstFormatChunk(StdoutChunk):
 
     ##############################################
 
-    def __init__(self, example, rst_chunk, stdout_chunk_index):
+    def __init__(self, document, rst_chunk, stdout_chunk_index):
 
-        StdoutChunk.__init__(self, example, stdout_chunk_index)
+        StdoutChunk.__init__(self, document, stdout_chunk_index)
         self._lines = rst_chunk._lines
 
     ##############################################
@@ -388,7 +388,7 @@ class RstFormatChunk(StdoutChunk):
     def __str__(self):
 
         try:
-            slice_, content = self._example.stdout_chunk(self._stdout_chunk_index)
+            slice_, content = self._document.stdout_chunk(self._stdout_chunk_index)
             return content
         except IndexError:
             return 'OUTPUT ERROR'

@@ -54,7 +54,7 @@ def file_extension(filename):
 def save_figure(figure,
                 figure_filename):
 
-    """ This function is called from example to save a figure. """
+    """ This function is called from document to save a figure. """
 
     figure_format = file_extension(figure_filename)[1:] # foo.png -> png
     figure_path = os.path.join(FIGURE_DIRECTORY, figure_filename)
@@ -70,9 +70,9 @@ def save_figure(figure,
 
 class Document:
 
-    """ This class is responsible to process an example. """
+    """ This class is responsible to process an document. """
 
-    _logger = _module_logger.getChild('Example')
+    _logger = _module_logger.getChild('Document')
 
     ##############################################
 
@@ -90,7 +90,7 @@ class Document:
 
         if self._is_link:
             factory = self._topic.factory
-            path = factory.join_rst_example_path(os.path.relpath(self._path, factory.examples_path))
+            path = factory.join_rst_document_path(os.path.relpath(self._path, factory.documents_path))
             self._rst_path = remove_extension(path) + '.rst'
         else:
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
@@ -183,16 +183,16 @@ class Document:
 
     def make_figure(self):
 
-        """This function make a temporary copy of the example with calls to *save_figure* and run it.
+        """This function make a temporary copy of the document with calls to *save_figure* and run it.
 
         """
 
         working_directory = os.path.dirname(self._path)
 
         tmp_file = tempfile.NamedTemporaryFile(dir=working_directory,
-                                               prefix='__example_rst_factory__', suffix='.py', mode='w')
-        tmp_file.write('from Pyterate.ExampleRstFactory.Document import save_figure\n')
-        tmp_file.write('from Pyterate.ExampleRstFactory import Document as DocumentModule\n')
+                                               prefix='__document_rst_factory__', suffix='.py', mode='w')
+        tmp_file.write('from Pyterate.DocumentRstFactory.Document import save_figure\n')
+        tmp_file.write('from Pyterate.DocumentRstFactory import Document as DocumentModule\n')
         tmp_file.write('DocumentModule.FIGURE_DIRECTORY = "{}"\n'.format(self._topic.rst_path))
         tmp_file.write('\n')
         for chunck in self._dom:
@@ -200,7 +200,7 @@ class Document:
                 tmp_file.write(chunck.to_python())
         tmp_file.flush()
 
-        self._logger.info("\nRun example " + self._path)
+        self._logger.info("\nRun document " + self._path)
         # with open(tmp_file.name, 'r') as fh:
         #     print(fh.read())
         with open(self.stdout_path, 'w') as stdout:
@@ -214,7 +214,7 @@ class Document:
                                            env=env)
                 rc = process.wait()
                 if rc:
-                    self._logger.error("Failed to run example " + self._path)
+                    self._logger.error("Failed to run document " + self._path)
                     self._topic.factory.register_failure(self)
 
     ##############################################
@@ -362,7 +362,7 @@ class Document:
 
     def make_rst(self):
 
-        """ Generate the example RST file. """
+        """ Generate the document RST file. """
 
         self._logger.info("\nCreate RST file " + self._rst_path)
 

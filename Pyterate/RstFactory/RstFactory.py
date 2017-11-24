@@ -18,7 +18,7 @@
 #
 ####################################################################################################
 
-""" This module implements a RST files generator for examples.
+""" This module implements a RST files generator for documents.
 """
 
 ####################################################################################################
@@ -36,60 +36,60 @@ _module_logger = logging.getLogger(__name__)
 
 class RstFactory:
 
-    """This class processes recursively the examples directory and generate figures and RST files."""
+    """This class processes recursively the documents directory and generate figures and RST files."""
 
     _logger = _module_logger.getChild('RstFactory')
 
     ##############################################
 
-    def __init__(self, examples_path, rst_source_directory, rst_example_directory,
+    def __init__(self, documents_path, rst_source_directory, rst_document_directory,
                  show_counter=False):
 
         """
         Parameters:
 
-        examples_path: string
-            path of the examples
+        documents_path: string
+            path of the documents
 
         rst_source_directory: string
             path of the RST source directory
 
-        rst_example_directory: string
-            relative path of the examples in the RST sources
+        rst_document_directory: string
+            relative path of the documents in the RST sources
 
         show_counter: Boolean
-            show examples counters in toc
+            show documents counters in toc
         """
 
-        self._examples_path = os.path.realpath(examples_path)
+        self._documents_path = os.path.realpath(documents_path)
 
         self._rst_source_directory = os.path.realpath(rst_source_directory)
-        self._rst_example_directory = os.path.join(self._rst_source_directory, rst_example_directory)
-        if not os.path.exists(self._rst_example_directory):
-            os.mkdir(self._rst_example_directory)
+        self._rst_document_directory = os.path.join(self._rst_source_directory, rst_document_directory)
+        if not os.path.exists(self._rst_document_directory):
+            os.mkdir(self._rst_document_directory)
 
         self._show_counter = show_counter
 
         self._topics = {}
 
-        self._logger.info("\nExamples Path: " + self._examples_path)
-        self._logger.info("\nRST Path: " + self._rst_example_directory)
+        self._logger.info("\nDocuments Path: " + self._documents_path)
+        self._logger.info("\nRST Path: " + self._rst_document_directory)
 
-        self._example_failures = []
+        self._document_failures = []
 
     ##############################################
 
     @property
-    def examples_path(self):
-        return self._examples_path
+    def documents_path(self):
+        return self._documents_path
 
     @property
     def rst_source_directory(self):
         return self._rst_source_directory
 
     @property
-    def rst_example_directory(self):
-        return self._rst_example_directory
+    def rst_document_directory(self):
+        return self._rst_document_directory
 
     @property
     def show_counter(self):
@@ -101,37 +101,37 @@ class RstFactory:
 
     ##############################################
 
-    def join_examples_path(self, *args):
-        return os.path.join(self._examples_path, *args)
+    def join_documents_path(self, *args):
+        return os.path.join(self._documents_path, *args)
 
-    def join_rst_example_path(self, *args):
-        return os.path.join(self._rst_example_directory, *args)
+    def join_rst_document_path(self, *args):
+        return os.path.join(self._rst_document_directory, *args)
 
     ##############################################
 
     def process_recursively(self, make_figure=True, make_external_figure=True, force=False):
 
-        """ Process recursively the examples directory. """
+        """ Process recursively the documents directory. """
 
         # walk top down so as to generate the subtopics first
         self._topics.clear()
-        for current_path, sub_directories, files in os.walk(self._examples_path,
+        for current_path, sub_directories, files in os.walk(self._documents_path,
                                                             topdown=False,
                                                             followlinks=True):
-            relative_current_path = os.path.relpath(current_path, self._examples_path)
+            relative_current_path = os.path.relpath(current_path, self._documents_path)
             if relative_current_path == '.':
                 relative_current_path = ''
             topic = Topic(self, relative_current_path)
             self._topics[relative_current_path] = topic # collect the topics
-            topic.process_examples(make_figure, make_external_figure, force)
+            topic.process_documents(make_figure, make_external_figure, force)
             topic.make_toc(make_external_figure)
 
-        if self._example_failures:
-            self._logger.warning("These examples failed:\n" +
-                                 '\n'.join([example.path for example in self._example_failures]))
+        if self._document_failures:
+            self._logger.warning("These documents failed:\n" +
+                                 '\n'.join([document.path for document in self._document_failures]))
 
     ##############################################
 
-    def register_failure(self, example):
+    def register_failure(self, document):
 
-        self._example_failures.append(example)
+        self._document_failures.append(document)

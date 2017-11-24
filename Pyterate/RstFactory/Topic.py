@@ -18,7 +18,7 @@
 #
 ####################################################################################################
 
-""" This module implements a RST files generator for examples.
+""" This module implements a RST files generator for documents.
 """
 
 ####################################################################################################
@@ -55,11 +55,11 @@ class Topic:
         self._relative_path = relative_path
         self._basename = os.path.basename(relative_path)
 
-        self._path = self._factory.join_examples_path(relative_path)
-        self._rst_path = self._factory.join_rst_example_path(relative_path)
+        self._path = self._factory.join_documents_path(relative_path)
+        self._rst_path = self._factory.join_rst_document_path(relative_path)
 
         self._subtopics = [] # self._retrieve_subtopics()
-        self._examples = []
+        self._documents = []
         self._links = []
         python_files = [filename for filename in self._python_files_iterator()
                         if self._filter_python_files(self._path, filename)]
@@ -67,19 +67,19 @@ class Topic:
             self._logger.info("\nProcess Topic: " + relative_path)
             self._make_hierarchy()
             for filename in python_files:
-                example = Document(self, filename)
-                if example.is_link:
+                document = Document(self, filename)
+                if document.is_link:
                     self._logger.info("\n  found link: " + filename)
-                    self._links.append(example)
+                    self._links.append(document)
                 else:
                     self._logger.info("\n  found: " + filename)
-                    self._examples.append(example)
+                    self._documents.append(document)
 
     ##############################################
 
     def __bool__(self):
         return os.path.exists(self._rst_path)
-        # return bool(self._examples) or bool(self._links)
+        # return bool(self._documents) or bool(self._links)
 
     ##############################################
 
@@ -172,9 +172,9 @@ class Topic:
 
     ##############################################
 
-    def _example_hierarchy(self):
+    def _document_hierarchy(self):
 
-        """ Return a list of directory corresponding to the file hierarchy after ``.../examples/`` """
+        """ Return a list of directory corresponding to the file hierarchy after ``.../documents/`` """
 
         return self._relative_path.split(os.path.sep)
 
@@ -184,30 +184,30 @@ class Topic:
 
         """ Create the file hierarchy. """
 
-        example_hierarchy = self._example_hierarchy()
-        for directory_list in sublist_accumulator_iterator(example_hierarchy):
-            directory = self._factory.join_rst_example_path(*directory_list)
+        document_hierarchy = self._document_hierarchy()
+        for directory_list in sublist_accumulator_iterator(document_hierarchy):
+            directory = self._factory.join_rst_document_path(*directory_list)
             if not os.path.exists(directory):
                 os.mkdir(directory)
 
     ##############################################
 
-    def process_examples(self, make_figure, make_external_figure, force):
+    def process_documents(self, make_figure, make_external_figure, force):
 
-        for example in self._examples:
-            self.process_example(example, make_figure, make_external_figure, force)
+        for document in self._documents:
+            self.process_document(document, make_figure, make_external_figure, force)
 
     ##############################################
 
-    def process_example(self, example, make_figure, make_external_figure, force):
+    def process_document(self, document, make_figure, make_external_figure, force):
 
-        example.read()
-        if force or example:
+        document.read()
+        if force or document:
             if make_figure:
-                example.make_figure()
-            example.make_rst()
+                document.make_figure()
+            document.make_rst()
         if make_external_figure:
-            example.make_external_figure(force)
+            document.make_external_figure(force)
 
     ##############################################
 
@@ -221,7 +221,7 @@ class Topic:
             path = self.join_rst_path(filename)
             if os.path.isdir(path):
                 if os.path.exists(os.path.join(path, 'index.rst')):
-                    relative_path = os.path.relpath(path, self._factory.rst_example_directory)
+                    relative_path = os.path.relpath(path, self._factory.rst_document_directory)
                     topic = self._factory.topics[relative_path]
                     subtopics.append(topic)
         self._subtopics = subtopics
@@ -250,7 +250,7 @@ class Topic:
 
         # Sort the TOC
         # Fixme: sometimes we want a particular order !
-        file_dict = {example.basename:example.rst_filename for example in self._examples}
+        file_dict = {document.basename:document.rst_filename for document in self._documents}
         file_dict.update({link.basename:link.rst_inner_path for link in self._links})
         toc_items = sorted(file_dict.keys())
 
@@ -258,17 +258,17 @@ class Topic:
         subtopics = [topic.basename for topic in self._subtopics]
 
         if self._factory.show_counter:
-            self._number_of_examples = len(self._examples) # don't count links twice
+            self._number_of_documents = len(self._documents) # don't count links twice
             number_of_links = len(self._links)
-            number_of_subtopics = sum([topic._number_of_examples for topic in self._subtopics])
-            number_of_examples = self._number_of_examples + number_of_subtopics
+            number_of_subtopics = sum([topic._number_of_documents for topic in self._subtopics])
+            number_of_documents = self._number_of_documents + number_of_subtopics
             counter_strings = []
             if self._subtopics:
                 counter_strings.append('{} sub-topics'.format(len(self._subtopics)))
-            if number_of_examples:
-                counter_strings.append('{} examples'.format(number_of_examples))
+            if number_of_documents:
+                counter_strings.append('{} documents'.format(number_of_documents))
             if number_of_links:
-                counter_strings.append('{} related examples'.format(number_of_links))
+                counter_strings.append('{} related documents'.format(number_of_links))
             if counter_strings:
                 content += 'This section has '
                 if len(counter_strings) == 1:
