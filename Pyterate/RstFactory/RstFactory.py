@@ -146,7 +146,7 @@ class RstFactory:
 
         # walk top down so as to generate the subtopics first
         self._topics.clear()
-        for topic_path, in os.walk(self._documents_path, topdown=False, followlinks=True):
+        for topic_path, _, _ in os.walk(self._documents_path, topdown=False, followlinks=True):
             self._process_topic(topic_path, kwargs)
 
         if self._document_failures:

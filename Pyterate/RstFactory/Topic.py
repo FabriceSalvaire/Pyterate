@@ -27,7 +27,6 @@ import glob
 import logging
 import os
 
-from ..Tools.Generators import  sublist_accumulator_iterator
 from .Document import Document
 from .Template import *
 
@@ -41,25 +40,35 @@ class Topic:
 
     _logger = _module_logger.getChild('Topic')
 
+    EXCLUDED_FILES = (
+        # these file should be flymake temporary file
+        'flymake_',
+        'flycheck_',
+    )
+
+    SKIP_PATTERN = '#skip#'
+    IMAGE_DIRECTIVE = '.. image:: '
+    IMAGE_DIRECTIVE_LENGTH = len(IMAGE_DIRECTIVE)
+
     ##############################################
 
     def __init__(self, factory, relative_path):
 
         self._factory = factory
-        self._relative_path = relative_path
-        self._basename = os.path.basename(relative_path)
+        self._relative_path = relative_path # relative input path
+        self._basename = os.path.basename(relative_path) # topic directory
 
-        self._path = self._factory.join_documents_path(relative_path)
-        self._rst_path = self._factory.join_rst_document_path(relative_path)
+        self._path = self._factory.join_documents_path(relative_path) # input path
+        self._rst_path = self._factory.join_rst_document_path(relative_path) # output path
 
         self._subtopics = [] # self._retrieve_subtopics()
         self._documents = []
         self._links = []
-        python_files = [filename for filename in self._python_files_iterator()
-                        if self._filter_python_files(self._path, filename)]
+
+        python_files = list(self._python_files_iterator()) # Fixme: better ?
         if python_files:
             self._logger.info("\nProcess Topic: " + relative_path)
-            self._make_hierarchy()
+            os.makedirs(self._rst_path) # removed code
             for filename in python_files:
                 document = Document(self, filename)
                 if document.is_link:
@@ -72,6 +81,7 @@ class Topic:
     ##############################################
 
     def __bool__(self):
+        # Fixme: usage ???
         return os.path.exists(self._rst_path)
         # return bool(self._documents) or bool(self._links)
 
@@ -103,40 +113,46 @@ class Topic:
 
     ##############################################
 
-    def _files_iterator(self, extension):
+    def _files_iterator(self, extension, file_filter):
 
         pattern = os.path.join(self._path, '*.' + extension)
         for file_path in glob.glob(pattern):
-            yield os.path.basename(file_path)
+            if file_filter(file_path):
+                yield os.path.basename(file_path) # relative path
+
+    ##############################################
+
+    def _is_file_skipped(self, filename):
+
+        absolut_path = os.path.join(self._path, filename)
+        with open(absolut_path, 'r') as fh:
+            first_line = fh.readline()
+            second_line = fh.readline()
+
+        return not (first_line.startswith(self.SKIP_PATTERN) or
+                    second_line.startswith(self.SKIP_PATTERN))
+
+    ##############################################
+
+    def _filter_python_files(self, filename):
+
+        if filename.endswith('.py'):
+            for pattern in self.EXCLUDED_FILES:
+                if filename.startswith(pattern):
+                    return False
+            return self._is_file_skipped(filename)
+        else:
+            return False
 
     ##############################################
 
     def _python_files_iterator(self):
-        return self._files_iterator('py')
-
-    ##############################################
-
-    @staticmethod
-    def _filter_python_files(path, filename):
-
-        if filename.endswith('.py'):
-            # these file should be flymake temporary file
-            for pattern in ('flymake_', 'flycheck_'):
-                if filename.startswith(pattern):
-                    return False
-            absolut_path = os.path.join(path, filename)
-            with open(absolut_path, 'r') as fh:
-                first_line = fh.readline()
-                second_line = fh.readline()
-                pattern = '#skip#'
-                return not (first_line.startswith(pattern) or second_line.startswith(pattern))
-
-        return False
+        return self._files_iterator('py', self._filter_python_files)
 
     ##############################################
 
     def _readme_path(self):
-        return self.join_path('readme.rst')
+        return self.join_path('readme.rst') # Fixme: hardcoded filename !
 
     ##############################################
 
@@ -145,54 +161,32 @@ class Topic:
 
     ##############################################
 
-    def _read_readme(self, make_external_figure):
+    def _read_readme(self):
 
-        figures = [] # Fixme: unused, purpose (*) ???
-        image_directive = '.. image:: '
-        image_directive_length = len(image_directive)
+        """Read readme and collect figures"""
+
+        figures = []
         with open(self._readme_path()) as fh:
             content = fh.read()
             for line in content.split('\n'):
-                if line.startswith(image_directive):
-                    figure = line[image_directive_length:]
+                if line.startswith(self.IMAGE_DIRECTIVE):
+                    figure = line[self.IMAGE_DIRECTIVE_LENGTH:]
                     figures.append(figure)
 
-        # Fixme: (*) tikz ???
-        # if make_external_figure:
-        # ...
-
-        return content
+        return content, figures
 
     ##############################################
 
-    def _document_hierarchy(self):
-
-        """ Return a list of directory corresponding to the file hierarchy after ``.../documents/`` """
-
-        return self._relative_path.split(os.path.sep)
-
-    ##############################################
-
-    def _make_hierarchy(self):
-
-        """ Create the file hierarchy. """
-
-        document_hierarchy = self._document_hierarchy()
-        for directory_list in sublist_accumulator_iterator(document_hierarchy):
-            directory = self._factory.join_rst_document_path(*directory_list)
-            if not os.path.exists(directory):
-                os.mkdir(directory)
-
-    ##############################################
-
-    def process_documents(self, make_figure=True, make_external_figure=True, force=False):
+    def process_documents(self, **kwargs):
 
         for document in self._documents:
-            self.process_document(document, make_figure, make_external_figure, force)
+            self.process_document(document, **kwargs)
 
     ##############################################
 
-    def process_document(self, document, make_figure, make_external_figure, force):
+    def process_document(self, document, make_figure=True, make_external_figure=True, force=False):
+
+        # Fixme: kwargs
 
         document.read()
         if force or document:
@@ -204,20 +198,32 @@ class Topic:
 
     ##############################################
 
-    def _retrieve_subtopics(self):
+    def _directory_iterator(self):
 
-        if not self:
-            return None
-
-        subtopics = []
         for filename in os.listdir(self._rst_path):
             path = self.join_rst_path(filename)
             if os.path.isdir(path):
-                if os.path.exists(os.path.join(path, 'index.rst')):
-                    relative_path = os.path.relpath(path, self._factory.rst_directory)
-                    topic = self._factory.topics[relative_path]
-                    subtopics.append(topic)
-        self._subtopics = subtopics
+                yield path # absolut path
+
+    ##############################################
+
+    def _subtopic_iterator(self):
+
+        for path in self._directory_iterator():
+            if os.path.exists(os.path.join(path, 'index.rst')): # Fixme: hardcoded filename !
+                relative_path = os.path.relpath(path, self._factory.rst_directory)
+                topic = self._factory.topics[relative_path]
+                yield topic
+
+    ##############################################
+
+    def _retrieve_subtopics(self):
+
+        # Fixme: ???
+        if not self:
+            return None
+
+        self._subtopics = list(self._subtopic_iterator())
 
     ##############################################
 
@@ -225,7 +231,8 @@ class Topic:
 
         """ Create the TOC. """
 
-        if not self: # Fixme: when ???
+        # Fixme: ???
+        if not self:
             return
 
         toc_path = self.join_rst_path('index.rst')
@@ -234,7 +241,11 @@ class Topic:
         content = ''
 
         if self._has_readme():
-            content += self._read_readme(make_external_figure)
+            readme_content, figures = self._read_readme()
+            content += readme_content
+            # Fixme: external figure in readme / check PySpice code
+            # if make_external_figure:
+            #   ...
         else:
             title = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
             title_line = '='*(len(title)+2)
