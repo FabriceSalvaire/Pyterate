@@ -27,19 +27,13 @@ import glob
 import logging
 import os
 
+from ..Tools.Generators import  sublist_accumulator_iterator
 from .Document import Document
 from .Template import *
 
 ####################################################################################################
 
 _module_logger = logging.getLogger(__name__)
-
-####################################################################################################
-
-def sublist_accumulator_iterator(iterable):
-    """ From a list (1, 2, 3, ...) this generator yields (), (1,), (1, 2), (1, 2, 3), ... """
-    for i in range(len(iterable) +1):
-        yield iterable[:i]
 
 ####################################################################################################
 
@@ -118,7 +112,6 @@ class Topic:
     ##############################################
 
     def _python_files_iterator(self):
-
         return self._files_iterator('py')
 
     ##############################################
@@ -192,7 +185,7 @@ class Topic:
 
     ##############################################
 
-    def process_documents(self, make_figure, make_external_figure, force):
+    def process_documents(self, make_figure=True, make_external_figure=True, force=False):
 
         for document in self._documents:
             self.process_document(document, make_figure, make_external_figure, force)
@@ -221,7 +214,7 @@ class Topic:
             path = self.join_rst_path(filename)
             if os.path.isdir(path):
                 if os.path.exists(os.path.join(path, 'index.rst')):
-                    relative_path = os.path.relpath(path, self._factory.rst_document_directory)
+                    relative_path = os.path.relpath(path, self._factory.rst_directory)
                     topic = self._factory.topics[relative_path]
                     subtopics.append(topic)
         self._subtopics = subtopics

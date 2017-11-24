@@ -18,7 +18,8 @@
 #
 ####################################################################################################
 
-""" This module implements a RST files generator for documents.
+"""This module implements a RST files generator for documents.
+
 """
 
 ####################################################################################################
@@ -36,13 +37,15 @@ _module_logger = logging.getLogger(__name__)
 
 class RstFactory:
 
-    """This class processes recursively the documents directory and generate figures and RST files."""
+    """This class processes recursively the documents directory and generate figures and RST files.
+
+    """
 
     _logger = _module_logger.getChild('RstFactory')
 
     ##############################################
 
-    def __init__(self, documents_path, rst_source_directory, rst_document_directory,
+    def __init__(self, documents_path, rst_source_path, rst_directory,
                  show_counter=False):
 
         """
@@ -51,30 +54,30 @@ class RstFactory:
         documents_path: string
             path of the documents
 
-        rst_source_directory: string
+        rst_source_path: string
             path of the RST source directory
 
-        rst_document_directory: string
+        rst_directory: string
             relative path of the documents in the RST sources
 
         show_counter: Boolean
             show documents counters in toc
         """
 
+        # Fixme: handle ~
         self._documents_path = os.path.realpath(documents_path)
 
-        self._rst_source_directory = os.path.realpath(rst_source_directory)
-        self._rst_document_directory = os.path.join(self._rst_source_directory, rst_document_directory)
-        if not os.path.exists(self._rst_document_directory):
-            os.mkdir(self._rst_document_directory)
+        self._rst_source_path = os.path.realpath(rst_source_path)
+        self._rst_directory = os.path.join(self._rst_source_path, rst_directory) # Fixme: name ?
+        if not os.path.exists(self._rst_directory):
+            os.makedirs(self._rst_directory)
+
+        self._logger.info("\nDocuments Path: " + self._documents_path)
+        self._logger.info("\nRST Path: " + self._rst_directory)
 
         self._show_counter = show_counter
 
         self._topics = {}
-
-        self._logger.info("\nDocuments Path: " + self._documents_path)
-        self._logger.info("\nRST Path: " + self._rst_document_directory)
-
         self._document_failures = []
 
     ##############################################
@@ -84,12 +87,12 @@ class RstFactory:
         return self._documents_path
 
     @property
-    def rst_source_directory(self):
-        return self._rst_source_directory
+    def rst_source_path(self):
+        return self._rst_source_path
 
     @property
-    def rst_document_directory(self):
-        return self._rst_document_directory
+    def rst_directory(self):
+        return self._rst_directory
 
     @property
     def show_counter(self):
@@ -101,37 +104,52 @@ class RstFactory:
 
     ##############################################
 
+    # Fixme: name ?
+
     def join_documents_path(self, *args):
         return os.path.join(self._documents_path, *args)
 
     def join_rst_document_path(self, *args):
-        return os.path.join(self._rst_document_directory, *args)
-
-    ##############################################
-
-    def process_recursively(self, make_figure=True, make_external_figure=True, force=False):
-
-        """ Process recursively the documents directory. """
-
-        # walk top down so as to generate the subtopics first
-        self._topics.clear()
-        for current_path, sub_directories, files in os.walk(self._documents_path,
-                                                            topdown=False,
-                                                            followlinks=True):
-            relative_current_path = os.path.relpath(current_path, self._documents_path)
-            if relative_current_path == '.':
-                relative_current_path = ''
-            topic = Topic(self, relative_current_path)
-            self._topics[relative_current_path] = topic # collect the topics
-            topic.process_documents(make_figure, make_external_figure, force)
-            topic.make_toc(make_external_figure)
-
-        if self._document_failures:
-            self._logger.warning("These documents failed:\n" +
-                                 '\n'.join([document.path for document in self._document_failures]))
+        return os.path.join(self._rst_directory, *args)
 
     ##############################################
 
     def register_failure(self, document):
-
         self._document_failures.append(document)
+
+    ##############################################
+
+    def _process_topic(self, topic_path, kwargs):
+
+        relative_topic_path = os.path.relpath(topic_path, self._documents_path)
+        if relative_topic_path == '.':
+            relative_topic_path = ''
+
+        # Fixme: kwargs handling
+        make_external_figure = kwargs.get('make_external_figure', False)
+
+        topic = Topic(self, relative_topic_path)
+        self._topics[relative_topic_path] = topic # collect topics
+
+        topic.process_documents(**kwargs)
+        topic.make_toc(make_external_figure)
+
+    ##############################################
+
+    def process_recursively(self, **kwargs):
+
+        """Process recursively the documents directory.
+
+        kwargs: `make_figure`, `make_external_figure`, `force`
+
+        """
+
+        # walk top down so as to generate the subtopics first
+        self._topics.clear()
+        for topic_path, in os.walk(self._documents_path, topdown=False, followlinks=True):
+            self._process_topic(topic_path, kwargs)
+
+        if self._document_failures:
+            self._logger.warning(
+                "These documents failed:\n" +
+                '\n'.join([document.path for document in self._document_failures]))

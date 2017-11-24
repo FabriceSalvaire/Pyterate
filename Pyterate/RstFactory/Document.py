@@ -119,7 +119,7 @@ class Document:
 
     @property
     def rst_inner_path(self):
-        return os.path.sep + os.path.relpath(self._rst_path, self._topic.factory.rst_source_directory)
+        return os.path.sep + os.path.relpath(self._rst_path, self._topic.factory.rst_source_path)
 
     @property
     def stdout_path(self):
