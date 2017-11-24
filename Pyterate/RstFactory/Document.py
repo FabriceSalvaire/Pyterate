@@ -191,8 +191,8 @@ class Document:
 
         tmp_file = tempfile.NamedTemporaryFile(dir=working_directory,
                                                prefix='__document_rst_factory__', suffix='.py', mode='w')
-        tmp_file.write('from Pyterate.DocumentRstFactory.Document import save_figure\n')
-        tmp_file.write('from Pyterate.DocumentRstFactory import Document as DocumentModule\n')
+        tmp_file.write('from Pyterate.RstFactory.Document import save_figure\n')
+        tmp_file.write('from Pyterate.RstFactory import Document as DocumentModule\n')
         tmp_file.write('DocumentModule.FIGURE_DIRECTORY = "{}"\n'.format(self._topic.rst_path))
         tmp_file.write('\n')
         for chunck in self._dom:
