@@ -27,6 +27,8 @@ import glob
 import logging
 import os
 
+from . import template_environment
+from ..Template import TemplateAggregator
 from .Document import Document
 from .Template import *
 
@@ -238,56 +240,36 @@ class Topic:
         toc_path = self.join_rst_path('index.rst')
         self._logger.info("\nCreate TOC " + toc_path)
 
-        content = ''
+        kwargs = {}
 
         if self._has_readme():
             readme_content, figures = self._read_readme()
-            content += readme_content
+            kwargs['user_content'] = readme_content
             # Fixme: external figure in readme / check PySpice code
             # if make_external_figure:
             #   ...
         else:
-            title = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
-            title_line = '='*(len(title)+2)
-            if title:
-                content += TITLE_TEMPLATE.format(title=title, title_line=title_line)
+            kwargs['title'] = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
 
         # Sort the TOC
         # Fixme: sometimes we want a particular order !
         file_dict = {document.basename:document.rst_filename for document in self._documents}
         file_dict.update({link.basename:link.rst_inner_path for link in self._links})
-        toc_items = sorted(file_dict.keys())
+        kwargs['toc_items'] = [file_dict[x] for x in sorted(file_dict.keys())]
 
         self._retrieve_subtopics()
         subtopics = [topic.basename for topic in self._subtopics]
+        kwargs['subtopics'] = sorted(subtopics)
 
         if self._factory.show_counter:
             self._number_of_documents = len(self._documents) # don't count links twice
-            number_of_links = len(self._links)
+            kwargs['number_of_links'] = len(self._links)
+            kwargs['number_of_subtopics'] = len(self._subtopics)
             number_of_subtopics = sum([topic._number_of_documents for topic in self._subtopics])
-            number_of_documents = self._number_of_documents + number_of_subtopics
-            counter_strings = []
-            if self._subtopics:
-                counter_strings.append('{} sub-topics'.format(len(self._subtopics)))
-            if number_of_documents:
-                counter_strings.append('{} documents'.format(number_of_documents))
-            if number_of_links:
-                counter_strings.append('{} related documents'.format(number_of_links))
-            if counter_strings:
-                content += 'This section has '
-                if len(counter_strings) == 1:
-                    content += counter_strings[0]
-                elif len(counter_strings) == 2:
-                    content += counter_strings[0] + ' and ' + counter_strings[1]
-                elif len(counter_strings) == 3:
-                    content += counter_strings[0] + ', ' + counter_strings[1] + ' and ' + counter_strings[2]
-                content += '.\n'
+            kwargs['number_of_documents'] = self._number_of_documents + number_of_subtopics
+
+        template_aggregator = TemplateAggregator(template_environment)
+        template_aggregator.append('toc', **kwargs)
 
         with open(toc_path, 'w') as fh:
-            fh.write(content)
-            fh.write(TOC_TEMPLATE)
-            for subtopic in sorted(subtopics):
-                fh.write('  {}/index.rst\n'.format(subtopic))
-            for key in toc_items:
-                filename = file_dict[key]
-                fh.write('  {}\n'.format(filename))
+            fh.write(str(template_aggregator))

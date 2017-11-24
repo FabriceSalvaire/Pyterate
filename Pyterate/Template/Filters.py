@@ -20,11 +20,11 @@
 
 ####################################################################################################
 
-import os
-
-from ..Template import TemplateEnvironment
+__all__ = [
+    'rst_rule_title',
+    ]
 
 ####################################################################################################
 
-_template_path = os.path.join(os.path.dirname(__file__), 'templates') # Fixme: custom
-template_environment = TemplateEnvironment(_template_path)
+def rst_rule_title(title, character='='):
+    return character*(len(title) + 2)

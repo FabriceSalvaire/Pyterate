@@ -64,6 +64,7 @@ setup_dict.update(dict(
 
     install_requires=[
         'PyYAML',
+        'jinja2',
     ],
 ))
 
