@@ -34,7 +34,7 @@ from Pyterate.ExampleRstFactory.RstFactory import RstFactory
 
 ####################################################################################################
 
-parser = argparse.ArgumentParser(description='Generate Examples RST files')
+parser = argparse.ArgumentParser(description='Generate RST files')
 
 parser.add_argument('--examples-path',
                     default='examples',

@@ -12,14 +12,14 @@
 
 The Python package installs two commands:
 
-* generate-rst-api
-* generate-rst-examples
+* pyterate-rst-api
+* pyterate
 
 To generate the API documentation, run
 
 .. code-block:: sh
 
-   generate-rst-api MyModule
+   pyterate-rst-api MyModule
 
 To get help, use :code:`--help` option.
 
@@ -36,7 +36,7 @@ application.  Both solutions can generate HTML files, but this one is more suite
 static documentation, while a IPython Notebook permits to modify the content in live.  In fact both
 approaches are complementary.
 
-The program *generate-rst-examples* walks recursively through a directory, *examples* by default,
+The program *pyterate* walks recursively through a directory, *examples* by default,
 and processes each Python file.  To skip a file, add :code:`#skip` at the first or second line of
 the file.
 

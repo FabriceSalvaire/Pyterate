@@ -6,8 +6,8 @@ rm -rf ${examples}
 
 echo
 echo Generate RST examples files
-# ./bin/generate-rst-examples --skip-external-figure --skip-figure
-./bin/generate-rst-examples # --force
+# ./bin/pyterate --skip-external-figure --skip-figure
+./bin/pyterate # --force
 
 echo
 echo Run Sphinx
