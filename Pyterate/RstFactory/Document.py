@@ -26,9 +26,9 @@ import subprocess
 import sys
 import tempfile
 
+from ..Tools.Timestamp import timestamp
 from .Dom import *
 from .Template import *
-from .Tools import timestamp
 
 # Load default extensions
 from .FigureGenerator.Registry import ExtensionMetaclass

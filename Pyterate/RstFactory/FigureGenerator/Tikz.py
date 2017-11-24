@@ -27,8 +27,8 @@ import subprocess
 import tempfile
 
 from ..Dom import ImageChunk
-from ..Tools import timestamp
 from .Registry import ExtensionMetaclass
+from Pyterate.Tools.Timestamp import timestamp
 
 ####################################################################################################
 
