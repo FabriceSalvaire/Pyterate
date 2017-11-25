@@ -38,6 +38,11 @@ exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
 
 ####################################################################################################
 
+def read_requirement():
+    return [requirement.strip() for requirement in open('requirements.txt').readlines()]
+
+####################################################################################################
+
 setup_dict.update(dict(
     # include_package_data=True, # Look in MANIFEST.in
     packages=find_packages(exclude=['unit-test']),
@@ -62,10 +67,7 @@ setup_dict.update(dict(
         'Topic :: Software Development :: Documentation',
         ],
 
-    install_requires=[
-        'PyYAML',
-        'jinja2',
-    ],
+    install_requires=read_requirement(),
 ))
 
 ####################################################################################################

@@ -1,2 +1,6 @@
 PyYAML>=3.10
 jinja2
+jupyter_client
+nbconvert
+nbformat
+pygments
