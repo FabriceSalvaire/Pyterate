@@ -27,10 +27,8 @@ import glob
 import logging
 import os
 
-from . import template_environment
 from ..Template import TemplateAggregator
 from .Document import Document
-from .Template import *
 
 ####################################################################################################
 
@@ -268,7 +266,7 @@ class Topic:
             number_of_subtopics = sum([topic._number_of_documents for topic in self._subtopics])
             kwargs['number_of_documents'] = self._number_of_documents + number_of_subtopics
 
-        template_aggregator = TemplateAggregator(template_environment)
+        template_aggregator = TemplateAggregator(self._factory.template_environment)
         template_aggregator.append('toc', **kwargs)
 
         with open(toc_path, 'w') as fh:

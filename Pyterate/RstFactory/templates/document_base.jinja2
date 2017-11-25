@@ -1,0 +1,13 @@
+{% from "macros.jinja2" import rst_title, rst_getthecode -%}
+
+{% block includes %}{% endblock %}
+
+{% block title_section -%}
+{% if title -%}
+{{ rst_title(title, character='#') }}
+{%- endif %}
+{%- endblock %}
+
+{% block source_code_section %}
+{{ rst_getthecode(python_file) }}
+{% endblock %}

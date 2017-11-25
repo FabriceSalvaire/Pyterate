@@ -28,6 +28,7 @@ import logging
 import os
 
 from .Topic import Topic
+from ..Template import TemplateEnvironment
 
 ####################################################################################################
 
@@ -46,6 +47,7 @@ class RstFactory:
     ##############################################
 
     def __init__(self, documents_path, rst_source_path, rst_directory,
+                 user_template_path=None,
                  show_counter=False):
 
         """
@@ -62,7 +64,16 @@ class RstFactory:
 
         show_counter: Boolean
             show documents counters in toc
+
         """
+
+        template_path = os.path.join(os.path.dirname(__file__), 'templates')
+        search_path = []
+        if user_template_path:
+            self._logger.info('User template path: {}'.format(user_template_path))
+            search_path.append(user_template_path)
+        search_path.append(template_path)
+        self._template_environment = TemplateEnvironment(search_path)
 
         # Fixme: handle ~
         self._documents_path = os.path.realpath(documents_path)
@@ -81,6 +92,10 @@ class RstFactory:
         self._document_failures = []
 
     ##############################################
+
+    @property
+    def template_environment(self):
+        return self._template_environment
 
     @property
     def documents_path(self):

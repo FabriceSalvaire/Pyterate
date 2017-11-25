@@ -26,12 +26,10 @@ import subprocess
 import sys
 import tempfile
 
-from . import template_environment
 from ..Template import TemplateAggregator
 from ..Tools.Path import file_extension, remove_extension
 from ..Tools.Timestamp import timestamp
 from .Dom import *
-from .Template import *
 
 # Load default extensions
 from .FigureGenerator.Registry import ExtensionMetaclass
@@ -84,7 +82,7 @@ class Document:
         self._path = os.path.realpath(path) # input path
 
         if self._is_link:
-            factory = self._topic.factory
+            factory = self.factory
             path = factory.join_rst_document_path(os.path.relpath(self._path, factory.documents_path))
             self._rst_path = remove_extension(path) + '.rst'
         else:
@@ -100,6 +98,10 @@ class Document:
         return self._topic
 
     @property
+    def factory(self):
+        return self._topic.factory
+
+    @property
     def path(self):
         return self._path
 
@@ -113,7 +115,7 @@ class Document:
 
     @property
     def rst_inner_path(self):
-        return os.path.sep + os.path.relpath(self._rst_path, self._topic.factory.rst_source_path)
+        return os.path.sep + os.path.relpath(self._rst_path, self.factory.rst_source_path)
 
     @property
     def stdout_path(self):
@@ -208,7 +210,7 @@ class Document:
                 rc = process.wait()
                 if rc:
                     self._logger.error("Failed to run document " + self._path)
-                    self._topic.factory.register_failure(self)
+                    self.factory.register_failure(self)
 
     ##############################################
 
@@ -390,7 +392,7 @@ class Document:
         if not has_title:
             kwargs['title'] = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
 
-        template_aggregator = TemplateAggregator(template_environment)
+        template_aggregator = TemplateAggregator(self.factory.template_environment)
         template_aggregator.append('document', **kwargs)
 
         with open(self._rst_path, 'w') as fh:

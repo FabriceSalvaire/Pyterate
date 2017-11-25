@@ -67,24 +67,38 @@ parser.add_argument('--force',
                     action='store_true', default=False,
                     help="Force the figure generation")
 
+parser.add_argument('--user-template',
+                    default=None,
+                    help="User template path")
+
 args = parser.parse_args()
 
 ####################################################################################################
 
+if args.user_template is None:
+    user_template = os.path.realpath(os.path.join(args.input_path, 'pytrate-templates'))
+    if not os.path.exists(user_template):
+        user_template = None
+else:
+    user_template = args.user_template
+    
 rst_factory = RstFactory(
-    args.input_path,
-    args.rst_source_path,
-    args.rst_directory,
+    documents_path=args.input_path,
+    rst_source_path=args.rst_source_path,
+    rst_directory=args.rst_directory,
+    user_template_path=user_template,
 )
 
 if args.document_path:
     document_path= os.path.relpath(args.input_path, args.document_path)
     topic = Topic(rst_factory, os.path.dirname(document_path))
     document = Document(topic, os.path.basename(document_path))
-    topic.process_document(document,
-                           make_figure=not args.skip_figure,
-                           make_external_figure=not args.skip_circuit_figure,
-                           force=True)
+    topic.process_document(
+        document,
+        make_figure=not args.skip_figure,
+        make_external_figure=not args.skip_circuit_figure,
+        force=True,
+    )
 else:
     rst_factory.process_recursively(
         make_figure=not args.skip_figure,

@@ -32,13 +32,22 @@ class TemplateEnvironment:
 
     ##############################################
 
-    def __init__(self, template_path):
+    def __init__(self, search_path):
 
-        self._template_path = template_path
+        """
+
+        Parameters:
+
+        search_path
+             string or list of strings
+
+        """
+
+        self._search_path = search_path
 
         self._environment = Environment(
             # loader=PackageLoader('', 'templates'),
-            loader=FileSystemLoader(self._template_path),
+            loader=FileSystemLoader(self._search_path),
 
             # trim_blocks=True,
             # lstrip_blocks=True,

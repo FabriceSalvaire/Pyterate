@@ -1,0 +1,18 @@
+{% macro rst_title(title, character) -%}
+{% set rule = title|rst_rule_title(character) %}
+{{rule}}
+ {{title}}
+{{rule}}
+{%- endmacro %}
+
+{% macro rst_toctree(items) -%}
+.. toctree::
+{%- for item in items %}
+    {{item}}
+{%- endfor %}
+{%- endmacro -%}
+
+{% macro rst_getthecode(file) -%}
+.. getthecode:: {{file}}
+    :language: python3
+{%- endmacro -%}
