@@ -1,0 +1,7 @@
+{% from "macros.jinja2" import rst_title, rst_toctree, rst_automodule -%}
+
+{{ rst_title(title, '=') }}
+
+{{ rst_toctree(submodules) }}
+
+{{ rst_automodule(module) }}

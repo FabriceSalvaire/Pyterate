@@ -1,0 +1,19 @@
+{% macro rst_title(title, character) -%}
+{% set rule = title|rst_rule_title(character) %}
+{{rule}}
+ {{title}}
+{{rule}}
+{%- endmacro %}
+
+{% macro rst_automodule(module) -%}
+.. automodule:: {{module}}
+   :members:
+   :show-inheritance:
+{% endmacro -%}
+
+{% macro rst_toctree(items) -%}
+.. toctree::
+{%- for item in items %}
+    {{item}}
+{%- endfor %}
+{%- endmacro -%}

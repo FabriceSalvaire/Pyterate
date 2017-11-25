@@ -32,12 +32,12 @@ In comparison to *sphinx-apidoc*, it generates sorter titles.
 
 """
 
-# Fixme: could use Jinja
-
 ####################################################################################################
 
 import logging
 import os
+
+from ..Template import TemplateEnvironment
 
 ####################################################################################################
 
@@ -45,8 +45,14 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-def _format_template(template, *arg, **kwargs):
-    return template.lstrip().format(*arg, **kwargs)
+# For default set autodoc_default_flags in conf.py
+#
+# :members:           include members
+# :undoc-members:     include members without docstrings
+# :private-members:   include private
+# :special-members:   include __special__
+# :inherited-members: include inherited members
+# :no-undoc-members:
 
 ####################################################################################################
 
@@ -73,6 +79,10 @@ class ApiRstFactory:
         self._logger.info('Root Module Path: {}'.format(self._root_module_path))
         self._logger.info('Root Module Name: {}'.format(self._root_module_name))
         self._logger.info('Exclude:' + '\n  '.join(self._excluded_directory))
+
+
+        template_path = os.path.join(os.path.dirname(__file__), 'templates') # Fixme: custom
+        self._template_environment = TemplateEnvironment(template_path)
 
         if not os.path.exists(self._rst_directory):
             os.makedirs(self._rst_directory)
@@ -132,9 +142,11 @@ class ApiRstFactory:
                 fh.write(rst)
 
         # Generate the TOC RST file
-        rst = self._generate_toc(directory_module_name, sorted(module_names + sub_modules))
-        rst += '\n'
-        rst += self._generate_automodule(directory_module_python_path)
+        rst = self._generate_toc(
+            directory_module_python_path,
+            directory_module_name,
+            sorted(module_names + sub_modules),
+        )
         rst_file_name = os.path.join(os.path.dirname(dst_directory), directory_module_name + '.rst')
         with open(rst_file_name, 'w') as fh:
             fh.write(rst)
@@ -201,75 +213,21 @@ class ApiRstFactory:
 
     ##############################################
 
-    @staticmethod
-    def _generate_title(module_name):
+    def _generate_toc(self, directory_module_path, directory_module_name, submodules):
 
-        template = """
-{header_line}
-{module_name}
-{header_line}"""
-
-        return _format_template(
-            template,
-            module_name=module_name,
-            header_line='*'*(len(module_name) +2),
-        )
-
-    ##############################################
-
-    def _generate_toc(self, directory_module_name, module_names):
-
-        template = """{title}
-
-.. toctree::
-"""
-
-        rst = _format_template(
-            template,
-            title=self._generate_title(directory_module_name),
-        )
-
-        for module_name in module_names:
-            rst += ' '*2 + os.path.join(directory_module_name, module_name) + '\n'
-
-        return rst
-
-    ##############################################
-
-    def _generate_automodule(self, module_path):
-
-        #
-        # For default set autodoc_default_flags in conf.py
-        #
-        # :members:           include members
-        # :undoc-members:     include members without docstrings
-        # :private-members:   include private
-        # :special-members:   include __special__
-        # :inherited-members: include inherited members
-        # :no-undoc-members:
-
-        template = """
-.. automodule:: {module_path}
-   :members:
-   :show-inheritance:
-"""
-
-        return _format_template(
-            template,
-            module_path=module_path,
+        return self._template_environment.render(
+            'toc.jinja2',
+            module=directory_module_path,
+            title=directory_module_name,
+            submodules=[os.path.join(directory_module_name, module_name) for module_name in submodules],
         )
 
     ##############################################
 
     def _generate_rst_module(self, module_path, module_name):
 
-        template = """{title}
-
-{automodule}
-"""
-
-        return _format_template(
-            template,
-            title=self._generate_title(module_name),
-            automodule=self._generate_automodule(self.join_python_path(module_path, module_name))
+        return self._template_environment.render(
+            'module.jinja2',
+            title=module_name,
+            module=self.join_python_path(module_path, module_name),
         )
