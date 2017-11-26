@@ -25,6 +25,8 @@
 
 def sublist_accumulator_iterator(iterable):
 
+    # used to implement os.makedirs
+
     """From a list (1, 2, 3, ...) this generator yields (), (1,), (1, 2), (1, 2, 3), ..."""
 
     for i in range(len(iterable) +1):
