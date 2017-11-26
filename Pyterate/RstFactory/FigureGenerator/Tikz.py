@@ -49,13 +49,13 @@ class TikzImage:
 
     ##############################################
 
-    def __init__(self, tex_filename, source_directory, rst_directory):
+    def __init__(self, document, tex_filename):
 
         svg_filename = tex_filename.replace('.tex', '.svg')
-        self._tex_path = os.path.join(source_directory, 'tex', tex_filename)
-        self._rst_directory = rst_directory
+        self._tex_path = os.path.join(document.topic_path, 'tex', tex_filename)
+        self._rst_directory = document.topic_rst_path
         self._figure_path = svg_filename
-        self._figure_real_path = os.path.join(rst_directory, svg_filename)
+        self._figure_real_path = os.path.join(self._rst_directory, svg_filename)
 
     ##############################################
 
@@ -115,8 +115,8 @@ class TikzImageChunk(TikzImage, ImageChunk, metaclass=ExtensionMetaclass):
 
     ##############################################
 
-    def __init__(self, line, source_directory, rst_directory):
+    def __init__(self, document, line):
 
         tex_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
         ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
-        TikzImage.__init__(self, tex_filename, source_directory, rst_directory)
+        TikzImage.__init__(self, document, tex_filename)

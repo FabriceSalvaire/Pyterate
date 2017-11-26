@@ -54,6 +54,14 @@ class Document:
     FIGURE_MARKUPS = ['fig', 'lfig', 'i', 'itxt', 'o']
     FIGURE_MARKUPS += ExtensionMetaclass.extension_markups()
 
+    FIGURE_MAP = {
+        'fig':  FigureChunk,
+        'lfig': LocaleFigureChunk,
+        'i':    PythonIncludeChunk,
+        'itxt': LitteralIncludeChunk,
+    }
+    FIGURE_MAP.update({markup:cls for markup, cls in ExtensionMetaclass.iter()})
+
     ##############################################
 
     def __init__(self, topic, filename):
@@ -77,6 +85,14 @@ class Document:
     @property
     def topic(self):
         return self._topic
+
+    @property
+    def topic_path(self):
+        return self._topic.path
+
+    @property
+    def topic_rst_path(self):
+        return self._topic.rst_path
 
     @property
     def factory(self):
@@ -156,41 +172,8 @@ class Document:
                     self._logger.debug('Output {0.output_type}\n{0}'.format(output))
                     chunk.outputs = outputs
 
-###    def run_code(self):
-###
-###        """This function make a temporary copy of the document with calls to *save_figure* and run it.
-###
-###        """
-###
-###        working_directory = os.path.dirname(self._path)
-###
-###        tmp_file = tempfile.NamedTemporaryFile(dir=working_directory,
-###                                               prefix='__document_rst_factory__', suffix='.py', mode='w')
-###        tmp_file.write('from Pyterate.RstFactory.Document import save_figure\n')
-###        tmp_file.write('from Pyterate.RstFactory import Document as DocumentModule\n')
-###        tmp_file.write('DocumentModule.FIGURE_DIRECTORY = "{}"\n'.format(self._topic.rst_path))
-###        tmp_file.write('\n')
-###        for chunck in self._dom:
-###            if isinstance(chunck, (CodeChunk, FigureChunk, OutputChunk, RstFormatChunk)):
-###                tmp_file.write(chunck.to_python())
-###        tmp_file.flush()
-###
-###        self._logger.info("\nRun document " + self._path)
-###        # with open(tmp_file.name, 'r') as fh:
-###        #     print(fh.read())
-###        with open(self.stdout_path, 'w') as stdout:
-###            with open(self.stderr_path, 'w') as stderr:
-###                env = dict(os.environ)
-###                env['PyterateLogLevel'] = 'WARNING'
-###                process = subprocess.Popen((sys.executable, tmp_file.name),
-###                                           stdout=stdout,
-###                                           stderr=stderr,
-###                                           cwd=working_directory,
-###                                           env=env)
-###                rc = process.wait()
-###                if rc:
-###                    self._logger.error("Failed to run document " + self._path)
-###                    self.factory.register_failure(self)
+        # self._logger.error("Failed to run document " + self._path)
+        # self.factory.register_failure(self)
 
     ##############################################
 
@@ -264,38 +247,39 @@ class Document:
             line = self._source[i]
             i += 1
             remove_next_blanck_line = True
+
+            # Handle comments
             if (self._line_start_by_markup(line, '?')
                 or line.startswith('#'*10) # long rule # Fixme: hardcoded !
                 or line.startswith(' '*4 + '#'*10)): # short rule
-                pass # these comments
+                pass
+
+            # Handle figures
             elif self._line_starts_by_figure_markup(line):
+                # append rst / code chunk
                 if self._rst_chunck:
                     self._append_rst_chunck()
                 elif self._code_chunck:
                     self._append_code_chunck()
-                # Fixme: use generic map ?
-                if self._line_start_by_markup(line, 'fig'):
-                    self._dom.append(FigureChunk(self, line))
-                elif self._line_start_by_markup(line, 'lfig'):
-                    self._dom.append(LocaleFigureChunk(line, self._topic.path, self._topic.rst_path))
-                elif self._line_start_by_markup(line, 'i'):
-                    self._dom.append(PythonIncludeChunk(self, line))
-                elif self._line_start_by_markup(line, 'itxt'):
-                    self._dom.append(LitteralIncludeChunk(self, line))
-                elif self._line_start_by_markup(line, 'o'):
+                # handle chunk type
+                if self._line_start_by_markup(line, 'o'):
                     if not self._dom.last_chunk.is_executed:
                         self._logger.error('Previous chunk must be code') # Fixme: handle
-                    self._dom.append(OutputChunk(self._dom.last_chunk))
+                        self._dom.append(OutputChunk(self._dom.last_chunk))
                 else:
                     for markup, cls in ExtensionMetaclass.iter():
                         if self._line_start_by_markup(line, markup):
-                            self._dom.append(cls(line, self._topic.path, self._topic.rst_path))
+                            self._dom.append(cls(self, line))
                             break
-            elif self._line_start_by_markup(line, '!'): # RST content
+
+            # Handle RST contents
+            elif self._line_start_by_markup(line, '!'):
                 if self._code_chunck:
                     self._append_code_chunck()
                 self._rst_chunck.append(line.strip()[4:] + '\n') # hack to get blank line
-            else: # Python code
+
+            # Handle Python codes
+            else:
                 # if line.startswith('pylab.show()'):
                 #     continue
                 remove_next_blanck_line = False
@@ -308,6 +292,8 @@ class Document:
                 self._code_chunck.append(line)
             if remove_next_blanck_line and i < number_of_lines and not self._source[i].strip():
                 i += 1
+
+        # Append remaining chunck
         if self._rst_chunck:
             self._append_rst_chunck()
         elif self._code_chunck:

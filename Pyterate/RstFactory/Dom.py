@@ -189,6 +189,9 @@ class ImageChunk(Chunk):
     @staticmethod
     def parse_args(line, markup):
 
+        # usage:
+        # #tz# diode.tex width=500
+
         start = len(markup) + 2
         line = line[start:].strip()
 
@@ -485,11 +488,11 @@ class LocaleFigureChunk(ImageChunk):
 
     ##############################################
 
-    def __init__(self, line, source_directory, rst_directory):
+    def __init__(self, document, line):
 
         figure_path, kwargs = ImageChunk.parse_args(line, 'lfig') # Fixme: MARKUP
         figure_filename = os.path.basename(figure_path)
-        figure_absolut_path = os.path.join(source_directory, figure_path)
+        figure_absolut_path = os.path.join(document.topic_path, document.topic_rst_path)
         link_path = os.path.join(rst_directory, figure_filename)
         super().__init__(figure_filename, **kwargs)
 

@@ -49,13 +49,13 @@ class CircuitMacrosImage:
 
     ##############################################
 
-    def __init__(self, m4_filename, source_directory, rst_directory):
+    def __init__(self, document, m4_filename):
 
         png_filename = m4_filename.replace('.m4', '.png')
-        self._m4_path = os.path.join(source_directory, 'm4', m4_filename)
-        self._rst_directory = rst_directory
+        self._m4_path = os.path.join(document.topic_path, 'm4', m4_filename)
+        self._rst_directory = document.topic_rst_path
         self._figure_path = png_filename
-        self._figure_real_path = os.path.join(rst_directory, png_filename)
+        self._figure_real_path = os.path.join(self._rst_directory, png_filename)
 
     ##############################################
 
@@ -184,8 +184,8 @@ class CircuitMacrosImageChunk(CircuitMacrosImage, ImageChunk, metaclass=Extensio
 
     ##############################################
 
-    def __init__(self, line, source_directory, rst_directory):
+    def __init__(self, document, line):
 
         m4_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
         ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
-        CircuitMacrosImage.__init__(self, m4_filename, source_directory, rst_directory)
+        CircuitMacrosImage.__init__(self, document, m4_filename)

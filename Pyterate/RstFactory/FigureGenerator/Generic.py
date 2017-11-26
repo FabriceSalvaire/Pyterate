@@ -41,13 +41,13 @@ class GeneratedImage:
 
     ##############################################
 
-    def __init__(self, command, figure_name, source_directory, rst_directory):
+    def __init__(self, command, document, figure_name):
 
         self._command = command
         self._figure_name = figure_name
 
-        self._rst_directory = rst_directory
-        self._figure_real_path = os.path.join(rst_directory, self._figure_name)
+        self._rst_directory = document.topic_rst_path
+        self._figure_real_path = os.path.join(self._rst_directory, self._figure_name)
 
     ##############################################
 
@@ -105,10 +105,10 @@ class GeneratorImageChunk(GeneratedImage, ImageChunk, metaclass=ExtensionMetacla
 
     ##############################################
 
-    def __init__(self, line, source_directory, rst_directory):
+    def __init__(self, document, line):
 
         # ./bin/make-figure --kwargs="instrument='Guitare',tuning='Standard'" Musica.Figure.Fretboard.Fretboard figures/guitare-fretboard.tex
 
         command, figure_name, kwargs = ImageChunk.parse_args(line, self.__markup__)
         ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
-        GeneratedImage.__init__(self, command, figure_name, source_directory, rst_directory)
+        GeneratedImage.__init__(self, command, document, figure_name)
