@@ -155,7 +155,7 @@ class RstFactory:
 
         """Process recursively the documents directory.
 
-        kwargs: `make_figure`, `make_external_figure`, `force`
+        kwargs: `run_code`, `make_external_figure`, `force`
 
         """
 

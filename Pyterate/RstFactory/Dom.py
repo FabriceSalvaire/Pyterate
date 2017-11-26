@@ -21,7 +21,7 @@
 # Fixme: python console lexer pycon
 # Fixme: default lexer python3
 
-# Fixme: These classes to several tasks
+# Fixme: These classes do several tasks
 #  decode input
 #  store data
 #  __str__ generate RST
@@ -40,30 +40,102 @@ __all__ = [
     'ImageChunk',
     'FigureChunk',
     'LocaleFigureChunk',
-    'StdoutChunk',
     'OutputChunk',
     'RstFormatChunk',
 ]
 
 ####################################################################################################
 
+import ast
+import astunparse
 import os
 
 ####################################################################################################
 
+# Must fit Python, RST and LaTeX formulae
 OPENING_FORMAT_MARKUP = '@<@'
 CLOSING_FORMAT_MARKUP = '@>@'
-
-####################################################################################################
-
-class Dom(list):
-    pass
+ESCAPED_OPENING_FORMAT_MARKUP = '@@<<@@'
+ESCAPED_CLOSING_FORMAT_MARKUP = '@@>>@@'
 
 ####################################################################################################
 
 class Chunk:
 
     """ This class represents a chunk of lines in the source. """
+
+    MARKUP = None
+
+    ##############################################
+
+    @classmethod
+    def remove_markup(cls, line, lstrip=True, strip=False):
+
+        line = line[len(cls.MARKUP):]
+        if strip:
+            return line.strip()
+        elif lstrip:
+            return line.lstrip()
+        else:
+            return line
+
+    ##############################################
+
+    @classmethod
+    def parse_function_call(cls, line):
+
+        # "Module(body=[
+        #     Expr(value=Call(
+        #         func=Name(id='save_figure', ctx=Load()),
+        #         args=[
+        #             Name(id='figure', ctx=Load()),
+        #             Str(s='my-figure.png')
+        #         ],
+        #         keywords=[
+        #            keyword(arg='foo', value=Str(s='bar'))
+        #         ]))])
+
+        line = cls.remove_markup(line, strip=True)
+
+        module_ = ast.parse(line)
+        expression = module_.body[0]
+        call = expression.value
+        if isinstance(call, ast.Call):
+            return call
+        else:
+            raise NameError("Invalid call '{}'".format(line))
+
+    ##############################################
+
+    @staticmethod
+    def to_ast(obj):
+
+        if isinstance(obj, str):
+            return ast.Str(obj)
+        elif isinstance(obj, (int, float)):
+            return ast.Num(obj)
+        else:
+            raise NotImplementedError
+
+    ##############################################
+
+    @classmethod
+    def update_function_call(cls, call, *args, **kwargs):
+
+        for obj in args:
+            call.args.append(cls.to_ast(obj))
+        for name, obj in kwargs.items():
+            keyword = ast.keyword(name, cls.to_ast(obj))
+            call.args.append(keyword)
+        return astunparse.unparse(call).rstrip()
+
+    ##############################################
+
+    @staticmethod
+    def symlink_source(source, target):
+
+        if not os.path.exists(target):
+            os.symlink(source, target)
 
     ##############################################
 
@@ -73,9 +145,20 @@ class Chunk:
 
     ##############################################
 
+    def __bool__(self):
+        return bool(self._lines)
+
+    ##############################################
+
     def append(self, line):
 
         self._lines.append(line)
+
+    ##############################################
+
+    @property
+    def is_executed(self):
+        return hasattr(self, 'to_python')
 
 ####################################################################################################
 
@@ -83,16 +166,11 @@ class RstChunk(Chunk):
 
     """ This class represents a RST content. """
 
-    ##############################################
-
-    def __bool__(self):
-
-        return bool(self._lines)
+    MARKUP = '#!#'
 
     ##############################################
 
     def __str__(self):
-
         return ''.join(self._lines)
 
     ##############################################
@@ -106,21 +184,21 @@ class RstChunk(Chunk):
 
     ##############################################
 
-    def to_rst_format_chunk(self, document, stdout_chunk_index):
+    def to_rst_format_chunk(self):
 
-        return RstFormatChunk(document, self, stdout_chunk_index)
+        return RstFormatChunk(self)
 
 ####################################################################################################
 
-class CodeChunk(Chunk):
-
-    """ This class represents a code block. """
+class ExecutedChunk(Chunk):
 
     ##############################################
 
-    def append_head(self, line):
+    def __init__(self):
 
-        self._lines.insert(1, line)
+        super().__init__()
+
+        self.outputs = []
 
     ##############################################
 
@@ -131,9 +209,17 @@ class CodeChunk(Chunk):
                 return True
         return False
 
+####################################################################################################
+
+class CodeChunk(ExecutedChunk):
+
+    """ This class represents a code block. """
+
     ##############################################
 
     def __str__(self):
+
+        # Fixme: jinja
 
         if bool(self):
             source = ''.join(['    ' + line for line in self._lines])
@@ -147,6 +233,7 @@ class CodeChunk(Chunk):
 
         source = ''
         for line in self._lines:
+            # Fixme:
             if not line.startswith('pylab.show') and not line.startswith('plt.show'):
                 source += line
         return source
@@ -155,13 +242,15 @@ class CodeChunk(Chunk):
 
 class HiddenCodeChunk(CodeChunk):
 
-    """ This class represents a code block. """
+    """ This class represents a hidden code block. """
+
+    MARKUP = '#h#'
 
     ##############################################
 
     def append(self, line):
 
-        self._lines.append(line[len('#h# '):])
+        super().append(self.remove_markup(line))
 
     ##############################################
 
@@ -175,21 +264,28 @@ class LitteralIncludeChunk(Chunk):
 
     """ This class represents a litteral include block. """
 
+    MARKUP = '#itxt#'
+
     ##############################################
 
     def __init__(self, document, line):
 
         # Fixme: duplicated code with figure etc. ???
-        include_path = line.replace('#itxt# ', '').strip()
+
+        include_path = self.remove_markup(line, strip=True)
+
         self._include_filename = os.path.basename(include_path)
+
+        # Fixme: document ???
         source = document.topic.join_path(include_path)
         target = document.topic.join_rst_path(self._include_filename)
-        if not os.path.exists(target):
-            os.symlink(source, target)
+        self.symlink_source(source, target)
 
     ##############################################
 
     def __str__(self):
+
+        # Fixme: jinja
 
         template = '''
 .. literalinclude:: {}
@@ -203,20 +299,25 @@ class PythonIncludeChunk(Chunk):
 
     """ This class represents a Python litteral include block. """
 
+    MARKUP = '#i#'
+
     ##############################################
 
     def __init__(self, document, line):
 
-        self._include_path = line.replace('#i# ', '').strip()
+        self._include_path = self.remove_markup(line, strip=True)
+
+        # Fixme: document ???
         # Fixme: relpath right ?
         source = os.path.relpath(document.topic.join_path(self._include_path), document.topic.rst_path)
         target = document.topic.join_rst_path(self._include_path)
-        if not os.path.exists(target):
-            os.symlink(source, target)
+        self.symlink_source(source, target)
 
     ##############################################
 
     def __str__(self):
+
+        # Fixme: jinja
 
         template = '''
 .. getthecode:: {}
@@ -251,6 +352,8 @@ class ImageChunk(Chunk):
 
     def __init__(self, figure_path, scale='', width='', height='', align=''):
 
+        # Fixme: kwargs
+
         self._figure_path = figure_path
         self._scale = scale
         self._width = width
@@ -260,6 +363,8 @@ class ImageChunk(Chunk):
     ##############################################
 
     def __str__(self):
+
+        # Fixme: jinja
 
         template = '''
 .. image:: {0._figure_path}
@@ -278,21 +383,28 @@ class FigureChunk(ImageChunk):
 
     """ This class represents an image block for a saved figure. """
 
+    MARKUP = '#fig#'
+
     ##############################################
 
-    def __init__(self, line):
+    def __init__(self, document, line):
 
-        # weak ...
-        Chunk.__init__(self) # Fixme: better way ???
+        # Fixme: better way ???
+        Chunk.__init__(self)
         self.append(line)
-        figure_path = line[line.rindex(", '")+3:line.rindex("')")]
-        super().__init__(figure_path)
+
+        self._rst_path = document.topic.rst_path
+
+        self._call = self.parse_function_call(line)
+        figure_filename = self._call.args[1].s # require a str
+
+        super().__init__(figure_filename)
 
     ##############################################
 
     def to_python(self):
 
-        return self._lines[0][len('#fig# '):]
+        return self.update_function_call(self._call, self._rst_path)
 
 ####################################################################################################
 
@@ -300,98 +412,70 @@ class LocaleFigureChunk(ImageChunk):
 
     """ This class represents an image block for a figure. """
 
+    MARKUP = '#lfig#'
+
     ##############################################
 
     def __init__(self, line, source_directory, rst_directory):
 
-        figure_path, kwargs = ImageChunk.parse_args(line, 'lfig')
+        figure_path, kwargs = ImageChunk.parse_args(line, 'lfig') # Fixme: MARKUP
         figure_filename = os.path.basename(figure_path)
         figure_absolut_path = os.path.join(source_directory, figure_path)
         link_path = os.path.join(rst_directory, figure_filename)
         super().__init__(figure_filename, **kwargs)
 
-        if not os.path.exists(link_path):
-            os.symlink(figure_absolut_path, link_path)
+        self.symlink_source(figure_absolut_path, link_path)
 
 ####################################################################################################
 
-class StdoutChunk(Chunk):
+class OutputChunk(Chunk):
 
     """ This class represents an output block. """
 
     ##############################################
 
-    def __init__(self, document, stdout_chunk_index):
+    def __init__(self, code_chunk):
 
-        self._document = document
-        self._stdout_chunk_index = stdout_chunk_index
-
-    ##############################################
-
-    @property
-    def stdout_chunk_index(self):
-        return self._stdout_chunk_index
-
-####################################################################################################
-
-class OutputChunk(StdoutChunk):
-
-    ##############################################
-
-    def __init__(self, document, line, stdout_chunk_index):
-
-        StdoutChunk.__init__(self, document, stdout_chunk_index)
-        self._line = line
+        super().__init__()
+        self._code_chunck = code_chunk
 
     ##############################################
 
     def __str__(self):
 
-        # Fixme: use content ???
-        try:
-            slice_, content = self._document.stdout_chunk(self._stdout_chunk_index)
-            lower = slice_.start
-            upper = slice_.stop -1
-            # Sphynx count \f as newline
-            if self._stdout_chunk_index:
-                lower += self._stdout_chunk_index
-                upper += self._stdout_chunk_index
+        # PythonConsoleLexer    pycon
+        # Python3TracebackLexer py3tb
 
-            template = '''
-.. literalinclude:: {}
-    :lines: {}-{}
+        rst = '''
+.. code-block:: none
 
 '''
-            return template.format(os.path.basename(self._document.stdout_path), lower+1, upper+1)
-        except IndexError:
-            return 'OUTPUT ERROR'
+        for output in self._code_chunck.outputs:
+            for line in str(output):
+                rst += ' '*4 + line
+        rst += '\n'
 
-    ##############################################
-
-    def to_python(self):
-
-        return 'print("\f #{}")\n'.format(self._stdout_chunk_index)
+        return rst
 
 ####################################################################################################
 
-class RstFormatChunk(StdoutChunk):
+class RstFormatChunk(ExecutedChunk):
 
     ##############################################
 
-    def __init__(self, document, rst_chunk, stdout_chunk_index):
+    def __init__(self, rst_chunk):
 
-        StdoutChunk.__init__(self, document, stdout_chunk_index)
+        super().__init__()
+
         self._lines = rst_chunk._lines
 
     ##############################################
 
     def __str__(self):
 
-        try:
-            slice_, content = self._document.stdout_chunk(self._stdout_chunk_index)
-            return content
-        except IndexError:
-            return 'OUTPUT ERROR'
+        # Fixmes: more than one output
+
+        return str(self.outputs[0])
 
     ##############################################
 
@@ -402,7 +486,28 @@ class RstFormatChunk(StdoutChunk):
         rst = rst.replace('}', '}}')
         rst = rst.replace(OPENING_FORMAT_MARKUP, '{')
         rst = rst.replace(CLOSING_FORMAT_MARKUP, '}')
-        rst = rst.replace('@@<<@@', OPENING_FORMAT_MARKUP)
-        rst = rst.replace('@@>>@@', CLOSING_FORMAT_MARKUP)
-        marker = "\f #{}".format(self._stdout_chunk_index)
-        return 'print(r"""' + rst + '""".format(**locals()))\n' + 'print("' + marker + '")\n'
+        rst = rst.replace(ESCAPED_OPENING_FORMAT_MARKUP, OPENING_FORMAT_MARKUP)
+        rst = rst.replace(ESCAPED_CLOSING_FORMAT_MARKUP, CLOSING_FORMAT_MARKUP)
+
+        return 'print(r"""' + rst + '""".format(**locals()))\n'
+
+####################################################################################################
+
+class Dom(list):
+
+    # __iter__
+    # append
+
+    ##############################################
+
+    def iter_on_code_chunks(self):
+
+        for chunck in self:
+            if chunck.is_executed:
+                yield chunck
+
+    ##############################################
+
+    @property
+    def last_chunk(self):
+        return self[-1]

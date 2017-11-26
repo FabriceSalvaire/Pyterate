@@ -55,7 +55,7 @@ parser.add_argument('--rst-directory',
                     default='examples',
                     help="RST directory")
 
-parser.add_argument('--skip-figure',
+parser.add_argument('--skip-code-execution',
                     action='store_true', default=False,
                     help="Don't generate figures")
 
@@ -81,7 +81,7 @@ if args.user_template is None:
         user_template = None
 else:
     user_template = args.user_template
-    
+
 rst_factory = RstFactory(
     documents_path=args.input_path,
     rst_source_path=args.rst_source_path,
@@ -95,13 +95,13 @@ if args.document_path:
     document = Document(topic, os.path.basename(document_path))
     topic.process_document(
         document,
-        make_figure=not args.skip_figure,
+        run_code=not args.skip_code_execution,
         make_external_figure=not args.skip_circuit_figure,
         force=True,
     )
 else:
     rst_factory.process_recursively(
-        make_figure=not args.skip_figure,
+        run_code=not args.skip_code_execution,
         make_external_figure=not args.skip_external_figure,
         force=args.force,
     )

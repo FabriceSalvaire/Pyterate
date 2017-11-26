@@ -22,12 +22,11 @@
 
 import logging
 import os
-import subprocess
-import sys
 import tempfile
 
+from ..Jupyter import JupyterClient
 from ..Template import TemplateAggregator
-from ..Tools.Path import file_extension, remove_extension
+from ..Tools.Path import remove_extension
 from ..Tools.Timestamp import timestamp
 from .Dom import *
 
@@ -40,24 +39,9 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-FIGURE_DIRECTORY = None
-
-####################################################################################################
-
-def save_figure(figure,
-                figure_filename):
-
-    """ This function is called from document to save a figure. """
-
-    figure_format = file_extension(figure_filename)[1:] # foo.png -> png
-    figure_path = os.path.join(FIGURE_DIRECTORY, figure_filename)
-    _module_logger.info("\nSave figure " + figure_path)
-    figure.savefig(figure_path,
-                   format=figure_format,
-                   dpi=150,
-                   orientation='landscape', papertype='a4',
-                   transparent=True, frameon=False,
-    )
+SETUP_CODE = '''
+from Pyterate.RstFactory.Tools import save_figure
+'''
 
 ####################################################################################################
 
@@ -88,9 +72,6 @@ class Document:
         else:
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
 
-        self._stdout = None
-        self._stdout_chunck_counter = -1
-
     ##############################################
 
     @property
@@ -117,25 +98,6 @@ class Document:
     def rst_inner_path(self):
         return os.path.sep + os.path.relpath(self._rst_path, self.factory.rst_source_path)
 
-    @property
-    def stdout_path(self):
-        # return remove_extension(self._rst_path) + '.stdout'
-        return self._topic.join_rst_path(self._basename + '.stdout')
-
-    @property
-    def stderr_path(self):
-        # return remove_extension(self._rst_path) + '.stdout'
-        return self._topic.join_rst_path(self._basename + '.stderr')
-
-    ##############################################
-
-    def increment_stdout_chunk_counter(self):
-        self._stdout_chunck_counter += 1
-        return self._stdout_chunck_counter
-
-    def stdout_chunk(self, i):
-        return self._stdout_chunks[i]
-
     ##############################################
 
     @property
@@ -145,6 +107,8 @@ class Document:
     ##############################################
 
     def read(self):
+
+        # Fixme: API ??? called process_document()
 
         # Must be called first !
 
@@ -176,41 +140,57 @@ class Document:
 
     ##############################################
 
-    def make_figure(self):
-
-        """This function make a temporary copy of the document with calls to *save_figure* and run it.
-
-        """
-
-        working_directory = os.path.dirname(self._path)
-
-        tmp_file = tempfile.NamedTemporaryFile(dir=working_directory,
-                                               prefix='__document_rst_factory__', suffix='.py', mode='w')
-        tmp_file.write('from Pyterate.RstFactory.Document import save_figure\n')
-        tmp_file.write('from Pyterate.RstFactory import Document as DocumentModule\n')
-        tmp_file.write('DocumentModule.FIGURE_DIRECTORY = "{}"\n'.format(self._topic.rst_path))
-        tmp_file.write('\n')
-        for chunck in self._dom:
-            if isinstance(chunck, (CodeChunk, FigureChunk, OutputChunk, RstFormatChunk)):
-                tmp_file.write(chunck.to_python())
-        tmp_file.flush()
+    def run_code(self):
 
         self._logger.info("\nRun document " + self._path)
-        # with open(tmp_file.name, 'r') as fh:
-        #     print(fh.read())
-        with open(self.stdout_path, 'w') as stdout:
-            with open(self.stderr_path, 'w') as stderr:
-                env = dict(os.environ)
-                env['PyterateLogLevel'] = 'WARNING'
-                process = subprocess.Popen((sys.executable, tmp_file.name),
-                                           stdout=stdout,
-                                           stderr=stderr,
-                                           cwd=working_directory,
-                                           env=env)
-                rc = process.wait()
-                if rc:
-                    self._logger.error("Failed to run document " + self._path)
-                    self.factory.register_failure(self)
+
+        with tempfile.TemporaryDirectory() as working_directory:
+            jupyter_client = JupyterClient(working_directory)
+            jupyter_client.run_cell(SETUP_CODE)
+            for chunk in self._dom.iter_on_code_chunks():
+                code = chunk.to_python()
+                self._logger.debug('Execute\n{}'.format(code))
+                outputs = jupyter_client.run_cell(code)
+                if outputs:
+                    output = outputs[0]
+                    self._logger.debug('Output {0.output_type}\n{0}'.format(output))
+                    chunk.outputs = outputs
+
+###    def run_code(self):
+###
+###        """This function make a temporary copy of the document with calls to *save_figure* and run it.
+###
+###        """
+###
+###        working_directory = os.path.dirname(self._path)
+###
+###        tmp_file = tempfile.NamedTemporaryFile(dir=working_directory,
+###                                               prefix='__document_rst_factory__', suffix='.py', mode='w')
+###        tmp_file.write('from Pyterate.RstFactory.Document import save_figure\n')
+###        tmp_file.write('from Pyterate.RstFactory import Document as DocumentModule\n')
+###        tmp_file.write('DocumentModule.FIGURE_DIRECTORY = "{}"\n'.format(self._topic.rst_path))
+###        tmp_file.write('\n')
+###        for chunck in self._dom:
+###            if isinstance(chunck, (CodeChunk, FigureChunk, OutputChunk, RstFormatChunk)):
+###                tmp_file.write(chunck.to_python())
+###        tmp_file.flush()
+###
+###        self._logger.info("\nRun document " + self._path)
+###        # with open(tmp_file.name, 'r') as fh:
+###        #     print(fh.read())
+###        with open(self.stdout_path, 'w') as stdout:
+###            with open(self.stderr_path, 'w') as stderr:
+###                env = dict(os.environ)
+###                env['PyterateLogLevel'] = 'WARNING'
+###                process = subprocess.Popen((sys.executable, tmp_file.name),
+###                                           stdout=stdout,
+###                                           stderr=stderr,
+###                                           cwd=working_directory,
+###                                           env=env)
+###                rc = process.wait()
+###                if rc:
+###                    self._logger.error("Failed to run document " + self._path)
+###                    self.factory.register_failure(self)
 
     ##############################################
 
@@ -228,7 +208,7 @@ class Document:
         # if self._rst_chunck:
         chunk = self._rst_chunck
         if chunk.has_format():
-            chunk = chunk.to_rst_format_chunk(self, self.increment_stdout_chunk_counter())
+            chunk = chunk.to_rst_format_chunk()
         self._dom.append(chunk)
         self._rst_chunck = RstChunk()
 
@@ -285,8 +265,8 @@ class Document:
             i += 1
             remove_next_blanck_line = True
             if (self._line_start_by_markup(line, '?')
-                or line.startswith('#'*10)
-                or line.startswith(' '*4 + '#'*10)):
+                or line.startswith('#'*10) # long rule # Fixme: hardcoded !
+                or line.startswith(' '*4 + '#'*10)): # short rule
                 pass # these comments
             elif self._line_starts_by_figure_markup(line):
                 if self._rst_chunck:
@@ -295,7 +275,7 @@ class Document:
                     self._append_code_chunck()
                 # Fixme: use generic map ?
                 if self._line_start_by_markup(line, 'fig'):
-                    self._dom.append(FigureChunk(line))
+                    self._dom.append(FigureChunk(self, line))
                 elif self._line_start_by_markup(line, 'lfig'):
                     self._dom.append(LocaleFigureChunk(line, self._topic.path, self._topic.rst_path))
                 elif self._line_start_by_markup(line, 'i'):
@@ -303,7 +283,9 @@ class Document:
                 elif self._line_start_by_markup(line, 'itxt'):
                     self._dom.append(LitteralIncludeChunk(self, line))
                 elif self._line_start_by_markup(line, 'o'):
-                    self._dom.append(OutputChunk(self, line, self.increment_stdout_chunk_counter()))
+                    if not self._dom.last_chunk.is_executed:
+                        self._logger.error('Previous chunk must be code') # Fixme: handle
+                    self._dom.append(OutputChunk(self._dom.last_chunk))
                 else:
                     for markup, cls in ExtensionMetaclass.iter():
                         if self._line_start_by_markup(line, markup):
@@ -333,28 +315,6 @@ class Document:
 
     ##############################################
 
-    def _read_output_chunk(self):
-
-        # Read the stdout and split in chunck
-        with open(self.stdout_path) as fh:
-            self._stdout = fh.read()
-        self._stdout_chunks = []
-        start = 0
-        last_i = -1
-        lines = self._stdout.split('\n')
-        for i, line in enumerate(lines): # Fixme: portability
-            if line.startswith('\f'):
-                slice_ = slice(start, i)
-                self._stdout_chunks.append((slice_, '\n'.join(lines[slice_])))
-                start = i + 1
-            last_i = i
-        # Fixme: add last empty line ?
-        if start <= last_i:
-            slice_ = slice(start, last_i +1)
-            self._stdout_chunks.append((slice_, '\n'.join(lines[slice_])))
-
-    ##############################################
-
     def _has_title(self):
 
         """Return whether a title is defined."""
@@ -376,7 +336,7 @@ class Document:
 
         self._logger.info("\nCreate RST file " + self._rst_path)
 
-        self._read_output_chunk()
+        ### self._read_output_chunk()
 
         # place the Python file in the rst path
         python_file_name = self._basename + '.py'

@@ -32,6 +32,7 @@
 ####################################################################################################
 
 from queue import Empty
+import base64
 import logging
 import os
 
@@ -131,6 +132,22 @@ class JupyterOutput:
 
     ##############################################
 
+    @property
+    def result(self):
+        if self.is_result:
+            return self._node.data['text/plain']
+        else:
+            return None
+
+    @property
+    def image(self):
+        if self.is_display_data:
+            return self._node.data['image/png']
+        else:
+            return None
+
+    ##############################################
+
     def __str__(self):
 
         if self.is_error:
@@ -141,8 +158,18 @@ class JupyterOutput:
             return self._node.data['text/plain']
         elif self.is_display_data:
             # Fixme: other cases
-            # return self._node.data['image/png']
-            return '...'
+            return self._node.data['image/png']
+
+    ##############################################
+
+    def write_image(self, path):
+
+        image = self.image
+        if image is None:
+            raise NameError("This node don't have an image")
+
+        with open(path, 'wb') as fh:
+            fh.write(base64.b64decode(image))
 
 ####################################################################################################
 
@@ -225,13 +252,13 @@ class JupyterClient:
 
         """Wait for finish, with timeout"""
 
-        self._logger.debug('wait for finish, with timeout')
+        # self._logger.debug('wait for finish, with timeout')
 
         while True:
             try:
                 # Get a message from the shell channel
                 message = self._kernel_client.get_shell_msg(timeout=self.TIMEOUT)
-                self._logger.debug('message {}'.format(message))
+                # self._logger.debug('message {}'.format(message))
             except Empty:
                 # if self._interrupt_on_timeout:
                 #     self._kernel_manager.interrupt_kernel()
@@ -244,7 +271,7 @@ class JupyterClient:
                 # not our reply
                 continue
 
-        self._logger.debug('wait for finish done')
+        # self._logger.debug('wait for finish done')
 
     ##############################################
 
@@ -260,7 +287,7 @@ class JupyterClient:
         cell = {}
         cell['source'] = source
         message_id = self._kernel_client.execute(source, store_history=False)
-        self._logger.debug('message_id {}'.format(message_id))
+        # self._logger.debug('message_id {}'.format(message_id))
 
         self._wait_for_finish(message_id)
 
@@ -283,7 +310,7 @@ class JupyterClient:
 
             message_type = message['msg_type']
             content = message['content']
-            self._logger.debug('msg_type {}'.format(message_type))
+            # self._logger.debug('msg_type {}'.format(message_type))
             # self._logger.debug('content {}'.format(content))
 
             # set the prompt number for the input and the output

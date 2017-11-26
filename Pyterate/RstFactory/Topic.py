@@ -184,14 +184,14 @@ class Topic:
 
     ##############################################
 
-    def process_document(self, document, make_figure=True, make_external_figure=True, force=False):
+    def process_document(self, document, run_code=True, make_external_figure=True, force=False):
 
         # Fixme: kwargs
 
         document.read()
         if force or document:
-            if make_figure:
-                document.make_figure()
+            if run_code:
+                document.run_code()
             document.make_rst()
         if make_external_figure:
             document.make_external_figure(force)
