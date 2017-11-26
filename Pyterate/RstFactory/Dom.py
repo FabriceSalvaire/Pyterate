@@ -18,7 +18,6 @@
 #
 ####################################################################################################
 
-# Fixme: python console lexer pycon
 # Fixme: default lexer python3
 
 # Fixme: These classes do several tasks
@@ -162,6 +161,79 @@ class Chunk:
 
 ####################################################################################################
 
+class ExecutedChunk(Chunk):
+
+    ##############################################
+
+    def __init__(self):
+
+        super().__init__()
+
+        self.outputs = []
+
+    ##############################################
+
+    def __bool__(self):
+
+        for line in self._lines:
+            if line.strip():
+                return True
+        return False
+
+####################################################################################################
+
+class ImageChunk(Chunk):
+
+    ##############################################
+
+    @staticmethod
+    def parse_args(line, markup):
+
+        start = len(markup) + 2
+        line = line[start:].strip()
+
+        parts = [x for x in line.split(' ') if x]
+        figure_path = parts[0]
+        kwargs = {}
+        for part in parts[1:]:
+            if '=' in part:
+                key, value = [x.strip() for x in part.split('=')]
+                if key and value:
+                    kwargs[key] = value
+        return figure_path, kwargs
+
+    ##############################################
+
+    def __init__(self, figure_path, scale='', width='', height='', align=''):
+
+        # Fixme: kwargs
+
+        self._figure_path = figure_path
+        self._scale = scale
+        self._width = width
+        self._height = height
+        self._align = align
+
+    ##############################################
+
+    def __str__(self):
+
+        # Fixme: jinja
+
+        template = '''
+.. image:: {0._figure_path}
+  :align: center
+'''
+        rst_code = template.format(self)
+        for key in ('scale', 'width', 'height'):
+            value = getattr(self, '_' + key)
+            if value:
+                rst_code += '  :{0}: {1}\n'.format(key, value)
+        return rst_code + '\n'
+
+####################################################################################################
+####################################################################################################
+
 class RstChunk(Chunk):
 
     """ This class represents a RST content. """
@@ -190,30 +262,45 @@ class RstChunk(Chunk):
 
 ####################################################################################################
 
-class ExecutedChunk(Chunk):
+class RstFormatChunk(ExecutedChunk):
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, rst_chunk):
 
         super().__init__()
 
-        self.outputs = []
+        self._lines = rst_chunk._lines
 
     ##############################################
 
-    def __bool__(self):
+    def __str__(self):
 
-        for line in self._lines:
-            if line.strip():
-                return True
-        return False
+        # Fixmes: more than one output
+
+        return str(self.outputs[0])
+
+    ##############################################
+
+    def to_python(self):
+
+        rst = ''.join(self._lines)
+        rst = rst.replace('{', '{{') # to escape them
+        rst = rst.replace('}', '}}')
+        rst = rst.replace(OPENING_FORMAT_MARKUP, '{')
+        rst = rst.replace(CLOSING_FORMAT_MARKUP, '}')
+        rst = rst.replace(ESCAPED_OPENING_FORMAT_MARKUP, OPENING_FORMAT_MARKUP)
+        rst = rst.replace(ESCAPED_CLOSING_FORMAT_MARKUP, CLOSING_FORMAT_MARKUP)
+
+        return 'print(r"""' + rst + '""".format(**locals()))\n'
 
 ####################################################################################################
 
 class CodeChunk(ExecutedChunk):
 
     """ This class represents a code block. """
+
+    MARKUP = None
 
     ##############################################
 
@@ -257,6 +344,39 @@ class HiddenCodeChunk(CodeChunk):
     def __str__(self):
 
         return ''
+
+####################################################################################################
+
+class OutputChunk(Chunk):
+
+    """ This class represents an output block. """
+
+    MARKUP = '#o#'
+
+    ##############################################
+
+    def __init__(self, code_chunk):
+
+        super().__init__()
+        self._code_chunck = code_chunk
+
+    ##############################################
+
+    def __str__(self):
+
+        # PythonConsoleLexer    pycon
+        # Python3TracebackLexer py3tb
+
+        rst = '''
+.. code-block:: none
+
+'''
+        for output in self._code_chunck.outputs:
+            for line in str(output):
+                rst += ' '*4 + line
+        rst += '\n'
+
+        return rst
 
 ####################################################################################################
 
@@ -328,57 +448,6 @@ class PythonIncludeChunk(Chunk):
 
 ####################################################################################################
 
-class ImageChunk(Chunk):
-
-    ##############################################
-
-    @staticmethod
-    def parse_args(line, markup):
-
-        start = len(markup) + 2
-        line = line[start:].strip()
-
-        parts = [x for x in line.split(' ') if x]
-        figure_path = parts[0]
-        kwargs = {}
-        for part in parts[1:]:
-            if '=' in part:
-                key, value = [x.strip() for x in part.split('=')]
-                if key and value:
-                    kwargs[key] = value
-        return figure_path, kwargs
-
-    ##############################################
-
-    def __init__(self, figure_path, scale='', width='', height='', align=''):
-
-        # Fixme: kwargs
-
-        self._figure_path = figure_path
-        self._scale = scale
-        self._width = width
-        self._height = height
-        self._align = align
-
-    ##############################################
-
-    def __str__(self):
-
-        # Fixme: jinja
-
-        template = '''
-.. image:: {0._figure_path}
-  :align: center
-'''
-        rst_code = template.format(self)
-        for key in ('scale', 'width', 'height'):
-            value = getattr(self, '_' + key)
-            if value:
-                rst_code += '  :{0}: {1}\n'.format(key, value)
-        return rst_code + '\n'
-
-####################################################################################################
-
 class FigureChunk(ImageChunk):
 
     """ This class represents an image block for a saved figure. """
@@ -425,71 +494,6 @@ class LocaleFigureChunk(ImageChunk):
         super().__init__(figure_filename, **kwargs)
 
         self.symlink_source(figure_absolut_path, link_path)
-
-####################################################################################################
-
-class OutputChunk(Chunk):
-
-    """ This class represents an output block. """
-
-    ##############################################
-
-    def __init__(self, code_chunk):
-
-        super().__init__()
-        self._code_chunck = code_chunk
-
-    ##############################################
-
-    def __str__(self):
-
-        # PythonConsoleLexer    pycon
-        # Python3TracebackLexer py3tb
-
-        rst = '''
-.. code-block:: none
-
-'''
-        for output in self._code_chunck.outputs:
-            for line in str(output):
-                rst += ' '*4 + line
-        rst += '\n'
-
-        return rst
-
-####################################################################################################
-
-class RstFormatChunk(ExecutedChunk):
-
-    ##############################################
-
-    def __init__(self, rst_chunk):
-
-        super().__init__()
-
-        self._lines = rst_chunk._lines
-
-    ##############################################
-
-    def __str__(self):
-
-        # Fixmes: more than one output
-
-        return str(self.outputs[0])
-
-    ##############################################
-
-    def to_python(self):
-
-        rst = ''.join(self._lines)
-        rst = rst.replace('{', '{{') # to escape them
-        rst = rst.replace('}', '}}')
-        rst = rst.replace(OPENING_FORMAT_MARKUP, '{')
-        rst = rst.replace(CLOSING_FORMAT_MARKUP, '}')
-        rst = rst.replace(ESCAPED_OPENING_FORMAT_MARKUP, OPENING_FORMAT_MARKUP)
-        rst = rst.replace(ESCAPED_CLOSING_FORMAT_MARKUP, CLOSING_FORMAT_MARKUP)
-
-        return 'print(r"""' + rst + '""".format(**locals()))\n'
 
 ####################################################################################################
 
