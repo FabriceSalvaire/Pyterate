@@ -3,9 +3,9 @@
 .. include:: project-links.txt
 .. include:: abbreviation.txt
 
-============
+==========
  Pyterate
-============
+==========
 
 |Pypi License|
 |Pypi Python Version|
