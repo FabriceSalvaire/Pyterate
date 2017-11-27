@@ -1,9 +1,14 @@
+=========================
+ Document Generator Demo
+=========================
+
 This section contains examples to test the document generator.
 
-.. end
 
 
 .. toctree::
   :maxdepth: 1
+
+  flycheck_full-test.rst
 
   full-test.rst

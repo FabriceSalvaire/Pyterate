@@ -1,8 +1,0 @@
-***************
-CircuitMacros
-***************
-
-.. automodule:: Pyterate.ExampleRstFactory.FigureGenerator.CircuitMacros
-   :members:
-   :show-inheritance:
-

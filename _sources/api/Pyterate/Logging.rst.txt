@@ -1,9 +1,10 @@
-*********
-Logging
-*********
+
+=========
+ Logging
+=========
 
 .. toctree::
-  Logging/Logging
+    Logging/Logging
 
 .. automodule:: Pyterate.Logging
    :members:

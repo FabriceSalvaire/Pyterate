@@ -1,0 +1,11 @@
+
+==========
+ Template
+==========
+
+.. toctree::
+    Template/Filters
+
+.. automodule:: Pyterate.Template
+   :members:
+   :show-inheritance:

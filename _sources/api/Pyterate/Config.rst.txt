@@ -1,9 +1,10 @@
-********
-Config
-********
+
+========
+ Config
+========
 
 .. toctree::
-  Config/ConfigInstall
+    Config/ConfigInstall
 
 .. automodule:: Pyterate.Config
    :members:

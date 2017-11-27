@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6.1.1. A Restructuredtext Title &mdash; Pyterate 1.1.0 documentation</title>
+  <title>6.1.1.2. A Restructuredtext Title &mdash; Pyterate 1.0.0 documentation</title>
   
 
   
@@ -35,10 +35,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Pyterate 1.1.0 documentation" href="../../index.html"/>
-        <link rel="up" title="&lt;no title&gt;" href="index.html"/>
+    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../index.html"/>
+        <link rel="up" title="6.1.1. Document Generator Demo" href="index.html"/>
         <link rel="next" title="7. Design Notes" href="../../design-notes.html"/>
-        <link rel="prev" title="&lt;no title&gt;" href="index.html"/> 
+        <link rel="prev" title="6.1.1.1. A Restructuredtext Title" href="flycheck_full-test.html"/> 
 
   
   <script src="../../static/js/modernizr.min.js"></script>
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.1
+                1.0
               </div>
             
           
@@ -99,7 +99,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user-guide.html">5. User Guide</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">6. Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#examples-embeded-in-pyterate">6.1. Examples embeded in Pyterate</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">6.1.1. A Restructuredtext Title</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">6.1.1. Document Generator Demo</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="flycheck_full-test.html">6.1.1.1. A Restructuredtext Title</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">6.1.1.2. A Restructuredtext Title</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -154,9 +158,9 @@
         
           <li><a href="../index.html">6. Examples</a> &raquo;</li>
         
-          <li><a href="index.html">&lt;no title&gt;</a> &raquo;</li>
+          <li><a href="index.html">6.1.1. Document Generator Demo</a> &raquo;</li>
         
-      <li>6.1.1. A Restructuredtext Title</li>
+      <li>6.1.1.2. A Restructuredtext Title</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -176,8 +180,13 @@
            <div itemprop="articleBody">
             
   <div class="getthecode">
-<div class="getthecode-header"><span class="getthecode-filename">full-test.py</span><a href="../../downloads/full-test.py"><span>full-test.py</span></a></div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
+<div class="getthecode-header">
+  <ul>
+  <li class="getthecode-filename">full-test.py</li>
+  <li class="getthecode-filename-link"><a href="../../downloads/full-test.py"><span >full-test.py</span></a></li>
+  </ul>
+</div>
+<div class="highlight-python3 highlight-hidden"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
 <span class="c1">#?# A comment that must not appear in the documentation</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
@@ -195,7 +204,7 @@
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># Insert the output of the following python code</span>
-<span class="k">print</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 <span class="c1">#o#</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
@@ -211,11 +220,28 @@
 <span class="c1">#!#</span>
 <span class="c1">#!#     I_d = @&lt;@value@&gt;@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)</span>
 
-<span class="c1"># Add the file content as literal block</span>
-<span class="c1">#itxt# kicad-pyspice-example.cir</span>
+<span class="c1"># Add Python code as a literal block</span>
+<span class="c1">#l# for x in ():</span>
+<span class="c1">#l#   1 / 0 / 0</span>
+
+<span class="c1"># Intercative code</span>
+<span class="c1">#&lt;i#</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">2</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+<span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+<span class="c1">#i&gt;#</span>
+
+<span class="c1"># Guarded error</span>
+<span class="c1">#&lt;e#</span>
+<span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+<span class="c1">#e&gt;#</span>
 
 <span class="c1"># Add a Python file as a literal block</span>
 <span class="c1">#i# RingModulator.py</span>
+
+<span class="c1"># Add the file content as literal block</span>
+<span class="c1">#itxt# kicad-pyspice-example.cir</span>
 
 <span class="c1"># Insert an image</span>
 <span class="c1">#lfig# kicad-pyspice-example.sch.svg</span>
@@ -226,8 +252,8 @@
 <span class="c1"># Insert Tikz figure</span>
 <span class="c1">#tz# diode.tex</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -245,7 +271,7 @@
 </pre></div>
 </div>
 <div class="section" id="a-restructuredtext-title">
-<h1>6.1.1. A Restructuredtext Title<a class="headerlink" href="#a-restructuredtext-title" title="Permalink to this headline">¶</a></h1>
+<h1>6.1.1.2. A Restructuredtext Title<a class="headerlink" href="#a-restructuredtext-title" title="Permalink to this headline">¶</a></h1>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
@@ -256,7 +282,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mi">1</span>
+<div class="highlight-none"><div class="highlight"><pre><span></span>1
 </pre></div>
 </div>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
@@ -270,33 +296,59 @@
 <p>Format RST content with current locals dictionary using &#64;&lt;&#64;…&#64;&gt;&#64; instead of {…}.</p>
 <div class="math">
 \[I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)\]</div>
-<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add the file content as literal block</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add Python code as a literal block</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gv</span><span class="o">/</span><span class="n">fabrice</span><span class="o">/</span><span class="n">developpement</span><span class="o">/</span><span class="n">PySpice</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">spice</span><span class="o">-</span><span class="n">parser</span><span class="o">/</span><span class="n">kicad</span><span class="o">-</span><span class="n">pyspice</span><span class="o">-</span><span class="n">example</span><span class="o">/</span><span class="n">kicad</span><span class="o">-</span><span class="n">pyspice</span><span class="o">-</span><span class="n">example</span><span class="o">.</span><span class="n">cir</span>
-
-<span class="o">*</span> <span class="n">EESchema</span> <span class="n">Netlist</span> <span class="n">Version</span> <span class="mf">1.1</span> <span class="p">(</span><span class="n">Spice</span> <span class="nb">format</span><span class="p">)</span> <span class="n">creation</span> <span class="n">date</span><span class="p">:</span> <span class="n">dim</span><span class="o">.</span> <span class="mi">29</span> <span class="n">nov</span><span class="o">.</span> <span class="mi">2015</span> <span class="mi">18</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">33</span> <span class="n">CET</span>
-
-<span class="o">*</span> <span class="n">To</span> <span class="n">exclude</span> <span class="n">a</span> <span class="n">component</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">Spice</span> <span class="n">Netlist</span> <span class="n">add</span> <span class="p">[</span><span class="n">Spice_Netlist_Enabled</span><span class="p">]</span> <span class="n">user</span> <span class="n">FIELD</span> <span class="nb">set</span> <span class="n">to</span><span class="p">:</span> <span class="n">N</span>
-<span class="o">*</span> <span class="n">To</span> <span class="n">reorder</span> <span class="n">the</span> <span class="n">component</span> <span class="n">spice</span> <span class="n">node</span> <span class="n">sequence</span> <span class="n">add</span> <span class="p">[</span><span class="n">Spice_Node_Sequence</span><span class="p">]</span> <span class="n">user</span> <span class="n">FIELD</span> <span class="ow">and</span> <span class="n">define</span> <span class="n">sequence</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span>
-
-<span class="o">*</span> <span class="n">Sheet</span> <span class="n">Name</span><span class="p">:</span> <span class="o">/</span>
-<span class="n">X3</span>  <span class="mi">7</span> <span class="mi">6</span> <span class="mi">5</span> <span class="mi">4</span> <span class="mi">1</span> <span class="n">Opamp</span>
-<span class="n">X1</span>  <span class="mi">2</span> <span class="mi">5</span> <span class="mi">5</span> <span class="n">JackIn</span>
-<span class="n">X4</span>  <span class="mi">7</span> <span class="mi">3</span> <span class="mi">5</span> <span class="n">JackOut</span>
-<span class="n">R2</span>  <span class="mi">6</span> <span class="mi">7</span> <span class="mi">50</span><span class="n">K</span>
-<span class="n">R1</span>  <span class="mi">2</span> <span class="mi">6</span> <span class="mi">2</span><span class="n">K</span>
-<span class="n">R3</span>  <span class="mi">5</span> <span class="mi">3</span> <span class="mi">2</span><span class="n">K</span>
-<span class="n">X2</span>  <span class="mi">4</span> <span class="mi">5</span> <span class="mi">1</span> <span class="n">PowerIn</span>
-
-<span class="o">.</span><span class="n">end</span>
+<div class="highlight-py"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">():</span>
+  <span class="mi">1</span> <span class="o">/</span> <span class="mi">0</span> <span class="o">/</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Intercative code</span>
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="mi">1</span> <span class="o">+</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>2
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="mi">2</span> <span class="o">*</span> <span class="mi">4</span> <span class="o">*</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>16
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span>
+</pre></div>
+</div>
+<div class="highlight-none"><div class="highlight"><pre><span></span>(1, 2, 3)
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Guarded error</span>
+</pre></div>
+</div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
+</pre></div>
+</div>
+<div class="highlight-pytb"><div class="highlight"><pre><span></span><span class="x">ZeroDivisionError</span>
 </pre></div>
 </div>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add a Python file as a literal block</span>
 </pre></div>
 </div>
 <div class="getthecode">
-<div class="getthecode-header"><span class="getthecode-filename">RingModulator.py</span><a href="../../downloads/RingModulator.py"><span>RingModulator.py</span></a></div>
+<div class="getthecode-header">
+  <ul>
+  <li class="getthecode-filename">RingModulator.py</li>
+  <li class="getthecode-filename-link"><a href="../../downloads/RingModulator.py"><span >RingModulator.py</span></a></li>
+  </ul>
+</div>
 <div class="highlight-python3"><div class="highlight"><pre><span></span><span class="c1">#skip#</span>
 
 <span class="c1">####################################################################################################</span>
@@ -343,6 +395,28 @@
 </pre></div>
 </div>
 </div>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add the file content as literal block</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">*</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">gv</span><span class="o">/</span><span class="n">fabrice</span><span class="o">/</span><span class="n">developpement</span><span class="o">/</span><span class="n">PySpice</span><span class="o">/</span><span class="n">examples</span><span class="o">/</span><span class="n">spice</span><span class="o">-</span><span class="n">parser</span><span class="o">/</span><span class="n">kicad</span><span class="o">-</span><span class="n">pyspice</span><span class="o">-</span><span class="n">example</span><span class="o">/</span><span class="n">kicad</span><span class="o">-</span><span class="n">pyspice</span><span class="o">-</span><span class="n">example</span><span class="o">.</span><span class="n">cir</span>
+
+<span class="o">*</span> <span class="n">EESchema</span> <span class="n">Netlist</span> <span class="n">Version</span> <span class="mf">1.1</span> <span class="p">(</span><span class="n">Spice</span> <span class="nb">format</span><span class="p">)</span> <span class="n">creation</span> <span class="n">date</span><span class="p">:</span> <span class="n">dim</span><span class="o">.</span> <span class="mi">29</span> <span class="n">nov</span><span class="o">.</span> <span class="mi">2015</span> <span class="mi">18</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">33</span> <span class="n">CET</span>
+
+<span class="o">*</span> <span class="n">To</span> <span class="n">exclude</span> <span class="n">a</span> <span class="n">component</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">Spice</span> <span class="n">Netlist</span> <span class="n">add</span> <span class="p">[</span><span class="n">Spice_Netlist_Enabled</span><span class="p">]</span> <span class="n">user</span> <span class="n">FIELD</span> <span class="nb">set</span> <span class="n">to</span><span class="p">:</span> <span class="n">N</span>
+<span class="o">*</span> <span class="n">To</span> <span class="n">reorder</span> <span class="n">the</span> <span class="n">component</span> <span class="n">spice</span> <span class="n">node</span> <span class="n">sequence</span> <span class="n">add</span> <span class="p">[</span><span class="n">Spice_Node_Sequence</span><span class="p">]</span> <span class="n">user</span> <span class="n">FIELD</span> <span class="ow">and</span> <span class="n">define</span> <span class="n">sequence</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span>
+
+<span class="o">*</span> <span class="n">Sheet</span> <span class="n">Name</span><span class="p">:</span> <span class="o">/</span>
+<span class="n">X3</span>  <span class="mi">7</span> <span class="mi">6</span> <span class="mi">5</span> <span class="mi">4</span> <span class="mi">1</span> <span class="n">Opamp</span>
+<span class="n">X1</span>  <span class="mi">2</span> <span class="mi">5</span> <span class="mi">5</span> <span class="n">JackIn</span>
+<span class="n">X4</span>  <span class="mi">7</span> <span class="mi">3</span> <span class="mi">5</span> <span class="n">JackOut</span>
+<span class="n">R2</span>  <span class="mi">6</span> <span class="mi">7</span> <span class="mi">50</span><span class="n">K</span>
+<span class="n">R1</span>  <span class="mi">2</span> <span class="mi">6</span> <span class="mi">2</span><span class="n">K</span>
+<span class="n">R3</span>  <span class="mi">5</span> <span class="mi">3</span> <span class="mi">2</span><span class="n">K</span>
+<span class="n">X2</span>  <span class="mi">4</span> <span class="mi">5</span> <span class="mi">1</span> <span class="n">PowerIn</span>
+
+<span class="o">.</span><span class="n">end</span>
+</pre></div>
+</div>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert an image</span>
 </pre></div>
 </div>
@@ -384,7 +458,7 @@
         <a href="../../design-notes.html" class="btn btn-neutral float-right" title="7. Design Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="&lt;no title&gt;" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="flycheck_full-test.html" class="btn btn-neutral" title="6.1.1.1. A Restructuredtext Title" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -415,7 +489,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.0',
+            VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -426,7 +500,7 @@
       <script type="text/javascript" src="../../static/underscore.js"></script>
       <script type="text/javascript" src="../../static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="../../static/hidecode.js"></script>
+      <script type="text/javascript" src="../../static/getthecode.js"></script>
 
   
 

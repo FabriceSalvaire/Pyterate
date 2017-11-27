@@ -2,9 +2,11 @@
 .. include:: /project-links.txt
 .. include:: /abbreviation.txt
 
-.. getthecode:: full-test.py
-    :language: python
 
+
+.. getthecode:: full-test.py
+    :language: python3
+    :hidden:
 
 .. code-block:: py3
 
@@ -33,9 +35,9 @@ Some reStructuredText contents
     print(foo)
 
 
-.. literalinclude:: full-test.stdout
-    :lines: 1-1
+.. code-block:: none
 
+    1    
 
 .. code-block:: py3
 
@@ -56,6 +58,81 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
     I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
 
+
+.. code-block:: py3
+
+    # Add Python code as a literal block
+
+
+.. code-block:: py
+
+    for x in ():
+      1 / 0 / 0
+
+
+.. code-block:: py3
+
+    # Intercative code
+
+
+.. code-block:: py3
+
+    1 + 1
+
+
+.. code-block:: none
+
+    2
+
+.. code-block:: py3
+
+    2 * 4 * 2
+
+
+.. code-block:: none
+
+    16
+
+.. code-block:: py3
+
+    a, b = 1, 2
+
+
+.. code-block:: none
+
+
+
+.. code-block:: py3
+
+    1, 2, 3
+
+
+.. code-block:: none
+
+    (1, 2, 3)
+
+.. code-block:: py3
+
+    # Guarded error
+
+
+.. code-block:: py3
+
+    1/0
+
+.. code-block:: pytb
+
+    ZeroDivisionError
+
+.. code-block:: py3
+
+    # Add a Python file as a literal block
+
+
+.. getthecode:: RingModulator.py
+    :language: python3
+
+
 .. code-block:: py3
 
     # Add the file content as literal block
@@ -66,20 +143,12 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
 .. code-block:: py3
 
-    # Add a Python file as a literal block
-
-
-.. getthecode:: RingModulator.py
-  :language: python3
-
-
-.. code-block:: py3
-
     # Insert an image
 
 
 .. image:: kicad-pyspice-example.sch.svg
-  :align: center
+    :align: center
+
 
 
 .. code-block:: py3
@@ -88,7 +157,8 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
 
 .. image:: circuit.png
-  :align: center
+    :align: center
+
 
 
 .. code-block:: py3
@@ -97,7 +167,8 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
 
 .. image:: diode.svg
-  :align: center
+    :align: center
+
 
 
 .. code-block:: py3
@@ -113,7 +184,8 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
 
 .. image:: my-figure.png
-  :align: center
+    :align: center
+
 
 
 .. code-block:: py3

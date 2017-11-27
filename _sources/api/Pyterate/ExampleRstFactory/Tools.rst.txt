@@ -1,8 +1,0 @@
-*******
-Tools
-*******
-
-.. automodule:: Pyterate.ExampleRstFactory.Tools
-   :members:
-   :show-inheritance:
-

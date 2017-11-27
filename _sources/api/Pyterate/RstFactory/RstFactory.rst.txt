@@ -1,0 +1,8 @@
+
+============
+ RstFactory
+============
+
+.. automodule:: Pyterate.RstFactory.RstFactory
+   :members:
+   :show-inheritance:

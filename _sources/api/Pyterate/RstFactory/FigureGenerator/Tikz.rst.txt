@@ -1,0 +1,8 @@
+
+======
+ Tikz
+======
+
+.. automodule:: Pyterate.RstFactory.FigureGenerator.Tikz
+   :members:
+   :show-inheritance:

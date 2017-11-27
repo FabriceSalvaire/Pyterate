@@ -1,8 +1,0 @@
-**********
-Registry
-**********
-
-.. automodule:: Pyterate.ExampleRstFactory.FigureGenerator.Registry
-   :members:
-   :show-inheritance:
-

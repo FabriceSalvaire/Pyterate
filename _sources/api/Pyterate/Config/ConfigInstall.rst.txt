@@ -1,8 +1,8 @@
-***************
-ConfigInstall
-***************
+
+===============
+ ConfigInstall
+===============
 
 .. automodule:: Pyterate.Config.ConfigInstall
    :members:
    :show-inheritance:
-

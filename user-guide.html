@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. User Guide &mdash; Pyterate 1.1.0 documentation</title>
+  <title>5. User Guide &mdash; Pyterate 1.0.0 documentation</title>
   
 
   
@@ -35,8 +35,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Pyterate 1.1.0 documentation" href="index.html"/>
-        <link rel="next" title="6. Design Notes" href="design-notes.html"/>
+    <link rel="top" title="Pyterate 1.0.0 documentation" href="index.html"/>
+        <link rel="next" title="6. Examples" href="examples/index.html"/>
         <link rel="prev" title="4. User FAQ" href="faq.html"/> 
 
   
@@ -66,7 +66,7 @@
             
             
               <div class="version">
-                1.1
+                1.0
               </div>
             
           
@@ -100,10 +100,11 @@
 <li class="toctree-l2"><a class="reference internal" href="#documentation-generator">5.2. Documentation Generator</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="design-notes.html">6. Design Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">7. API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development.html">8. Development &amp; Community</a></li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-refer.html">9. How to Refer to Pyterate ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">6. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design-notes.html">7. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">8. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">9. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-refer.html">10. How to Refer to Pyterate ?</a></li>
 </ul>
 
             
@@ -173,11 +174,11 @@
 <h2>5.1. Commands<a class="headerlink" href="#commands" title="Permalink to this headline">¶</a></h2>
 <p>The Python package installs two commands:</p>
 <ul class="simple">
-<li>generate-rst-api</li>
-<li>generate-rst-examples</li>
+<li>pyterate-rst-api</li>
+<li>pyterate</li>
 </ul>
 <p>To generate the API documentation, run</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>generate-rst-api MyModule
+<div class="highlight-sh"><div class="highlight"><pre><span></span>pyterate-rst-api MyModule
 </pre></div>
 </div>
 <p>To get help, use <code class="code docutils literal"><span class="pre">--help</span></code> option.</p>
@@ -192,7 +193,7 @@ edited in a text editor, while a IPython notebook is a JSON file designed for a 
 application.  Both solutions can generate HTML files, but this one is more suited to generate a
 static documentation, while a IPython Notebook permits to modify the content in live.  In fact both
 approaches are complementary.</p>
-<p>The program <em>generate-rst-examples</em> walks recursively through a directory, <em>examples</em> by default,
+<p>The program <em>pyterate</em> walks recursively through a directory, <em>examples</em> by default,
 and processes each Python file.  To skip a file, add <code class="code docutils literal"><span class="pre">#skip</span></code> at the first or second line of
 the file.</p>
 <p>A typical Python file contains these lines:</p>
@@ -291,7 +292,7 @@ the Python string <a class="reference external" href="https://docs.python.org/2/
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="design-notes.html" class="btn btn-neutral float-right" title="6. Design Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="examples/index.html" class="btn btn-neutral float-right" title="6. Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="faq.html" class="btn btn-neutral" title="4. User FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -325,7 +326,7 @@ the Python string <a class="reference external" href="https://docs.python.org/2/
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.1.0',
+            VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -336,7 +337,7 @@ the Python string <a class="reference external" href="https://docs.python.org/2/
       <script type="text/javascript" src="static/underscore.js"></script>
       <script type="text/javascript" src="static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="static/hidecode.js"></script>
+      <script type="text/javascript" src="static/getthecode.js"></script>
 
   
 

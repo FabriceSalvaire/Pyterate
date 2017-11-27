@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1. Pyterate &mdash; Pyterate 1.1.0 documentation</title>
+  <title>8.1. Pyterate &mdash; Pyterate 1.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Pyterate 1.1.0 documentation" href="../index.html"/>
+    <link rel="top" title="Pyterate 1.0.0 documentation" href="../index.html"/>
         <link rel="up" title="8. API Documentation" href="../reference-manual.html"/>
         <link rel="next" title="8.1.1. ApiRstFactory" href="Pyterate/ApiRstFactory.html"/>
         <link rel="prev" title="8. API Documentation" href="../reference-manual.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.1
+                1.0
               </div>
             
           
@@ -103,8 +103,11 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">8.1. Pyterate</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/ApiRstFactory.html">8.1.1. ApiRstFactory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/Config.html">8.1.2. Config</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/ExampleRstFactory.html">8.1.3. ExampleRstFactory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/Jupyter.html">8.1.3. Jupyter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/Logging.html">8.1.4. Logging</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory.html">8.1.5. RstFactory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/Template.html">8.1.6. Template</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/Tools.html">8.1.7. Tools</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../reference-manual.html#indexes">8.2. Indexes</a></li>
@@ -188,20 +191,35 @@
 <li class="toctree-l2"><a class="reference internal" href="Pyterate/Config/ConfigInstall.html">8.1.2.1. ConfigInstall</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Pyterate/ExampleRstFactory.html">8.1.3. ExampleRstFactory</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/ExampleRstFactory/Chunk.html">8.1.3.1. Chunk</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/ExampleRstFactory/FigureGenerator.html">8.1.3.2. FigureGenerator</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/ExampleRstFactory/FigureGenerator/CircuitMacros.html">8.1.3.2.1. CircuitMacros</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/ExampleRstFactory/FigureGenerator/Generic.html">8.1.3.2.2. Generic</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/ExampleRstFactory/FigureGenerator/Registry.html">8.1.3.2.3. Registry</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/ExampleRstFactory/FigureGenerator/Tikz.html">8.1.3.2.4. Tikz</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/ExampleRstFactory/Tools.html">8.1.3.3. Tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pyterate/Jupyter.html">8.1.3. Jupyter</a><ul class="simple">
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Pyterate/Logging.html">8.1.4. Logging</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Pyterate/Logging/Logging.html">8.1.4.1. Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/FigureGenerator.html">8.1.5.3. FigureGenerator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/FigureGenerator/CircuitMacros.html">8.1.5.3.1. CircuitMacros</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/FigureGenerator/Generic.html">8.1.5.3.2. Generic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/FigureGenerator/Registry.html">8.1.5.3.3. Registry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/FigureGenerator/Tikz.html">8.1.5.3.4. Tikz</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Topic.html">8.1.5.5. Topic</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Pyterate/Template.html">8.1.6. Template</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Pyterate/Tools.html">8.1.7. Tools</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -252,7 +270,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.1.0',
+            VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -263,7 +281,7 @@
       <script type="text/javascript" src="../static/underscore.js"></script>
       <script type="text/javascript" src="../static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="../static/hidecode.js"></script>
+      <script type="text/javascript" src="../static/getthecode.js"></script>
 
   
 

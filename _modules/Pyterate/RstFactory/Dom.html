@@ -1,0 +1,893 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pyterate.RstFactory.Dom &mdash; Pyterate 1.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Pyterate.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Pyterate
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">4. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guide.html">5. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">6. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes.html">7. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">8. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">9. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">10. How to Refer to Pyterate ?</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pyterate</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Pyterate.RstFactory.Dom</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Pyterate.RstFactory.Dom</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Pyterate - Sphinx add-ons to create API documentation for Python projects</span>
+<span class="c1"># Copyright (C) 2014 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="c1"># Fixme: default lexer python3</span>
+
+<span class="c1"># Fixme: These classes do several tasks</span>
+<span class="c1">#  decode input</span>
+<span class="c1">#  store data</span>
+<span class="c1">#  __str__ generate RST</span>
+<span class="c1">#  to_python</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Dom&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CodeChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FigureChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;HiddenCodeChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ImageChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InteractiveChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LiteralChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LiteralIncludeChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LocaleFigureChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OutputChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;PythonIncludeChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RstChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RstFormatChunk&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">ast</span>
+<span class="kn">import</span> <span class="nn">astunparse</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="c1"># Must fit Python, RST and LaTeX formulae</span>
+<span class="n">OPENING_FORMAT_MARKUP</span> <span class="o">=</span> <span class="s1">&#39;@&lt;@&#39;</span>
+<span class="n">CLOSING_FORMAT_MARKUP</span> <span class="o">=</span> <span class="s1">&#39;@&gt;@&#39;</span>
+<span class="n">ESCAPED_OPENING_FORMAT_MARKUP</span> <span class="o">=</span> <span class="s1">&#39;@@&lt;&lt;@@&#39;</span>
+<span class="n">ESCAPED_CLOSING_FORMAT_MARKUP</span> <span class="o">=</span> <span class="s1">&#39;@@&gt;&gt;@@&#39;</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="c1"># Fixme: -&gt; Node ???</span>
+
+<span class="k">class</span> <span class="nc">Chunk</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a chunk of lines in the source. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">remove_markup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">lstrip</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">MARKUP</span><span class="p">):]</span>
+        <span class="c1"># Note: assume &#39;#xxx# ...&#39;</span>
+        <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">if</span> <span class="n">strip</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">lstrip</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">line</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">line</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">parse_function_call</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="c1"># &quot;Module(body=[</span>
+        <span class="c1">#     Expr(value=Call(</span>
+        <span class="c1">#         func=Name(id=&#39;save_figure&#39;, ctx=Load()),</span>
+        <span class="c1">#         args=[</span>
+        <span class="c1">#             Name(id=&#39;figure&#39;, ctx=Load()),</span>
+        <span class="c1">#             Str(s=&#39;my-figure.png&#39;)</span>
+        <span class="c1">#         ],</span>
+        <span class="c1">#         keywords=[</span>
+        <span class="c1">#            keyword(arg=&#39;foo&#39;, value=Str(s=&#39;bar&#39;))</span>
+        <span class="c1">#         ]))])</span>
+
+        <span class="n">line</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">remove_markup</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">module_</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">expression</span> <span class="o">=</span> <span class="n">module_</span><span class="o">.</span><span class="n">body</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">call</span> <span class="o">=</span> <span class="n">expression</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">call</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">call</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s2">&quot;Invalid call &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">line</span><span class="p">))</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_ast</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Str</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="n">ast</span><span class="o">.</span><span class="n">Num</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">update_function_call</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">call</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+            <span class="n">call</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">to_ast</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">keyword</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">keyword</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">cls</span><span class="o">.</span><span class="n">to_ast</span><span class="p">(</span><span class="n">obj</span><span class="p">))</span>
+            <span class="n">call</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">keyword</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">astunparse</span><span class="o">.</span><span class="n">unparse</span><span class="p">(</span><span class="n">call</span><span class="p">)</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">symlink_source</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">indent_lines</span><span class="p">(</span><span class="n">lines</span><span class="p">,</span> <span class="n">indentation</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+
+        <span class="n">indentation</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="n">indentation</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">indentation</span> <span class="o">+</span> <span class="n">line</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">])</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">indent_output</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">output</span><span class="p">,</span> <span class="n">indentation</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">indent_lines</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">),</span> <span class="n">indentation</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">directive</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(),</span> <span class="n">flags</span><span class="o">=</span><span class="p">(),</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{}):</span>
+
+        <span class="n">args_string</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">])</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">.. </span><span class="si">{}</span><span class="s1">:: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args_string</span><span class="p">)</span>
+        <span class="n">indentation</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span>
+        <span class="k">for</span> <span class="n">flag</span> <span class="ow">in</span> <span class="n">flags</span><span class="p">:</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="n">indentation</span> <span class="o">+</span> <span class="s1">&#39;:</span><span class="si">{}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">flag</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="n">indentation</span> <span class="o">+</span> <span class="s1">&#39;:</span><span class="si">{}</span><span class="s1">: </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">code_block_directive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lexer</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span><span class="s1">&#39;code-block&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">lexer</span><span class="p">,))</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="c1"># def __iter__(self):</span>
+    <span class="c1">#     return iter(self._lines)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">is_executed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;to_python&#39;</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="k">class</span> <span class="nc">ExecutedChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="ImageChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.ImageChunk">[docs]</a><span class="k">class</span> <span class="nc">ImageChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="ImageChunk.parse_args"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.ImageChunk.parse_args">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">markup</span><span class="p">):</span>
+
+        <span class="c1"># usage:</span>
+        <span class="c1"># #tz# diode.tex width=500</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">markup</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">[</span><span class="n">start</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span> <span class="k">if</span> <span class="n">x</span><span class="p">]</span>
+        <span class="n">figure_path</span> <span class="o">=</span> <span class="n">parts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+            <span class="k">if</span> <span class="s1">&#39;=&#39;</span> <span class="ow">in</span> <span class="n">part</span><span class="p">:</span>
+                <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)]</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">and</span> <span class="n">value</span><span class="p">:</span>
+                    <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">figure_path</span><span class="p">,</span> <span class="n">kwargs</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: kwargs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_figure_path</span> <span class="o">=</span> <span class="n">figure_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_width</span> <span class="o">=</span> <span class="n">width</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_height</span> <span class="o">=</span> <span class="n">height</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_align</span> <span class="o">=</span> <span class="n">align</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure_path</span><span class="p">,)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span><span class="s1">&#39;image&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+<span class="c1">####################################################################################################</span>
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="RstChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.RstChunk">[docs]</a><span class="k">class</span> <span class="nc">RstChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a RST content. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#!#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="RstChunk.append"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.RstChunk.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: common code</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_markup</span><span class="p">(</span><span class="n">line</span><span class="p">))</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="RstChunk.has_format"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.RstChunk.has_format">[docs]</a>    <span class="k">def</span> <span class="nf">has_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">OPENING_FORMAT_MARKUP</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="RstChunk.to_rst_format_chunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.RstChunk.to_rst_format_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst_format_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="n">RstFormatChunk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="RstFormatChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.RstFormatChunk">[docs]</a><span class="k">class</span> <span class="nc">RstFormatChunk</span><span class="p">(</span><span class="n">ExecutedChunk</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rst_chunk</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="n">rst_chunk</span><span class="o">.</span><span class="n">_lines</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Fixmes: more than one output</span>
+
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="RstFormatChunk.to_python"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.RstFormatChunk.to_python">[docs]</a>    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">rst</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;{{&#39;</span><span class="p">)</span> <span class="c1"># to escape them</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;}}&#39;</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">OPENING_FORMAT_MARKUP</span><span class="p">,</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">CLOSING_FORMAT_MARKUP</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ESCAPED_OPENING_FORMAT_MARKUP</span><span class="p">,</span> <span class="n">OPENING_FORMAT_MARKUP</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ESCAPED_CLOSING_FORMAT_MARKUP</span><span class="p">,</span> <span class="n">CLOSING_FORMAT_MARKUP</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="s1">&#39;print(r&quot;&quot;&quot;&#39;</span> <span class="o">+</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;&quot;&quot;&quot;.format(**locals()))</span><span class="se">\n</span><span class="s1">&#39;</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="CodeChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.CodeChunk">[docs]</a><span class="k">class</span> <span class="nc">CodeChunk</span><span class="p">(</span><span class="n">ExecutedChunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a code block. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">guarded</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="c1"># @property</span>
+    <span class="c1"># def is_guarded(self):</span>
+    <span class="c1">#     return self._guarded</span>
+
+    <span class="c1"># @guarded.setter</span>
+    <span class="c1"># def is_guarded(self, value):</span>
+    <span class="c1">#     self._guarded = value</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="c1"># Fixme: if previous is hidden : merge ???</span>
+            <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;py3&#39;</span><span class="p">)</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">is_error</span><span class="p">:</span>
+                    <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;pytb&#39;</span><span class="p">)</span> <span class="c1"># Fixme: py3con py3tb are unknown ???</span>
+                    <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_output</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span> <span class="c1"># Fixme: ???</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="CodeChunk.to_python"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.CodeChunk.to_python">[docs]</a>    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
+            <span class="c1"># Fixme:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;pylab.show&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;plt.show&#39;</span><span class="p">):</span>
+                <span class="n">source</span> <span class="o">+=</span> <span class="n">line</span>
+        <span class="k">return</span> <span class="n">source</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="CodeChunk.to_interactive"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.CodeChunk.to_interactive">[docs]</a>    <span class="k">def</span> <span class="nf">to_interactive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="k">continue</span>
+            <span class="n">chunk</span> <span class="o">=</span> <span class="n">InteractiveChunk</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chunks</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="InteractiveChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.InteractiveChunk">[docs]</a><span class="k">class</span> <span class="nc">InteractiveChunk</span><span class="p">(</span><span class="n">CodeChunk</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">rst</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__str__</span><span class="p">()</span>
+
+        <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">is_result</span><span class="p">:</span>
+                <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_output</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+        <span class="k">return</span> <span class="n">rst</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="HiddenCodeChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.HiddenCodeChunk">[docs]</a><span class="k">class</span> <span class="nc">HiddenCodeChunk</span><span class="p">(</span><span class="n">CodeChunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a hidden code block. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#h#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="HiddenCodeChunk.append"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.HiddenCodeChunk.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_markup</span><span class="p">(</span><span class="n">line</span><span class="p">))</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="OutputChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.OutputChunk">[docs]</a><span class="k">class</span> <span class="nc">OutputChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents an output block. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#o#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code_chunk</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_code_chunck</span> <span class="o">=</span> <span class="n">code_chunk</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_chunck</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">is_stream</span><span class="p">:</span>
+                <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_output</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="LiteralChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.LiteralChunk">[docs]</a><span class="k">class</span> <span class="nc">LiteralChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a literal block. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#l#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="LiteralChunk.append"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.LiteralChunk.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_markup</span><span class="p">(</span><span class="n">line</span><span class="p">))</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
+            <span class="c1"># rst = self.directive(&#39;class&#39;, args=(&#39;literal-chunk&#39;,)) # Don&#39;t work !</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;py&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">source</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="LiteralIncludeChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.LiteralIncludeChunk">[docs]</a><span class="k">class</span> <span class="nc">LiteralIncludeChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a literal include block. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#itxt#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: duplicated code with figure etc. ???</span>
+
+        <span class="n">include_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_markup</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_include_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">include_path</span><span class="p">)</span>
+
+        <span class="c1"># Fixme: document ???</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">include_path</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symlink_source</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span><span class="s1">&#39;literalinclude&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_filename</span><span class="p">,))</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="PythonIncludeChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.PythonIncludeChunk">[docs]</a><span class="k">class</span> <span class="nc">PythonIncludeChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a Python literal include block. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#i#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_include_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">remove_markup</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Fixme: document ???</span>
+        <span class="c1"># Fixme: relpath right ?</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_path</span><span class="p">),</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">rst_path</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">symlink_source</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span><span class="s1">&#39;getthecode&#39;</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_path</span><span class="p">,),</span> <span class="n">kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">language</span><span class="o">=</span><span class="s1">&#39;python3&#39;</span><span class="p">))</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="FigureChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.FigureChunk">[docs]</a><span class="k">class</span> <span class="nc">FigureChunk</span><span class="p">(</span><span class="n">ImageChunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents an image block for a saved figure. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#fig#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: better way ???</span>
+        <span class="n">Chunk</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">rst_path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_call</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_function_call</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">figure_filename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_call</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">s</span> <span class="c1"># require a str</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="FigureChunk.to_python"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.FigureChunk.to_python">[docs]</a>    <span class="k">def</span> <span class="nf">to_python</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_function_call</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_call</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">)</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="LocaleFigureChunk"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.LocaleFigureChunk">[docs]</a><span class="k">class</span> <span class="nc">LocaleFigureChunk</span><span class="p">(</span><span class="n">ImageChunk</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents an image block for a figure. &quot;&quot;&quot;</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;#lfig#&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="n">figure_path</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">ImageChunk</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="s1">&#39;lfig&#39;</span><span class="p">)</span> <span class="c1"># Fixme: MARKUP</span>
+        <span class="n">figure_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">figure_path</span><span class="p">)</span> <span class="c1"># Fixme: ???</span>
+        <span class="n">figure_absolut_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">topic_path</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">)</span>
+        <span class="n">link_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">topic_rst_path</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">figure_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">symlink_source</span><span class="p">(</span><span class="n">figure_absolut_path</span><span class="p">,</span> <span class="n">link_path</span><span class="p">)</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="Dom"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.Dom">[docs]</a><span class="k">class</span> <span class="nc">Dom</span><span class="p">:</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;Dom&#39;</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Dom.append"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.Dom.append">[docs]</a>    <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chunk</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="nb">repr</span><span class="p">(</span><span class="n">chunk</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="Dom.iter_on_code_chunks"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Dom.html#Pyterate.RstFactory.Dom.Dom.iter_on_code_chunks">[docs]</a>    <span class="k">def</span> <span class="nf">iter_on_code_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">chunck</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">chunck</span><span class="o">.</span><span class="n">is_executed</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">chunck</span></div>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">last_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_chunks</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../static/getthecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

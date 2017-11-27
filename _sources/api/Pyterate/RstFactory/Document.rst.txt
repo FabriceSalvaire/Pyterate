@@ -1,0 +1,8 @@
+
+==========
+ Document
+==========
+
+.. automodule:: Pyterate.RstFactory.Document
+   :members:
+   :show-inheritance:

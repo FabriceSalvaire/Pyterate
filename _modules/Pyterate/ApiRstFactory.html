@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.ApiRstFactory &mdash; Pyterate 1.1.0 documentation</title>
+  <title>Pyterate.ApiRstFactory &mdash; Pyterate 1.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Pyterate 1.1.0 documentation" href="../../index.html"/>
+    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.1
+                1.0
               </div>
             
           
@@ -198,12 +198,12 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># Fixme: could use Jinja</span>
-
 <span class="c1">####################################################################################################</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">..Template</span> <span class="k">import</span> <span class="n">TemplateEnvironment</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -211,8 +211,14 @@
 
 <span class="c1">####################################################################################################</span>
 
-<span class="k">def</span> <span class="nf">_format_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">arg</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="c1"># For default set autodoc_default_flags in conf.py</span>
+<span class="c1">#</span>
+<span class="c1"># :members:           include members</span>
+<span class="c1"># :undoc-members:     include members without docstrings</span>
+<span class="c1"># :private-members:   include private</span>
+<span class="c1"># :special-members:   include __special__</span>
+<span class="c1"># :inherited-members: include inherited members</span>
+<span class="c1"># :no-undoc-members:</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -239,6 +245,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Root Module Path: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_module_path</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Root Module Name: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_root_module_name</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Exclude:&#39;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_excluded_directory</span><span class="p">))</span>
+
+
+        <span class="n">template_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span> <span class="c1"># Fixme: custom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span> <span class="o">=</span> <span class="n">TemplateEnvironment</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
@@ -298,9 +308,11 @@
                 <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
 
         <span class="c1"># Generate the TOC RST file</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_toc</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">,</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">module_names</span> <span class="o">+</span> <span class="n">sub_modules</span><span class="p">))</span>
-        <span class="n">rst</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_automodule</span><span class="p">(</span><span class="n">directory_module_python_path</span><span class="p">)</span>
+        <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_toc</span><span class="p">(</span>
+            <span class="n">directory_module_python_path</span><span class="p">,</span>
+            <span class="n">directory_module_name</span><span class="p">,</span>
+            <span class="nb">sorted</span><span class="p">(</span><span class="n">module_names</span> <span class="o">+</span> <span class="n">sub_modules</span><span class="p">),</span>
+        <span class="p">)</span>
         <span class="n">rst_file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">dst_directory</span><span class="p">),</span> <span class="n">directory_module_name</span> <span class="o">+</span> <span class="s1">&#39;.rst&#39;</span><span class="p">)</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">rst_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
             <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">rst</span><span class="p">)</span>
@@ -367,77 +379,23 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_generate_title</span><span class="p">(</span><span class="n">module_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_generate_toc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory_module_path</span><span class="p">,</span> <span class="n">directory_module_name</span><span class="p">,</span> <span class="n">submodules</span><span class="p">):</span>
 
-        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="si">{header_line}</span><span class="s2"></span>
-<span class="si">{module_name}</span><span class="s2"></span>
-<span class="si">{header_line}</span><span class="s2">&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">_format_template</span><span class="p">(</span>
-            <span class="n">template</span><span class="p">,</span>
-            <span class="n">module_name</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
-            <span class="n">header_line</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="o">*</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span> <span class="o">+</span><span class="mi">2</span><span class="p">),</span>
-        <span class="p">)</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="k">def</span> <span class="nf">_generate_toc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory_module_name</span><span class="p">,</span> <span class="n">module_names</span><span class="p">):</span>
-
-        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">{title}</span><span class="s2"></span>
-
-<span class="s2">.. toctree::</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">_format_template</span><span class="p">(</span>
-            <span class="n">template</span><span class="p">,</span>
-            <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_title</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">),</span>
-        <span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">module_names</span><span class="p">:</span>
-            <span class="n">rst</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-
-        <span class="k">return</span> <span class="n">rst</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="k">def</span> <span class="nf">_generate_automodule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_path</span><span class="p">):</span>
-
-        <span class="c1">#</span>
-        <span class="c1"># For default set autodoc_default_flags in conf.py</span>
-        <span class="c1">#</span>
-        <span class="c1"># :members:           include members</span>
-        <span class="c1"># :undoc-members:     include members without docstrings</span>
-        <span class="c1"># :private-members:   include private</span>
-        <span class="c1"># :special-members:   include __special__</span>
-        <span class="c1"># :inherited-members: include inherited members</span>
-        <span class="c1"># :no-undoc-members:</span>
-
-        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">.. automodule:: </span><span class="si">{module_path}</span><span class="s2"></span>
-<span class="s2">   :members:</span>
-<span class="s2">   :show-inheritance:</span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">_format_template</span><span class="p">(</span>
-            <span class="n">template</span><span class="p">,</span>
-            <span class="n">module_path</span><span class="o">=</span><span class="n">module_path</span><span class="p">,</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+            <span class="s1">&#39;toc.jinja2&#39;</span><span class="p">,</span>
+            <span class="n">module</span><span class="o">=</span><span class="n">directory_module_path</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">directory_module_name</span><span class="p">,</span>
+            <span class="n">submodules</span><span class="o">=</span><span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory_module_name</span><span class="p">,</span> <span class="n">module_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">module_name</span> <span class="ow">in</span> <span class="n">submodules</span><span class="p">],</span>
         <span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_generate_rst_module</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">module_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">):</span>
 
-        <span class="n">template</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="si">{title}</span><span class="s2"></span>
-
-<span class="si">{automodule}</span><span class="s2"></span>
-<span class="s2">&quot;&quot;&quot;</span>
-
-        <span class="k">return</span> <span class="n">_format_template</span><span class="p">(</span>
-            <span class="n">template</span><span class="p">,</span>
-            <span class="n">title</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_title</span><span class="p">(</span><span class="n">module_name</span><span class="p">),</span>
-            <span class="n">automodule</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_generate_automodule</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">join_python_path</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span><span class="o">.</span><span class="n">render</span><span class="p">(</span>
+            <span class="s1">&#39;module.jinja2&#39;</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="n">module_name</span><span class="p">,</span>
+            <span class="n">module</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">join_python_path</span><span class="p">(</span><span class="n">module_path</span><span class="p">,</span> <span class="n">module_name</span><span class="p">),</span>
         <span class="p">)</span></div>
 </pre></div>
 
@@ -475,7 +433,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.1.0',
+            VERSION:'1.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
@@ -486,7 +444,7 @@
       <script type="text/javascript" src="../../static/underscore.js"></script>
       <script type="text/javascript" src="../../static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="../../static/hidecode.js"></script>
+      <script type="text/javascript" src="../../static/getthecode.js"></script>
 
   
 

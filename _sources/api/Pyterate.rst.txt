@@ -1,12 +1,16 @@
-**********
-Pyterate
-**********
+
+==========
+ Pyterate
+==========
 
 .. toctree::
-  Pyterate/ApiRstFactory
-  Pyterate/Config
-  Pyterate/ExampleRstFactory
-  Pyterate/Logging
+    Pyterate/ApiRstFactory
+    Pyterate/Config
+    Pyterate/Jupyter
+    Pyterate/Logging
+    Pyterate/RstFactory
+    Pyterate/Template
+    Pyterate/Tools
 
 .. automodule:: Pyterate
    :members:

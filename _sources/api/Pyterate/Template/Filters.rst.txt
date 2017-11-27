@@ -1,0 +1,8 @@
+
+=========
+ Filters
+=========
+
+.. automodule:: Pyterate.Template.Filters
+   :members:
+   :show-inheritance:

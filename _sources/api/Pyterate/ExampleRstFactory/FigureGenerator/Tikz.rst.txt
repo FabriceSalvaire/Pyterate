@@ -1,8 +1,0 @@
-******
-Tikz
-******
-
-.. automodule:: Pyterate.ExampleRstFactory.FigureGenerator.Tikz
-   :members:
-   :show-inheritance:
-

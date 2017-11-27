@@ -1,0 +1,8 @@
+
+=======
+ Topic
+=======
+
+.. automodule:: Pyterate.RstFactory.Topic
+   :members:
+   :show-inheritance:

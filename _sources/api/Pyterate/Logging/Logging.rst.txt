@@ -1,8 +1,8 @@
-*********
-Logging
-*********
+
+=========
+ Logging
+=========
 
 .. automodule:: Pyterate.Logging.Logging
    :members:
    :show-inheritance:
-

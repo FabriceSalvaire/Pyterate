@@ -1,8 +1,0 @@
-*********
-Generic
-*********
-
-.. automodule:: Pyterate.ExampleRstFactory.FigureGenerator.Generic
-   :members:
-   :show-inheritance:
-
