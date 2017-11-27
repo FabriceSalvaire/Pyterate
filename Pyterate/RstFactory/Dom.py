@@ -30,16 +30,16 @@
 
 __all__ = [
     'Dom',
-    'Chunk', # Fixme: -> Node ???
-    'RstChunk',
     'CodeChunk',
-    'HiddenCodeChunk',
-    'LitteralIncludeChunk',
-    'PythonIncludeChunk',
-    'ImageChunk',
     'FigureChunk',
+    'HiddenCodeChunk',
+    'ImageChunk',
+    'LiteralChunk',
+    'LiteralIncludeChunk',
     'LocaleFigureChunk',
     'OutputChunk',
+    'PythonIncludeChunk',
+    'RstChunk',
     'RstFormatChunk',
 ]
 
@@ -47,7 +47,12 @@ __all__ = [
 
 import ast
 import astunparse
+import logging
 import os
+
+####################################################################################################
+
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
@@ -59,6 +64,8 @@ ESCAPED_CLOSING_FORMAT_MARKUP = '@@>>@@'
 
 ####################################################################################################
 
+# Fixme: -> Node ???
+
 class Chunk:
 
     """ This class represents a chunk of lines in the source. """
@@ -68,9 +75,12 @@ class Chunk:
     ##############################################
 
     @classmethod
-    def remove_markup(cls, line, lstrip=True, strip=False):
+    def remove_markup(cls, line, lstrip=False, strip=False):
 
         line = line[len(cls.MARKUP):]
+        # Note: assume '#xxx# ...'
+        if line.startswith(' '):
+            line = line[1:]
         if strip:
             return line.strip()
         elif lstrip:
@@ -135,6 +145,42 @@ class Chunk:
 
         if not os.path.exists(target):
             os.symlink(source, target)
+
+    ##############################################
+
+    @staticmethod
+    def indent_lines(lines, indentation=4):
+
+        indentation = ' '*indentation
+        return ''.join([indentation + line for line in lines])
+
+    ##############################################
+
+    @classmethod
+    def indent_output(cls, output, indentation=4):
+        return cls.indent_lines(str(output).split('\n'), indentation)
+
+    ##############################################
+
+    @staticmethod
+    def directive(name, args=(), flags=(), kwargs={}):
+
+        args_string = ' '.join([str(arg) for arg in args])
+        rst = '\n.. {}:: {}\n'.format(name, args_string)
+        indentation = ' '*4
+        for flag in flags:
+            rst += indentation + ':{}:\n'.format(flag)
+        for key, value in kwargs.items():
+            rst += indentation + ':{}: {}\n'.format(key, value)
+
+        return rst + '\n'
+
+    ##############################################
+
+    @classmethod
+    def code_block_directive(cls, lexer):
+
+        return cls.directive('code-block', (lexer,))
 
     ##############################################
 
@@ -221,18 +267,13 @@ class ImageChunk(Chunk):
 
     def __str__(self):
 
-        # Fixme: jinja
-
-        template = '''
-.. image:: {0._figure_path}
-  :align: center
-'''
-        rst_code = template.format(self)
+        args = (self._figure_path,)
+        kwargs = dict(align='center')
         for key in ('scale', 'width', 'height'):
             value = getattr(self, '_' + key)
             if value:
-                rst_code += '  :{0}: {1}\n'.format(key, value)
-        return rst_code + '\n'
+                kwargs[key] = value
+        return self.directive('image', args=args, kwargs=kwargs) + '\n'
 
 ####################################################################################################
 ####################################################################################################
@@ -247,6 +288,13 @@ class RstChunk(Chunk):
 
     def __str__(self):
         return ''.join(self._lines)
+
+    ##############################################
+
+    def append(self, line):
+
+        # Fixme: common code
+        super().append(self.remove_markup(line))
 
     ##############################################
 
@@ -307,15 +355,34 @@ class CodeChunk(ExecutedChunk):
 
     ##############################################
 
+    def __init__(self, guarded=False, interactive=False):
+
+        super().__init__()
+
+        self._guarded = guarded
+        self._interactive = interactive
+
+    ##############################################
+
+    @property
+    def is_guarded(self):
+        return self._guarded
+
+    ##############################################
+
     def __str__(self):
 
-        # Fixme: jinja
-
         if bool(self):
-            source = ''.join(['    ' + line for line in self._lines])
-            return '\n.. code-block:: py3\n\n' + source + '\n'
+            # Fixme: if previous is hidden : merge ???
+            rst = self.code_block_directive('py3')
+            rst += self.indent_lines(self._lines)
+            for output in self.outputs:
+                if output.is_error:
+                    rst += self.code_block_directive('pytb') # Fixme: py3con py3tb are unknown ???
+                    rst += self.indent_output(output)
+            return rst + '\n'
         else:
-            return ''
+            return '' # Fixme: ???
 
     ##############################################
 
@@ -367,25 +434,44 @@ class OutputChunk(Chunk):
 
     def __str__(self):
 
-        # PythonConsoleLexer    pycon
-        # Python3TracebackLexer py3tb
-
-        rst = '''
-.. code-block:: none
-
-'''
+        rst = self.code_block_directive('none')
         for output in self._code_chunck.outputs:
-            for line in str(output):
-                rst += ' '*4 + line
+            if output.is_stream:
+                rst += self.indent_output(output)
         rst += '\n'
 
         return rst
 
 ####################################################################################################
 
-class LitteralIncludeChunk(Chunk):
+class LiteralChunk(Chunk):
 
-    """ This class represents a litteral include block. """
+    """ This class represents a literal block. """
+
+    MARKUP = '#l#'
+
+    ##############################################
+
+    def append(self, line):
+
+        super().append(self.remove_markup(line))
+
+    ##############################################
+
+    def __str__(self):
+
+        if bool(self):
+            source = self.indent_lines(self._lines)
+            # rst = self.directive('class', args=('literal-chunk',)) # Don't work !
+            return self.code_block_directive('py') + source + '\n'
+        else:
+            return ''
+
+####################################################################################################
+
+class LiteralIncludeChunk(Chunk):
+
+    """ This class represents a literal include block. """
 
     MARKUP = '#itxt#'
 
@@ -408,19 +494,13 @@ class LitteralIncludeChunk(Chunk):
 
     def __str__(self):
 
-        # Fixme: jinja
-
-        template = '''
-.. literalinclude:: {}
-
-'''
-        return template.format(self._include_filename)
+        return self.directive('literalinclude', args=(self._include_filename,))
 
 ####################################################################################################
 
 class PythonIncludeChunk(Chunk):
 
-    """ This class represents a Python litteral include block. """
+    """ This class represents a Python literal include block. """
 
     MARKUP = '#i#'
 
@@ -440,14 +520,7 @@ class PythonIncludeChunk(Chunk):
 
     def __str__(self):
 
-        # Fixme: jinja
-
-        template = '''
-.. getthecode:: {}
-  :language: python3
-
-'''
-        return template.format(self._include_path)
+        return self.directive('getthecode', args=(self._include_path,), kwargs=dict(language='python3'))
 
 ####################################################################################################
 
@@ -491,25 +564,47 @@ class LocaleFigureChunk(ImageChunk):
     def __init__(self, document, line):
 
         figure_path, kwargs = ImageChunk.parse_args(line, 'lfig') # Fixme: MARKUP
-        figure_filename = os.path.basename(figure_path)
-        figure_absolut_path = os.path.join(document.topic_path, document.topic_rst_path)
-        link_path = os.path.join(rst_directory, figure_filename)
+        figure_filename = os.path.basename(figure_path) # Fixme: ???
+        figure_absolut_path = os.path.join(document.topic_path, figure_filename)
+        link_path = os.path.join(document.topic_rst_path, figure_filename)
         super().__init__(figure_filename, **kwargs)
 
         self.symlink_source(figure_absolut_path, link_path)
 
 ####################################################################################################
 
-class Dom(list):
+class Dom:
 
-    # __iter__
-    # append
+    _logger = _module_logger.getChild('Dom')
+
+    ##############################################
+
+    def __init__(self):
+
+        self._chunks = []
+
+    ##############################################
+
+    def __len__(self):
+        return len(self._chunks)
+
+    ##############################################
+
+    def __iter__(self):
+        return iter(self._chunks)
+
+    ##############################################
+
+    def append(self, chunk):
+
+        self._logger.debug(repr(chunk))
+        self._chunks.append(chunk)
 
     ##############################################
 
     def iter_on_code_chunks(self):
 
-        for chunck in self:
+        for chunck in self._chunks:
             if chunck.is_executed:
                 yield chunck
 
@@ -517,4 +612,4 @@ class Dom(list):
 
     @property
     def last_chunk(self):
-        return self[-1]
+        return self._chunks[-1]

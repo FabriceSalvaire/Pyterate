@@ -32,11 +32,20 @@ foo = 1
 #!#
 #!#     I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
 
-# Add the file content as literal block
-#itxt# kicad-pyspice-example.cir
+# Add Python code as a literal block
+#l# for x in ():
+#l#   1 / 0 / 0
+
+# Guarded error
+#<e#
+1/0
+#e>#
 
 # Add a Python file as a literal block
 #i# RingModulator.py
+
+# Add the file content as literal block
+#itxt# kicad-pyspice-example.cir
 
 # Insert an image
 #lfig# kicad-pyspice-example.sch.svg

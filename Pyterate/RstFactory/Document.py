@@ -56,9 +56,10 @@ class Document:
 
     FIGURE_MAP = {
         'fig':  FigureChunk,
-        'lfig': LocaleFigureChunk,
         'i':    PythonIncludeChunk,
-        'itxt': LitteralIncludeChunk,
+        'itxt': LiteralIncludeChunk,
+        'lfig': LocaleFigureChunk,
+        'o':    OutputChunk,
     }
     FIGURE_MAP.update({markup:cls for markup, cls in ExtensionMetaclass.iter()})
 
@@ -160,6 +161,7 @@ class Document:
 
         self._logger.info("\nRun document " + self._path)
 
+        has_error = False
         with tempfile.TemporaryDirectory() as working_directory:
             jupyter_client = JupyterClient(working_directory)
             jupyter_client.run_cell(SETUP_CODE)
@@ -171,9 +173,14 @@ class Document:
                     output = outputs[0]
                     self._logger.debug('Output {0.output_type}\n{0}'.format(output))
                     chunk.outputs = outputs
+                for output in outputs:
+                    if output.is_error and not chunk.is_guarded:
+                        has_error = True
+                        self._logger.error("Error in document {}\n".format(self._path) + str(output))
 
-        # self._logger.error("Failed to run document " + self._path)
-        # self.factory.register_failure(self)
+        if has_error:
+            self._logger.error("Failed to run document {}".format(self._path))
+            self.factory.register_failure(self)
 
     ##############################################
 
@@ -197,14 +204,37 @@ class Document:
 
     ##############################################
 
+    def _append_literal_chunck(self):
+
+        # if self._literal_chunck:
+        chunk = self._literal_chunck
+        self._dom.append(chunk)
+        self._literal_chunck = LiteralChunk()
+
+    ##############################################
+
     def _append_code_chunck(self, hidden=False):
 
         if self._code_chunck:
+            self._logger.debug('append code chunk, guarded {}'.format(self._code_chunck.is_guarded))
             self._dom.append(self._code_chunck)
+
         if hidden:
             self._code_chunck = HiddenCodeChunk()
         else:
-            self._code_chunck = CodeChunk()
+            self._logger.debug('new code chunk, guarded {}'.format(self._in_guarded_code))
+            self._code_chunck = CodeChunk(guarded=self._in_guarded_code, interactive=self._in_interactive_code)
+
+    ##############################################
+
+    def _append_last_chunck(self, rst=False, literal=False, code=False):
+
+        if rst and self._rst_chunck:
+            self._append_rst_chunck()
+        elif literal and self._literal_chunck:
+            self._append_literal_chunck()
+        elif code and self._code_chunck:
+            self._append_code_chunck()
 
     ##############################################
 
@@ -223,6 +253,30 @@ class Document:
 
     ##############################################
 
+    def _check_enter_state(self):
+
+        if self._in_guarded_code or self._in_interactive_code:
+            self._logger.warning("interleaved markup")
+            return False
+        else:
+            # Note: rst case is handled in parser
+            self._append_code_chunck()
+            return True
+
+    ##############################################
+
+    def _check_leave_state(self):
+
+        if self._in_guarded_code or self._in_interactive_code:
+            # Note: rst case is handled in parser
+            self._append_code_chunck()
+            return True
+        else:
+            self._logger.warning("missing enter markup")
+            return False
+
+    ##############################################
+
     def _parse_source(self):
 
         """Parse the Python source code and extract chunks of codes, RST contents, plot and Tikz figures.
@@ -238,13 +292,18 @@ class Document:
 
         self._dom = Dom()
         self._rst_chunck = RstChunk()
+        self._literal_chunck = LiteralChunk()
         self._code_chunck = CodeChunk()
+
+        self._in_guarded_code = False
+        self._in_interactive_code = False
 
         # Use a while loop trick to remove consecutive blank lines
         number_of_lines = len(self._source)
         i = 0
         while i < number_of_lines:
             line = self._source[i]
+            self._logger.debug('\n' + line.rstrip())
             i += 1
             remove_next_blanck_line = True
 
@@ -256,48 +315,60 @@ class Document:
 
             # Handle figures
             elif self._line_starts_by_figure_markup(line):
-                # append rst / code chunk
-                if self._rst_chunck:
-                    self._append_rst_chunck()
-                elif self._code_chunck:
-                    self._append_code_chunck()
-                # handle chunk type
+                self._append_last_chunck(rst=True, literal=True, code=True)
                 if self._line_start_by_markup(line, 'o'):
                     if not self._dom.last_chunk.is_executed:
                         self._logger.error('Previous chunk must be code') # Fixme: handle
-                        self._dom.append(OutputChunk(self._dom.last_chunk))
+                    self._dom.append(OutputChunk(self._dom.last_chunk))
                 else:
-                    for markup, cls in ExtensionMetaclass.iter():
+                    for markup, cls in self.FIGURE_MAP.items():
                         if self._line_start_by_markup(line, markup):
+                            print(cls, line)
                             self._dom.append(cls(self, line))
                             break
 
             # Handle RST contents
             elif self._line_start_by_markup(line, '!'):
-                if self._code_chunck:
-                    self._append_code_chunck()
-                self._rst_chunck.append(line.strip()[4:] + '\n') # hack to get blank line
+                self._append_last_chunck(literal=True, code=True)
+                self._rst_chunck.append(line)
+
+            # Handle literal contents
+            elif self._line_start_by_markup(line, 'l'):
+                self._append_last_chunck(rst=True, code=True)
+                self._literal_chunck.append(line)
+
+            elif self._line_start_by_markup(line, '<e'):
+                if self._check_enter_state():
+                    self._in_guarded_code = True
+            elif self._line_start_by_markup(line, 'e>'):
+                if self._check_leave_state():
+                    self._in_guarded_code = False
+
+            elif self._line_start_by_markup(line, '<i'):
+                if self._check_enter_state():
+                    self._in_interactive_code = True
+            elif self._line_start_by_markup(line, 'i>'):
+                if self._check_leave_state():
+                    self._in_interactive_code = False
 
             # Handle Python codes
             else:
                 # if line.startswith('pylab.show()'):
                 #     continue
                 remove_next_blanck_line = False
-                if self._rst_chunck:
-                    self._append_rst_chunck()
+                self._append_last_chunck(rst=True, literal=True)
                 if self._line_start_by_markup(line, 'h') and isinstance(self._code_chunck, CodeChunk):
-                    self._append_code_chunck(True)
+                    self._append_code_chunck(hidden=True)
                 elif isinstance(self._code_chunck, HiddenCodeChunk):
-                    self._append_code_chunck(False)
+                    self._append_code_chunck()
                 self._code_chunck.append(line)
+
+            # Fixme: ???
             if remove_next_blanck_line and i < number_of_lines and not self._source[i].strip():
                 i += 1
 
         # Append remaining chunck
-        if self._rst_chunck:
-            self._append_rst_chunck()
-        elif self._code_chunck:
-            self._append_code_chunck()
+        self._append_last_chunck(rst=True, literal=True, code=True)
 
     ##############################################
 
@@ -322,8 +393,6 @@ class Document:
 
         self._logger.info("\nCreate RST file " + self._rst_path)
 
-        ### self._read_output_chunk()
-
         # place the Python file in the rst path
         python_file_name = self._basename + '.py'
         link_path = self._topic.join_rst_path(python_file_name)
@@ -344,5 +413,5 @@ class Document:
         with open(self._rst_path, 'w') as fh:
             fh.write(str(template_aggregator))
             for chunck in self._dom:
+                print(type(chunck))
                 fh.write(str(chunck))
-            # fh.write(self._output)

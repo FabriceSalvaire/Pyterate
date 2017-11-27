@@ -38,6 +38,21 @@ div[class^="highlight"] pre {
     font-size: 100%; /* 16 px */
 }
 
+div.highlight-pytb {
+    background: #ffcfcf;
+    border-left-width: 10px;
+    border-left-color: #fc4545;
+    border-left-style: solid;
+}
+
+
+div.highlight-none {
+    background: #d2ffcf;
+    border-left-width: 10px;
+    border-left-color: #1ada52;
+    border-left-style: solid;
+}
+
 a.btn.btn-neutral {
     box-shadow: none;
     border: 0;
@@ -105,5 +120,5 @@ div.getthecode-header li.getthecode-filename-link span {
 
 div.getthecode pre {
     margin-top: 0px;
-    padding: 3px;
+    padding: 12px;
 }
