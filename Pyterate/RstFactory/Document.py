@@ -216,8 +216,13 @@ class Document:
     def _append_code_chunck(self, hidden=False):
 
         if self._code_chunck:
-            self._logger.debug('append code chunk, guarded {}'.format(self._code_chunck.guarded))
-            self._dom.append(self._code_chunck)
+            self._logger.debug('append code chunk, guarded {} interactive {}'.format(self._code_chunck.guarded, self._in_interactive_code))
+            chunck = self._code_chunck
+            if self._in_interactive_code:
+                for subchunck in chunck.to_interactive():
+                    self._dom.append(subchunck)
+            else:
+                self._dom.append(chunck)
 
         if hidden:
             self._code_chunck = HiddenCodeChunk()

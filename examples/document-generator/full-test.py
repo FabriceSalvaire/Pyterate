@@ -36,6 +36,14 @@ foo = 1
 #l# for x in ():
 #l#   1 / 0 / 0
 
+# Intercative code
+#<i#
+1 + 1
+2 * 4 * 2
+a, b = 1, 2
+1, 2, 3
+#i>#
+
 # Guarded error
 #<e#
 1/0

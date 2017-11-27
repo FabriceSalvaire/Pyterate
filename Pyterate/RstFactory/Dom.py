@@ -34,6 +34,7 @@ __all__ = [
     'FigureChunk',
     'HiddenCodeChunk',
     'ImageChunk',
+    'InteractiveChunk',
     'LiteralChunk',
     'LiteralIncludeChunk',
     'LocaleFigureChunk',
@@ -192,6 +193,11 @@ class Chunk:
 
     def __bool__(self):
         return bool(self._lines)
+
+    ##############################################
+
+    # def __iter__(self):
+    #     return iter(self._lines)
 
     ##############################################
 
@@ -398,6 +404,43 @@ class CodeChunk(ExecutedChunk):
                 source += line
         return source
 
+    ##############################################
+
+    def to_interactive(self):
+
+        chunks = []
+        for line in self._lines:
+            if not line.strip():
+                continue
+            chunk = InteractiveChunk(line)
+            chunks.append(chunk)
+        return chunks
+
+####################################################################################################
+
+class InteractiveChunk(CodeChunk):
+
+    ##############################################
+
+    def __init__(self, line):
+
+        super().__init__()
+        self.append(line)
+
+    ##############################################
+
+    def __str__(self):
+
+        rst = super().__str__()
+
+        rst += self.code_block_directive('none')
+        for output in self.outputs:
+            if output.is_result:
+                rst += self.indent_output(output)
+        rst += '\n'
+
+        return rst
+
 ####################################################################################################
 
 class HiddenCodeChunk(CodeChunk):
@@ -441,9 +484,8 @@ class OutputChunk(Chunk):
         for output in self._code_chunck.outputs:
             if output.is_stream:
                 rst += self.indent_output(output)
-        rst += '\n'
 
-        return rst
+        return rst + '\n'
 
 ####################################################################################################
 
