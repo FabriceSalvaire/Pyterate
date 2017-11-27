@@ -355,18 +355,21 @@ class CodeChunk(ExecutedChunk):
 
     ##############################################
 
-    def __init__(self, guarded=False, interactive=False):
+    def __init__(self):
 
         super().__init__()
 
-        self._guarded = guarded
-        self._interactive = interactive
+        self.guarded = False
 
     ##############################################
 
-    @property
-    def is_guarded(self):
-        return self._guarded
+    # @property
+    # def is_guarded(self):
+    #     return self._guarded
+
+    # @guarded.setter
+    # def is_guarded(self, value):
+    #     self._guarded = value
 
     ##############################################
 

@@ -174,7 +174,7 @@ class Document:
                     self._logger.debug('Output {0.output_type}\n{0}'.format(output))
                     chunk.outputs = outputs
                 for output in outputs:
-                    if output.is_error and not chunk.is_guarded:
+                    if output.is_error and not chunk.guarded:
                         has_error = True
                         self._logger.error("Error in document {}\n".format(self._path) + str(output))
 
@@ -216,14 +216,13 @@ class Document:
     def _append_code_chunck(self, hidden=False):
 
         if self._code_chunck:
-            self._logger.debug('append code chunk, guarded {}'.format(self._code_chunck.is_guarded))
+            self._logger.debug('append code chunk, guarded {}'.format(self._code_chunck.guarded))
             self._dom.append(self._code_chunck)
 
         if hidden:
             self._code_chunck = HiddenCodeChunk()
         else:
-            self._logger.debug('new code chunk, guarded {}'.format(self._in_guarded_code))
-            self._code_chunck = CodeChunk(guarded=self._in_guarded_code, interactive=self._in_interactive_code)
+            self._code_chunck = CodeChunk()
 
     ##############################################
 
@@ -339,6 +338,7 @@ class Document:
 
             elif self._line_start_by_markup(line, '<e'):
                 if self._check_enter_state():
+                    self._code_chunck.guarded = True
                     self._in_guarded_code = True
             elif self._line_start_by_markup(line, 'e>'):
                 if self._check_leave_state():
@@ -413,5 +413,4 @@ class Document:
         with open(self._rst_path, 'w') as fh:
             fh.write(str(template_aggregator))
             for chunck in self._dom:
-                print(type(chunck))
                 fh.write(str(chunck))
