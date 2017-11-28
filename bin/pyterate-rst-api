@@ -44,12 +44,17 @@ parser.add_argument('--rst-api-path',
                     default=os.path.join('doc', 'sphinx', 'source', 'api'),
                     help='rst API path')
 
+parser.add_argument('--exclude', nargs='+',
+                    help='rst API path')
+
 args = parser.parse_args()
 
 ####################################################################################################
 
-# Fixme:
-excluded_directory = ()
+if args.exclude:
+    excluded_directory = args.exclude
+else:
+    excluded_directory = ()
 
 rst_factory = ApiRstFactory(args.module_path, args.rst_api_path, excluded_directory)
 # Fixme: API ???

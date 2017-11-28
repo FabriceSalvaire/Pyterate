@@ -80,7 +80,6 @@ class ApiRstFactory:
         self._logger.info('Root Module Name: {}'.format(self._root_module_name))
         self._logger.info('Exclude:' + '\n  '.join(self._excluded_directory))
 
-
         template_path = os.path.join(os.path.dirname(__file__), 'templates') # Fixme: custom
         self._template_environment = TemplateEnvironment(template_path)
 
@@ -97,10 +96,14 @@ class ApiRstFactory:
 
         for module_path, sub_directories, files in os.walk(self._root_module_path, followlinks=True):
 
+            if module_path in self._excluded_directory:
+                continue
+
             sub_directories = [
                 sub_directory
                 for sub_directory in sub_directories
-                if os.path.join(module_path, sub_directory) not in self._excluded_directory
+                if (os.path.join(module_path, sub_directory) not in self._excluded_directory
+                    and sub_directory != '__pycache__')
             ]
 
             if self.is_python_directory_module(module_path):
@@ -168,7 +171,9 @@ class ApiRstFactory:
         return (
             file_name.endswith('.py') and
             file_name != cls.INIT_FILE_NAME and
-            'flymake'not in file_name
+            not file_name.startswith('flycheck') and
+            not file_name.startswith('flymake') and
+            file_name != 'parsetab.py'
         )
 
     ##############################################
