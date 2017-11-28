@@ -153,7 +153,7 @@ class Chunk:
     def indent_lines(lines, indentation=4):
 
         indentation = ' '*indentation
-        return ''.join([indentation + line for line in lines])
+        return '\n'.join([indentation + line.rstrip() for line in lines])
 
     ##############################################
 
@@ -279,7 +279,7 @@ class ImageChunk(Chunk):
             value = getattr(self, '_' + key)
             if value:
                 kwargs[key] = value
-        return self.directive('image', args=args, kwargs=kwargs) + '\n'
+        return self.directive('image', args=args, kwargs=kwargs)
 
 ####################################################################################################
 ####################################################################################################
@@ -293,7 +293,7 @@ class RstChunk(Chunk):
     ##############################################
 
     def __str__(self):
-        return ''.join(self._lines)
+        return ''.join(self._lines) + '\n'
 
     ##############################################
 
@@ -329,13 +329,15 @@ class RstFormatChunk(ExecutedChunk):
 
         self._lines = rst_chunk._lines
 
+        self.guarded = False # Fixme: required, not ExecutedChunk
+
     ##############################################
 
     def __str__(self):
 
         # Fixmes: more than one output
 
-        return str(self.outputs[0])
+        return str(self.outputs[0]) + '\n'
 
     ##############################################
 
@@ -437,9 +439,8 @@ class InteractiveChunk(CodeChunk):
         for output in self.outputs:
             if output.is_result:
                 rst += self.indent_output(output)
-        rst += '\n'
 
-        return rst
+        return rst + '\n'
 
 ####################################################################################################
 
@@ -590,6 +591,8 @@ class FigureChunk(ImageChunk):
 
         super().__init__(figure_filename)
 
+        self.guarded = False # Fixme: required, not ExecutedChunk
+
     ##############################################
 
     def to_python(self):
@@ -642,7 +645,7 @@ class Dom:
 
     def append(self, chunk):
 
-        self._logger.debug(repr(chunk))
+        # self._logger.debug(repr(chunk))
         self._chunks.append(chunk)
 
     ##############################################

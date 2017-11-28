@@ -39,8 +39,12 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
+# We define __file__ to the Python input path
+
 SETUP_CODE = '''
 from Pyterate.RstFactory.Tools import save_figure
+
+__file__ = '{file}'
 '''
 
 ####################################################################################################
@@ -164,19 +168,24 @@ class Document:
         has_error = False
         with tempfile.TemporaryDirectory() as working_directory:
             jupyter_client = JupyterClient(working_directory)
-            jupyter_client.run_cell(SETUP_CODE)
+            code = SETUP_CODE.format(file=self._path)
+            jupyter_client.run_cell(code)
             for chunk in self._dom.iter_on_code_chunks():
                 code = chunk.to_python()
-                self._logger.debug('Execute\n{}'.format(code))
+                # self._logger.debug('Execute\n{}'.format(code))
                 outputs = jupyter_client.run_cell(code)
                 if outputs:
                     output = outputs[0]
-                    self._logger.debug('Output {0.output_type}\n{0}'.format(output))
+                    # self._logger.debug('Output {0.output_type}\n{0}'.format(output))
                     chunk.outputs = outputs
                 for output in outputs:
                     if output.is_error and not chunk.guarded:
                         has_error = True
-                        self._logger.error("Error in document {}\n".format(self._path) + str(output))
+                        self._logger.error(
+                            "Error in document {}\n".format(self._path) +
+                            str(code) + '\n\n' +
+                            str(output)
+                        )
 
         if has_error:
             self._logger.error("Failed to run document {}".format(self._path))
@@ -216,7 +225,7 @@ class Document:
     def _append_code_chunck(self, hidden=False):
 
         if self._code_chunck:
-            self._logger.debug('append code chunk, guarded {} interactive {}'.format(self._code_chunck.guarded, self._in_interactive_code))
+            # self._logger.debug('append code chunk, guarded {} interactive {}'.format(self._code_chunck.guarded, self._in_interactive_code))
             chunck = self._code_chunck
             if self._in_interactive_code:
                 for subchunck in chunck.to_interactive():
@@ -307,7 +316,7 @@ class Document:
         i = 0
         while i < number_of_lines:
             line = self._source[i]
-            self._logger.debug('\n' + line.rstrip())
+            # self._logger.debug('\n' + line.rstrip())
             i += 1
             remove_next_blanck_line = True
 
@@ -327,7 +336,6 @@ class Document:
                 else:
                     for markup, cls in self.FIGURE_MAP.items():
                         if self._line_start_by_markup(line, markup):
-                            print(cls, line)
                             self._dom.append(cls(self, line))
                             break
 

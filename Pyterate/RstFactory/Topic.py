@@ -137,8 +137,9 @@ class Topic:
     def _filter_python_files(self, filename):
 
         if filename.endswith('.py'):
+            basename = os.path.basename(filename)
             for pattern in self.EXCLUDED_FILES:
-                if filename.startswith(pattern):
+                if basename.startswith(pattern):
                     return False
             return self._is_file_skipped(filename)
         else:
