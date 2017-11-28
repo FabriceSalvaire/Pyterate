@@ -72,7 +72,7 @@ else:
 
 setup_dict = dict(
     name='Pyterate',
-    version='1.0.0',
+    version='2.0.0',
     author='Fabrice Salvaire',
     author_email='fabrice.salvaire@orange.fr',
     description='Pyterate is a Sphinx add-ons to generate API documentation using autogen and litterate programming documentation for Python projects.',
