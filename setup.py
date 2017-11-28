@@ -23,6 +23,7 @@
 ####################################################################################################
 
 import glob
+import os
 import sys
 
 from setuptools import setup, find_packages
@@ -43,12 +44,21 @@ def read_requirement():
 
 ####################################################################################################
 
+def glob_templates(*args):
+    path = os.path.join(*args)
+    return [os.path.relpath(x, path)
+            for x in glob.glob(os.path.join(path, 'templates', '*jinja2'))]
+
+####################################################################################################
+
 setup_dict.update(dict(
     # include_package_data=True, # Look in MANIFEST.in
     packages=find_packages(exclude=['unit-test']),
     scripts=glob.glob('bin/*'),
     package_data={
         'Pyterate.Config': ['logging.yml'],
+        'Pyterate.ApiRstFactory': glob_templates('Pyterate', 'ApiRstFactory'),
+        'Pyterate.RstFactory': glob_templates('Pyterate', 'RstFactory'),
     },
 
     platforms='any',
