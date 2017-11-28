@@ -5,4 +5,4 @@ jupyter-client
 nbformat
 PyYAML>=3.10
 sphinx
-sphinx-getthecode
+sphinxcontrib-getthecode
