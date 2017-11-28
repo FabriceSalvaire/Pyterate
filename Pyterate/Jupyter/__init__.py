@@ -151,7 +151,8 @@ class JupyterOutput:
     def __str__(self):
 
         if self.is_error:
-            return self._node.ename # evalue traceback
+            traceback = '\n'.join(self._node.traceback)
+            return "{0.ename} {0.evalue}\n{1}".format(self._node, traceback)
         elif self.is_stream:
             return self._node.text
         elif self.is_result:
