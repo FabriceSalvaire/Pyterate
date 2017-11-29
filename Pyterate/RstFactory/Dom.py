@@ -18,13 +18,13 @@
 #
 ####################################################################################################
 
-# Fixme: default lexer python3
+# Fixme: clean API !!!
 
 # Fixme: These classes do several tasks
 #  decode input
 #  store data
 #  __str__ generate RST
-#  to_python
+#  to_code
 
 ####################################################################################################
 
@@ -39,7 +39,7 @@ __all__ = [
     'LiteralIncludeChunk',
     'LocaleFigureChunk',
     'OutputChunk',
-    'PythonIncludeChunk',
+    'PythonIncludeChunk', # Fixme: !!!
     'RstChunk',
     'RstFormatChunk',
 ]
@@ -57,14 +57,6 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-# Must fit Python, RST and LaTeX formulae
-OPENING_FORMAT_MARKUP = '@<@'
-CLOSING_FORMAT_MARKUP = '@>@'
-ESCAPED_OPENING_FORMAT_MARKUP = '@@<<@@'
-ESCAPED_CLOSING_FORMAT_MARKUP = '@@>>@@'
-
-####################################################################################################
-
 # Fixme: -> Node ???
 
 class Chunk:
@@ -75,11 +67,11 @@ class Chunk:
 
     ##############################################
 
-    @classmethod
-    def remove_markup(cls, line, lstrip=False, strip=False):
+    def remove_markup(self, line, lstrip=False, strip=False):
 
-        line = line[len(cls.MARKUP):]
-        # Note: assume '#xxx# ...'
+        markup = self.language.enclose_markup(self.MARKUP)
+        line = line[len(markup):]
+        # Fixme: assume '#xxx# ...'
         if line.startswith(' '):
             line = line[1:]
         if strip:
@@ -91,8 +83,7 @@ class Chunk:
 
     ##############################################
 
-    @classmethod
-    def parse_function_call(cls, line):
+    def parse_function_call(self, line):
 
         # "Module(body=[
         #     Expr(value=Call(
@@ -105,7 +96,7 @@ class Chunk:
         #            keyword(arg='foo', value=Str(s='bar'))
         #         ]))])
 
-        line = cls.remove_markup(line, strip=True)
+        line = self.remove_markup(line, strip=True)
 
         module_ = ast.parse(line)
         expression = module_.body[0]
@@ -185,8 +176,9 @@ class Chunk:
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, document):
 
+        self._document = document # to pass settings ...
         self._lines = []
 
     ##############################################
@@ -209,7 +201,45 @@ class Chunk:
 
     @property
     def is_executed(self):
-        return hasattr(self, 'to_python')
+        return hasattr(self, 'to_code')
+
+    ##############################################
+
+    @property
+    def document(self):
+        return self._document
+
+    @property
+    def language(self):
+        return self._document.language
+
+    ##############################################
+
+    @property
+    def opening_format_markup(self):
+        return self._document.language.opening_format_markup
+
+    @property
+    def closing_format_markup(self):
+        return self._document.language.closing_format_markup
+
+    @property
+    def escaped_opening_format_markup(self):
+        return self._document.language.escaped_opening_format_markup
+
+    @property
+    def escaped_closing_format_markup(self):
+        return self._document.language.escaped_closing_format_markup
+
+    ##############################################
+
+    @property
+    def lexer(self):
+        return self.language.lexer
+
+    @property
+    def error_lexer(self):
+        return self.language.error_lexer
 
 ####################################################################################################
 
@@ -217,9 +247,9 @@ class ExecutedChunk(Chunk):
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, document):
 
-        super().__init__()
+        super().__init__(document)
 
         self.outputs = []
 
@@ -259,10 +289,11 @@ class ImageChunk(Chunk):
 
     ##############################################
 
-    def __init__(self, figure_path, scale='', width='', height='', align=''):
+    def __init__(self, document, figure_path, scale='', width='', height='', align=''):
 
-        # Fixme: kwargs
+        # Fixme: __init__, kwargs
 
+        self._document = document
         self._figure_path = figure_path
         self._scale = scale
         self._width = width
@@ -288,7 +319,7 @@ class RstChunk(Chunk):
 
     """ This class represents a RST content. """
 
-    MARKUP = '#!#'
+    MARKUP = '!'
 
     ##############################################
 
@@ -307,7 +338,7 @@ class RstChunk(Chunk):
     def has_format(self):
 
         for line in self._lines:
-            if OPENING_FORMAT_MARKUP in line:
+            if self.opening_format_markup in line:
                 return True
         return False
 
@@ -325,7 +356,7 @@ class RstFormatChunk(ExecutedChunk):
 
     def __init__(self, rst_chunk):
 
-        super().__init__()
+        super().__init__(rst_chunk.document)
 
         self._lines = rst_chunk._lines
 
@@ -341,15 +372,15 @@ class RstFormatChunk(ExecutedChunk):
 
     ##############################################
 
-    def to_python(self):
+    def to_code(self):
 
         rst = ''.join(self._lines)
         rst = rst.replace('{', '{{') # to escape them
         rst = rst.replace('}', '}}')
-        rst = rst.replace(OPENING_FORMAT_MARKUP, '{')
-        rst = rst.replace(CLOSING_FORMAT_MARKUP, '}')
-        rst = rst.replace(ESCAPED_OPENING_FORMAT_MARKUP, OPENING_FORMAT_MARKUP)
-        rst = rst.replace(ESCAPED_CLOSING_FORMAT_MARKUP, CLOSING_FORMAT_MARKUP)
+        rst = rst.replace(self.opening_format_markup, '{')
+        rst = rst.replace(self.closing_format_markup, '}')
+        rst = rst.replace(self.escaped_opening_format_markup, self.opening_format_markup)
+        rst = rst.replace(self.escaped_closing_format_markup, self.closing_format_markup)
 
         return 'print(r"""' + rst + '""".format(**locals()))\n'
 
@@ -363,9 +394,9 @@ class CodeChunk(ExecutedChunk):
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self, document):
 
-        super().__init__()
+        super().__init__(document)
 
         self.guarded = False
 
@@ -385,11 +416,11 @@ class CodeChunk(ExecutedChunk):
 
         if bool(self):
             # Fixme: if previous is hidden : merge ???
-            rst = self.code_block_directive('py3')
+            rst = self.code_block_directive(self.lexer)
             rst += self.indent_lines(self._lines)
             for output in self.outputs:
                 if output.is_error:
-                    rst += self.code_block_directive('pytb') # Fixme: py3con py3tb are unknown ???
+                    rst += self.code_block_directive(self.error_lexer)
                     rst += self.indent_output(output)
             return rst + '\n'
         else:
@@ -397,7 +428,7 @@ class CodeChunk(ExecutedChunk):
 
     ##############################################
 
-    def to_python(self):
+    def to_code(self):
 
         source = ''
         for line in self._lines:
@@ -414,7 +445,7 @@ class CodeChunk(ExecutedChunk):
         for line in self._lines:
             if not line.strip():
                 continue
-            chunk = InteractiveChunk(line)
+            chunk = InteractiveChunk(self._document, line)
             chunks.append(chunk)
         return chunks
 
@@ -424,9 +455,9 @@ class InteractiveChunk(CodeChunk):
 
     ##############################################
 
-    def __init__(self, line):
+    def __init__(self, document, line):
 
-        super().__init__()
+        super().__init__(document)
         self.append(line)
 
     ##############################################
@@ -448,7 +479,7 @@ class HiddenCodeChunk(CodeChunk):
 
     """ This class represents a hidden code block. """
 
-    MARKUP = '#h#'
+    MARKUP = 'h'
 
     ##############################################
 
@@ -468,13 +499,13 @@ class OutputChunk(Chunk):
 
     """ This class represents an output block. """
 
-    MARKUP = '#o#'
+    MARKUP = 'o'
 
     ##############################################
 
     def __init__(self, code_chunk):
 
-        super().__init__()
+        super().__init__(code_chunk.document)
         self._code_chunck = code_chunk
 
     ##############################################
@@ -494,7 +525,7 @@ class LiteralChunk(Chunk):
 
     """ This class represents a literal block. """
 
-    MARKUP = '#l#'
+    MARKUP = 'l'
 
     ##############################################
 
@@ -519,14 +550,15 @@ class LiteralIncludeChunk(Chunk):
 
     """ This class represents a literal include block. """
 
-    MARKUP = '#itxt#'
+    MARKUP = 'itxt'
 
     ##############################################
 
     def __init__(self, document, line):
 
-        # Fixme: duplicated code with figure etc. ???
+        self._document = document # Fixme:
 
+        # Fixme: duplicated code with figure etc. ???
         include_path = self.remove_markup(line, strip=True)
 
         self._include_filename = os.path.basename(include_path)
@@ -548,11 +580,13 @@ class PythonIncludeChunk(Chunk):
 
     """ This class represents a Python literal include block. """
 
-    MARKUP = '#i#'
+    MARKUP = 'i'
 
     ##############################################
 
     def __init__(self, document, line):
+
+        self._document = document # Fixme:
 
         self._include_path = self.remove_markup(line, strip=True)
 
@@ -566,7 +600,7 @@ class PythonIncludeChunk(Chunk):
 
     def __str__(self):
 
-        return self.directive('getthecode', args=(self._include_path,), kwargs=dict(language='python3'))
+        return self.directive('getthecode', args=(self._include_path,), kwargs=dict(language=self.lexer))
 
 ####################################################################################################
 
@@ -574,14 +608,14 @@ class FigureChunk(ImageChunk):
 
     """ This class represents an image block for a saved figure. """
 
-    MARKUP = '#fig#'
+    MARKUP = 'fig'
 
     ##############################################
 
     def __init__(self, document, line):
 
         # Fixme: better way ???
-        Chunk.__init__(self)
+        Chunk.__init__(self, document) # Fixme: document !!!
         self.append(line)
 
         self._rst_path = document.topic.rst_path
@@ -589,13 +623,13 @@ class FigureChunk(ImageChunk):
         self._call = self.parse_function_call(line)
         figure_filename = self._call.args[1].s # require a str
 
-        super().__init__(figure_filename)
+        super().__init__(document, figure_filename)
 
         self.guarded = False # Fixme: required, not ExecutedChunk
 
     ##############################################
 
-    def to_python(self):
+    def to_code(self):
 
         return self.update_function_call(self._call, self._rst_path)
 
@@ -605,7 +639,7 @@ class LocaleFigureChunk(ImageChunk):
 
     """ This class represents an image block for a figure. """
 
-    MARKUP = '#lfig#'
+    MARKUP = 'lfig'
 
     ##############################################
 
@@ -615,7 +649,7 @@ class LocaleFigureChunk(ImageChunk):
         figure_filename = os.path.basename(figure_path) # Fixme: ???
         figure_absolut_path = os.path.join(document.topic_path, figure_filename)
         link_path = os.path.join(document.topic_rst_path, figure_filename)
-        super().__init__(figure_filename, **kwargs)
+        super().__init__(document, figure_filename, **kwargs)
 
         self.symlink_source(figure_absolut_path, link_path)
 

@@ -110,5 +110,5 @@ class GeneratorImageChunk(GeneratedImage, ImageChunk, metaclass=ExtensionMetacla
         # ./bin/make-figure --kwargs="instrument='Guitare',tuning='Standard'" Musica.Figure.Fretboard.Fretboard figures/guitare-fretboard.tex
 
         command, figure_name, kwargs = ImageChunk.parse_args(line, self.__markup__)
-        ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
-        GeneratedImage.__init__(self, command, document, figure_name)
+        ImageChunk.__init__(self, document, None, **kwargs) # Fixme: _figure_path
+        GeneratedImage.__init__(self, command, document, figure_name) # Fixme: document

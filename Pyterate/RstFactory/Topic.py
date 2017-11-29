@@ -23,7 +23,6 @@
 
 ####################################################################################################
 
-import glob
 import logging
 import os
 
@@ -40,13 +39,7 @@ class Topic:
 
     _logger = _module_logger.getChild('Topic')
 
-    EXCLUDED_FILES = (
-        # these file should be flymake temporary file
-        'flymake_',
-        'flycheck_',
-    )
-
-    SKIP_PATTERN = '#skip#'
+    SKIP_PATTERN = 'skip'
     IMAGE_DIRECTIVE = '.. image:: '
     IMAGE_DIRECTIVE_LENGTH = len(IMAGE_DIRECTIVE)
 
@@ -58,19 +51,20 @@ class Topic:
         self._relative_path = relative_path # relative input path
         self._basename = os.path.basename(relative_path) # topic directory
 
-        self._path = self._factory.join_documents_path(relative_path) # input path
-        self._rst_path = self._factory.join_rst_document_path(relative_path) # output path
+        self._path = self.settings.join_input_path(relative_path) # input path
+        self._rst_path = self.settings.join_rst_path(relative_path) # output path
 
         self._subtopics = [] # self._retrieve_subtopics()
         self._documents = []
         self._links = []
 
-        python_files = list(self._python_files_iterator()) # Fixme: better ?
-        if python_files:
+        input_files = list(self._input_files_iterator()) # Fixme: better ?
+        if input_files:
             self._logger.info("\nProcess Topic: " + relative_path)
             os.makedirs(self._rst_path) # removed code
-            for filename in python_files:
-                document = Document(self, filename)
+            for filename, language in input_files:
+                self._logger.info("\nFound input '{}' handled by {}".format(self.join_path(filename), language.name))
+                document = Document(self, filename, language)
                 if document.is_link:
                     self._logger.info("\n  found link: " + filename)
                     self._links.append(document)
@@ -90,6 +84,10 @@ class Topic:
     @property
     def factory(self):
         return self._factory
+
+    @property
+    def settings(self):
+        return self._factory.settings
 
     @property
     def basename(self):
@@ -113,42 +111,28 @@ class Topic:
 
     ##############################################
 
-    def _files_iterator(self, extension, file_filter):
+    def _input_files_iterator(self):
 
-        pattern = os.path.join(self._path, '*.' + extension)
-        for file_path in glob.glob(pattern):
-            if file_filter(file_path):
-                yield os.path.basename(file_path) # relative path
-
-    ##############################################
-
-    def _is_file_skipped(self, filename):
-
-        absolut_path = os.path.join(self._path, filename)
-        with open(absolut_path, 'r') as fh:
-            first_line = fh.readline()
-            second_line = fh.readline()
-
-        return not (first_line.startswith(self.SKIP_PATTERN) or
-                    second_line.startswith(self.SKIP_PATTERN))
+        for basename in os.listdir(self._path):
+            path = os.path.join(self._path, basename)
+            if os.path.isfile(path):
+                language = self.settings.language_for(path)
+                if language and not self._is_file_skipped(path, language):
+                    yield basename, language
 
     ##############################################
 
-    def _filter_python_files(self, filename):
+    def _is_file_skipped(self, path, language):
 
-        if filename.endswith('.py'):
-            basename = os.path.basename(filename)
-            for pattern in self.EXCLUDED_FILES:
-                if basename.startswith(pattern):
-                    return False
-            return self._is_file_skipped(filename)
-        else:
-            return False
+        skip_pattern = language.enclose_markup(self.SKIP_PATTERN)
 
-    ##############################################
-
-    def _python_files_iterator(self):
-        return self._files_iterator('py', self._filter_python_files)
+        with open(path) as fh:
+            for i in range(2):
+                line = fh.readline() # .strip()
+                if line.startswith(skip_pattern):
+                    self._logger.info('\nSkip file {}'.format(path))
+                    return True
+        return False
 
     ##############################################
 
@@ -178,24 +162,24 @@ class Topic:
 
     ##############################################
 
-    def process_documents(self, **kwargs):
+    def process_documents(self):
 
         for document in self._documents:
-            self.process_document(document, **kwargs)
+            self.process_document(document)
 
     ##############################################
 
-    def process_document(self, document, run_code=True, make_external_figure=True, force=False):
+    def process_document(self, document):
 
         # Fixme: kwargs
 
         document.read()
-        if force or document:
-            if run_code:
+        if self.settings.force or document:
+            if self.settings.run_code:
                 document.run_code()
             document.make_rst()
-        if make_external_figure:
-            document.make_external_figure(force)
+        if self.settings.make_external_figure:
+            document.make_external_figure(self.settings.force)
 
     ##############################################
 
@@ -212,7 +196,7 @@ class Topic:
 
         for path in self._directory_iterator():
             if os.path.exists(os.path.join(path, 'index.rst')): # Fixme: hardcoded filename !
-                relative_path = os.path.relpath(path, self._factory.rst_directory)
+                relative_path = os.path.relpath(path, self.settings.rst_path)
                 topic = self._factory.topics[relative_path]
                 yield topic
 
@@ -228,7 +212,7 @@ class Topic:
 
     ##############################################
 
-    def make_toc(self, make_external_figure):
+    def make_toc(self):
 
         """ Create the TOC. """
 
@@ -260,14 +244,14 @@ class Topic:
         subtopics = [topic.basename for topic in self._subtopics]
         kwargs['subtopics'] = sorted(subtopics)
 
-        if self._factory.show_counter:
+        if self.settings.show_counters:
             self._number_of_documents = len(self._documents) # don't count links twice
             kwargs['number_of_links'] = len(self._links)
             kwargs['number_of_subtopics'] = len(self._subtopics)
             number_of_subtopics = sum([topic._number_of_documents for topic in self._subtopics])
             kwargs['number_of_documents'] = self._number_of_documents + number_of_subtopics
 
-        template_aggregator = TemplateAggregator(self._factory.template_environment)
+        template_aggregator = TemplateAggregator(self.settings.template_environment)
         template_aggregator.append('toc', **kwargs)
 
         with open(toc_path, 'w') as fh:

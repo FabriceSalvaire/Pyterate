@@ -118,5 +118,5 @@ class TikzImageChunk(TikzImage, ImageChunk, metaclass=ExtensionMetaclass):
     def __init__(self, document, line):
 
         tex_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
-        ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
-        TikzImage.__init__(self, document, tex_filename)
+        ImageChunk.__init__(self, document, None, **kwargs) # Fixme: _figure_path
+        TikzImage.__init__(self, document, tex_filename) # Fixme: document

@@ -187,5 +187,5 @@ class CircuitMacrosImageChunk(CircuitMacrosImage, ImageChunk, metaclass=Extensio
     def __init__(self, document, line):
 
         m4_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
-        ImageChunk.__init__(self, None, **kwargs) # Fixme: _figure_path
-        CircuitMacrosImage.__init__(self, document, m4_filename)
+        ImageChunk.__init__(self, document, None, **kwargs) # Fixme: _figure_path
+        CircuitMacrosImage.__init__(self, document, m4_filename) # Fixme: document

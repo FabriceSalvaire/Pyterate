@@ -28,7 +28,6 @@ import logging
 import os
 
 from .Topic import Topic
-from ..Template import TemplateEnvironment
 
 ####################################################################################################
 
@@ -46,47 +45,19 @@ class RstFactory:
 
     ##############################################
 
-    def __init__(self, documents_path, rst_source_path, rst_directory,
-                 user_template_path=None,
-                 show_counter=False):
+    def __init__(self, settings):
 
         """
         Parameters:
 
-        documents_path: string
-            path of the documents
-
-        rst_source_path: string
-            path of the RST source directory
-
-        rst_directory: string
-            relative path of the documents in the RST sources
-
-        show_counter: Boolean
-            show documents counters in toc
+        settings:
+            :class:`RstFactory.Settings.DefaultRstFactorySettings` instance
 
         """
 
-        template_path = os.path.join(os.path.dirname(__file__), 'templates')
-        search_path = []
-        if user_template_path:
-            self._logger.info('User template path: {}'.format(user_template_path))
-            search_path.append(user_template_path)
-        search_path.append(template_path)
-        self._template_environment = TemplateEnvironment(search_path)
+        self._settings = settings
 
-        # Fixme: handle ~
-        self._documents_path = os.path.realpath(documents_path)
-
-        self._rst_source_path = os.path.realpath(rst_source_path)
-        self._rst_directory = os.path.join(self._rst_source_path, rst_directory) # Fixme: name ?
-        if not os.path.exists(self._rst_directory):
-            os.makedirs(self._rst_directory)
-
-        self._logger.info("\nDocuments Path: " + self._documents_path)
-        self._logger.info("\nRST Path: " + self._rst_directory)
-
-        self._show_counter = show_counter
+        os.makedirs(self._settings.rst_path)
 
         self._topics = {}
         self._document_failures = []
@@ -94,38 +65,12 @@ class RstFactory:
     ##############################################
 
     @property
-    def template_environment(self):
-        return self._template_environment
-
-    @property
-    def documents_path(self):
-        return self._documents_path
-
-    @property
-    def rst_source_path(self):
-        return self._rst_source_path
-
-    @property
-    def rst_directory(self):
-        return self._rst_directory
-
-    @property
-    def show_counter(self):
-        return self._show_counter
+    def settings(self):
+        return self._settings
 
     @property
     def topics(self):
         return self._topics
-
-    ##############################################
-
-    # Fixme: name ?
-
-    def join_documents_path(self, *args):
-        return os.path.join(self._documents_path, *args)
-
-    def join_rst_document_path(self, *args):
-        return os.path.join(self._rst_directory, *args)
 
     ##############################################
 
@@ -134,35 +79,26 @@ class RstFactory:
 
     ##############################################
 
-    def _process_topic(self, topic_path, kwargs):
+    def _process_topic(self, topic_path):
 
-        relative_topic_path = os.path.relpath(topic_path, self._documents_path)
-        if relative_topic_path == '.':
-            relative_topic_path = ''
-
-        # Fixme: kwargs handling
-        make_external_figure = kwargs.get('make_external_figure', False)
+        relative_topic_path = self._settings.relative_input_path(topic_path)
 
         topic = Topic(self, relative_topic_path)
         self._topics[relative_topic_path] = topic # collect topics
 
-        topic.process_documents(**kwargs)
-        topic.make_toc(make_external_figure)
+        topic.process_documents()
+        topic.make_toc()
 
     ##############################################
 
-    def process_recursively(self, **kwargs):
+    def process_recursively(self):
 
-        """Process recursively the documents directory.
-
-        kwargs: `run_code`, `make_external_figure`, `force`
-
-        """
+        """Process recursively the documents directory."""
 
         # walk top down so as to generate the subtopics first
         self._topics.clear()
-        for topic_path, _, _ in os.walk(self._documents_path, topdown=False, followlinks=True):
-            self._process_topic(topic_path, kwargs)
+        for topic_path, _, _ in os.walk(self._settings.input_path, topdown=False, followlinks=True):
+            self._process_topic(topic_path)
 
         if self._document_failures:
             self._logger.warning(
