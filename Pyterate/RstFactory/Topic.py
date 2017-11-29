@@ -171,15 +171,17 @@ class Topic:
 
     def process_document(self, document):
 
-        # Fixme: kwargs
-
         document.read()
+        make_notebook = False
         if self.settings.force or document:
             if self.settings.run_code:
                 document.run_code()
             document.make_rst()
+            make_notebook = True
         if self.settings.make_external_figure:
             document.make_external_figure(self.settings.force)
+        if make_notebook:
+            document.make_notebook()
 
     ##############################################
 

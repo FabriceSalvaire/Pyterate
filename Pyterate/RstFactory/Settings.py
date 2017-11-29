@@ -27,6 +27,7 @@
 import logging
 import os
 import re
+import sys
 
 from ..Template import TemplateEnvironment
 
@@ -74,6 +75,26 @@ class LanguageSettings:
     # Execution settings
     jupyter_kernel = None # name of the kernel
     setup_code = '' # some codes to be executed first
+
+    notebook_metadata = {
+        'kernelspec': {
+            'display_name': 'Python 3',
+            'language': 'python',
+            'name': 'python3'
+        },
+        'language_info': {
+            # 'codemirror_mode': {
+            #     'name': 'ipython',
+            #     'version': 3
+            # },
+            'file_extension': '.py',
+            'mimetype': 'text/x-python',
+            'name': 'python',
+            'nbconvert_exporter': 'python',
+            'pygments_lexer': 'ipython3',
+            'version': '{0.major}.{0.minor}.{0.micro}'.format(sys.version_info),
+        }
+    }
 
     ##############################################
 

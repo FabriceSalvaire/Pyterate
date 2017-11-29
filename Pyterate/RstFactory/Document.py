@@ -24,6 +24,11 @@ import logging
 import os
 import tempfile
 
+import nbformat
+from nbformat import v4 as nbv4
+
+####################################################################################################
+
 from ..Jupyter import JupyterClient
 from ..Template import TemplateAggregator
 from ..Tools.Path import remove_extension
@@ -114,6 +119,10 @@ class Document:
     @property
     def rst_filename(self):
         return self._basename + '.rst'
+
+    @property
+    def nb_filename(self):
+        return self._basename + '.ipynb' # Fixme
 
     @property
     def rst_inner_path(self):
@@ -406,11 +415,11 @@ class Document:
 
     def make_rst(self):
 
-        """ Generate the document RST file. """
+        """Generate the document RST file."""
 
-        self._logger.info("\nCreate RST file " + self._rst_path)
+        self._logger.info("\nCreate RST file {}".format(self._rst_path))
 
-        # place the Input file in the rst path
+        # place the input file in the rst path
         link_path = self._topic.join_rst_path(self._input_file)
         if not os.path.exists(link_path):
             os.symlink(self._path, link_path)
@@ -430,3 +439,38 @@ class Document:
             fh.write(str(template_aggregator))
             for chunck in self._dom:
                 fh.write(str(chunck))
+
+    ##############################################
+
+    def make_notebook(self):
+
+        """Generate the notebook file."""
+
+        notebook = nbv4.new_notebook()
+
+        notebook.metadata.update(self.language.notebook_metadata)
+
+        last_cell = None
+        for chunk in self._dom:
+            cell = None
+            # Fixme: complete
+            if isinstance(chunk, RstChunk):
+                markdown = chunk.to_markdown()
+                cell = nbv4.new_markdown_cell(markdown)
+            elif isinstance(chunk, CodeChunk):
+                code = chunk.to_code()
+                cell = nbv4.new_code_cell(code)
+                for output in chunk.outputs:
+                    cell.outputs.append(output.node)
+            elif last_cell is not None and isinstance(chunk, ImageChunk):
+                node = chunk.to_node()
+                if node is not None:
+                    last_cell.outputs.append(node)
+            if cell is not None:
+                notebook.cells.append(cell)
+                last_cell = cell
+
+        path = self._topic.join_rst_path(self.nb_filename)
+        self._logger.info("\nCreate Notebook file {}".format(path))
+        with open(path, 'w') as fh:
+            nbformat.write(notebook, fh)

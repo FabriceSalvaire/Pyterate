@@ -111,6 +111,10 @@ class JupyterOutput:
     ##############################################
 
     @property
+    def node(self):
+        return self._node
+
+    @property
     def output_type(self):
         return self._node.output_type
 

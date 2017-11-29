@@ -23,7 +23,7 @@
 # Fixme: These classes do several tasks
 #  decode input
 #  store data
-#  __str__ generate RST
+#  to_rst generate RST
 #  to_code
 
 ####################################################################################################
@@ -48,12 +48,24 @@ __all__ = [
 
 import ast
 import astunparse
+import base64
 import logging
 import os
+
+from nbformat import v4 as nbv4
 
 ####################################################################################################
 
 _module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
+try:
+    from pypandoc import convert_text
+except:
+    _module_logger.warning('pypandoc is not installed')
+    def convert_text(*args, **kwargs):
+        return 'ERROR: pypandoc is not installed'
 
 ####################################################################################################
 
@@ -241,6 +253,18 @@ class Chunk:
     def error_lexer(self):
         return self.language.error_lexer
 
+    ##############################################
+
+    def to_rst(self):
+
+        return ''
+
+    ##############################################
+
+    def to_markdown(self):
+
+        return convert_text(self.to_rst(), 'md', format='rst')
+
 ####################################################################################################
 
 class ExecutedChunk(Chunk):
@@ -302,7 +326,7 @@ class ImageChunk(Chunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         args = (self._figure_path,)
         kwargs = dict(align='center')
@@ -311,6 +335,27 @@ class ImageChunk(Chunk):
             if value:
                 kwargs[key] = value
         return self.directive('image', args=args, kwargs=kwargs)
+
+    ##############################################
+
+    def to_base64(self):
+
+        # Fixme:
+        path = self.document.topic.join_rst_path(self._figure_path)
+        with open(path, 'rb') as fh:
+            image_base64 = base64.encodebytes(fh.read()).decode('ascii')
+        return image_base64
+
+    ##############################################
+
+    def to_node(self):
+
+        # Fixme:
+        path = self.document.topic.join_rst_path(self._figure_path)
+        if path.endswith('.png') and os.path.exists(path):
+            return nbv4.new_output('display_data', data={'image/png': self.to_base64()})
+        else:
+            return None
 
 ####################################################################################################
 ####################################################################################################
@@ -323,7 +368,7 @@ class RstChunk(Chunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
         return ''.join(self._lines) + '\n'
 
     ##############################################
@@ -364,7 +409,7 @@ class RstFormatChunk(ExecutedChunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         # Fixmes: more than one output
 
@@ -412,7 +457,7 @@ class CodeChunk(ExecutedChunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         if bool(self):
             # Fixme: if previous is hidden : merge ???
@@ -462,9 +507,9 @@ class InteractiveChunk(CodeChunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
-        rst = super().__str__()
+        rst = super().to_rst()
 
         rst += self.code_block_directive('none')
         for output in self.outputs:
@@ -487,12 +532,6 @@ class HiddenCodeChunk(CodeChunk):
 
         super().append(self.remove_markup(line))
 
-    ##############################################
-
-    def __str__(self):
-
-        return ''
-
 ####################################################################################################
 
 class OutputChunk(Chunk):
@@ -510,7 +549,7 @@ class OutputChunk(Chunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         rst = self.code_block_directive('none')
         for output in self._code_chunck.outputs:
@@ -535,7 +574,7 @@ class LiteralChunk(Chunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         if bool(self):
             source = self.indent_lines(self._lines)
@@ -570,7 +609,7 @@ class LiteralIncludeChunk(Chunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         return self.directive('literalinclude', args=(self._include_filename,))
 
@@ -598,7 +637,7 @@ class PythonIncludeChunk(Chunk):
 
     ##############################################
 
-    def __str__(self):
+    def to_rst(self):
 
         return self.directive('getthecode', args=(self._include_path,), kwargs=dict(language=self.lexer))
 

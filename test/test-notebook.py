@@ -19,7 +19,7 @@ from nbformat.v4 import (
 
 ####################################################################################################
 
-with open('Untitled.ipynb') as fh:
+with open('untitled.ipynb') as fh:
     notebook = nbformat.read(fh, nbformat.NO_CONVERT)
 print(type(notebook)) # <class 'nbformat.notebooknode.NotebookNode'>
 print(type(notebook.cells)) # list
@@ -27,6 +27,9 @@ print(type(notebook.cells)) # list
 with open('untitled.png', 'wb') as fh:
     image_base64 = notebook.cells[2].outputs[0].data['image/png']
     fh.write(base64.b64decode(image_base64))
+
+with open('untitled.png', 'rb') as fh:
+    image_base64 = base64.encodebytes(fh.read()).decode('ascii')
 
 ####################################################################################################
 
