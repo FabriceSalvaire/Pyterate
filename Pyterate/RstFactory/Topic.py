@@ -137,7 +137,8 @@ class Topic:
     ##############################################
 
     def _readme_path(self):
-        return self.join_path('readme.rst') # Fixme: hardcoded filename !
+        # Fixme: hardcoded filename ???
+        return self.join_path('index.rst')
 
     ##############################################
 
