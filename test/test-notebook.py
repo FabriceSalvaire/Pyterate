@@ -205,6 +205,26 @@ notebook.cells.append(cell)
 #     "output_type": "display_data"
 # }]
 
+# {
+#  "attachments": {
+#   "circuit.png": {
+#    "image/png": "iVBORwsrfSAAAAAElFTkSuQmCC"
+#   },
+#   "diode.svg": {
+#    "image/svg+xml": [
+#     "PD94bCjwvc3ZnPgo="
+#    ]
+#   }
+#  },
+#  "cell_type": "markdown",
+#  "metadata": {},
+#  "source": [
+#   "![circuit.png](attachment:circuit.png)\n",
+#   "\n",
+#   "![diode.svg](attachment:diode.svg)"
+#  ]
+# },
+
 output = new_output('execute_result', data={'text/plain': '2'}, execution_count=1)
 cell.outputs.append(output)
 

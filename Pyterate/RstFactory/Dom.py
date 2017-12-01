@@ -61,8 +61,10 @@ _module_logger = logging.getLogger(__name__)
 ####################################################################################################
 
 try:
-    from pypandoc import convert_text
-except:
+    from pypandoc import convert_text as _convert_text
+    def convert_text(*args, **kwargs):
+        return _convert_text(args[0], kwargs['to_format'], format=kwargs['from_format'])
+except ImportError:
     _module_logger.warning('pypandoc is not installed')
     def convert_text(*args, **kwargs):
         return 'ERROR: pypandoc is not installed'
@@ -83,9 +85,11 @@ class Chunk:
 
         markup = self.language.enclose_markup(self.MARKUP)
         line = line[len(markup):]
+
         # Fixme: assume '#xxx# ...'
         if line.startswith(' '):
             line = line[1:]
+
         if strip:
             return line.strip()
         elif lstrip:
@@ -96,6 +100,8 @@ class Chunk:
     ##############################################
 
     def parse_function_call(self, line):
+
+        # Fixme: idea use a wrapper to get args and kwargs
 
         # "Module(body=[
         #     Expr(value=Call(
@@ -263,7 +269,27 @@ class Chunk:
 
     def to_markdown(self):
 
-        return convert_text(self.to_rst(), 'md', format='rst')
+        return convert_text(self.to_rst(), from_format='rst', to_format='md')
+
+####################################################################################################
+
+class TextChunk(Chunk):
+
+    ##############################################
+
+    def append(self, line):
+
+        # Fixme: common code
+        super().append(self.remove_markup(line))
+
+    ##############################################
+
+    def has_format(self):
+
+        for line in self._lines:
+            if self.opening_format_markup in line:
+                return True
+        return False
 
 ####################################################################################################
 
@@ -281,6 +307,8 @@ class ExecutedChunk(Chunk):
 
     def __bool__(self):
 
+        # Fixme: precompute
+
         for line in self._lines:
             if line.strip():
                 return True
@@ -289,6 +317,12 @@ class ExecutedChunk(Chunk):
 ####################################################################################################
 
 class ImageChunk(Chunk):
+
+    # Fixme: generic
+    #
+    # #fig# generator(*args, **kwargs)
+    #
+    # exec wrapper to get (generator_name, args, kwargs)
 
     ##############################################
 
@@ -350,6 +384,32 @@ class ImageChunk(Chunk):
 
     def to_node(self):
 
+        # Using attachments
+        #
+        # {
+        #  "attachments": {
+        #   "foo.png": {
+        #    "image/png": "iVBO...mCC"
+        #   },
+        #   "foo.svg": {
+        #    "image/svg+xml": [
+        #     "PD9...nPgo="
+        #    ]
+        #   }
+        #  },
+        #  "cell_type": "markdown",
+        #  "metadata": {},
+        #  "source": [
+        #   "![foo.png](attachment:foo.png)\n",
+        #   "\n",
+        #   "![foo.svg](attachment:foo.svg)"
+        #  ]
+        # },
+
+        # Directly in Markdown
+        #
+        # ![svg image](data:image/svg+xml,URL_ENCODED_SVG]
+
         # Fixme:
         path = self.document.topic.join_rst_path(self._figure_path)
         if path.endswith('.png') and os.path.exists(path):
@@ -360,7 +420,7 @@ class ImageChunk(Chunk):
 ####################################################################################################
 ####################################################################################################
 
-class RstChunk(Chunk):
+class RstChunk(TextChunk):
 
     """ This class represents a RST content. """
 
@@ -373,25 +433,33 @@ class RstChunk(Chunk):
 
     ##############################################
 
-    def append(self, line):
-
-        # Fixme: common code
-        super().append(self.remove_markup(line))
-
-    ##############################################
-
-    def has_format(self):
-
-        for line in self._lines:
-            if self.opening_format_markup in line:
-                return True
-        return False
-
-    ##############################################
-
     def to_rst_format_chunk(self):
 
         return RstFormatChunk(self)
+
+####################################################################################################
+
+class MarkdownChunk(TextChunk):
+
+    """ This class represents a RST content. """
+
+    MARKUP = 'm'
+
+    ##############################################
+
+    def to_markdown(self):
+        return ''.join(self._lines) + '\n'
+
+    ##############################################
+
+    def to_rst(self):
+        return convert_text(self.to_markdown(), from_format='md', to_format='rst')
+
+    ##############################################
+
+    # def to_rst_format_chunk(self):
+    #
+    #     return RstFormatChunk(self)
 
 ####################################################################################################
 
@@ -684,7 +752,7 @@ class LocaleFigureChunk(ImageChunk):
 
     def __init__(self, document, line):
 
-        figure_path, kwargs = ImageChunk.parse_args(line, 'lfig') # Fixme: MARKUP
+        figure_path, kwargs = ImageChunk.parse_args(line, self.MARKUP)
         figure_filename = os.path.basename(figure_path) # Fixme: ???
         figure_absolut_path = os.path.join(document.topic_path, figure_filename)
         link_path = os.path.join(document.topic_rst_path, figure_filename)

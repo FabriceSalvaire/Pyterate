@@ -222,6 +222,17 @@ class Document:
 
     ##############################################
 
+    def _append_markdown_chunck(self):
+
+        # if self._markdown_chunck:
+        chunk = self._markdown_chunck
+        if chunk.has_format():
+            chunk = chunk.to_markdown_format_chunk()
+        self._dom.append(chunk)
+        self._markdown_chunck = MarkdownChunk(self)
+
+    ##############################################
+
     def _append_literal_chunck(self):
 
         # if self._literal_chunck:
@@ -251,8 +262,12 @@ class Document:
 
     def _append_last_chunck(self, rst=False, literal=False, code=False):
 
+        # Fixme: rst -> text ???
+
         if rst and self._rst_chunck:
             self._append_rst_chunck()
+        elif rst and self._markdown_chunck:
+            self._append_markdown_chunck()
         elif literal and self._literal_chunck:
             self._append_literal_chunck()
         elif code and self._code_chunck:
@@ -317,6 +332,7 @@ class Document:
 
         self._dom = Dom()
         self._rst_chunck = RstChunk(self)
+        self._markdown_chunck = MarkdownChunk(self)
         self._literal_chunck = LiteralChunk(self)
         self._code_chunck = CodeChunk(self)
 
@@ -330,11 +346,14 @@ class Document:
             line = self._source[i]
             # self._logger.debug('\n' + line.rstrip())
             i += 1
-            remove_next_blanck_line = True
+            remove_next_blanck_line = True # Fixme: ???
+
+            # Fixme: implement line break #\#
+            # check next line and merge
 
             # Handle comments
             if (self._line_start_by_markup(line, '?')
-                # Fixme: comment !!!
+                # Fixme: comment filter !!!
                 or line.startswith('#'*10) # long rule # Fixme: hardcoded !
                 or line.startswith(' '*4 + '#'*10)): # short rule
                 pass
@@ -342,7 +361,7 @@ class Document:
             # Handle figures
             elif self._line_starts_by_figure_markup(line):
                 self._append_last_chunck(rst=True, literal=True, code=True)
-                if self._line_start_by_markup(line, 'o'):
+                if self._line_start_by_markup(line, OutputChunk.MARKUP):
                     if not self._dom.last_chunk.is_executed:
                         self._logger.error('Previous chunk must be code') # Fixme: handle
                     self._dom.append(OutputChunk(self._dom.last_chunk))
@@ -353,12 +372,17 @@ class Document:
                             break
 
             # Handle RST contents
-            elif self._line_start_by_markup(line, '!'):
+            elif self._line_start_by_markup(line, RstChunk.MARKUP):
                 self._append_last_chunck(literal=True, code=True)
                 self._rst_chunck.append(line)
 
+            # Handle Markdown contents
+            elif self._line_start_by_markup(line, MarkdownChunk.MARKUP):
+                self._append_last_chunck(literal=True, code=True)
+                self._markdown_chunck.append(line)
+
             # Handle literal contents
-            elif self._line_start_by_markup(line, 'l'):
+            elif self._line_start_by_markup(line, LiteralChunk.MARKUP):
                 self._append_last_chunck(rst=True, code=True)
                 self._literal_chunck.append(line)
 
