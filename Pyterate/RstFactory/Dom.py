@@ -424,7 +424,7 @@ class RstChunk(TextChunk):
 
     """ This class represents a RST content. """
 
-    MARKUP = '!'
+    MARKUP = 'r'
 
     ##############################################
 
@@ -657,7 +657,7 @@ class LiteralIncludeChunk(Chunk):
 
     """ This class represents a literal include block. """
 
-    MARKUP = 'itxt'
+    MARKUP = 'li'
 
     ##############################################
 
