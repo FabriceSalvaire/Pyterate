@@ -3,15 +3,21 @@
 
 foo = 1
 
-#!# ==========================
-#!#  A Restructuredtext Title
-#!# ==========================
+#r# ==========================
+#r#  A Restructuredtext Title
+#r# ==========================
 
 foo = 1
 
-#!#
-#!# Some reStructuredText contents
-#!#
+#r#
+#r# Some reStructuredText contents
+#r#
+
+#m#
+#m# Some Markdown contents
+#m#
+#m# [An inline-style link](https://www.python.org)
+#m#
 
 foo = 1
 
@@ -26,11 +32,11 @@ foo = 1
 
 foo = 1
 
-#!# Format RST content with current locals dictionary using @@<<@@...@@>>@@ instead of {...}.
-#!#
-#!# .. math::
-#!#
-#!#     I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
+#r# Format RST content with current locals dictionary using @@<<@@...@@>>@@ instead of {...}.
+#r#
+#r# .. math::
+#r#
+#r#     I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
 
 # Add Python code as a literal block
 #l# for x in ():
@@ -50,19 +56,22 @@ a, b = 1, 2
 #e>#
 
 # Add a Python file as a literal block
-#i# RingModulator.py
+#f# getthecode('RingModulator.py')
 
 # Add the file content as literal block
-#itxt# kicad-pyspice-example.cir
+#f# literal_include('kicad-pyspice-example.cir')
 
 # Insert an image
-#lfig# kicad-pyspice-example.sch.svg
+#f# image('kicad-pyspice-example.sch.svg')
 
 # Insert Circuit_macros diagram
-#cm# circuit.m4
+#f# foo = circuit_macros
+#f# foo('circuit.m4')
 
 # Insert Tikz figure
-#tz# diode.tex
+#f# width = 3 * 200
+#f# tikz('diode.tex',
+#f#       width=width)
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -72,6 +81,8 @@ y = np.sin(x)
 plt.plot(x, y)
 
 # Insert a Matplotlib figure
-#fig# save_figure(figure, 'my-figure.png')
+#f# save_figure('figure', 'my-figure.png',
+#f#             width=width)
+#f#
 
 foo = 1
