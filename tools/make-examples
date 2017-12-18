@@ -9,6 +9,8 @@ echo Generate RST examples files
 # ./bin/pyterate --skip-external-figure --skip-figure
 ./bin/pyterate # --force
 
+# exit 0
+
 echo
 echo Run Sphinx
 pushd doc/sphinx/
