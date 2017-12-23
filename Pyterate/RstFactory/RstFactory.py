@@ -57,7 +57,7 @@ class RstFactory:
 
         self._settings = settings
 
-        os.makedirs(self._settings.rst_path)
+        os.makedirs(self._settings.rst_path, exist_ok=True)
 
         self._topics = {}
         self._document_failures = []

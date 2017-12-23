@@ -24,8 +24,7 @@ import logging
 import os
 import subprocess
 
-from ..Dom import ImageChunk
-from .Registry import ExtensionMetaclass
+from ..FigureMarkups import ExternalFigureChunk
 
 ####################################################################################################
 
@@ -33,28 +32,28 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class GeneratedImage:
+class GeneratedImageChunk:
 
     """ This class represents a Tikz figure. """
+
+    COMMAND = 'generated_figure'
 
     _logger = _module_logger.getChild('TikzImage')
 
     ##############################################
 
-    def __init__(self, command, document, figure_name):
+    def __init__(self, document, command, figure_path, **kwargs):
+
+        super().__init__(document, figure_path, **kwargs)
 
         self._command = command
-        self._figure_name = figure_name
-
-        self._rst_directory = document.topic_rst_path
-        self._figure_real_path = os.path.join(self._rst_directory, self._figure_name)
 
     ##############################################
 
     def __bool__(self):
 
         # return False # it is up to the generator to decide if it overwrite
-        if os.path.exists(self._figure_real_path):
+        if os.path.exists(self.absolut_path):
             return self._query()
         else:
             return False
@@ -63,11 +62,11 @@ class GeneratedImage:
 
     def make_figure(self):
 
-        self._logger.info("\nMake figure " + self._figure_name)
+        self._logger.info("\nMake figure " + self.path)
         try:
             self._generate()
         except subprocess.CalledProcessError:
-            self._logger.error("Failed to make figure", self._figure_name)
+            self._logger.error("Failed to make figure", self.path)
 
     ##############################################
 
@@ -76,8 +75,8 @@ class GeneratedImage:
         command = (
             self._command,
             '--query',
-            self._figure_name,
-            self._figure_real_path,
+            self.path,
+            self.absolut_path,
         )
         dev_null = open(os.devnull, 'w')
         rc = subprocess.check_output(command, stdout=dev_null, stderr=subprocess.STDOUT)
@@ -89,26 +88,8 @@ class GeneratedImage:
 
         command = (
             self._command,
-            self._figure_name,
-            self._figure_real_path,
+            self.path,
+            self.absolut_path,
         )
         dev_null = open(os.devnull, 'w')
         subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
-
-####################################################################################################
-
-class GeneratorImageChunk(GeneratedImage, ImageChunk, metaclass=ExtensionMetaclass):
-
-    """ This class represents an image block for a generic generator. """
-
-    __markup__ = 'gf'
-
-    ##############################################
-
-    def __init__(self, document, line):
-
-        # ./bin/make-figure --kwargs="instrument='Guitare',tuning='Standard'" Musica.Figure.Fretboard.Fretboard figures/guitare-fretboard.tex
-
-        command, figure_name, kwargs = ImageChunk.parse_args(line, self.__markup__)
-        ImageChunk.__init__(self, document, None, **kwargs) # Fixme: _figure_path
-        GeneratedImage.__init__(self, command, document, figure_name) # Fixme: document

@@ -61,7 +61,7 @@ class Topic:
         input_files = list(self._input_files_iterator()) # Fixme: better ?
         if input_files:
             self._logger.info("\nProcess Topic: " + relative_path)
-            os.makedirs(self._rst_path) # removed code
+            os.makedirs(self._rst_path, exist_ok=True) # removed code
             for filename, language in input_files:
                 self._logger.info("\nFound input '{}' handled by {}".format(self.join_path(filename), language.name))
                 document = Document(self, filename, language)
@@ -103,11 +103,11 @@ class Topic:
 
     ##############################################
 
-    def join_path(self, filename):
-        return os.path.join(self._path, filename)
+    def join_path(self, *args):
+        return os.path.join(self._path, *args)
 
-    def join_rst_path(self, filename):
-        return os.path.join(self._rst_path, filename)
+    def join_rst_path(self, *args):
+        return os.path.join(self._rst_path, *args)
 
     ##############################################
 

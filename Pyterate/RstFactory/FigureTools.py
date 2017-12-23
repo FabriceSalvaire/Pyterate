@@ -21,7 +21,6 @@
 ####################################################################################################
 
 import logging
-import os
 
 from ..Tools.Path import file_extension
 
@@ -31,14 +30,11 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-def save_figure(figure,
-                figure_filename,
-                figure_path):
+def save_figure(figure, figure_path):
 
     """ This function is called from document to save a figure. """
 
-    figure_format = file_extension(figure_filename)[1:] # foo.png -> png
-    figure_path = os.path.join(figure_path, figure_filename)
+    figure_format = file_extension(figure_path)[1:] # foo.png -> png
     _module_logger.info("\nSave figure " + figure_path)
     figure.savefig(
         figure_path,

@@ -28,16 +28,23 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class ExtensionMetaclass(type):
+class MarkupRegistry(type):
 
+    # Fixme: __xxx__
+
+    __command_map__ = {}
     __extensions__ = {}
+    __markup_map__ = {}
 
-    _logger = _module_logger.getChild('ExtensionMetaclass')
+    __enclosing_markups__ = []
+    __markups__ = []
+
+    _logger = _module_logger.getChild('MarkupRegistry')
 
     ##############################################
 
-    def __new__(cls, class_name, base_classes, attributes):
-        return super().__new__(cls, class_name, base_classes, attributes)
+    # def __new__(cls, class_name, base_classes, attributes):
+    #     return super().__new__(cls, class_name, base_classes, attributes)
 
     ##############################################
 
@@ -45,29 +52,38 @@ class ExtensionMetaclass(type):
 
         type.__init__(cls, class_name, base_classes, attributes)
 
-        ExtensionMetaclass._logger.info('Register {} for {}'.format(cls, cls.__markup__))
-        ExtensionMetaclass.__extensions__[cls.__markup__] = cls
+        if hasattr(cls, 'MARKUP') and cls.MARKUP:
+            MarkupRegistry._logger.info('Register {} for markup "{}"'.format(cls, cls.MARKUP))
+            MarkupRegistry.__markup_map__[cls.MARKUP] = cls
+            if hasattr(cls, 'ENCLOSING_MARKUP'):
+                array = MarkupRegistry.__enclosing_markups__
+            else:
+                array = MarkupRegistry.__markups__
+            array.append(cls.MARKUP)
+        elif hasattr(cls, 'COMMAND') and cls.COMMAND:
+            MarkupRegistry._logger.info('Register {} for command "{}"'.format(cls, cls.COMMAND))
+            MarkupRegistry.__command_map__[cls.COMMAND] = cls
+            if hasattr(cls, 'make_figure'):
+                MarkupRegistry.__extensions__[cls.COMMAND] = cls
 
     ##############################################
 
     @classmethod
-    def extensions(cls):
-        return tuple(cls.__extensions__.values())
-
-    ##############################################
+    def is_valid_makup(cls, markup):
+        return markup not in cls.__markups__
 
     @classmethod
-    def extension_markups(cls):
-        return list(cls.__extensions__.keys())
-
-    ##############################################
+    def is_valid_enclosing_makup(cls, markup):
+        return markup not in cls.__enclosing_markups__
 
     @classmethod
-    def iter(cls):
-        return cls.__extensions__.items()
-
-    ##############################################
+    def markup_to_class(cls, markup):
+        return cls.__markup_map__[markup]
 
     @classmethod
-    def extension(cls, markup):
-        return cls.__extensions__[markup]
+    def command_to_class(cls, command):
+        return cls.__command_map__[command]
+
+    @classmethod
+    def commands(cls):
+        return cls.__command_map__.keys()

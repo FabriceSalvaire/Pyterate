@@ -79,9 +79,11 @@ settings.force = args.force # Fixme: document mode ?
 rst_factory = RstFactory(settings)
 
 if args.document_path:
-    document_path= os.path.relpath(args.input_path, args.document_path)
+    settings = rst_factory.settings
+    document_path= settings.relative_input_path(args.document_path)
     topic = Topic(rst_factory, os.path.dirname(document_path))
-    document = Document(topic, os.path.basename(document_path))
+    language = settings.language_for(args.document_path)
+    document = Document(topic, os.path.basename(document_path), language)
     topic.process_document(document)
 else:
     rst_factory.process_recursively()

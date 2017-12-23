@@ -26,9 +26,7 @@ import subprocess
 import shutil
 import tempfile
 
-from ..Dom import ImageChunk
-from .Registry import ExtensionMetaclass
-from Pyterate.Tools.Timestamp import timestamp
+from ..FigureMarkups import ExternalFigureChunk
 
 ####################################################################################################
 
@@ -41,40 +39,32 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class CircuitMacrosImage:
+class CircuitMacrosChunk(ExternalFigureChunk):
 
-    """ This class represents a circuit macros figure. """
+    """ This class represents an image block for a circuit macros figure. """
+
+    COMMAND = 'circuit_macros'
 
     _logger = _module_logger.getChild('CircuitMacrosImage')
 
     ##############################################
 
-    def __init__(self, document, m4_filename):
+    def __init__(self, document, m4_filename, **kwargs):
 
-        png_filename = m4_filename.replace('.m4', '.png')
-        self._m4_path = os.path.join(document.topic_path, 'm4', m4_filename)
-        self._rst_directory = document.topic_rst_path
-        self._figure_path = png_filename
-        self._figure_real_path = os.path.join(self._rst_directory, png_filename)
+        figure_path = m4_filename.replace('.m4', '.png')
+        source_path = document.topic.join_path('m4', m4_filename) # Fixme: m4 directory ???
 
-    ##############################################
-
-    def __bool__(self):
-
-        if os.path.exists(self._figure_real_path):
-            return timestamp(self._m4_path) > timestamp(self._figure_real_path)
-        else:
-            return True
+        super().__init__(document, source_path, figure_path, **kwargs)
 
     ##############################################
 
     def make_figure(self):
 
-        self._logger.info("\nMake circuit macros figure " + self._m4_path)
+        self._logger.info("\nMake circuit macros figure " + self.source_path)
         try:
             self._make_figure()
         except subprocess.CalledProcessError:
-            self._logger.error("Failed to make circuit macros figure", self._m4_path)
+            self._logger.error("Failed to make circuit macros figure", self.source_path)
 
     ##############################################
 
@@ -83,7 +73,7 @@ class CircuitMacrosImage:
                   # transparent='white',
                   circuit_macros_path=CIRCUIT_MACROS_PATH):
 
-        dst_path = self._rst_directory
+        dst_path = self.document.topic_rst_path
 
         # Create a temporary directory, it is automatically deleted
         tmp_dir = tempfile.TemporaryDirectory()
@@ -113,7 +103,7 @@ class CircuitMacrosImage:
                 '-I' + circuit_macros_path,
                 'pgf.m4',
                 'libcct.m4',
-                self._m4_path,
+                self.source_path,
             )
             dpic_command = ('dpic', '-g')
 
@@ -145,7 +135,7 @@ class CircuitMacrosImage:
         subprocess.check_call(latex_command, stdout=dev_null, stderr=subprocess.STDOUT)
 
         os.chdir(current_dir)
-        basename = os.path.splitext(os.path.basename(self._m4_path))[0]
+        basename = os.path.splitext(os.path.basename(self.source_path))[0]
         pdf_path = os.path.join(dst_path, basename + '.pdf')
         png_path = os.path.join(dst_path, basename + '.png')
 
@@ -173,19 +163,3 @@ class CircuitMacrosImage:
         )
         subprocess.check_call(mutool_command, stdout=dev_null, stderr=subprocess.STDOUT)
         os.rename(png_path.replace('.png', '1.png'), png_path)
-
-####################################################################################################
-
-class CircuitMacrosImageChunk(CircuitMacrosImage, ImageChunk, metaclass=ExtensionMetaclass):
-
-    """ This class represents an image block for a circuit macros figure. """
-
-    __markup__ = 'cm'
-
-    ##############################################
-
-    def __init__(self, document, line):
-
-        m4_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
-        ImageChunk.__init__(self, document, None, **kwargs) # Fixme: _figure_path
-        CircuitMacrosImage.__init__(self, document, m4_filename) # Fixme: document

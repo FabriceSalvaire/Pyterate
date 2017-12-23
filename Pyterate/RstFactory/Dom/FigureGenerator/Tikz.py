@@ -26,9 +26,7 @@ import shutil
 import subprocess
 import tempfile
 
-from ..Dom import ImageChunk
-from .Registry import ExtensionMetaclass
-from Pyterate.Tools.Timestamp import timestamp
+from ..FigureMarkups import ExternalFigureChunk
 
 ####################################################################################################
 
@@ -41,53 +39,43 @@ LATEX_COMMAND = 'pdflatex'
 
 ####################################################################################################
 
-class TikzImage:
+class TikzChunk(ExternalFigureChunk):
 
-    """ This class represents a Tikz figure. """
+    """ This class represents an image block for a Tikz figure. """
+
+    COMMAND = 'tikz'
 
     _logger = _module_logger.getChild('TikzImage')
 
     ##############################################
 
-    def __init__(self, document, tex_filename):
+    def __init__(self, document, tex_filename, **kwargs):
 
-        svg_filename = tex_filename.replace('.tex', '.svg')
-        self._tex_path = os.path.join(document.topic_path, 'tex', tex_filename)
-        self._rst_directory = document.topic_rst_path
-        self._figure_path = svg_filename
-        self._figure_real_path = os.path.join(self._rst_directory, svg_filename)
+        figure_path = tex_filename.replace('.tex', '.svg')
+        source_path = document.topic.join_path('tex', tex_filename) # Fixme: tex directory ???
 
-    ##############################################
-
-    def __bool__(self):
-
-        if os.path.exists(self._figure_real_path):
-            return timestamp(self._tex_path) > timestamp(self._figure_real_path)
-        else:
-            return True
+        super().__init__(document, source_path, figure_path, **kwargs)
 
     ##############################################
 
     def make_figure(self):
 
-        self._logger.info("\nMake Tikz figure " + self._tex_path)
+        self._logger.info("\nMake Tikz figure " + self.source_path)
         try:
             self._make_figure()
         except subprocess.CalledProcessError:
-            self._logger.error("Failed to make Tikz figure", self._tex_path)
+            self._logger.error("Failed to make Tikz figure", self.source_path)
 
     ##############################################
 
     def _make_figure(self):
-
-        dst_path = self._rst_directory
 
         with tempfile.TemporaryDirectory() as tmp_dir:
             # self._logger.info('Temporary directory ' + tmp_dir)
 
             # current_dir = os.curdir
             os.chdir(tmp_dir)
-            shutil.copy(self._tex_path, '.')
+            shutil.copy(self.source_path, '.') # Fixme: symlink
 
             # Run LaTeX to generate PDF
             command = (
@@ -95,28 +83,9 @@ class TikzImage:
                 '-shell-escape',
                 '-interaction=batchmode',
                 # '-output-directory=' + tmp_dir,
-                os.path.basename(self._tex_path),
+                os.path.basename(self.source_path),
             )
             dev_null = open(os.devnull, 'w')
             subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
 
-            basename = os.path.splitext(os.path.basename(self._tex_path))[0]
-            svg_basename = basename + '.svg'
-            svg_path = os.path.join(dst_path, svg_basename)
-            shutil.copy(svg_basename, svg_path)
-
-####################################################################################################
-
-class TikzImageChunk(TikzImage, ImageChunk, metaclass=ExtensionMetaclass):
-
-    """ This class represents an image block for a Tikz figure. """
-
-    __markup__ = 'tz'
-
-    ##############################################
-
-    def __init__(self, document, line):
-
-        tex_filename, kwargs = ImageChunk.parse_args(line, self.__markup__)
-        ImageChunk.__init__(self, document, None, **kwargs) # Fixme: _figure_path
-        TikzImage.__init__(self, document, tex_filename) # Fixme: document
+            shutil.copy(self.path, self.absolut_path)

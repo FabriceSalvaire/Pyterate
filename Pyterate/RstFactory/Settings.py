@@ -61,6 +61,9 @@ class LanguageSettings:
     left_markup = None # markup is left_markup + markup + right_markup
     right_markup = None
 
+    open_markup = '<'
+    close_markup = '>'
+
     # Must fit Python, RST and LaTeX formulae
     opening_format_markup = '@<@'
     closing_format_markup = '@>@'
@@ -143,6 +146,13 @@ class LanguageSettings:
                 return False
         return True
 
+    ##############################################
+
+    @classmethod
+    def rule_filter(cls, line):
+
+        return False
+
 ####################################################################################################
 
 class DefaultPython3Settings(LanguageSettings):
@@ -166,10 +176,18 @@ class DefaultPython3Settings(LanguageSettings):
 
     # Import some functions and define __file__ to the Python input path
     setup_code = '''
-from Pyterate.RstFactory.Tools import save_figure
+from Pyterate.RstFactory.FigureTools import save_figure
 
 __file__ = '{file}'
 '''
+
+    ##############################################
+
+    @classmethod
+    def rule_filter(cls, line):
+
+        return (line.startswith('#'*10) or # long rule
+                line.startswith(' '*4 + '#'*10)) # short rule
 
 ####################################################################################################
 
