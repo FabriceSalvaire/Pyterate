@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.2. Dom &mdash; Pyterate 1.0.0 documentation</title>
+  <title>8.1.5.2. Dom &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -35,9 +35,9 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../../index.html"/>
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../index.html"/>
         <link rel="up" title="8.1.5. RstFactory" href="../RstFactory.html"/>
-        <link rel="next" title="8.1.5.3. FigureGenerator" href="FigureGenerator.html"/>
+        <link rel="next" title="8.1.5.2.1. Dom" href="Dom/Dom.html"/>
         <link rel="prev" title="8.1.5.1. Document" href="Document.html"/> 
 
   
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.0
+                2.0
               </div>
             
           
@@ -108,9 +108,12 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="FigureGenerator.html">8.1.5.3. FigureGenerator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.4. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.5. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FigureTools.html">8.1.5.4. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.6. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Settings.html">8.1.5.7. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../Template.html">8.1.6. Template</a></li>
@@ -191,206 +194,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Pyterate.RstFactory.Dom">
-<span id="dom"></span><h1>8.1.5.2. Dom<a class="headerlink" href="#module-Pyterate.RstFactory.Dom" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.Dom">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">Dom</code><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#Dom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.Dom.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>chunk</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#Dom.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.Dom.iter_on_code_chunks">
-<code class="descname">iter_on_code_chunks</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#Dom.iter_on_code_chunks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom.iter_on_code_chunks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.Dom.last_chunk">
-<code class="descname">last_chunk</code><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom.last_chunk" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.CodeChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">CodeChunk</code><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#CodeChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.CodeChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.ExecutedChunk</span></code></p>
-<p>This class represents a code block.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.CodeChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = None</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.CodeChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.CodeChunk.to_interactive">
-<code class="descname">to_interactive</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#CodeChunk.to_interactive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.CodeChunk.to_interactive" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.CodeChunk.to_python">
-<code class="descname">to_python</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#CodeChunk.to_python"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.CodeChunk.to_python" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.FigureChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">FigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#FigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.ImageChunk" title="Pyterate.RstFactory.Dom.ImageChunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.ImageChunk</span></code></a></p>
-<p>This class represents an image block for a saved figure.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.FigureChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#fig#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.FigureChunk.to_python">
-<code class="descname">to_python</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#FigureChunk.to_python"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureChunk.to_python" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.HiddenCodeChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">HiddenCodeChunk</code><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#HiddenCodeChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.HiddenCodeChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.CodeChunk" title="Pyterate.RstFactory.Dom.CodeChunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.CodeChunk</span></code></a></p>
-<p>This class represents a hidden code block.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.HiddenCodeChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#h#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.HiddenCodeChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.HiddenCodeChunk.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#HiddenCodeChunk.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.HiddenCodeChunk.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.ImageChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">ImageChunk</code><span class="sig-paren">(</span><em>figure_path</em>, <em>scale=''</em>, <em>width=''</em>, <em>height=''</em>, <em>align=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#ImageChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.ImageChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Chunk</span></code></p>
-<dl class="staticmethod">
-<dt id="Pyterate.RstFactory.Dom.ImageChunk.parse_args">
-<em class="property">static </em><code class="descname">parse_args</code><span class="sig-paren">(</span><em>line</em>, <em>markup</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#ImageChunk.parse_args"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.ImageChunk.parse_args" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.InteractiveChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">InteractiveChunk</code><span class="sig-paren">(</span><em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#InteractiveChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.InteractiveChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.CodeChunk" title="Pyterate.RstFactory.Dom.CodeChunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.CodeChunk</span></code></a></p>
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.LiteralChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">LiteralChunk</code><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#LiteralChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LiteralChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Chunk</span></code></p>
-<p>This class represents a literal block.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.LiteralChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#l#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LiteralChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.LiteralChunk.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#LiteralChunk.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LiteralChunk.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.LiteralIncludeChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">LiteralIncludeChunk</code><span class="sig-paren">(</span><em>document</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#LiteralIncludeChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LiteralIncludeChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Chunk</span></code></p>
-<p>This class represents a literal include block.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.LiteralIncludeChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#itxt#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LiteralIncludeChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.LocaleFigureChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">LocaleFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#LocaleFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LocaleFigureChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.ImageChunk" title="Pyterate.RstFactory.Dom.ImageChunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.ImageChunk</span></code></a></p>
-<p>This class represents an image block for a figure.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.LocaleFigureChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#lfig#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LocaleFigureChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.OutputChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">OutputChunk</code><span class="sig-paren">(</span><em>code_chunk</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#OutputChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.OutputChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Chunk</span></code></p>
-<p>This class represents an output block.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.OutputChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#o#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.OutputChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.PythonIncludeChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">PythonIncludeChunk</code><span class="sig-paren">(</span><em>document</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#PythonIncludeChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.PythonIncludeChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Chunk</span></code></p>
-<p>This class represents a Python literal include block.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.PythonIncludeChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#i#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.PythonIncludeChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.RstChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">RstChunk</code><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#RstChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Chunk</span></code></p>
-<p>This class represents a RST content.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.RstChunk.MARKUP">
-<code class="descname">MARKUP</code><em class="property"> = '#!#'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstChunk.MARKUP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.RstChunk.append">
-<code class="descname">append</code><span class="sig-paren">(</span><em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#RstChunk.append"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstChunk.append" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.RstChunk.has_format">
-<code class="descname">has_format</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#RstChunk.has_format"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstChunk.has_format" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.RstChunk.to_rst_format_chunk">
-<code class="descname">to_rst_format_chunk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#RstChunk.to_rst_format_chunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstChunk.to_rst_format_chunk" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="Pyterate.RstFactory.Dom.RstFormatChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.</code><code class="descname">RstFormatChunk</code><span class="sig-paren">(</span><em>rst_chunk</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#RstFormatChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstFormatChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.ExecutedChunk</span></code></p>
-<dl class="method">
-<dt id="Pyterate.RstFactory.Dom.RstFormatChunk.to_python">
-<code class="descname">to_python</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Dom.html#RstFormatChunk.to_python"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.RstFormatChunk.to_python" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
+  <div class="section" id="dom">
+<h1>8.1.5.2. Dom<a class="headerlink" href="#dom" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="Dom/Dom.html">8.1.5.2.1. Dom</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dom/FigureGenerator.html">8.1.5.2.2. FigureGenerator</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="Dom/FigureGenerator/CircuitMacros.html">8.1.5.2.2.1. CircuitMacros</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dom/FigureGenerator/Generic.html">8.1.5.2.2.2. Generic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dom/FigureGenerator/Tikz.html">8.1.5.2.2.3. Tikz</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Dom/FigureMarkups.html">8.1.5.2.3. FigureMarkups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dom/LitteralIncludeMarkups.html">8.1.5.2.4. LitteralIncludeMarkups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dom/Markups.html">8.1.5.2.5. Markups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Dom/Registry.html">8.1.5.2.6. Registry</a></li>
+</ul>
 </div>
+<span class="target" id="module-Pyterate.RstFactory.Dom"></span></div>
 
 
            </div>
@@ -402,7 +223,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FigureGenerator.html" class="btn btn-neutral float-right" title="8.1.5.3. FigureGenerator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Dom/Dom.html" class="btn btn-neutral float-right" title="8.1.5.2.1. Dom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Document.html" class="btn btn-neutral" title="8.1.5.1. Document" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -436,7 +257,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

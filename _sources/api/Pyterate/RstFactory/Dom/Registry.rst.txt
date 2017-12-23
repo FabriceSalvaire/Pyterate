@@ -3,6 +3,6 @@
  Registry
 ==========
 
-.. automodule:: Pyterate.RstFactory.FigureGenerator.Registry
+.. automodule:: Pyterate.RstFactory.Dom.Registry
    :members:
    :show-inheritance:

@@ -1,0 +1,513 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Pyterate.RstFactory.Settings &mdash; Pyterate 2.0.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../static/css/Pyterate.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> Pyterate
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                2.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../overview.html">1. Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">3. Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">4. User FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../user-guide.html">5. User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">6. Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../design-notes.html">7. Design Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../reference-manual.html">8. API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../development.html">9. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../how-to-refer.html">10. How to Refer to Pyterate ?</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Pyterate</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>Pyterate.RstFactory.Settings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for Pyterate.RstFactory.Settings</h1><div class="highlight"><pre>
+<span></span><span class="c1">####################################################################################################</span>
+<span class="c1">#</span>
+<span class="c1"># Pyterate - Sphinx add-ons to create API documentation for Python projects</span>
+<span class="c1"># Copyright (C) 2017 Fabrice Salvaire</span>
+<span class="c1">#</span>
+<span class="c1"># This program is free software: you can redistribute it and/or modify</span>
+<span class="c1"># it under the terms of the GNU General Public License as published by</span>
+<span class="c1"># the Free Software Foundation, either version 3 of the License, or</span>
+<span class="c1"># (at your option) any later version.</span>
+<span class="c1">#</span>
+<span class="c1"># This program is distributed in the hope that it will be useful,</span>
+<span class="c1"># but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="c1"># MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="c1"># GNU General Public License for more details.</span>
+<span class="c1">#</span>
+<span class="c1"># You should have received a copy of the GNU General Public License</span>
+<span class="c1"># along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+<span class="c1">#</span>
+<span class="c1">####################################################################################################</span>
+
+<span class="sd">&quot;&quot;&quot;Classes to define RST Factory settings.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">from</span> <span class="nn">..Template</span> <span class="k">import</span> <span class="n">TemplateEnvironment</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="LanguageSettings"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.LanguageSettings">[docs]</a><span class="k">class</span> <span class="nc">LanguageSettings</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;Class to define the language settings.</span>
+
+<span class="sd">    Attention: You must have a trailing comma if a tuple ``()`` has only one element,</span>
+<span class="sd">    e.g. ``(&#39;foo&#39;,)``, else use a list, e.g. ``[&#39;foo&#39;]``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="c1"># Filename settings</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">()</span> <span class="c1"># e.g. &#39;.py&#39;</span>
+    <span class="n">excluded_file_patterns</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="c1"># these file should be flymake temporary file</span>
+        <span class="s1">&#39;flymake_.*&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;flycheck_.*&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Comment settings</span>
+    <span class="n">comment</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># main comment token, e.g. &#39;#&#39; &#39;//&#39;</span>
+    <span class="n">left_markup</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># markup is left_markup + markup + right_markup</span>
+    <span class="n">right_markup</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">open_markup</span> <span class="o">=</span> <span class="s1">&#39;&lt;&#39;</span>
+    <span class="n">close_markup</span> <span class="o">=</span> <span class="s1">&#39;&gt;&#39;</span>
+
+    <span class="c1"># Must fit Python, RST and LaTeX formulae</span>
+    <span class="n">opening_format_markup</span> <span class="o">=</span> <span class="s1">&#39;@&lt;@&#39;</span>
+    <span class="n">closing_format_markup</span> <span class="o">=</span> <span class="s1">&#39;@&gt;@&#39;</span>
+    <span class="n">escaped_opening_format_markup</span> <span class="o">=</span> <span class="s1">&#39;@@&lt;&lt;@@&#39;</span>
+    <span class="n">escaped_closing_format_markup</span> <span class="o">=</span> <span class="s1">&#39;@@&gt;&gt;@@&#39;</span>
+
+    <span class="c1"># Pygments lexers</span>
+    <span class="n">lexer</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+    <span class="n">error_lexer</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+    <span class="n">console_lexer</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+
+    <span class="c1"># Execution settings</span>
+    <span class="n">jupyter_kernel</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># name of the kernel</span>
+    <span class="n">setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># some codes to be executed first</span>
+
+    <span class="n">notebook_metadata</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;kernelspec&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s1">&#39;display_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Python 3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;python3&#39;</span>
+        <span class="p">},</span>
+        <span class="s1">&#39;language_info&#39;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="c1"># &#39;codemirror_mode&#39;: {</span>
+            <span class="c1">#     &#39;name&#39;: &#39;ipython&#39;,</span>
+            <span class="c1">#     &#39;version&#39;: 3</span>
+            <span class="c1"># },</span>
+            <span class="s1">&#39;file_extension&#39;</span><span class="p">:</span> <span class="s1">&#39;.py&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;mimetype&#39;</span><span class="p">:</span> <span class="s1">&#39;text/x-python&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;nbconvert_exporter&#39;</span><span class="p">:</span> <span class="s1">&#39;python&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;pygments_lexer&#39;</span><span class="p">:</span> <span class="s1">&#39;ipython3&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;version&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{0.major}</span><span class="s1">.</span><span class="si">{0.minor}</span><span class="s1">.</span><span class="si">{0.micro}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">version_info</span><span class="p">),</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;LanguageSettings&#39;</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="LanguageSettings.enclose_markup"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.LanguageSettings.enclose_markup">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">enclose_markup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">markup</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">left_markup</span> <span class="o">+</span> <span class="n">markup</span> <span class="o">+</span> <span class="bp">cls</span><span class="o">.</span><span class="n">right_markup</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="LanguageSettings.filename_match"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.LanguageSettings.filename_match">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">filename_match</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Method to match a filename to a language handler.</span>
+
+<span class="sd">        Return True if the file is taken.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">extension</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">extensions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">extension</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">filename_filter</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="LanguageSettings.filename_filter"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.LanguageSettings.filename_filter">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">filename_filter</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="sd">&quot;&quot;&quot;Define a filename filter.</span>
+
+<span class="sd">        Overwrite this method in subclass to define a custom filter.</span>
+
+<span class="sd">        Return False if the file is excluded.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pattern</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">excluded_file_patterns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">basename</span><span class="p">):</span>
+                <span class="bp">cls</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Exclude &#39;</span><span class="si">{}</span><span class="s2">&#39; for &#39;</span><span class="si">{}</span><span class="s2">&#39;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">basename</span><span class="p">,</span> <span class="n">pattern</span><span class="p">))</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="LanguageSettings.rule_filter"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.LanguageSettings.rule_filter">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">rule_filter</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="kc">False</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DefaultPython3Settings"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultPython3Settings">[docs]</a><span class="k">class</span> <span class="nc">DefaultPython3Settings</span><span class="p">(</span><span class="n">LanguageSettings</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;Python 3 settings&quot;&quot;&quot;</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Python 3&#39;</span>
+
+    <span class="c1"># Fixme: how to distinguish Python 2 ???</span>
+    <span class="n">extensions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;.py&#39;</span><span class="p">]</span>
+
+    <span class="n">comment</span> <span class="o">=</span> <span class="s1">&#39;#&#39;</span>
+    <span class="n">left_markup</span> <span class="o">=</span> <span class="s1">&#39;#&#39;</span>
+    <span class="n">right_markup</span> <span class="o">=</span> <span class="s1">&#39;#&#39;</span>
+
+    <span class="n">lexer</span> <span class="o">=</span> <span class="s1">&#39;py3&#39;</span>
+    <span class="n">error_lexer</span> <span class="o">=</span> <span class="s1">&#39;pytb&#39;</span> <span class="c1"># Fixme: py3con py3tb are unknown ???</span>
+    <span class="n">console_lexer</span> <span class="o">=</span> <span class="s1">&#39;none&#39;</span>
+
+    <span class="n">jupyter_kernel</span> <span class="o">=</span> <span class="s1">&#39;python3&#39;</span>
+
+    <span class="c1"># Import some functions and define __file__ to the Python input path</span>
+    <span class="n">setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">from Pyterate.RstFactory.FigureTools import save_figure</span>
+
+<span class="s1">__file__ = &#39;</span><span class="si">{file}</span><span class="s1">&#39;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DefaultPython3Settings.rule_filter"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultPython3Settings.rule_filter">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">rule_filter</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;#&#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">)</span> <span class="ow">or</span> <span class="c1"># long rule</span>
+                <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="mi">4</span> <span class="o">+</span> <span class="s1">&#39;#&#39;</span><span class="o">*</span><span class="mi">10</span><span class="p">))</span> <span class="c1"># short rule</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="DefaultRstFactorySettings"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultRstFactorySettings">[docs]</a><span class="k">class</span> <span class="nc">DefaultRstFactorySettings</span><span class="p">:</span>
+
+    <span class="sd">&quot;&quot;&quot;Class to define the Rst Factory settings.&quot;&quot;&quot;</span>
+
+    <span class="c1"># Input path</span>
+    <span class="n">input_path</span> <span class="o">=</span> <span class="s1">&#39;examples&#39;</span> <span class="c1"># Path of the documents</span>
+
+    <span class="c1"># RST paths</span>
+    <span class="n">rst_source_path</span> <span class="o">=</span> <span class="s1">&#39;doc/sphinx/source&#39;</span> <span class="c1"># Path of the RST source directory</span>
+    <span class="n">rst_directory</span> <span class="o">=</span> <span class="s1">&#39;examples&#39;</span> <span class="c1"># Relative path of the documents in the RST sources</span>
+
+    <span class="c1"># Templates</span>
+    <span class="n">user_template_path</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># User template path</span>
+
+    <span class="c1"># Flags</span>
+    <span class="n">show_counters</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Show documents counters in toc</span>
+    <span class="n">run_code</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Run code</span>
+    <span class="n">make_external_figure</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Generate external figures</span>
+    <span class="n">force</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Force the figure generation</span>
+
+    <span class="c1"># List of LanguageSettings subclasses</span>
+    <span class="n">languages</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">DefaultPython3Settings</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;RstFactorySettings&#39;</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_template_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">user_template_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="s1">&#39;pytrate-templates&#39;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">user_template_path</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">user_template_path</span> <span class="o">=</span> <span class="n">user_template_path</span>
+
+        <span class="n">template_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span>
+        <span class="n">search_path</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">user_template_path</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">User template path: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_template_path</span><span class="p">))</span>
+            <span class="n">search_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">user_template_path</span><span class="p">)</span>
+        <span class="n">search_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span> <span class="o">=</span> <span class="n">TemplateEnvironment</span><span class="p">(</span><span class="n">search_path</span><span class="p">)</span>
+
+        <span class="c1"># Fixme: handle ~</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rst_source_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rst_source_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rst_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rst_source_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rst_directory</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Input Path: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">RST Path: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">rst_path</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">template_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DefaultRstFactorySettings.join_input_path"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultRstFactorySettings.join_input_path">[docs]</a>    <span class="k">def</span> <span class="nf">join_input_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DefaultRstFactorySettings.join_rst_path"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultRstFactorySettings.join_rst_path">[docs]</a>    <span class="k">def</span> <span class="nf">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rst_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DefaultRstFactorySettings.relative_input_path"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultRstFactorySettings.relative_input_path">[docs]</a>    <span class="k">def</span> <span class="nf">relative_input_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="n">relative_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">relative_path</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">relative_path</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="DefaultRstFactorySettings.language_for"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Settings.html#Pyterate.RstFactory.Settings.DefaultRstFactorySettings.language_for">[docs]</a>    <span class="k">def</span> <span class="nf">language_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">language</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">language</span><span class="o">.</span><span class="n">filename_match</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">language</span>
+        <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Fabrice Salvaire.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'2.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../static/jquery.js"></script>
+      <script type="text/javascript" src="../../../static/underscore.js"></script>
+      <script type="text/javascript" src="../../../static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../static/getthecode.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

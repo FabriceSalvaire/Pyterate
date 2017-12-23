@@ -3,6 +3,6 @@
  CircuitMacros
 ===============
 
-.. automodule:: Pyterate.RstFactory.FigureGenerator.CircuitMacros
+.. automodule:: Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros
    :members:
    :show-inheritance:

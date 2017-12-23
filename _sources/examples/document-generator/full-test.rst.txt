@@ -8,50 +8,54 @@
     :language: python3
     :hidden:
 
+
 .. code-block:: py3
 
     # A source code comment
+    
     foo = 1
     
-
 ==========================
  A Restructuredtext Title
 ==========================
 
 .. code-block:: py3
 
+    
     foo = 1
     
 
-
 Some reStructuredText contents
 
+Some Markdown contents
+
+`An inline-style link <https://www.python.org>`__
 
 .. code-block:: py3
 
+    
     foo = 1
     
     # Insert the output of the following python code
     print(foo)
 
-
 .. code-block:: none
 
-    1    
+    1
+    
 
 .. code-block:: py3
 
+    
     foo = 1
     
     # Hidden Python code
 
-
 .. code-block:: py3
 
     
     foo = 1
     
-
 Format RST content with current locals dictionary using @<@...@>@ instead of {...}.
 
 .. math::
@@ -61,24 +65,22 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
 .. code-block:: py3
 
+    
     # Add Python code as a literal block
-
 
 .. code-block:: py
 
     for x in ():
       1 / 0 / 0
 
-
 .. code-block:: py3
 
+    
     # Intercative code
-
 
 .. code-block:: py3
 
     1 + 1
-
 
 .. code-block:: none
 
@@ -88,7 +90,6 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
     2 * 4 * 2
 
-
 .. code-block:: none
 
     16
@@ -96,7 +97,6 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 .. code-block:: py3
 
     a, b = 1, 2
-
 
 .. code-block:: none
 
@@ -106,73 +106,76 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 
     1, 2, 3
 
-
 .. code-block:: none
 
     (1, 2, 3)
 
 .. code-block:: py3
 
+    
     # Guarded error
-
 
 .. code-block:: py3
 
     1/0
-
 .. code-block:: pytb
 
-    ZeroDivisionError
+    ZeroDivisionError division by zero
+    [0;31m---------------------------------------------------------------------------[0m
+    [0;31mZeroDivisionError[0m                         Traceback (most recent call last)
+    [0;32m~/home/developpement/python/pyterate/examples/document-generator/full-test.py[0m in [0;36m<module>[0;34m()[0m
+    [0;32m----> 1[0;31m [0;36m1[0m[0;34m/[0m[0;36m0[0m[0;34m[0m[0m
+    [0m
+    [0;31mZeroDivisionError[0m: division by zero
 
 .. code-block:: py3
 
+    
     # Add a Python file as a literal block
 
-
 .. getthecode:: RingModulator.py
-    :language: python3
+    :language: py3
 
 
 .. code-block:: py3
 
+    
     # Add the file content as literal block
-
 
 .. literalinclude:: kicad-pyspice-example.cir
 
 
 .. code-block:: py3
 
+    
     # Insert an image
-
 
 .. image:: kicad-pyspice-example.sch.svg
     :align: center
 
 
-
 .. code-block:: py3
 
+    
     # Insert Circuit_macros diagram
-
 
 .. image:: circuit.png
     :align: center
 
 
-
 .. code-block:: py3
 
+    
     # Insert Tikz figure
-
 
 .. image:: diode.svg
     :align: center
-
+    :width: 900
 
 
 .. code-block:: py3
 
+    
     import numpy as np
     import matplotlib.pyplot as plt
     figure = plt.figure(1, (20, 10))
@@ -182,13 +185,12 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
     
     # Insert a Matplotlib figure
 
-
 .. image:: my-figure.png
     :align: center
-
+    :width: 900
 
 
 .. code-block:: py3
 
+    
     foo = 1
-

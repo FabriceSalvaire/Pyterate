@@ -6,9 +6,8 @@
 .. toctree::
     FigureGenerator/CircuitMacros
     FigureGenerator/Generic
-    FigureGenerator/Registry
     FigureGenerator/Tikz
 
-.. automodule:: Pyterate.RstFactory.FigureGenerator
+.. automodule:: Pyterate.RstFactory.Dom.FigureGenerator
    :members:
    :show-inheritance:

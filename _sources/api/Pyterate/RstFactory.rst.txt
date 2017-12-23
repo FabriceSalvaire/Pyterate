@@ -6,8 +6,11 @@
 .. toctree::
     RstFactory/Document
     RstFactory/Dom
-    RstFactory/FigureGenerator
+    RstFactory/FigureEvaluator
+    RstFactory/FigureTools
+    RstFactory/MarkupConverter
     RstFactory/RstFactory
+    RstFactory/Settings
     RstFactory/Topic
 
 .. automodule:: Pyterate.RstFactory

@@ -1,0 +1,8 @@
+
+=============
+ FigureTools
+=============
+
+.. automodule:: Pyterate.RstFactory.FigureTools
+   :members:
+   :show-inheritance:

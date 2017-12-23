@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6.1.1.1. A Restructuredtext Title &mdash; Pyterate 1.0.0 documentation</title>
+  <title>6.1.1.1. A Restructuredtext Title &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../index.html"/>
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../index.html"/>
         <link rel="up" title="6.1.1. Document Generator Demo" href="index.html"/>
         <link rel="next" title="7. Design Notes" href="../../design-notes.html"/>
         <link rel="prev" title="6.1.1. Document Generator Demo" href="index.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.0
+                2.0
               </div>
             
           
@@ -190,15 +190,21 @@
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c1">#!# ==========================</span>
-<span class="c1">#!#  A Restructuredtext Title</span>
-<span class="c1">#!# ==========================</span>
+<span class="c1">#r# ==========================</span>
+<span class="c1">#r#  A Restructuredtext Title</span>
+<span class="c1">#r# ==========================</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c1">#!#</span>
-<span class="c1">#!# Some reStructuredText contents</span>
-<span class="c1">#!#</span>
+<span class="c1">#r#</span>
+<span class="c1">#r# Some reStructuredText contents</span>
+<span class="c1">#r#</span>
+
+<span class="c1">#m#</span>
+<span class="c1">#m# Some Markdown contents</span>
+<span class="c1">#m#</span>
+<span class="c1">#m# [An inline-style link](https://www.python.org)</span>
+<span class="c1">#m#</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
@@ -213,11 +219,11 @@
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c1">#!# Format RST content with current locals dictionary using @@&lt;&lt;@@...@@&gt;&gt;@@ instead of {...}.</span>
-<span class="c1">#!#</span>
-<span class="c1">#!# .. math::</span>
-<span class="c1">#!#</span>
-<span class="c1">#!#     I_d = @&lt;@value@&gt;@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)</span>
+<span class="c1">#r# Format RST content with current locals dictionary using @@&lt;&lt;@@...@@&gt;&gt;@@ instead of {...}.</span>
+<span class="c1">#r#</span>
+<span class="c1">#r# .. math::</span>
+<span class="c1">#r#</span>
+<span class="c1">#r#     I_d = @&lt;@value@&gt;@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)</span>
 
 <span class="c1"># Add Python code as a literal block</span>
 <span class="c1">#l# for x in ():</span>
@@ -237,19 +243,22 @@
 <span class="c1">#e&gt;#</span>
 
 <span class="c1"># Add a Python file as a literal block</span>
-<span class="c1">#i# RingModulator.py</span>
+<span class="c1">#f# getthecode(&#39;RingModulator.py&#39;)</span>
 
 <span class="c1"># Add the file content as literal block</span>
-<span class="c1">#itxt# kicad-pyspice-example.cir</span>
+<span class="c1">#f# literal_include(&#39;kicad-pyspice-example.cir&#39;)</span>
 
 <span class="c1"># Insert an image</span>
-<span class="c1">#lfig# kicad-pyspice-example.sch.svg</span>
+<span class="c1">#f# image(&#39;kicad-pyspice-example.sch.svg&#39;)</span>
 
 <span class="c1"># Insert Circuit_macros diagram</span>
-<span class="c1">#cm# circuit.m4</span>
+<span class="c1">#f# foo = circuit_macros</span>
+<span class="c1">#f# foo(&#39;circuit.m4&#39;)</span>
 
 <span class="c1"># Insert Tikz figure</span>
-<span class="c1">#tz# diode.tex</span>
+<span class="c1">#f# width = 3 * 300</span>
+<span class="c1">#f# tikz(&#39;diode.tex&#39;,</span>
+<span class="c1">#f#       width=width)</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -259,13 +268,16 @@
 <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="c1"># Insert a Matplotlib figure</span>
-<span class="c1">#fig# save_figure(figure, &#39;my-figure.png&#39;)</span>
+<span class="c1">#f# save_figure(&#39;figure&#39;, &#39;my-figure.png&#39;,</span>
+<span class="c1">#f#             width=width)</span>
+<span class="c1">#f#</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
+
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
@@ -275,6 +287,8 @@
 </pre></div>
 </div>
 <p>Some reStructuredText contents</p>
+<p>Some Markdown contents</p>
+<p><a class="reference external" href="https://www.python.org">An inline-style link</a></p>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># Insert the output of the following python code</span>
@@ -335,7 +349,13 @@
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="o">/</span><span class="mi">0</span>
 </pre></div>
 </div>
-<div class="highlight-pytb"><div class="highlight"><pre><span></span><span class="x">ZeroDivisionError</span>
+<div class="highlight-pytb"><div class="highlight"><pre><span></span><span class="x">ZeroDivisionError division by zero</span>
+<span class="x">[0;31m---------------------------------------------------------------------------[0m</span>
+<span class="x">[0;31mZeroDivisionError[0m                         Traceback (most recent call last)</span>
+<span class="x">[0;32m~/home/developpement/python/pyterate/examples/document-generator/full-test.py[0m in [0;36m&lt;module&gt;[0;34m()[0m</span>
+<span class="x">[0;32m----&gt; 1[0;31m [0;36m1[0m[0;34m/[0m[0;36m0[0m[0;34m[0m[0m</span>
+<span class="x">[0m</span>
+<span class="x">[0;31mZeroDivisionError[0m: division by zero</span>
 </pre></div>
 </div>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Add a Python file as a literal block</span>
@@ -348,7 +368,7 @@
   <li class="getthecode-filename-link"><a href="../../downloads/RingModulator.py"><span >RingModulator.py</span></a></li>
   </ul>
 </div>
-<div class="highlight-python3"><div class="highlight"><pre><span></span><span class="c1">#skip#</span>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1">#skip#</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -427,7 +447,8 @@
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert Tikz figure</span>
 </pre></div>
 </div>
-<div align="center" class="align-center"><img alt="../../images/diode.svg" src="../../images/diode.svg" /></div>
+<a class="reference internal image-reference" href="../../images/diode.svg"><div align="center" class="align-center"><img alt="../../images/diode.svg" src="../../images/diode.svg" width="900" /></div>
+</a>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
@@ -438,7 +459,7 @@
 <span class="c1"># Insert a Matplotlib figure</span>
 </pre></div>
 </div>
-<img alt="../../images/my-figure.png" class="align-center" src="../../images/my-figure.png" />
+<a class="reference internal image-reference" href="../../images/my-figure.png"><img alt="../../images/my-figure.png" class="align-center" src="../../images/my-figure.png" style="width: 900px;" /></a>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
@@ -488,7 +509,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -3,6 +3,14 @@
  Dom
 =====
 
+.. toctree::
+    Dom/Dom
+    Dom/FigureGenerator
+    Dom/FigureMarkups
+    Dom/LitteralIncludeMarkups
+    Dom/Markups
+    Dom/Registry
+
 .. automodule:: Pyterate.RstFactory.Dom
    :members:
    :show-inheritance:

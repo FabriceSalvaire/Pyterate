@@ -1,0 +1,8 @@
+
+===============
+ FigureMarkups
+===============
+
+.. automodule:: Pyterate.RstFactory.Dom.FigureMarkups
+   :members:
+   :show-inheritance:

@@ -3,6 +3,6 @@
  Generic
 =========
 
-.. automodule:: Pyterate.RstFactory.FigureGenerator.Generic
+.. automodule:: Pyterate.RstFactory.Dom.FigureGenerator.Generic
    :members:
    :show-inheritance:

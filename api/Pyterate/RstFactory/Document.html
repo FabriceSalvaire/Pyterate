@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.1. Document &mdash; Pyterate 1.0.0 documentation</title>
+  <title>8.1.5.1. Document &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../../index.html"/>
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../index.html"/>
         <link rel="up" title="8.1.5. RstFactory" href="../RstFactory.html"/>
         <link rel="next" title="8.1.5.2. Dom" href="Dom.html"/>
         <link rel="prev" title="8.1.5. RstFactory" href="../RstFactory.html"/> 
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.0
+                2.0
               </div>
             
           
@@ -108,9 +108,12 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="FigureGenerator.html">8.1.5.3. FigureGenerator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.4. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.5. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FigureTools.html">8.1.5.4. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.6. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Settings.html">8.1.5.7. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../Template.html">8.1.6. Template</a></li>
@@ -195,19 +198,9 @@
 <span id="document"></span><h1>8.1.5.1. Document<a class="headerlink" href="#module-Pyterate.RstFactory.Document" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="Pyterate.RstFactory.Document.Document">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>topic</em>, <em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>topic</em>, <em>input_file</em>, <em>language</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <p>This class is responsible to process an document.</p>
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Document.Document.FIGURE_MAP">
-<code class="descname">FIGURE_MAP</code><em class="property"> = {'fig': &lt;class 'Pyterate.RstFactory.Dom.FigureChunk'&gt;, 'i': &lt;class 'Pyterate.RstFactory.Dom.PythonIncludeChunk'&gt;, 'itxt': &lt;class 'Pyterate.RstFactory.Dom.LiteralIncludeChunk'&gt;, 'lfig': &lt;class 'Pyterate.RstFactory.Dom.LocaleFigureChunk'&gt;, 'o': &lt;class 'Pyterate.RstFactory.Dom.OutputChunk'&gt;, 'tz': &lt;class 'Pyterate.RstFactory.FigureGenerator.Tikz.TikzImageChunk'&gt;, 'cm': &lt;class 'Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImageChunk'&gt;}</em><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.FIGURE_MAP" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="Pyterate.RstFactory.Document.Document.FIGURE_MARKUPS">
-<code class="descname">FIGURE_MARKUPS</code><em class="property"> = ['fig', 'lfig', 'i', 'itxt', 'o', 'tz', 'cm']</em><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.FIGURE_MARKUPS" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="attribute">
 <dt id="Pyterate.RstFactory.Document.Document.basename">
 <code class="descname">basename</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.basename" title="Permalink to this definition">¶</a></dt>
@@ -223,16 +216,32 @@
 <code class="descname">is_link</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.is_link" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.Document.Document.language">
+<code class="descname">language</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.language" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="Pyterate.RstFactory.Document.Document.make_external_figure">
 <code class="descname">make_external_figure</code><span class="sig-paren">(</span><em>force</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document.make_external_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.make_external_figure" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
+<dt id="Pyterate.RstFactory.Document.Document.make_notebook">
+<code class="descname">make_notebook</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document.make_notebook"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.make_notebook" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate the notebook file.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="Pyterate.RstFactory.Document.Document.make_rst">
 <code class="descname">make_rst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document.make_rst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.make_rst" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the document RST file.</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.Document.Document.nb_filename">
+<code class="descname">nb_filename</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.nb_filename" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="Pyterate.RstFactory.Document.Document.path">
@@ -242,7 +251,15 @@
 <dl class="method">
 <dt id="Pyterate.RstFactory.Document.Document.read">
 <code class="descname">read</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document.read"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.read" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Parse the source code and extract chunks of codes, RST contents, plot and Tikz figures.  The
+source code is annoted using comment lines starting with special directives of the form
+<em>#directive name#</em>.  RST content lines start with <em>#!#</em>.  We can include a figure using
+<em>#lfig#</em>, a figure generated by matplotlib using the directive <em>#fig#</em>, tikz figure using
+<em>#tz#</em> and the content of a file using <em>#itxt#</em> and <em>#i#</em> for codes.  Comment that must be
+skipped start with <em>#?#</em>.  Hidden code start with <em>#h#</em>.  The directive <em>#o#</em> is used to
+split the output and to instruct to include the previous chunk.  RST content can be
+formatted with variable from the locals dictionary using <em>&#64;&lt;&#64;…&#64;&gt;&#64;</em> instead of <em>{…}</em>.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="Pyterate.RstFactory.Document.Document.rst_filename">
@@ -265,8 +282,18 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="Pyterate.RstFactory.Document.Document.settings">
+<code class="descname">settings</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.settings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="Pyterate.RstFactory.Document.Document.source_timestamp">
 <code class="descname">source_timestamp</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.source_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Pyterate.RstFactory.Document.Document.symlink_source">
+<code class="descname">symlink_source</code><span class="sig-paren">(</span><em>source_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#Document.symlink_source"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.symlink_source" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -284,6 +311,12 @@
 <code class="descname">topic_rst_path</code><a class="headerlink" href="#Pyterate.RstFactory.Document.Document.topic_rst_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+<dl class="exception">
+<dt id="Pyterate.RstFactory.Document.ParseError">
+<em class="property">exception </em><code class="descclassname">Pyterate.RstFactory.Document.</code><code class="descname">ParseError</code><span class="sig-paren">(</span><em>message</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/Document.html#ParseError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Document.ParseError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
 </div>
@@ -332,7 +365,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.3.3. Registry &mdash; Pyterate 1.0.0 documentation</title>
+  <title>8.1.5.2.3. FigureMarkups &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -35,10 +35,10 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../../../index.html"/>
-        <link rel="up" title="8.1.5.3. FigureGenerator" href="../FigureGenerator.html"/>
-        <link rel="next" title="8.1.5.3.4. Tikz" href="Tikz.html"/>
-        <link rel="prev" title="8.1.5.3.2. Generic" href="Generic.html"/> 
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="8.1.5.2. Dom" href="../Dom.html"/>
+        <link rel="next" title="8.1.5.2.4. LitteralIncludeMarkups" href="LitteralIncludeMarkups.html"/>
+        <link rel="prev" title="8.1.5.2.2.3. Tikz" href="FigureGenerator/Tikz.html"/> 
 
   
   <script src="../../../../static/js/modernizr.min.js"></script>
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.0
+                2.0
               </div>
             
           
@@ -107,10 +107,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../../Logging.html">8.1.4. Logging</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../Document.html">8.1.5.1. Document</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../FigureGenerator.html">8.1.5.3. FigureGenerator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.4. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.5. Topic</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.4. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.6. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Settings.html">8.1.5.7. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../Template.html">8.1.6. Template</a></li>
@@ -172,15 +175,15 @@
         
           <li><a href="../../RstFactory.html">8.1.5. RstFactory</a> &raquo;</li>
         
-          <li><a href="../FigureGenerator.html">8.1.5.3. FigureGenerator</a> &raquo;</li>
+          <li><a href="../Dom.html">8.1.5.2. Dom</a> &raquo;</li>
         
-      <li>8.1.5.3.3. Registry</li>
+      <li>8.1.5.2.3. FigureMarkups</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../../_sources/api/Pyterate/RstFactory/FigureGenerator/Registry.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/Pyterate/RstFactory/Dom/FigureMarkups.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -193,30 +196,44 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Pyterate.RstFactory.FigureGenerator.Registry">
-<span id="registry"></span><h1>8.1.5.3.3. Registry<a class="headerlink" href="#module-Pyterate.RstFactory.FigureGenerator.Registry" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-Pyterate.RstFactory.Dom.FigureMarkups">
+<span id="figuremarkups"></span><h1>8.1.5.2.3. FigureMarkups<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.FigureMarkups" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.FigureGenerator.Registry.</code><code class="descname">ExtensionMetaclass</code><span class="sig-paren">(</span><em>class_name</em>, <em>base_classes</em>, <em>attributes</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/Registry.html#ExtensionMetaclass"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">type</span></code></a></p>
-<dl class="classmethod">
-<dt id="Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.extension">
-<em class="property">classmethod </em><code class="descname">extension</code><span class="sig-paren">(</span><em>markup</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/Registry.html#ExtensionMetaclass.extension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.extension" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">ExternalFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>source_path</em>, <em>figure_path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#ExternalFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageChunk</span></code></p>
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk.source_path">
+<code class="descname">source_path</code><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk.source_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="classmethod">
-<dt id="Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.extension_markups">
-<em class="property">classmethod </em><code class="descname">extension_markups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/Registry.html#ExtensionMetaclass.extension_markups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.extension_markups" title="Permalink to this definition">¶</a></dt>
+</dd></dl>
+
+<dl class="class">
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">LocaleFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>source</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#LocaleFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageChunk</span></code></p>
+<p>This class represents an image block for a figure.</p>
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk.COMMAND">
+<code class="descname">COMMAND</code><em class="property"> = 'image'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk.COMMAND" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="classmethod">
-<dt id="Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.extensions">
-<em class="property">classmethod </em><code class="descname">extensions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/Registry.html#ExtensionMetaclass.extensions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.extensions" title="Permalink to this definition">¶</a></dt>
+</dd></dl>
+
+<dl class="class">
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">SaveFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>figure</em>, <em>figure_filename</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageChunk</span></code></p>
+<p>This class represents an image block for a saved figure.</p>
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.COMMAND">
+<code class="descname">COMMAND</code><em class="property"> = 'save_figure'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.COMMAND" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="classmethod">
-<dt id="Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.iter">
-<em class="property">classmethod </em><code class="descname">iter</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/Registry.html#ExtensionMetaclass.iter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.Registry.ExtensionMetaclass.iter" title="Permalink to this definition">¶</a></dt>
+<dl class="method">
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.to_code">
+<code class="descname">to_code</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureChunk.to_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.to_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -233,10 +250,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Tikz.html" class="btn btn-neutral float-right" title="8.1.5.3.4. Tikz" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="LitteralIncludeMarkups.html" class="btn btn-neutral float-right" title="8.1.5.2.4. LitteralIncludeMarkups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Generic.html" class="btn btn-neutral" title="8.1.5.3.2. Generic" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="FigureGenerator/Tikz.html" class="btn btn-neutral" title="8.1.5.2.2.3. Tikz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -267,7 +284,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.RstFactory &mdash; Pyterate 1.0.0 documentation</title>
+  <title>Pyterate.RstFactory.RstFactory &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -35,7 +35,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../../index.html"/>
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -65,7 +65,7 @@
             
             
               <div class="version">
-                1.0
+                2.0
               </div>
             
           
@@ -194,7 +194,6 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">.Topic</span> <span class="k">import</span> <span class="n">Topic</span>
-<span class="kn">from</span> <span class="nn">..Template</span> <span class="k">import</span> <span class="n">TemplateEnvironment</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -212,47 +211,19 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">documents_path</span><span class="p">,</span> <span class="n">rst_source_path</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">,</span>
-                 <span class="n">user_template_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                 <span class="n">show_counter</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
 
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Parameters:</span>
 
-<span class="sd">        documents_path: string</span>
-<span class="sd">            path of the documents</span>
-
-<span class="sd">        rst_source_path: string</span>
-<span class="sd">            path of the RST source directory</span>
-
-<span class="sd">        rst_directory: string</span>
-<span class="sd">            relative path of the documents in the RST sources</span>
-
-<span class="sd">        show_counter: Boolean</span>
-<span class="sd">            show documents counters in toc</span>
+<span class="sd">        settings:</span>
+<span class="sd">            :class:`RstFactory.Settings.DefaultRstFactorySettings` instance</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">template_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;templates&#39;</span><span class="p">)</span>
-        <span class="n">search_path</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="n">user_template_path</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;User template path: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">user_template_path</span><span class="p">))</span>
-            <span class="n">search_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">user_template_path</span><span class="p">)</span>
-        <span class="n">search_path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">template_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span> <span class="o">=</span> <span class="n">TemplateEnvironment</span><span class="p">(</span><span class="n">search_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span> <span class="o">=</span> <span class="n">settings</span>
 
-        <span class="c1"># Fixme: handle ~</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_documents_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">documents_path</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rst_source_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">rst_source_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_source_path</span><span class="p">,</span> <span class="n">rst_directory</span><span class="p">)</span> <span class="c1"># Fixme: name ?</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Documents Path: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_documents_path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">RST Path: &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_show_counter</span> <span class="o">=</span> <span class="n">show_counter</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">rst_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_document_failures</span> <span class="o">=</span> <span class="p">[]</span>
@@ -260,38 +231,12 @@
     <span class="c1">##############################################</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">template_environment</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_template_environment</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">documents_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_documents_path</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rst_source_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_source_path</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">rst_directory</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">show_counter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_show_counter</span>
+    <span class="k">def</span> <span class="nf">settings</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">topics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="c1"># Fixme: name ?</span>
-
-<div class="viewcode-block" id="RstFactory.join_documents_path"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/RstFactory.html#Pyterate.RstFactory.RstFactory.RstFactory.join_documents_path">[docs]</a>    <span class="k">def</span> <span class="nf">join_documents_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_documents_path</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="RstFactory.join_rst_document_path"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/RstFactory.html#Pyterate.RstFactory.RstFactory.RstFactory.join_rst_document_path">[docs]</a>    <span class="k">def</span> <span class="nf">join_rst_document_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_directory</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
     <span class="c1">##############################################</span>
 
@@ -300,35 +245,26 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">_process_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_process_topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">topic_path</span><span class="p">):</span>
 
-        <span class="n">relative_topic_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="n">topic_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_documents_path</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">relative_topic_path</span> <span class="o">==</span> <span class="s1">&#39;.&#39;</span><span class="p">:</span>
-            <span class="n">relative_topic_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-
-        <span class="c1"># Fixme: kwargs handling</span>
-        <span class="n">make_external_figure</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;make_external_figure&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+        <span class="n">relative_topic_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">relative_input_path</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
 
         <span class="n">topic</span> <span class="o">=</span> <span class="n">Topic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">relative_topic_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="p">[</span><span class="n">relative_topic_path</span><span class="p">]</span> <span class="o">=</span> <span class="n">topic</span> <span class="c1"># collect topics</span>
 
-        <span class="n">topic</span><span class="o">.</span><span class="n">process_documents</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="n">topic</span><span class="o">.</span><span class="n">make_toc</span><span class="p">(</span><span class="n">make_external_figure</span><span class="p">)</span>
+        <span class="n">topic</span><span class="o">.</span><span class="n">process_documents</span><span class="p">()</span>
+        <span class="n">topic</span><span class="o">.</span><span class="n">make_toc</span><span class="p">()</span>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="RstFactory.process_recursively"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/RstFactory.html#Pyterate.RstFactory.RstFactory.RstFactory.process_recursively">[docs]</a>    <span class="k">def</span> <span class="nf">process_recursively</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="RstFactory.process_recursively"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/RstFactory.html#Pyterate.RstFactory.RstFactory.RstFactory.process_recursively">[docs]</a>    <span class="k">def</span> <span class="nf">process_recursively</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Process recursively the documents directory.</span>
-
-<span class="sd">        kwargs: `run_code`, `make_external_figure`, `force`</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Process recursively the documents directory.&quot;&quot;&quot;</span>
 
         <span class="c1"># walk top down so as to generate the subtopics first</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_documents_path</span><span class="p">,</span> <span class="n">topdown</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">followlinks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process_topic</span><span class="p">(</span><span class="n">topic_path</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">topdown</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">followlinks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process_topic</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_failures</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
@@ -370,7 +306,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'1.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

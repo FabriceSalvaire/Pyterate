@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.3.1. CircuitMacros &mdash; Pyterate 1.0.0 documentation</title>
+  <title>8.1.5.2.6. Registry &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -35,10 +35,10 @@
         <link rel="index" title="Index"
               href="../../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../../search.html"/>
-    <link rel="top" title="Pyterate 1.0.0 documentation" href="../../../../index.html"/>
-        <link rel="up" title="8.1.5.3. FigureGenerator" href="../FigureGenerator.html"/>
-        <link rel="next" title="8.1.5.3.2. Generic" href="Generic.html"/>
-        <link rel="prev" title="8.1.5.3. FigureGenerator" href="../FigureGenerator.html"/> 
+    <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../../index.html"/>
+        <link rel="up" title="8.1.5.2. Dom" href="../Dom.html"/>
+        <link rel="next" title="8.1.5.3. FigureEvaluator" href="../FigureEvaluator.html"/>
+        <link rel="prev" title="8.1.5.2.5. Markups" href="Markups.html"/> 
 
   
   <script src="../../../../static/js/modernizr.min.js"></script>
@@ -67,7 +67,7 @@
             
             
               <div class="version">
-                1.0
+                2.0
               </div>
             
           
@@ -107,10 +107,13 @@
 <li class="toctree-l3"><a class="reference internal" href="../../Logging.html">8.1.4. Logging</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../Document.html">8.1.5.1. Document</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../FigureGenerator.html">8.1.5.3. FigureGenerator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.4. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.5. Topic</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.4. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.6. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Settings.html">8.1.5.7. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../Template.html">8.1.6. Template</a></li>
@@ -172,15 +175,15 @@
         
           <li><a href="../../RstFactory.html">8.1.5. RstFactory</a> &raquo;</li>
         
-          <li><a href="../FigureGenerator.html">8.1.5.3. FigureGenerator</a> &raquo;</li>
+          <li><a href="../Dom.html">8.1.5.2. Dom</a> &raquo;</li>
         
-      <li>8.1.5.3.1. CircuitMacros</li>
+      <li>8.1.5.2.6. Registry</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../../_sources/api/Pyterate/RstFactory/FigureGenerator/CircuitMacros.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/Pyterate/RstFactory/Dom/Registry.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -193,25 +196,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Pyterate.RstFactory.FigureGenerator.CircuitMacros">
-<span id="circuitmacros"></span><h1>8.1.5.3.1. CircuitMacros<a class="headerlink" href="#module-Pyterate.RstFactory.FigureGenerator.CircuitMacros" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-Pyterate.RstFactory.Dom.Registry">
+<span id="registry"></span><h1>8.1.5.2.6. Registry<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.Registry" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.FigureGenerator.CircuitMacros.</code><code class="descname">CircuitMacrosImage</code><span class="sig-paren">(</span><em>document</em>, <em>m4_filename</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/CircuitMacros.html#CircuitMacrosImage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
-<p>This class represents a circuit macros figure.</p>
-<dl class="method">
-<dt id="Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage.make_figure">
-<code class="descname">make_figure</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/CircuitMacros.html#CircuitMacrosImage.make_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage.make_figure" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.Registry.MarkupRegistry">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.Registry.</code><code class="descname">MarkupRegistry</code><span class="sig-paren">(</span><em>class_name</em>, <em>base_classes</em>, <em>attributes</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Registry.html#MarkupRegistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Registry.MarkupRegistry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#type" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">type</span></code></a></p>
+<dl class="classmethod">
+<dt id="Pyterate.RstFactory.Dom.Registry.MarkupRegistry.command_to_class">
+<em class="property">classmethod </em><code class="descname">command_to_class</code><span class="sig-paren">(</span><em>command</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Registry.html#MarkupRegistry.command_to_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.command_to_class" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</dd></dl>
+<dl class="classmethod">
+<dt id="Pyterate.RstFactory.Dom.Registry.MarkupRegistry.commands">
+<em class="property">classmethod </em><code class="descname">commands</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Registry.html#MarkupRegistry.commands"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.commands" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
-<dl class="class">
-<dt id="Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImageChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.FigureGenerator.CircuitMacros.</code><code class="descname">CircuitMacrosImageChunk</code><span class="sig-paren">(</span><em>document</em>, <em>line</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/FigureGenerator/CircuitMacros.html#CircuitMacrosImageChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImageChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage" title="Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.FigureGenerator.CircuitMacros.CircuitMacrosImage</span></code></a>, <a class="reference internal" href="../Dom.html#Pyterate.RstFactory.Dom.ImageChunk" title="Pyterate.RstFactory.Dom.ImageChunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.ImageChunk</span></code></a></p>
-<p>This class represents an image block for a circuit macros figure.</p>
+<dl class="classmethod">
+<dt id="Pyterate.RstFactory.Dom.Registry.MarkupRegistry.is_valid_enclosing_makup">
+<em class="property">classmethod </em><code class="descname">is_valid_enclosing_makup</code><span class="sig-paren">(</span><em>markup</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Registry.html#MarkupRegistry.is_valid_enclosing_makup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.is_valid_enclosing_makup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="Pyterate.RstFactory.Dom.Registry.MarkupRegistry.is_valid_makup">
+<em class="property">classmethod </em><code class="descname">is_valid_makup</code><span class="sig-paren">(</span><em>markup</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Registry.html#MarkupRegistry.is_valid_makup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.is_valid_makup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="classmethod">
+<dt id="Pyterate.RstFactory.Dom.Registry.MarkupRegistry.markup_to_class">
+<em class="property">classmethod </em><code class="descname">markup_to_class</code><span class="sig-paren">(</span><em>markup</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Registry.html#MarkupRegistry.markup_to_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.markup_to_class" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 </div>
@@ -226,10 +241,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Generic.html" class="btn btn-neutral float-right" title="8.1.5.3.2. Generic" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../FigureEvaluator.html" class="btn btn-neutral float-right" title="8.1.5.3. FigureEvaluator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../FigureGenerator.html" class="btn btn-neutral" title="8.1.5.3. FigureGenerator" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Markups.html" class="btn btn-neutral" title="8.1.5.2.5. Markups" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -260,7 +275,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../../',
-            VERSION:'1.0.0',
+            VERSION:'2.0.0',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,
