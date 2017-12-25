@@ -227,10 +227,13 @@ class Document:
 
     def make_external_figure(self, force):
 
+        # Fixme: simplify ???
         for node in self._dom:
-            if isinstance(node, ExternalFigureNode):
-                if force or node:
-                    node.make_figure()
+            if isinstance(node, FigureNode):
+                for child in node.iter_on_childs():
+                    if isinstance(child, ExternalFigureNode):
+                        if force or child:
+                            child.make_figure()
 
     ##############################################
 
