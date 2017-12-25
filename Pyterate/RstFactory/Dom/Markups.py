@@ -65,7 +65,7 @@ class RstChunk(TextChunk):
     ##############################################
 
     def to_rst(self):
-        return str(self) + '\n'
+        return str(self)
 
     ##############################################
 
@@ -103,7 +103,7 @@ class MarkdownChunk(TextChunk):
     ##############################################
 
     def to_markdown(self):
-        return str(self) + '\n'
+        return str(self)
 
     ##############################################
 

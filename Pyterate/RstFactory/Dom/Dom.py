@@ -63,7 +63,8 @@ class Chunk(metaclass=MarkupRegistry):
     def indent_lines(lines, indentation=4):
 
         indentation = ' '*indentation
-        return '\n'.join([indentation + line.rstrip() for line in lines])
+        # Fixme: strip empty lines
+        return '\n'.join([indentation + line.rstrip() for line in lines]) + '\n' # Fixme: if out ???
 
     ##############################################
 
@@ -109,7 +110,7 @@ class Chunk(metaclass=MarkupRegistry):
     ##############################################
 
     def __str__(self):
-        return '\n'.join(self._lines)
+        return '\n'.join(self._lines) + '\n'
 
     ##############################################
 

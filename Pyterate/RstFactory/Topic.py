@@ -27,7 +27,8 @@ import logging
 import os
 
 from ..Template import TemplateAggregator
-from .Document import Document
+from .Document import Document, ParseError
+from .FigureEvaluator import FigureEvaluatorError
 
 ####################################################################################################
 
@@ -172,7 +173,17 @@ class Topic:
 
     def process_document(self, document):
 
-        document.read()
+        self._logger.info('Process document {}'.format(document.path))
+
+        try:
+            document.read()
+        except (ParseError, FigureEvaluatorError) as exception:
+            self._logger.error(exception)
+            self._logger.error("Failed to parse document {}".format(document.path))
+            self.factory.register_failure(document)
+            # Fixme: insert errors in rst
+            return
+
         make_notebook = False
         if self.settings.force or document:
             if self.settings.run_code:

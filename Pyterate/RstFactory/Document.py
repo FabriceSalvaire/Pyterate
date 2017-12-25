@@ -262,11 +262,11 @@ class Document:
         parsed_line = line
 
         def is_valid_makup(markup):
-            if MarkupRegistry.is_valid_makup(markup):
+            if not MarkupRegistry.is_valid_makup(markup):
                 raise ParseError("Invalid markup", line)
 
         def is_valid_enclosing_makup(markup):
-            if MarkupRegistry.is_valid_enclosing_makup(markup):
+            if not MarkupRegistry.is_valid_enclosing_makup(markup):
                 raise ParseError("Invalid markup", line)
 
         def push_stack(markup):
@@ -305,6 +305,9 @@ class Document:
                     # strip space
                     if parsed_line and parsed_line[0] == ' ':
                         parsed_line = parsed_line[1:]
+                else:
+                    markup = None
+                    # Fixme: ??? raise ParseError('Invalid Markup', line)
 
         enclosing_markup = open_markup or close_markup
 
@@ -358,6 +361,7 @@ class Document:
 
     def _post_process_dom(self, raw_dom):
 
+        # Fixme: run code in parallel ???
         figure_evaluator = FigureEvaluator()
 
         dom = Dom()

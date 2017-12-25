@@ -28,6 +28,22 @@ from .Dom.Registry import MarkupRegistry
 
 ####################################################################################################
 
+class FigureEvaluatorError(Exception):
+
+    ##############################################
+
+    def __init__(self, code):
+
+        self._code = code
+
+    ##############################################
+
+    def __repr__(self):
+
+        return "Syntax error in \n{0._code}".format(self)
+
+####################################################################################################
+
 class FigureCommand:
 
     ##############################################
@@ -85,5 +101,8 @@ class FigureEvaluator:
 
         self._commands.clear()
 
-        exec(compile(code, 'inline', 'exec'), self._sandbox_globals, self._sandbox_locals)
+        try:
+            exec(compile(code, 'inline', 'exec'), self._sandbox_globals, self._sandbox_locals)
+        except SyntaxError:
+            raise FigureEvaluatorError(code)
         return self._commands

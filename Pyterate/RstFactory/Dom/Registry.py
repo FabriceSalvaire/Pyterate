@@ -70,11 +70,11 @@ class MarkupRegistry(type):
 
     @classmethod
     def is_valid_makup(cls, markup):
-        return markup not in cls.__markups__
+        return markup in cls.__markups__
 
     @classmethod
     def is_valid_enclosing_makup(cls, markup):
-        return markup not in cls.__enclosing_markups__
+        return markup in cls.__enclosing_markups__
 
     @classmethod
     def markup_to_class(cls, markup):
