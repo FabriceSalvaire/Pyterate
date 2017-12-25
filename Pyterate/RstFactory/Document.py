@@ -22,14 +22,12 @@
 
 import logging
 import os
-import tempfile
 
 import nbformat
 from nbformat import v4 as nbv4
 
 ####################################################################################################
 
-from ..Jupyter import JupyterClient
 from ..Template import TemplateAggregator
 from ..Tools.Path import remove_extension
 from ..Tools.Timestamp import timestamp
@@ -43,7 +41,7 @@ from .Dom.Markups import (
 )
 from .Dom.FigureMarkups import ImageChunk, ExternalFigureChunk
 from .Dom.Registry import MarkupRegistry
-from .FigureEvaluator import FigureEvaluator
+from .NodeEvaluator import NodeEvaluator
 
 ####################################################################################################
 
@@ -140,6 +138,10 @@ class Document:
     def rst_inner_path(self):
         return os.path.sep + os.path.relpath(self._rst_path, self.factory.rst_source_path)
 
+    @property
+    def dom(self):
+        return self._dom
+
     ##############################################
 
     @property
@@ -200,33 +202,11 @@ class Document:
 
     ##############################################
 
-    def run_code(self):
+    def run(self):
 
         self._logger.info("\nRun document " + self._path)
-
-        has_error = False
-        with tempfile.TemporaryDirectory() as working_directory:
-            jupyter_client = JupyterClient(working_directory, kernel=self._language.jupyter_kernel)
-            code = self._language.setup_code.format(file=self._path)
-            jupyter_client.run_cell(code)
-            for chunk in self._dom.iter_on_code_chunks():
-                code = chunk.to_code()
-                # self._logger.info('Execute\n{}'.format(code))
-                outputs = jupyter_client.run_cell(code)
-                if outputs:
-                    output = outputs[0]
-                    # self._logger.info('Output {0.output_type}\n{0}'.format(output))
-                    chunk.outputs = outputs
-                for output in outputs:
-                    if output.is_error and not isinstance(chunk, GuardedCodeChunk):
-                        has_error = True
-                        self._logger.error(
-                            "Error in document {}\n".format(self._path) +
-                            str(code) + '\n\n' +
-                            str(output)
-                        )
-
-        if has_error:
+        node_evaluator = NodeEvaluator(self._language)
+        if not node_evaluator.run(self._dom, self._path):
             self._logger.error("Failed to run document {}".format(self._path))
             self.factory.register_failure(self)
 
@@ -361,9 +341,6 @@ class Document:
 
     def _post_process_dom(self, raw_dom):
 
-        # Fixme: run code in parallel ???
-        figure_evaluator = FigureEvaluator()
-
         dom = Dom()
         for chunk in raw_dom.iter_on_not_empty_chunk():
             previous_chunk = dom.last_chunk
@@ -371,13 +348,10 @@ class Document:
                 continue
             elif previous_chunk is not None and previous_chunk.mergable(chunk):
                 previous_chunk.merge(chunk)
+            # Fixme: could use childs ???
             elif isinstance(chunk, InteractiveCodeChunk):
                 for line_chunk in chunk.to_line_chunk():
                     dom.append(line_chunk)
-            elif isinstance(chunk, FigureChunk):
-                for figure_command in figure_evaluator.eval(str(chunk)):
-                    figure_chunk = figure_command.to_chunk(self)
-                    dom.append(figure_chunk)
             else:
                 if isinstance(chunk, OutputChunk):
                     if previous_chunk is not None and previous_chunk.is_executed:
@@ -433,7 +407,11 @@ class Document:
         with open(self._rst_path, 'w') as fh:
             fh.write(str(template_aggregator))
             for chunk in self._dom:
-                fh.write(chunk.to_rst())
+                if isinstance(chunk, FigureChunk):
+                    for child in chunk.iter_on_childs():
+                        fh.write(child.to_rst())
+                else:
+                    fh.write(chunk.to_rst())
 
     ##############################################
 

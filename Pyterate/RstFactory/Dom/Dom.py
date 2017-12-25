@@ -266,14 +266,6 @@ class Dom:
 
     ##############################################
 
-    def iter_on_code_chunks(self):
-
-        for chunk in self._chunks:
-            if chunk.is_executed:
-                yield chunk
-
-    ##############################################
-
     def append(self, chunk):
 
         # self._logger.debug(repr(chunk))

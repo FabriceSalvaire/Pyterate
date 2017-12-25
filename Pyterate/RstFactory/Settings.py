@@ -78,6 +78,7 @@ class LanguageSettings:
     # Execution settings
     jupyter_kernel = None # name of the kernel
     setup_code = '' # some codes to be executed first
+    document_setup_code = '' # some codes to be executed first
 
     notebook_metadata = {
         'kernelspec': {
@@ -177,7 +178,8 @@ class DefaultPython3Settings(LanguageSettings):
     # Import some functions and define __file__ to the Python input path
     setup_code = '''
 from Pyterate.RstFactory.FigureTools import *
-
+'''
+    document_setup_code = '''
 __file__ = '{file}'
 '''
 

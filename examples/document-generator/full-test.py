@@ -93,7 +93,8 @@ x = np.arange(-N, N, 0.5)
 y = np.arange(-N, N, 0.5)
 xx, yy = np.meshgrid(x, y, sparse=True)
 z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
-##f# export('N', 'X')
-#f# table('z', columns=[chr(ord('A') + i) for i in range(8)], str_format='{:.3f}')
+#f# export('z', grid_size='x.shape[0]')
+#f# table(z, str_format='{:.1f}')
+#f# table('z', columns=[chr(ord('A') + i) for i in range(grid_size)], str_format='{:.3f}')
 
 foo = 1

@@ -28,7 +28,7 @@ import os
 
 from ..Template import TemplateAggregator
 from .Document import Document, ParseError
-from .FigureEvaluator import FigureEvaluatorError
+from .NodeEvaluator import NodeEvaluatorError
 
 ####################################################################################################
 
@@ -177,7 +177,7 @@ class Topic:
 
         try:
             document.read()
-        except (ParseError, FigureEvaluatorError) as exception:
+        except (ParseError, NodeEvaluatorError) as exception:
             self._logger.error(exception)
             self._logger.error("Failed to parse document {}".format(document.path))
             self.factory.register_failure(document)
@@ -187,7 +187,7 @@ class Topic:
         make_notebook = False
         if self.settings.force or document:
             if self.settings.run_code:
-                document.run_code()
+                document.run()
             document.make_rst()
             make_notebook = True
         if self.settings.make_external_figure:

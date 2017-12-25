@@ -62,4 +62,7 @@ def export_value(value):
     if isinstance(value, numpy.ndarray):
         value = value.tolist()
 
+    # Can export basic type: str, int, float
+    # as well as tuple, list or dict of basic type
+
     return json.dumps(value)

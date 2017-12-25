@@ -52,7 +52,28 @@ class CommentChunk(Chunk):
 ####################################################################################################
 
 class FigureChunk(Chunk):
+
     MARKUP = 'f'
+
+    ##############################################
+
+    def __init__(self, document):
+
+        super().__init__(document)
+
+        self._childs = []
+
+    ##############################################
+
+    def append_child(self, child):
+
+        self._childs.append(child)
+
+    ##############################################
+
+    def iter_on_childs(self):
+
+        return iter(self._childs)
 
 ####################################################################################################
 
@@ -220,6 +241,7 @@ class InteractiveLineCodeChunk(CodeChunk):
     def __init__(self, document, line):
 
         super().__init__(document)
+
         self.append(line)
 
     ##############################################

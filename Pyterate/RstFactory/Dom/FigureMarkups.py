@@ -204,11 +204,11 @@ class TableFigureChunk(Chunk):
 
     ##############################################
 
-    def __init__(self, document, name, columns=None, str_format='{}'):
+    def __init__(self, document, table, columns=None, str_format='{}'):
 
         super().__init__(document)
 
-        self._name = name
+        self._table = table
         self._columns = columns
         self._format = str_format
 
@@ -246,16 +246,39 @@ class TableFigureChunk(Chunk):
 
     ##############################################
 
+    def _table_is_not_exported(self):
+
+        return isinstance(self._table, str)
+
+    ##############################################
+
     def to_code(self):
 
-        return 'export_value({})'.format(self._name)
+        # Fixme: API -> to figure ???
+
+        if self._table_is_not_exported():
+            return 'export_value({})'.format(self._table)
+        else:
+            return None
+
+    ##############################################
+
+    def _exported_value(self):
+
+        # Fixme: 0 str() ???
+        json_data = self.outputs[0].result
+        return json.loads(json_data[1:-1])
 
     ##############################################
 
     def to_rst(self):
 
-        json_data = self.outputs[0].result # Fixme: str()
-        table = json.loads(json_data[1:-1])
+        # see https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst
+
+        if self._table_is_not_exported():
+            table = self._exported_value()
+        else:
+            table = self._table
 
         number_of_columns = len(table[0])
         str_table = []
@@ -272,17 +295,17 @@ class TableFigureChunk(Chunk):
 
         rst = ''
 
+        rst += self._rule('=')
+
         if self._columns:
             for i, column in self._iter_on_columns():
                 self._update_column_length(i, column)
-            rst += self._rule('=')
             rst += self._format_line(self._columns)
             rst += self._rule('=')
 
         for line in str_table:
             rst += self._format_line(line)
 
-        if self._columns:
-            rst += self._rule('=')
+        rst += self._rule('=')
 
         return rst + '\n'
