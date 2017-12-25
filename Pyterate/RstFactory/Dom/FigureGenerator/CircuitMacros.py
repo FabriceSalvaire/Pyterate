@@ -26,7 +26,7 @@ import subprocess
 import shutil
 import tempfile
 
-from ..FigureMarkups import ExternalFigureChunk
+from ..FigureMarkups import ExternalFigureNode
 
 ####################################################################################################
 
@@ -39,7 +39,7 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class CircuitMacrosChunk(ExternalFigureChunk):
+class CircuitMacrosNode(ExternalFigureNode):
 
     """ This class represents an image block for a circuit macros figure. """
 

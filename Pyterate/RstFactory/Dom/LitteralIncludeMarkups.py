@@ -21,15 +21,15 @@
 ####################################################################################################
 
 __all__ = [
-    'LiteralIncludeChunk',
-    'GetthecodeChunk',
+    'LiteralIncludeNode',
+    'GetthecodeNode',
 ]
 
 ####################################################################################################
 
 # import logging
 
-from .Dom import Chunk
+from .Dom import Node
 
 ####################################################################################################
 
@@ -37,7 +37,7 @@ from .Dom import Chunk
 
 ####################################################################################################
 
-class LiteralIncludeChunk(Chunk):
+class LiteralIncludeNode(Node):
 
     """This class represents a literal include block."""
 
@@ -61,7 +61,7 @@ class LiteralIncludeChunk(Chunk):
 
 ####################################################################################################
 
-class GetthecodeChunk(LiteralIncludeChunk):
+class GetthecodeNode(LiteralIncludeNode):
 
     """This class represents a literal include block."""
 

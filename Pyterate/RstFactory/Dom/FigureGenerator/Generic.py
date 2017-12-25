@@ -24,7 +24,7 @@ import logging
 import os
 import subprocess
 
-from ..FigureMarkups import ExternalFigureChunk
+from ..FigureMarkups import ExternalFigureNode
 
 ####################################################################################################
 
@@ -32,7 +32,7 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class GeneratedImageChunk:
+class GeneratedImageNode:
 
     """ This class represents a Tikz figure. """
 

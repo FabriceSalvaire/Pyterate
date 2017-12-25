@@ -31,7 +31,7 @@ import logging
 import tempfile
 
 from ..Jupyter import JupyterClient
-from .Dom.Markups import CodeChunk, GuardedCodeChunk, FigureChunk
+from .Dom.Markups import GuardedCodeNode, FigureNode
 from .Dom.Registry import MarkupRegistry
 
 ####################################################################################################
@@ -74,10 +74,10 @@ class NodeCommand:
 
     ##############################################
 
-    def to_chunk(self, document):
+    def to_node(self, document):
 
-        chunk_cls = MarkupRegistry.command_to_class(self._name)
-        return chunk_cls(document, *self._args, **self._kwargs)
+        node_cls = MarkupRegistry.command_to_class(self._name)
+        return node_cls(document, *self._args, **self._kwargs)
 
 ####################################################################################################
 
@@ -184,27 +184,27 @@ export_value(_)
 
     ##############################################
 
-    def _run_code_chunk(self, chunk):
+    def _run_code_node(self, node):
 
-        code = chunk.to_code()
+        code = node.to_code()
         if code:
             # self._logger.info('Execute\n{}'.format(code))
             outputs = self._jupyter_client.run_cell(code)
             if outputs:
                 output = outputs[0]
                 # self._logger.info('Output {0.output_type}\n{0}'.format(output))
-                chunk.outputs = outputs
+                node.outputs = outputs
             for output in outputs:
-                if output.is_error and not isinstance(chunk, GuardedCodeChunk):
+                if output.is_error and not isinstance(node, GuardedCodeNode):
                     self._log_error(code, output)
 
     ##############################################
 
-    def _eval_figure(self, chunk):
+    def _eval_figure(self, node):
 
         self._commands.clear()
 
-        code = str(chunk)
+        code = str(node)
 
         try:
             exec(compile(code, 'inline', 'exec'), self._sandbox_globals, self._sandbox_locals)
@@ -225,14 +225,14 @@ export_value(_)
         self._sandbox_locals = {}
         self._has_error = False
 
-        for chunk in dom:
-            if chunk.is_executed:
-                self._run_code_chunk(chunk)
-            elif isinstance(chunk, FigureChunk):
-                for figure_command in self._eval_figure(chunk):
-                    figure_chunk = figure_command.to_chunk(chunk.document)
-                    chunk.append_child(figure_chunk)
-                    if figure_chunk.is_executed:
-                        self._run_code_chunk(figure_chunk)
+        for node in dom:
+            if node.is_executed:
+                self._run_code_node(node)
+            elif isinstance(node, FigureNode):
+                for figure_command in self._eval_figure(node):
+                    figure_node = figure_command.to_node(node.document)
+                    node.append_child(figure_node)
+                    if figure_node.is_executed:
+                        self._run_code_node(figure_node)
 
         return not self._has_error

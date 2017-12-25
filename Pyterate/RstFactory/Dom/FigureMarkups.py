@@ -21,9 +21,9 @@
 ####################################################################################################
 
 __all__ = [
-    'ExternalFigureChunk',
-    'LocaleFigureChunk',
-    'SaveFigureChunk',
+    'ExternalFigureNode',
+    'LocaleFigureNode',
+    'SaveFigureNode',
 ]
 
 ####################################################################################################
@@ -36,7 +36,7 @@ import os
 from nbformat import v4 as nbv4
 
 from Pyterate.Tools.Timestamp import timestamp
-from .Dom import Chunk
+from .Dom import Node
 
 ####################################################################################################
 
@@ -44,7 +44,7 @@ from .Dom import Chunk
 
 ####################################################################################################
 
-class ImageChunk(Chunk):
+class ImageNode(Node):
 
     COMMAND = None
 
@@ -129,7 +129,7 @@ class ImageChunk(Chunk):
 
 ####################################################################################################
 
-class ExternalFigureChunk(ImageChunk):
+class ExternalFigureNode(ImageNode):
 
     ##############################################
 
@@ -156,7 +156,7 @@ class ExternalFigureChunk(ImageChunk):
 
 ####################################################################################################
 
-class LocaleFigureChunk(ImageChunk):
+class LocaleFigureNode(ImageNode):
 
     """ This class represents an image block for a figure. """
 
@@ -172,7 +172,7 @@ class LocaleFigureChunk(ImageChunk):
 
 ####################################################################################################
 
-class SaveFigureChunk(ImageChunk):
+class SaveFigureNode(ImageNode):
 
     """ This class represents an image block for a saved figure. """
 
@@ -186,7 +186,7 @@ class SaveFigureChunk(ImageChunk):
 
         self._figure = figure
 
-        # Fixme: don't call CodeChunk ctor / Mixin ?
+        # Fixme: don't call CodeNode ctor / Mixin ?
 
     ##############################################
 
@@ -196,7 +196,7 @@ class SaveFigureChunk(ImageChunk):
 
 ####################################################################################################
 
-class TableFigureChunk(Chunk):
+class TableFigureNode(Node):
 
     """ This class represents a table figure. """
 

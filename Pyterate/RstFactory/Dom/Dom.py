@@ -29,10 +29,10 @@
 ####################################################################################################
 
 __all__ = [
-    'Chunk',
+    'Node',
     'Dom',
-    'ExecutedChunk',
-    'TextChunk',
+    'ExecutedNode',
+    'TextNode',
 ]
 
 ####################################################################################################
@@ -49,11 +49,9 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-# Fixme: -> Node ???
+class Node(metaclass=MarkupRegistry):
 
-class Chunk(metaclass=MarkupRegistry):
-
-    """ This class represents a chunk of lines in the source. """
+    """ This class represents a node of lines in the source. """
 
     MARKUP = None
 
@@ -129,13 +127,13 @@ class Chunk(metaclass=MarkupRegistry):
 
     ##############################################
 
-    def mergable(self, chunk):
-        return self.__class__ is chunk.__class__
+    def mergable(self, node):
+        return self.__class__ is node.__class__
 
     ##############################################
 
-    def merge(self, chunk):
-        self._lines.extend(chunk._lines)
+    def merge(self, node):
+        self._lines.extend(node._lines)
 
     ##############################################
 
@@ -195,7 +193,7 @@ class Chunk(metaclass=MarkupRegistry):
 
 ####################################################################################################
 
-class ExecutedChunk(Chunk):
+class ExecutedNode(Node):
 
     ##############################################
 
@@ -218,7 +216,7 @@ class ExecutedChunk(Chunk):
 
 ####################################################################################################
 
-class TextChunk(Chunk):
+class TextNode(Node):
 
     ##############################################
 
@@ -239,44 +237,44 @@ class Dom:
 
     def __init__(self):
 
-        self._chunks = []
+        self._nodes = []
 
     ##############################################
 
     def __bool__(self):
-        return bool(self._chunks)
+        return bool(self._nodes)
 
     ##############################################
 
     def __len__(self):
-        return len(self._chunks)
+        return len(self._nodes)
 
     ##############################################
 
     def __iter__(self):
-        return iter(self._chunks)
+        return iter(self._nodes)
 
     ##############################################
 
-    def iter_on_not_empty_chunk(self):
+    def iter_on_not_empty_node(self):
 
-        for chunk in self._chunks:
-            if chunk:
-                yield chunk
+        for node in self._nodes:
+            if node:
+                yield node
 
     ##############################################
 
-    def append(self, chunk):
+    def append(self, node):
 
-        # self._logger.debug(repr(chunk))
-        self._chunks.append(chunk)
+        # self._logger.debug(repr(node))
+        self._nodes.append(node)
 
     ##############################################
 
     @property
-    def last_chunk(self):
+    def last_node(self):
 
-        if self._chunks:
-            return self._chunks[-1]
+        if self._nodes:
+            return self._nodes[-1]
         else:
             return None

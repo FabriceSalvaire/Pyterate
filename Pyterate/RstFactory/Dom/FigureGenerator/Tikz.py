@@ -26,7 +26,7 @@ import shutil
 import subprocess
 import tempfile
 
-from ..FigureMarkups import ExternalFigureChunk
+from ..FigureMarkups import ExternalFigureNode
 
 ####################################################################################################
 
@@ -39,7 +39,7 @@ LATEX_COMMAND = 'pdflatex'
 
 ####################################################################################################
 
-class TikzChunk(ExternalFigureChunk):
+class TikzNode(ExternalFigureNode):
 
     """ This class represents an image block for a Tikz figure. """
 

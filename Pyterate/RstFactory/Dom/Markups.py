@@ -21,16 +21,16 @@
 ####################################################################################################
 
 __all__ = [
-    'CodeChunk',
-    'CommentChunk',
-    'FigureChunk',
-    'GuardedCodeChunk',
-    'HiddenCodeChunk',
-    'InteractiveCodeChunk',
-    'LiteralChunk',
-    'MarkdownChunk',
-    'OutputChunk',
-    'RstChunk',
+    'CodeNode',
+    'CommentNode',
+    'FigureNode',
+    'GuardedCodeNode',
+    'HiddenCodeNode',
+    'InteractiveCodeNode',
+    'LiteralNode',
+    'MarkdownNode',
+    'OutputNode',
+    'RstNode',
 ]
 
 ####################################################################################################
@@ -38,7 +38,7 @@ __all__ = [
 import logging
 
 from ..MarkupConverter import convert_markup
-from .Dom import Chunk, ExecutedChunk, TextChunk
+from .Dom import Node, ExecutedNode, TextNode
 
 ####################################################################################################
 
@@ -46,12 +46,12 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class CommentChunk(Chunk):
+class CommentNode(Node):
     MARKUP = '?'
 
 ####################################################################################################
 
-class FigureChunk(Chunk):
+class FigureNode(Node):
 
     MARKUP = 'f'
 
@@ -77,7 +77,7 @@ class FigureChunk(Chunk):
 
 ####################################################################################################
 
-class RstChunk(TextChunk):
+class RstNode(TextNode):
 
     """ This class represents a RST content. """
 
@@ -90,13 +90,13 @@ class RstChunk(TextChunk):
 
     ##############################################
 
-    def to_rst_format_chunk(self):
+    def to_rst_format_node(self):
 
-        return RstFormatChunk(self)
+        return RstFormatNode(self)
 
 ####################################################################################################
 
-class LiteralChunk(Chunk):
+class LiteralNode(Node):
 
     """ This class represents a literal block. """
 
@@ -108,14 +108,14 @@ class LiteralChunk(Chunk):
 
         if bool(self):
             source = self.indent_lines(self._lines)
-            # rst = self.directive('class', args=('literal-chunk',)) # Don't work !
+            # rst = self.directive('class', args=('literal-node',)) # Don't work !
             return self.code_block_directive('py') + source + '\n'
         else:
             return ''
 
 ####################################################################################################
 
-class MarkdownChunk(TextChunk):
+class MarkdownNode(TextNode):
 
     """ This class represents a RST content. """
 
@@ -133,21 +133,21 @@ class MarkdownChunk(TextChunk):
 
     ##############################################
 
-    # def to_rst_format_chunk(self):
+    # def to_rst_format_node(self):
     #
-    #     return RstFormatChunk(self)
+    #     return RstFormatNode(self)
 
 ####################################################################################################
 
-class RstFormatChunk(ExecutedChunk):
+class RstFormatNode(ExecutedNode):
 
     ##############################################
 
-    def __init__(self, rst_chunk):
+    def __init__(self, rst_node):
 
-        super().__init__(rst_chunk.document)
+        super().__init__(rst_node.document)
 
-        self._lines = rst_chunk._lines
+        self._lines = rst_node._lines
 
     ##############################################
 
@@ -173,7 +173,7 @@ class RstFormatChunk(ExecutedChunk):
 
 ####################################################################################################
 
-class CodeChunk(ExecutedChunk):
+class CodeNode(ExecutedNode):
 
     """ This class represents a code block. """
 
@@ -208,33 +208,33 @@ class CodeChunk(ExecutedChunk):
 
 ####################################################################################################
 
-class GuardedCodeChunk(CodeChunk):
+class GuardedCodeNode(CodeNode):
 
     MARKUP = 'e'
     ENCLOSING_MARKUP = True
 
 ####################################################################################################
 
-class InteractiveCodeChunk(CodeChunk):
+class InteractiveCodeNode(CodeNode):
 
     MARKUP = 'i'
     ENCLOSING_MARKUP = True
 
     ##############################################
 
-    def to_line_chunk(self):
+    def to_line_node(self):
 
-        chunks = []
+        nodes = []
         for line in self._lines:
             if not line.strip():
                 continue
-            chunk = InteractiveLineCodeChunk(self._document, line)
-            chunks.append(chunk)
-        return chunks
+            node = InteractiveLineCodeNode(self._document, line)
+            nodes.append(node)
+        return nodes
 
 ####################################################################################################
 
-class InteractiveLineCodeChunk(CodeChunk):
+class InteractiveLineCodeNode(CodeNode):
 
     ##############################################
 
@@ -259,7 +259,7 @@ class InteractiveLineCodeChunk(CodeChunk):
 
 ####################################################################################################
 
-class HiddenCodeChunk(CodeChunk):
+class HiddenCodeNode(CodeNode):
 
     """ This class represents a hidden code block. """
 
@@ -273,7 +273,7 @@ class HiddenCodeChunk(CodeChunk):
 
 ####################################################################################################
 
-class OutputChunk(Chunk):
+class OutputNode(Node):
 
     """ This class represents an output block. """
 
@@ -282,19 +282,19 @@ class OutputChunk(Chunk):
     ##############################################
 
     @property
-    def code_chunk(self):
-        return self._code_chunk
+    def code_node(self):
+        return self._code_node
 
-    @code_chunk.setter
-    def code_chunk(self, value):
-        self._code_chunk = value
+    @code_node.setter
+    def code_node(self, value):
+        self._code_node = value
 
     ##############################################
 
     def to_rst(self):
 
         rst = self.code_block_directive('none')
-        for output in self._code_chunk.outputs:
+        for output in self._code_node.outputs:
             if output.is_stream:
                 rst += self.indent_output(output)
 
