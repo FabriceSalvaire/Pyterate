@@ -176,7 +176,7 @@ class DefaultPython3Settings(LanguageSettings):
 
     # Import some functions and define __file__ to the Python input path
     setup_code = '''
-from Pyterate.RstFactory.FigureTools import save_figure
+from Pyterate.RstFactory.FigureTools import *
 
 __file__ = '{file}'
 '''

@@ -20,7 +20,17 @@
 
 ####################################################################################################
 
+__all__ = [
+    'save_figure',
+    'export_value',
+]
+
+####################################################################################################
+
+import json
 import logging
+
+import numpy
 
 from ..Tools.Path import file_extension
 
@@ -43,3 +53,13 @@ def save_figure(figure, figure_path):
         orientation='landscape', papertype='a4',
         transparent=True, frameon=False,
     )
+
+
+####################################################################################################
+
+def export_value(value):
+
+    if isinstance(value, numpy.ndarray):
+        value = value.tolist()
+
+    return json.dumps(value)

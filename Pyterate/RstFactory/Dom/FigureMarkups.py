@@ -29,6 +29,7 @@ __all__ = [
 ####################################################################################################
 
 import base64
+import json
 import logging
 import os
 
@@ -39,7 +40,7 @@ from .Dom import Chunk
 
 ####################################################################################################
 
-_module_logger = logging.getLogger(__name__)
+# _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
@@ -181,12 +182,107 @@ class SaveFigureChunk(ImageChunk):
 
     def __init__(self, document, figure, figure_filename, **kwargs):
 
+        super().__init__(document, figure_filename, **kwargs)
+
         self._figure = figure
 
-        super().__init__(document, figure_filename, **kwargs)
+        # Fixme: don't call CodeChunk ctor / Mixin ?
 
     ##############################################
 
     def to_code(self):
 
         return 'save_figure({}, "{}")'.format(self._figure, self.absolut_path)
+
+####################################################################################################
+
+class TableFigureChunk(Chunk):
+
+    """ This class represents a table figure. """
+
+    COMMAND = 'table'
+
+    ##############################################
+
+    def __init__(self, document, name, columns=None, str_format='{}'):
+
+        super().__init__(document)
+
+        self._name = name
+        self._columns = columns
+        self._format = str_format
+
+        self._column_length = []
+
+    ##############################################
+
+    def _iter_on_columns(self):
+
+        return enumerate(self._columns)
+
+    ##############################################
+
+    def _update_column_length(self, i, value):
+
+        self._column_length[i] = max(len(str(value)), self._column_length[i])
+
+    ##############################################
+
+    def _rule(self, rule_chr):
+
+        column_rule = [rule_chr*self._column_length[i]
+                       for i in range(len(self._column_length))]
+
+        return ' '.join(column_rule) + '\n'
+
+    ##############################################
+
+    def _format_line(self, values):
+
+        padded_values = [' '*(self._column_length[i] - len(value)) + value
+                         for i, value in enumerate(values)]
+
+        return ' '.join(padded_values) + '\n'
+
+    ##############################################
+
+    def to_code(self):
+
+        return 'export_value({})'.format(self._name)
+
+    ##############################################
+
+    def to_rst(self):
+
+        json_data = self.outputs[0].result # Fixme: str()
+        table = json.loads(json_data[1:-1])
+
+        number_of_columns = len(table[0])
+        str_table = []
+        self._column_length = [0]*number_of_columns
+        for line in table:
+            if len(line) != number_of_columns:
+                raise NameError('Invalid table')
+            str_line = []
+            for i, value in enumerate(line):
+                str_value = self._format.format(value)
+                self._update_column_length(i, str_value)
+                str_line.append(str_value)
+            str_table.append(str_line)
+
+        rst = ''
+
+        if self._columns:
+            for i, column in self._iter_on_columns():
+                self._update_column_length(i, column)
+            rst += self._rule('=')
+            rst += self._format_line(self._columns)
+            rst += self._rule('=')
+
+        for line in str_table:
+            rst += self._format_line(line)
+
+        if self._columns:
+            rst += self._rule('=')
+
+        return rst + '\n'
