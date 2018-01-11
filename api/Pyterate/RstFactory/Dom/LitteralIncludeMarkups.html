@@ -108,9 +108,9 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.4. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.3. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.6. RstFactory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../Settings.html">8.1.5.7. Settings</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.8. Topic</a></li>
@@ -199,35 +199,35 @@
   <div class="section" id="module-Pyterate.RstFactory.Dom.LitteralIncludeMarkups">
 <span id="litteralincludemarkups"></span><h1>8.1.5.2.4. LitteralIncludeMarkups<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.LitteralIncludeMarkups" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.LitteralIncludeMarkups.</code><code class="descname">LiteralIncludeChunk</code><span class="sig-paren">(</span><em>document</em>, <em>include_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#LiteralIncludeChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Dom.html#Pyterate.RstFactory.Dom.Dom.Chunk" title="Pyterate.RstFactory.Dom.Dom.Chunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Dom.Chunk</span></code></a></p>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.LitteralIncludeMarkups.</code><code class="descname">LiteralIncludeNode</code><span class="sig-paren">(</span><em>document</em>, <em>include_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#LiteralIncludeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Dom.html#Pyterate.RstFactory.Dom.Dom.Node" title="Pyterate.RstFactory.Dom.Dom.Node"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.Dom.Node</span></code></a></p>
 <p>This class represents a literal include block.</p>
 <dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk.COMMAND">
-<code class="descname">COMMAND</code><em class="property"> = 'literal_include'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk.COMMAND" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode.COMMAND">
+<code class="descname">COMMAND</code><em class="property"> = 'literal_include'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode.COMMAND" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk.to_rst">
-<code class="descname">to_rst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#LiteralIncludeChunk.to_rst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk.to_rst" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode.to_rst">
+<code class="descname">to_rst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#LiteralIncludeNode.to_rst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode.to_rst" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.LitteralIncludeMarkups.</code><code class="descname">GetthecodeChunk</code><span class="sig-paren">(</span><em>document</em>, <em>include_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#GetthecodeChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk" title="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk</span></code></a></p>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.LitteralIncludeMarkups.</code><code class="descname">GetthecodeNode</code><span class="sig-paren">(</span><em>document</em>, <em>include_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#GetthecodeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode" title="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode"><code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode</span></code></a></p>
 <p>This class represents a literal include block.</p>
 <dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk.COMMAND">
-<code class="descname">COMMAND</code><em class="property"> = 'getthecode'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk.COMMAND" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode.COMMAND">
+<code class="descname">COMMAND</code><em class="property"> = 'getthecode'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode.COMMAND" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk.to_rst">
-<code class="descname">to_rst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#GetthecodeChunk.to_rst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk.to_rst" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode.to_rst">
+<code class="descname">to_rst</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#GetthecodeNode.to_rst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode.to_rst" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

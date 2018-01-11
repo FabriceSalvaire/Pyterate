@@ -6,9 +6,9 @@
 .. toctree::
     RstFactory/Document
     RstFactory/Dom
-    RstFactory/FigureEvaluator
     RstFactory/FigureTools
     RstFactory/MarkupConverter
+    RstFactory/NodeEvaluator
     RstFactory/RstFactory
     RstFactory/Settings
     RstFactory/Topic

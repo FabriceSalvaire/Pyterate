@@ -193,7 +193,8 @@
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">..Template</span> <span class="k">import</span> <span class="n">TemplateAggregator</span>
-<span class="kn">from</span> <span class="nn">.Document</span> <span class="k">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">.Document</span> <span class="k">import</span> <span class="n">Document</span><span class="p">,</span> <span class="n">ParseError</span>
+<span class="kn">from</span> <span class="nn">.NodeEvaluator</span> <span class="k">import</span> <span class="n">NodeEvaluatorError</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -338,11 +339,21 @@
 
 <div class="viewcode-block" id="Topic.process_document"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Topic.html#Pyterate.RstFactory.Topic.Topic.process_document">[docs]</a>    <span class="k">def</span> <span class="nf">process_document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
 
-        <span class="n">document</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Process document </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">document</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">ParseError</span><span class="p">,</span> <span class="n">NodeEvaluatorError</span><span class="p">)</span> <span class="k">as</span> <span class="n">exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to parse document </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">document</span><span class="o">.</span><span class="n">path</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">register_failure</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+            <span class="c1"># Fixme: insert errors in rst</span>
+            <span class="k">return</span>
+
         <span class="n">make_notebook</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">force</span> <span class="ow">or</span> <span class="n">document</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">run_code</span><span class="p">:</span>
-                <span class="n">document</span><span class="o">.</span><span class="n">run_code</span><span class="p">()</span>
+                <span class="n">document</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
             <span class="n">document</span><span class="o">.</span><span class="n">make_rst</span><span class="p">()</span>
             <span class="n">make_notebook</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">make_external_figure</span><span class="p">:</span>

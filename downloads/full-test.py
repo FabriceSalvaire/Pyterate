@@ -1,4 +1,6 @@
 # A source code comment
+##
+###
 #?# A comment that must not appear in the documentation
 
 foo = 1
@@ -69,7 +71,7 @@ a, b = 1, 2
 #f# foo('circuit.m4')
 
 # Insert Tikz figure
-#f# width = 3 * 300
+#f# width = 3 * 200
 #f# tikz('diode.tex',
 #f#       width=width)
 
@@ -82,7 +84,17 @@ plt.plot(x, y)
 
 # Insert a Matplotlib figure
 #f# save_figure('figure', 'my-figure.png',
-#f#             width=width)
+#f#             width=1280)
 #f#
+
+# Insert a table
+N = 2
+x = np.arange(-N, N, 0.5)
+y = np.arange(-N, N, 0.5)
+xx, yy = np.meshgrid(x, y, sparse=True)
+z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
+#f# export('z', grid_size='x.shape[0]')
+#f# table(z, str_format='{:.1f}')
+#f# table('z', columns=[chr(ord('A') + i) for i in range(grid_size)], str_format='{:.3f}')
 
 foo = 1

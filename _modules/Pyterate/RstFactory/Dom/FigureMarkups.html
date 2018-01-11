@@ -187,29 +187,30 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;ExternalFigureChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;LocaleFigureChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;SaveFigureChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ExternalFigureNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LocaleFigureNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;SaveFigureNode&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">####################################################################################################</span>
 
 <span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="k">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
 <span class="kn">from</span> <span class="nn">Pyterate.Tools.Timestamp</span> <span class="k">import</span> <span class="n">timestamp</span>
-<span class="kn">from</span> <span class="nn">.Dom</span> <span class="k">import</span> <span class="n">Chunk</span>
+<span class="kn">from</span> <span class="nn">.Dom</span> <span class="k">import</span> <span class="n">Node</span>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+<span class="c1"># _module_logger = logging.getLogger(__name__)</span>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="k">class</span> <span class="nc">ImageChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">ImageNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -294,7 +295,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="ExternalFigureChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk">[docs]</a><span class="k">class</span> <span class="nc">ExternalFigureChunk</span><span class="p">(</span><span class="n">ImageChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="ExternalFigureNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode">[docs]</a><span class="k">class</span> <span class="nc">ExternalFigureNode</span><span class="p">(</span><span class="n">ImageNode</span><span class="p">):</span>
 
     <span class="c1">##############################################</span>
 
@@ -321,7 +322,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="LocaleFigureChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk">[docs]</a><span class="k">class</span> <span class="nc">LocaleFigureChunk</span><span class="p">(</span><span class="n">ImageChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="LocaleFigureNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode">[docs]</a><span class="k">class</span> <span class="nc">LocaleFigureNode</span><span class="p">(</span><span class="n">ImageNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents an image block for a figure. &quot;&quot;&quot;</span>
 
@@ -337,7 +338,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="SaveFigureChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk">[docs]</a><span class="k">class</span> <span class="nc">SaveFigureChunk</span><span class="p">(</span><span class="n">ImageChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="SaveFigureNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode">[docs]</a><span class="k">class</span> <span class="nc">SaveFigureNode</span><span class="p">(</span><span class="n">ImageNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents an image block for a saved figure. &quot;&quot;&quot;</span>
 
@@ -347,15 +348,133 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">figure</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">_figure</span> <span class="o">=</span> <span class="n">figure</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="c1"># Fixme: don&#39;t call CodeNode ctor / Mixin ?</span>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="SaveFigureChunk.to_code"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.to_code">[docs]</a>    <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SaveFigureNode.to_code"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode.to_code">[docs]</a>    <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="s1">&#39;save_figure(</span><span class="si">{}</span><span class="s1">, &quot;</span><span class="si">{}</span><span class="s1">&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">)</span></div></div>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="k">class</span> <span class="nc">TableFigureNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot; This class represents a table figure. &quot;&quot;&quot;</span>
+
+    <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;table&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">table</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">str_format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1">&#39;</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_table</span> <span class="o">=</span> <span class="n">table</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span> <span class="o">=</span> <span class="n">columns</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_format</span> <span class="o">=</span> <span class="n">str_format</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_iter_on_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_update_column_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule_chr</span><span class="p">):</span>
+
+        <span class="n">column_rule</span> <span class="o">=</span> <span class="p">[</span><span class="n">rule_chr</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                       <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">))]</span>
+
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">column_rule</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_format_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+
+        <span class="n">padded_values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">+</span> <span class="n">value</span>
+                         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">)]</span>
+
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">padded_values</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_table_is_not_exported</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: API -&gt; to figure ???</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_is_not_exported</span><span class="p">():</span>
+            <span class="k">return</span> <span class="s1">&#39;export_value(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_exported_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># Fixme: 0 str() ???</span>
+        <span class="n">json_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">result</span>
+        <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># see https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_is_not_exported</span><span class="p">():</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_exported_value</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table</span>
+
+        <span class="n">number_of_columns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">str_table</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">number_of_columns</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">table</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">!=</span> <span class="n">number_of_columns</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Invalid table&#39;</span><span class="p">)</span>
+            <span class="n">str_line</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">line</span><span class="p">):</span>
+                <span class="n">str_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_column_length</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">str_value</span><span class="p">)</span>
+                <span class="n">str_line</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_value</span><span class="p">)</span>
+            <span class="n">str_table</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_line</span><span class="p">)</span>
+
+        <span class="n">rst</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+        <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">column</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_iter_on_columns</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_update_column_length</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">column</span><span class="p">)</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">str_table</span><span class="p">:</span>
+            <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_line</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+        <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 </pre></div>
 
            </div>

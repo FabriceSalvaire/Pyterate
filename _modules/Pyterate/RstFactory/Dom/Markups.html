@@ -187,16 +187,16 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;CodeChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;CommentChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;FigureChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;GuardedCodeChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;HiddenCodeChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;InteractiveCodeChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;LiteralChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;MarkdownChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;OutputChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;RstChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CodeNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;CommentNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;FigureNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GuardedCodeNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;HiddenCodeNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;InteractiveCodeNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LiteralNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MarkdownNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OutputNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RstNode&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">####################################################################################################</span>
@@ -204,7 +204,7 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="k">import</span> <span class="n">convert_markup</span>
-<span class="kn">from</span> <span class="nn">.Dom</span> <span class="k">import</span> <span class="n">Chunk</span><span class="p">,</span> <span class="n">ExecutedChunk</span><span class="p">,</span> <span class="n">TextChunk</span>
+<span class="kn">from</span> <span class="nn">.Dom</span> <span class="k">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">ExecutedNode</span><span class="p">,</span> <span class="n">TextNode</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -212,17 +212,38 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="CommentChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CommentChunk">[docs]</a><span class="k">class</span> <span class="nc">CommentChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+<div class="viewcode-block" id="CommentNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CommentNode">[docs]</a><span class="k">class</span> <span class="nc">CommentNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
     <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;?&#39;</span></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="FigureChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.FigureChunk">[docs]</a><span class="k">class</span> <span class="nc">FigureChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
-    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span></div>
+<div class="viewcode-block" id="FigureNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.FigureNode">[docs]</a><span class="k">class</span> <span class="nc">FigureNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+
+    <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_childs</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="FigureNode.append_child"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.FigureNode.append_child">[docs]</a>    <span class="k">def</span> <span class="nf">append_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_childs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span></div>
+
+    <span class="c1">##############################################</span>
+
+<div class="viewcode-block" id="FigureNode.iter_on_childs"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.FigureNode.iter_on_childs">[docs]</a>    <span class="k">def</span> <span class="nf">iter_on_childs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_childs</span><span class="p">)</span></div></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="RstChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstChunk">[docs]</a><span class="k">class</span> <span class="nc">RstChunk</span><span class="p">(</span><span class="n">TextChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="RstNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstNode">[docs]</a><span class="k">class</span> <span class="nc">RstNode</span><span class="p">(</span><span class="n">TextNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a RST content. &quot;&quot;&quot;</span>
 
@@ -230,18 +251,18 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="RstChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+<div class="viewcode-block" id="RstNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="RstChunk.to_rst_format_chunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstChunk.to_rst_format_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst_format_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RstNode.to_rst_format_node"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstNode.to_rst_format_node">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst_format_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="k">return</span> <span class="n">RstFormatChunk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">RstFormatNode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="LiteralChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.LiteralChunk">[docs]</a><span class="k">class</span> <span class="nc">LiteralChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+<div class="viewcode-block" id="LiteralNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.LiteralNode">[docs]</a><span class="k">class</span> <span class="nc">LiteralNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a literal block. &quot;&quot;&quot;</span>
 
@@ -249,18 +270,18 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="LiteralChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.LiteralChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LiteralNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.LiteralNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
-            <span class="c1"># rst = self.directive(&#39;class&#39;, args=(&#39;literal-chunk&#39;,)) # Don&#39;t work !</span>
+            <span class="c1"># rst = self.directive(&#39;class&#39;, args=(&#39;literal-node&#39;,)) # Don&#39;t work !</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;py&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">source</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="s1">&#39;&#39;</span></div></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="MarkdownChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownChunk">[docs]</a><span class="k">class</span> <span class="nc">MarkdownChunk</span><span class="p">(</span><span class="n">TextChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="MarkdownNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownNode">[docs]</a><span class="k">class</span> <span class="nc">MarkdownNode</span><span class="p">(</span><span class="n">TextNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a RST content. &quot;&quot;&quot;</span>
 
@@ -268,31 +289,31 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="MarkdownChunk.to_markdown"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownChunk.to_markdown">[docs]</a>    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+<div class="viewcode-block" id="MarkdownNode.to_markdown"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownNode.to_markdown">[docs]</a>    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="MarkdownChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="MarkdownNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">convert_markup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(),</span> <span class="n">from_format</span><span class="o">=</span><span class="s1">&#39;md&#39;</span><span class="p">,</span> <span class="n">to_format</span><span class="o">=</span><span class="s1">&#39;rst&#39;</span><span class="p">)</span></div></div>
 
     <span class="c1">##############################################</span>
 
-    <span class="c1"># def to_rst_format_chunk(self):</span>
+    <span class="c1"># def to_rst_format_node(self):</span>
     <span class="c1">#</span>
-    <span class="c1">#     return RstFormatChunk(self)</span>
+    <span class="c1">#     return RstFormatNode(self)</span>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="k">class</span> <span class="nc">RstFormatChunk</span><span class="p">(</span><span class="n">ExecutedChunk</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">RstFormatNode</span><span class="p">(</span><span class="n">ExecutedNode</span><span class="p">):</span>
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rst_chunk</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rst_node</span><span class="p">):</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rst_chunk</span><span class="o">.</span><span class="n">document</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rst_node</span><span class="o">.</span><span class="n">document</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="n">rst_chunk</span><span class="o">.</span><span class="n">_lines</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="n">rst_node</span><span class="o">.</span><span class="n">_lines</span>
 
     <span class="c1">##############################################</span>
 
@@ -318,7 +339,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="CodeChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CodeChunk">[docs]</a><span class="k">class</span> <span class="nc">CodeChunk</span><span class="p">(</span><span class="n">ExecutedChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="CodeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CodeNode">[docs]</a><span class="k">class</span> <span class="nc">CodeNode</span><span class="p">(</span><span class="n">ExecutedNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a code block. &quot;&quot;&quot;</span>
 
@@ -326,7 +347,7 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="CodeChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CodeChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CodeNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CodeNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="c1"># Fixme: if previous is hidden : merge ???</span>
@@ -342,7 +363,7 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="CodeChunk.to_code"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CodeChunk.to_code">[docs]</a>    <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CodeNode.to_code"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.CodeNode.to_code">[docs]</a>    <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">source</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
@@ -353,39 +374,40 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="GuardedCodeChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.GuardedCodeChunk">[docs]</a><span class="k">class</span> <span class="nc">GuardedCodeChunk</span><span class="p">(</span><span class="n">CodeChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="GuardedCodeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.GuardedCodeNode">[docs]</a><span class="k">class</span> <span class="nc">GuardedCodeNode</span><span class="p">(</span><span class="n">CodeNode</span><span class="p">):</span>
 
     <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;e&#39;</span>
     <span class="n">ENCLOSING_MARKUP</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="InteractiveCodeChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.InteractiveCodeChunk">[docs]</a><span class="k">class</span> <span class="nc">InteractiveCodeChunk</span><span class="p">(</span><span class="n">CodeChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="InteractiveCodeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.InteractiveCodeNode">[docs]</a><span class="k">class</span> <span class="nc">InteractiveCodeNode</span><span class="p">(</span><span class="n">CodeNode</span><span class="p">):</span>
 
     <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;i&#39;</span>
     <span class="n">ENCLOSING_MARKUP</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="InteractiveCodeChunk.to_line_chunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.InteractiveCodeChunk.to_line_chunk">[docs]</a>    <span class="k">def</span> <span class="nf">to_line_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="InteractiveCodeNode.to_line_node"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.InteractiveCodeNode.to_line_node">[docs]</a>    <span class="k">def</span> <span class="nf">to_line_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">chunks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">nodes</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                 <span class="k">continue</span>
-            <span class="n">chunk</span> <span class="o">=</span> <span class="n">InteractiveLineCodeChunk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
-            <span class="n">chunks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">chunks</span></div></div>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">InteractiveLineCodeNode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_document</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+            <span class="n">nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">nodes</span></div></div>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="k">class</span> <span class="nc">InteractiveLineCodeChunk</span><span class="p">(</span><span class="n">CodeChunk</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">InteractiveLineCodeNode</span><span class="p">(</span><span class="n">CodeNode</span><span class="p">):</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
@@ -403,7 +425,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="HiddenCodeChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.HiddenCodeChunk">[docs]</a><span class="k">class</span> <span class="nc">HiddenCodeChunk</span><span class="p">(</span><span class="n">CodeChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="HiddenCodeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.HiddenCodeNode">[docs]</a><span class="k">class</span> <span class="nc">HiddenCodeNode</span><span class="p">(</span><span class="n">CodeNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a hidden code block. &quot;&quot;&quot;</span>
 
@@ -411,13 +433,13 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="HiddenCodeChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.HiddenCodeChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="HiddenCodeNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.HiddenCodeNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="s1">&#39;&#39;</span></div></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="OutputChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.OutputChunk">[docs]</a><span class="k">class</span> <span class="nc">OutputChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+<div class="viewcode-block" id="OutputNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.OutputNode">[docs]</a><span class="k">class</span> <span class="nc">OutputNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents an output block. &quot;&quot;&quot;</span>
 
@@ -426,19 +448,19 @@
     <span class="c1">##############################################</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">code_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_chunk</span>
+    <span class="k">def</span> <span class="nf">code_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_node</span>
 
-    <span class="nd">@code_chunk</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">code_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_code_chunk</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="nd">@code_node</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">code_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_code_node</span> <span class="o">=</span> <span class="n">value</span>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="OutputChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.OutputChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="OutputNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.OutputNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">rst</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_chunk</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_code_node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">is_stream</span><span class="p">:</span>
                 <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_output</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 

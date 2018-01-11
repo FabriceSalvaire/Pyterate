@@ -192,7 +192,7 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">..FigureMarkups</span> <span class="k">import</span> <span class="n">ExternalFigureChunk</span>
+<span class="kn">from</span> <span class="nn">..FigureMarkups</span> <span class="k">import</span> <span class="n">ExternalFigureNode</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -205,7 +205,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="CircuitMacrosChunk"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/CircuitMacros.html#Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros.CircuitMacrosChunk">[docs]</a><span class="k">class</span> <span class="nc">CircuitMacrosChunk</span><span class="p">(</span><span class="n">ExternalFigureChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="CircuitMacrosNode"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/CircuitMacros.html#Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros.CircuitMacrosNode">[docs]</a><span class="k">class</span> <span class="nc">CircuitMacrosNode</span><span class="p">(</span><span class="n">ExternalFigureNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents an image block for a circuit macros figure. &quot;&quot;&quot;</span>
 
@@ -224,7 +224,7 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="CircuitMacrosChunk.make_figure"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/CircuitMacros.html#Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros.CircuitMacrosChunk.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CircuitMacrosNode.make_figure"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/CircuitMacros.html#Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros.CircuitMacrosNode.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make circuit macros figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>

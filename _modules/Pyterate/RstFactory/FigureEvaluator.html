@@ -194,6 +194,22 @@
 
 <span class="c1">####################################################################################################</span>
 
+<span class="k">class</span> <span class="nc">FigureEvaluatorError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_code</span> <span class="o">=</span> <span class="n">code</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="s2">&quot;Syntax error in </span><span class="se">\n</span><span class="si">{0._code}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
 <span class="k">class</span> <span class="nc">FigureCommand</span><span class="p">:</span>
 
     <span class="c1">##############################################</span>
@@ -229,21 +245,35 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_globals</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;__command__&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="p">,</span>
+            <span class="c1"># &#39;export&#39;: self._export_method(self._export),</span>
         <span class="p">}</span>
 
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">MarkupRegistry</span><span class="o">.</span><span class="n">commands</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_globals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">make_figure_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_globals</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_figure_wrapper</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_locals</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="FigureEvaluator.make_figure_wrapper"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/FigureEvaluator.html#Pyterate.RstFactory.FigureEvaluator.FigureEvaluator.make_figure_wrapper">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_export_command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
 
-        <span class="k">def</span> <span class="nf">figure_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">_make_figure_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">FigureCommand</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">figure_wrapper</span></div>
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="c1"># def _export(self, *args):</span>
 
     <span class="c1">##############################################</span>
 
@@ -251,7 +281,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-        <span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;inline&#39;</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_globals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_locals</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="nb">compile</span><span class="p">(</span><span class="n">code</span><span class="p">,</span> <span class="s1">&#39;inline&#39;</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_globals</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sandbox_locals</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">SyntaxError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">FigureEvaluatorError</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_commands</span></div></div>
 </pre></div>
 

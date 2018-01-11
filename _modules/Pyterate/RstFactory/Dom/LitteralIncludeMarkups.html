@@ -187,15 +187,15 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;LiteralIncludeChunk&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;GetthecodeChunk&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;LiteralIncludeNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;GetthecodeNode&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">####################################################################################################</span>
 
 <span class="c1"># import logging</span>
 
-<span class="kn">from</span> <span class="nn">.Dom</span> <span class="k">import</span> <span class="n">Chunk</span>
+<span class="kn">from</span> <span class="nn">.Dom</span> <span class="k">import</span> <span class="n">Node</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -203,7 +203,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="LiteralIncludeChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk">[docs]</a><span class="k">class</span> <span class="nc">LiteralIncludeChunk</span><span class="p">(</span><span class="n">Chunk</span><span class="p">):</span>
+<div class="viewcode-block" id="LiteralIncludeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode">[docs]</a><span class="k">class</span> <span class="nc">LiteralIncludeNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;This class represents a literal include block.&quot;&quot;&quot;</span>
 
@@ -218,7 +218,7 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="LiteralIncludeChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="LiteralIncludeNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span>
             <span class="s1">&#39;literalinclude&#39;</span><span class="p">,</span>
@@ -227,7 +227,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="GetthecodeChunk"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk">[docs]</a><span class="k">class</span> <span class="nc">GetthecodeChunk</span><span class="p">(</span><span class="n">LiteralIncludeChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="GetthecodeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode">[docs]</a><span class="k">class</span> <span class="nc">GetthecodeNode</span><span class="p">(</span><span class="n">LiteralIncludeNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot;This class represents a literal include block.&quot;&quot;&quot;</span>
 
@@ -235,7 +235,7 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="GetthecodeChunk.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeChunk.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="GetthecodeNode.to_rst"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode.to_rst">[docs]</a>    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span>
             <span class="s1">&#39;getthecode&#39;</span><span class="p">,</span>

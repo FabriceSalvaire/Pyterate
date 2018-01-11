@@ -236,11 +236,11 @@
 
 <div class="viewcode-block" id="MarkupRegistry.is_valid_makup"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Registry.html#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.is_valid_makup">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">is_valid_makup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">markup</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">markup</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__markups__</span></div>
+        <span class="k">return</span> <span class="n">markup</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__markups__</span></div>
 
 <div class="viewcode-block" id="MarkupRegistry.is_valid_enclosing_makup"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Registry.html#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.is_valid_enclosing_makup">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">is_valid_enclosing_makup</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">markup</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">markup</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__enclosing_markups__</span></div>
+        <span class="k">return</span> <span class="n">markup</span> <span class="ow">in</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__enclosing_markups__</span></div>
 
 <div class="viewcode-block" id="MarkupRegistry.markup_to_class"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Registry.html#Pyterate.RstFactory.Dom.Registry.MarkupRegistry.markup_to_class">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">markup_to_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">markup</span><span class="p">):</span>

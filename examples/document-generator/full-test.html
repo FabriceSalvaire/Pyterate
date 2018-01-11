@@ -186,6 +186,8 @@
   </ul>
 </div>
 <div class="highlight-python3 highlight-hidden"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
+<span class="c1">##</span>
+<span class="c1">###</span>
 <span class="c1">#?# A comment that must not appear in the documentation</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
@@ -256,7 +258,7 @@
 <span class="c1">#f# foo(&#39;circuit.m4&#39;)</span>
 
 <span class="c1"># Insert Tikz figure</span>
-<span class="c1">#f# width = 3 * 300</span>
+<span class="c1">#f# width = 3 * 200</span>
 <span class="c1">#f# tikz(&#39;diode.tex&#39;,</span>
 <span class="c1">#f#       width=width)</span>
 
@@ -269,14 +271,26 @@
 
 <span class="c1"># Insert a Matplotlib figure</span>
 <span class="c1">#f# save_figure(&#39;figure&#39;, &#39;my-figure.png&#39;,</span>
-<span class="c1">#f#             width=width)</span>
+<span class="c1">#f#             width=1280)</span>
 <span class="c1">#f#</span>
+
+<span class="c1"># Insert a table</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#f# export(&#39;z&#39;, grid_size=&#39;x.shape[0]&#39;)</span>
+<span class="c1">#f# table(z, str_format=&#39;{:.1f}&#39;)</span>
+<span class="c1">#f# table(&#39;z&#39;, columns=[chr(ord(&#39;A&#39;) + i) for i in range(grid_size)], str_format=&#39;{:.3f}&#39;)</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>
 </div>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># A source code comment</span>
+<span class="c1">##</span>
+<span class="c1">###</span>
 
 <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
@@ -447,7 +461,7 @@
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert Tikz figure</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../images/diode.svg"><div align="center" class="align-center"><img alt="../../images/diode.svg" src="../../images/diode.svg" width="900" /></div>
+<a class="reference internal image-reference" href="../../images/diode.svg"><div align="center" class="align-center"><img alt="../../images/diode.svg" src="../../images/diode.svg" width="600" /></div>
 </a>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -459,7 +473,198 @@
 <span class="c1"># Insert a Matplotlib figure</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../images/my-figure.png"><img alt="../../images/my-figure.png" class="align-center" src="../../images/my-figure.png" style="width: 900px;" /></a>
+<a class="reference internal image-reference" href="../../images/my-figure.png"><img alt="../../images/my-figure.png" class="align-center" src="../../images/my-figure.png" style="width: 1280px;" /></a>
+<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1"># Insert a table</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>0.1</td>
+<td>-0.0</td>
+<td>-0.2</td>
+<td>-0.2</td>
+<td>-0.2</td>
+<td>-0.2</td>
+<td>-0.2</td>
+<td>-0.0</td>
+</tr>
+<tr class="row-even"><td>-0.0</td>
+<td>-0.2</td>
+<td>-0.0</td>
+<td>0.2</td>
+<td>0.3</td>
+<td>0.2</td>
+<td>-0.0</td>
+<td>-0.2</td>
+</tr>
+<tr class="row-odd"><td>-0.2</td>
+<td>-0.0</td>
+<td>0.5</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.5</td>
+<td>-0.0</td>
+</tr>
+<tr class="row-even"><td>-0.2</td>
+<td>0.2</td>
+<td>0.8</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.8</td>
+<td>0.2</td>
+</tr>
+<tr class="row-odd"><td>-0.2</td>
+<td>0.3</td>
+<td>0.8</td>
+<td>1.0</td>
+<td>nan</td>
+<td>1.0</td>
+<td>0.8</td>
+<td>0.3</td>
+</tr>
+<tr class="row-even"><td>-0.2</td>
+<td>0.2</td>
+<td>0.8</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>0.8</td>
+<td>0.2</td>
+</tr>
+<tr class="row-odd"><td>-0.2</td>
+<td>-0.0</td>
+<td>0.5</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.8</td>
+<td>0.5</td>
+<td>-0.0</td>
+</tr>
+<tr class="row-even"><td>-0.0</td>
+<td>-0.2</td>
+<td>-0.0</td>
+<td>0.2</td>
+<td>0.3</td>
+<td>0.2</td>
+<td>-0.0</td>
+<td>-0.2</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">A</th>
+<th class="head">B</th>
+<th class="head">C</th>
+<th class="head">D</th>
+<th class="head">E</th>
+<th class="head">F</th>
+<th class="head">G</th>
+<th class="head">H</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0.124</td>
+<td>-0.005</td>
+<td>-0.192</td>
+<td>-0.211</td>
+<td>-0.189</td>
+<td>-0.211</td>
+<td>-0.192</td>
+<td>-0.005</td>
+</tr>
+<tr class="row-odd"><td>-0.005</td>
+<td>-0.217</td>
+<td>-0.033</td>
+<td>0.239</td>
+<td>0.346</td>
+<td>0.239</td>
+<td>-0.033</td>
+<td>-0.217</td>
+</tr>
+<tr class="row-even"><td>-0.192</td>
+<td>-0.033</td>
+<td>0.455</td>
+<td>0.759</td>
+<td>0.841</td>
+<td>0.759</td>
+<td>0.455</td>
+<td>-0.033</td>
+</tr>
+<tr class="row-odd"><td>-0.211</td>
+<td>0.239</td>
+<td>0.759</td>
+<td>0.959</td>
+<td>0.990</td>
+<td>0.959</td>
+<td>0.759</td>
+<td>0.239</td>
+</tr>
+<tr class="row-even"><td>-0.189</td>
+<td>0.346</td>
+<td>0.841</td>
+<td>0.990</td>
+<td>nan</td>
+<td>0.990</td>
+<td>0.841</td>
+<td>0.346</td>
+</tr>
+<tr class="row-odd"><td>-0.211</td>
+<td>0.239</td>
+<td>0.759</td>
+<td>0.959</td>
+<td>0.990</td>
+<td>0.959</td>
+<td>0.759</td>
+<td>0.239</td>
+</tr>
+<tr class="row-even"><td>-0.192</td>
+<td>-0.033</td>
+<td>0.455</td>
+<td>0.759</td>
+<td>0.841</td>
+<td>0.759</td>
+<td>0.455</td>
+<td>-0.033</td>
+</tr>
+<tr class="row-odd"><td>-0.005</td>
+<td>-0.217</td>
+<td>-0.033</td>
+<td>0.239</td>
+<td>0.346</td>
+<td>0.239</td>
+<td>-0.033</td>
+<td>-0.217</td>
+</tr>
+</tbody>
+</table>
 <div class="highlight-py3"><div class="highlight"><pre><span></span><span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
 </pre></div>
 </div>

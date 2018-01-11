@@ -192,7 +192,7 @@
 <span class="kn">import</span> <span class="nn">subprocess</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">..FigureMarkups</span> <span class="k">import</span> <span class="n">ExternalFigureChunk</span>
+<span class="kn">from</span> <span class="nn">..FigureMarkups</span> <span class="k">import</span> <span class="n">ExternalFigureNode</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -205,7 +205,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="TikzChunk"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/Tikz.html#Pyterate.RstFactory.Dom.FigureGenerator.Tikz.TikzChunk">[docs]</a><span class="k">class</span> <span class="nc">TikzChunk</span><span class="p">(</span><span class="n">ExternalFigureChunk</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzNode"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/Tikz.html#Pyterate.RstFactory.Dom.FigureGenerator.Tikz.TikzNode">[docs]</a><span class="k">class</span> <span class="nc">TikzNode</span><span class="p">(</span><span class="n">ExternalFigureNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents an image block for a Tikz figure. &quot;&quot;&quot;</span>
 
@@ -224,7 +224,7 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="TikzChunk.make_figure"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/Tikz.html#Pyterate.RstFactory.Dom.FigureGenerator.Tikz.TikzChunk.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="TikzNode.make_figure"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/Tikz.html#Pyterate.RstFactory.Dom.FigureGenerator.Tikz.TikzNode.make_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make Tikz figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>

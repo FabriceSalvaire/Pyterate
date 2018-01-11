@@ -108,9 +108,9 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.4. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.3. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.6. RstFactory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../Settings.html">8.1.5.7. Settings</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.8. Topic</a></li>
@@ -199,41 +199,41 @@
   <div class="section" id="module-Pyterate.RstFactory.Dom.FigureMarkups">
 <span id="figuremarkups"></span><h1>8.1.5.2.3. FigureMarkups<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.FigureMarkups" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">ExternalFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>source_path</em>, <em>figure_path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#ExternalFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageChunk</span></code></p>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">ExternalFigureNode</code><span class="sig-paren">(</span><em>document</em>, <em>source_path</em>, <em>figure_path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#ExternalFigureNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageNode</span></code></p>
 <dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk.source_path">
-<code class="descname">source_path</code><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureChunk.source_path" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode.source_path">
+<code class="descname">source_path</code><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode.source_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">LocaleFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>source</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#LocaleFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageChunk</span></code></p>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">LocaleFigureNode</code><span class="sig-paren">(</span><em>document</em>, <em>source</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#LocaleFigureNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageNode</span></code></p>
 <p>This class represents an image block for a figure.</p>
 <dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk.COMMAND">
-<code class="descname">COMMAND</code><em class="property"> = 'image'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureChunk.COMMAND" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode.COMMAND">
+<code class="descname">COMMAND</code><em class="property"> = 'image'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode.COMMAND" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk">
-<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">SaveFigureChunk</code><span class="sig-paren">(</span><em>document</em>, <em>figure</em>, <em>figure_filename</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureChunk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageChunk</span></code></p>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="descname">SaveFigureNode</code><span class="sig-paren">(</span><em>document</em>, <em>figure</em>, <em>figure_filename</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageNode</span></code></p>
 <p>This class represents an image block for a saved figure.</p>
 <dl class="attribute">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.COMMAND">
-<code class="descname">COMMAND</code><em class="property"> = 'save_figure'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.COMMAND" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode.COMMAND">
+<code class="descname">COMMAND</code><em class="property"> = 'save_figure'</em><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode.COMMAND" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.to_code">
-<code class="descname">to_code</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureChunk.to_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureChunk.to_code" title="Permalink to this definition">¶</a></dt>
+<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode.to_code">
+<code class="descname">to_code</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureNode.to_code"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode.to_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

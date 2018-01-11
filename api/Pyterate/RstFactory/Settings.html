@@ -108,9 +108,9 @@
 <li class="toctree-l3 current"><a class="reference internal" href="../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="FigureEvaluator.html">8.1.5.3. FigureEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="FigureTools.html">8.1.5.4. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="MarkupConverter.html">8.1.5.5. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="FigureTools.html">8.1.5.3. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
 <li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.6. RstFactory</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.5.7. Settings</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.8. Topic</a></li>
@@ -213,6 +213,11 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="Pyterate.RstFactory.Settings.DefaultPython3Settings.document_setup_code">
+<code class="descname">document_setup_code</code><em class="property"> = &quot;\n__file__ = '{file}'\n&quot;</em><a class="headerlink" href="#Pyterate.RstFactory.Settings.DefaultPython3Settings.document_setup_code" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="Pyterate.RstFactory.Settings.DefaultPython3Settings.error_lexer">
 <code class="descname">error_lexer</code><em class="property"> = 'pytb'</em><a class="headerlink" href="#Pyterate.RstFactory.Settings.DefaultPython3Settings.error_lexer" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -254,7 +259,7 @@
 
 <dl class="attribute">
 <dt id="Pyterate.RstFactory.Settings.DefaultPython3Settings.setup_code">
-<code class="descname">setup_code</code><em class="property"> = &quot;\nfrom Pyterate.RstFactory.FigureTools import save_figure\n\n__file__ = '{file}'\n&quot;</em><a class="headerlink" href="#Pyterate.RstFactory.Settings.DefaultPython3Settings.setup_code" title="Permalink to this definition">¶</a></dt>
+<code class="descname">setup_code</code><em class="property"> = '\nfrom Pyterate.RstFactory.FigureTools import *\n'</em><a class="headerlink" href="#Pyterate.RstFactory.Settings.DefaultPython3Settings.setup_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -361,6 +366,11 @@ e.g. <code class="docutils literal"><span class="pre">('foo',)</span></code>, el
 <dl class="attribute">
 <dt id="Pyterate.RstFactory.Settings.LanguageSettings.console_lexer">
 <code class="descname">console_lexer</code><em class="property"> = 'none'</em><a class="headerlink" href="#Pyterate.RstFactory.Settings.LanguageSettings.console_lexer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.Settings.LanguageSettings.document_setup_code">
+<code class="descname">document_setup_code</code><em class="property"> = ''</em><a class="headerlink" href="#Pyterate.RstFactory.Settings.LanguageSettings.document_setup_code" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="classmethod">

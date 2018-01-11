@@ -244,6 +244,7 @@
     <span class="c1"># Execution settings</span>
     <span class="n">jupyter_kernel</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># name of the kernel</span>
     <span class="n">setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># some codes to be executed first</span>
+    <span class="n">document_setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># some codes to be executed first</span>
 
     <span class="n">notebook_metadata</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;kernelspec&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -342,8 +343,9 @@
 
     <span class="c1"># Import some functions and define __file__ to the Python input path</span>
     <span class="n">setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">from Pyterate.RstFactory.FigureTools import save_figure</span>
-
+<span class="s1">from Pyterate.RstFactory.FigureTools import *</span>
+<span class="s1">&#39;&#39;&#39;</span>
+    <span class="n">document_setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">__file__ = &#39;</span><span class="si">{file}</span><span class="s1">&#39;</span>
 <span class="s1">&#39;&#39;&#39;</span>
 

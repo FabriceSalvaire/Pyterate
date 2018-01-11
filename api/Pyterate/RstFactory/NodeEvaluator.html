@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.2. Dom &mdash; Pyterate 2.0.0 documentation</title>
+  <title>8.1.5.5. NodeEvaluator &mdash; Pyterate 2.0.0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../../../search.html"/>
     <link rel="top" title="Pyterate 2.0.0 documentation" href="../../../index.html"/>
         <link rel="up" title="8.1.5. RstFactory" href="../RstFactory.html"/>
-        <link rel="next" title="8.1.5.2.1. Dom" href="Dom/Dom.html"/>
-        <link rel="prev" title="8.1.5.1. Document" href="Document.html"/> 
+        <link rel="next" title="8.1.5.6. RstFactory" href="RstFactory.html"/>
+        <link rel="prev" title="8.1.5.4. MarkupConverter" href="MarkupConverter.html"/> 
 
   
   <script src="../../../static/js/modernizr.min.js"></script>
@@ -107,10 +107,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../Logging.html">8.1.4. Logging</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="Document.html">8.1.5.1. Document</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.5.2. Dom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Dom.html">8.1.5.2. Dom</a></li>
 <li class="toctree-l4"><a class="reference internal" href="FigureTools.html">8.1.5.3. FigureTools</a></li>
 <li class="toctree-l4"><a class="reference internal" href="MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.5.5. NodeEvaluator</a></li>
 <li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.6. RstFactory</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Settings.html">8.1.5.7. Settings</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.8. Topic</a></li>
@@ -175,13 +175,13 @@
         
           <li><a href="../RstFactory.html">8.1.5. RstFactory</a> &raquo;</li>
         
-      <li>8.1.5.2. Dom</li>
+      <li>8.1.5.5. NodeEvaluator</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/api/Pyterate/RstFactory/Dom.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/api/Pyterate/RstFactory/NodeEvaluator.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -194,24 +194,25 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="dom">
-<h1>8.1.5.2. Dom<a class="headerlink" href="#dom" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Dom/Dom.html">8.1.5.2.1. Dom</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Dom/FigureGenerator.html">8.1.5.2.2. FigureGenerator</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Dom/FigureGenerator/CircuitMacros.html">8.1.5.2.2.1. CircuitMacros</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Dom/FigureGenerator/Generic.html">8.1.5.2.2.2. Generic</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Dom/FigureGenerator/Tikz.html">8.1.5.2.2.3. Tikz</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="Dom/FigureMarkups.html">8.1.5.2.3. FigureMarkups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Dom/LitteralIncludeMarkups.html">8.1.5.2.4. LitteralIncludeMarkups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Dom/Markups.html">8.1.5.2.5. Markups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Dom/Registry.html">8.1.5.2.6. Registry</a></li>
-</ul>
+  <div class="section" id="module-Pyterate.RstFactory.NodeEvaluator">
+<span id="nodeevaluator"></span><h1>8.1.5.5. NodeEvaluator<a class="headerlink" href="#module-Pyterate.RstFactory.NodeEvaluator" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="Pyterate.RstFactory.NodeEvaluator.NodeEvaluator">
+<em class="property">class </em><code class="descclassname">Pyterate.RstFactory.NodeEvaluator.</code><code class="descname">NodeEvaluator</code><span class="sig-paren">(</span><em>language</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/NodeEvaluator.html#NodeEvaluator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.NodeEvaluator.NodeEvaluator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/2/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="Pyterate.RstFactory.NodeEvaluator.NodeEvaluator.EXPORT_TEMPLATE">
+<code class="descname">EXPORT_TEMPLATE</code><em class="property"> = '\n_ = {}\nexport_value(_)\n'</em><a class="headerlink" href="#Pyterate.RstFactory.NodeEvaluator.NodeEvaluator.EXPORT_TEMPLATE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="Pyterate.RstFactory.NodeEvaluator.NodeEvaluator.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>dom</em>, <em>document_path</em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/Pyterate/RstFactory/NodeEvaluator.html#NodeEvaluator.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.NodeEvaluator.NodeEvaluator.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
-<span class="target" id="module-Pyterate.RstFactory.Dom"></span></div>
 
 
            </div>
@@ -223,10 +224,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Dom/Dom.html" class="btn btn-neutral float-right" title="8.1.5.2.1. Dom" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="RstFactory.html" class="btn btn-neutral float-right" title="8.1.5.6. RstFactory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Document.html" class="btn btn-neutral" title="8.1.5.1. Document" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="MarkupConverter.html" class="btn btn-neutral" title="8.1.5.4. MarkupConverter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

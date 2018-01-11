@@ -188,28 +188,26 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">tempfile</span>
 
 <span class="kn">import</span> <span class="nn">nbformat</span>
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="k">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="kn">from</span> <span class="nn">..Jupyter</span> <span class="k">import</span> <span class="n">JupyterClient</span>
 <span class="kn">from</span> <span class="nn">..Template</span> <span class="k">import</span> <span class="n">TemplateAggregator</span>
 <span class="kn">from</span> <span class="nn">..Tools.Path</span> <span class="k">import</span> <span class="n">remove_extension</span>
 <span class="kn">from</span> <span class="nn">..Tools.Timestamp</span> <span class="k">import</span> <span class="n">timestamp</span>
-<span class="kn">from</span> <span class="nn">.Dom.Dom</span> <span class="k">import</span> <span class="n">Dom</span><span class="p">,</span> <span class="n">TextChunk</span>
+<span class="kn">from</span> <span class="nn">.Dom.Dom</span> <span class="k">import</span> <span class="n">Dom</span><span class="p">,</span> <span class="n">TextNode</span>
 <span class="kn">from</span> <span class="nn">.Dom.Markups</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">CommentChunk</span><span class="p">,</span>
-    <span class="n">RstChunk</span><span class="p">,</span>
-    <span class="n">CodeChunk</span><span class="p">,</span> <span class="n">InteractiveCodeChunk</span><span class="p">,</span> <span class="n">GuardedCodeChunk</span><span class="p">,</span>
-    <span class="n">OutputChunk</span><span class="p">,</span>
-    <span class="n">FigureChunk</span>
+    <span class="n">CommentNode</span><span class="p">,</span>
+    <span class="n">RstNode</span><span class="p">,</span>
+    <span class="n">CodeNode</span><span class="p">,</span> <span class="n">InteractiveCodeNode</span><span class="p">,</span>
+    <span class="n">OutputNode</span><span class="p">,</span>
+    <span class="n">FigureNode</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">.Dom.FigureMarkups</span> <span class="k">import</span> <span class="n">ImageChunk</span><span class="p">,</span> <span class="n">ExternalFigureChunk</span>
+<span class="kn">from</span> <span class="nn">.Dom.FigureMarkups</span> <span class="k">import</span> <span class="n">ImageNode</span><span class="p">,</span> <span class="n">ExternalFigureNode</span>
 <span class="kn">from</span> <span class="nn">.Dom.Registry</span> <span class="k">import</span> <span class="n">MarkupRegistry</span>
-<span class="kn">from</span> <span class="nn">.FigureEvaluator</span> <span class="k">import</span> <span class="n">FigureEvaluator</span>
+<span class="kn">from</span> <span class="nn">.NodeEvaluator</span> <span class="k">import</span> <span class="n">NodeEvaluator</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -306,6 +304,10 @@
     <span class="k">def</span> <span class="nf">rst_inner_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">sep</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">rst_source_path</span><span class="p">)</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span>
+
     <span class="c1">##############################################</span>
 
     <span class="nd">@property</span>
@@ -321,13 +323,13 @@
 
         <span class="c1"># Must be called first !</span>
 
-        <span class="sd">&quot;&quot;&quot;Parse the source code and extract chunks of codes, RST contents, plot and Tikz figures.  The</span>
+        <span class="sd">&quot;&quot;&quot;Parse the source code and extract nodes of codes, RST contents, plot and Tikz figures.  The</span>
 <span class="sd">        source code is annoted using comment lines starting with special directives of the form</span>
 <span class="sd">        *#directive name#*.  RST content lines start with *#!#*.  We can include a figure using</span>
 <span class="sd">        *#lfig#*, a figure generated by matplotlib using the directive *#fig#*, tikz figure using</span>
 <span class="sd">        *#tz#* and the content of a file using *#itxt#* and *#i#* for codes.  Comment that must be</span>
 <span class="sd">        skipped start with *#?#*.  Hidden code start with *#h#*.  The directive *#o#* is used to</span>
-<span class="sd">        split the output and to instruct to include the previous chunk.  RST content can be</span>
+<span class="sd">        split the output and to instruct to include the previous node.  RST content can be</span>
 <span class="sd">        formatted with variable from the locals dictionary using *@&lt;@...@&gt;@* instead of *{...}*.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -335,12 +337,12 @@
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
             <span class="n">source</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
 
-        <span class="n">dom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_to_chunks</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">dom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_source_to_nodes</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_post_process_dom</span><span class="p">(</span><span class="n">dom</span><span class="p">)</span></div>
 
-        <span class="c1"># for chunk in self._dom:</span>
+        <span class="c1"># for node in self._dom:</span>
         <span class="c1">#     print(&#39;\n&#39; + &#39;#&#39;*50)</span>
-        <span class="c1">#     print(chunk)</span>
+        <span class="c1">#     print(node)</span>
 
     <span class="c1">##############################################</span>
 
@@ -366,33 +368,11 @@
 
     <span class="c1">##############################################</span>
 
-<div class="viewcode-block" id="Document.run_code"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Document.html#Pyterate.RstFactory.Document.Document.run_code">[docs]</a>    <span class="k">def</span> <span class="nf">run_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Document.run"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Document.html#Pyterate.RstFactory.Document.Document.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Run document &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
-
-        <span class="n">has_error</span> <span class="o">=</span> <span class="kc">False</span>
-        <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">working_directory</span><span class="p">:</span>
-            <span class="n">jupyter_client</span> <span class="o">=</span> <span class="n">JupyterClient</span><span class="p">(</span><span class="n">working_directory</span><span class="p">,</span> <span class="n">kernel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_language</span><span class="o">.</span><span class="n">jupyter_kernel</span><span class="p">)</span>
-            <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_language</span><span class="o">.</span><span class="n">setup_code</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
-            <span class="n">jupyter_client</span><span class="o">.</span><span class="n">run_cell</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="o">.</span><span class="n">iter_on_code_chunks</span><span class="p">():</span>
-                <span class="n">code</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">to_code</span><span class="p">()</span>
-                <span class="c1"># self._logger.info(&#39;Execute\n{}&#39;.format(code))</span>
-                <span class="n">outputs</span> <span class="o">=</span> <span class="n">jupyter_client</span><span class="o">.</span><span class="n">run_cell</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">outputs</span><span class="p">:</span>
-                    <span class="n">output</span> <span class="o">=</span> <span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-                    <span class="c1"># self._logger.info(&#39;Output {0.output_type}\n{0}&#39;.format(output))</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="n">outputs</span>
-                <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
-                    <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">is_error</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">GuardedCodeChunk</span><span class="p">):</span>
-                        <span class="n">has_error</span> <span class="o">=</span> <span class="kc">True</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-                            <span class="s2">&quot;Error in document </span><span class="si">{}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span> <span class="o">+</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">code</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span> <span class="o">+</span>
-                            <span class="nb">str</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
-                        <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">has_error</span><span class="p">:</span>
+        <span class="n">node_evaluator</span> <span class="o">=</span> <span class="n">NodeEvaluator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_language</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">node_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to run document </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">factory</span><span class="o">.</span><span class="n">register_failure</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
@@ -413,10 +393,13 @@
 
 <div class="viewcode-block" id="Document.make_external_figure"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Document.html#Pyterate.RstFactory.Document.Document.make_external_figure">[docs]</a>    <span class="k">def</span> <span class="nf">make_external_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force</span><span class="p">):</span>
 
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">ExternalFigureChunk</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">force</span> <span class="ow">or</span> <span class="n">chunk</span><span class="p">:</span>
-                    <span class="n">chunk</span><span class="o">.</span><span class="n">make_figure</span><span class="p">()</span></div>
+        <span class="c1"># Fixme: simplify ???</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">FigureNode</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">iter_on_childs</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">ExternalFigureNode</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">force</span> <span class="ow">or</span> <span class="n">child</span><span class="p">:</span>
+                            <span class="n">child</span><span class="o">.</span><span class="n">make_figure</span><span class="p">()</span></div>
 
     <span class="c1">##############################################</span>
 
@@ -428,11 +411,11 @@
         <span class="n">parsed_line</span> <span class="o">=</span> <span class="n">line</span>
 
         <span class="k">def</span> <span class="nf">is_valid_makup</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">MarkupRegistry</span><span class="o">.</span><span class="n">is_valid_makup</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">MarkupRegistry</span><span class="o">.</span><span class="n">is_valid_makup</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ParseError</span><span class="p">(</span><span class="s2">&quot;Invalid markup&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">is_valid_enclosing_makup</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">MarkupRegistry</span><span class="o">.</span><span class="n">is_valid_enclosing_makup</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">MarkupRegistry</span><span class="o">.</span><span class="n">is_valid_enclosing_makup</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ParseError</span><span class="p">(</span><span class="s2">&quot;Invalid markup&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">push_stack</span><span class="p">(</span><span class="n">markup</span><span class="p">):</span>
@@ -471,6 +454,9 @@
                     <span class="c1"># strip space</span>
                     <span class="k">if</span> <span class="n">parsed_line</span> <span class="ow">and</span> <span class="n">parsed_line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39; &#39;</span><span class="p">:</span>
                         <span class="n">parsed_line</span> <span class="o">=</span> <span class="n">parsed_line</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">markup</span> <span class="o">=</span> <span class="kc">None</span>
+                    <span class="c1"># Fixme: ??? raise ParseError(&#39;Invalid Markup&#39;, line)</span>
 
         <span class="n">enclosing_markup</span> <span class="o">=</span> <span class="n">open_markup</span> <span class="ow">or</span> <span class="n">close_markup</span>
 
@@ -481,7 +467,7 @@
                 <span class="k">raise</span> <span class="n">ParseError</span><span class="p">(</span><span class="s2">&quot;Nested markup&quot;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">markup</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">markup_cls</span> <span class="o">=</span> <span class="n">CodeChunk</span>
+            <span class="n">markup_cls</span> <span class="o">=</span> <span class="n">CodeNode</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">markup_cls</span> <span class="o">=</span> <span class="n">MarkupRegistry</span><span class="o">.</span><span class="n">markup_to_class</span><span class="p">(</span><span class="n">markup</span><span class="p">)</span>
 
@@ -489,7 +475,7 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">_source_to_chunks</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_source_to_nodes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
 
         <span class="n">dom</span> <span class="o">=</span> <span class="n">Dom</span><span class="p">()</span>
         <span class="n">prev_markup_cls</span> <span class="o">=</span> <span class="kc">None</span>
@@ -507,14 +493,14 @@
             <span class="c1"># Fixme: invalid markup</span>
             <span class="c1"># self._logger.info(&#39;Markup {} \n&#39;.format(markup_cls) + line.rstrip())</span>
 
-            <span class="c1"># new chunk ?</span>
+            <span class="c1"># new node ?</span>
             <span class="k">if</span> <span class="n">markup_cls</span> <span class="o">!=</span> <span class="n">prev_markup_cls</span><span class="p">:</span>
-                <span class="n">chunk</span> <span class="o">=</span> <span class="n">markup_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-                <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">markup_cls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+                <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
             <span class="c1"># Skip enclosing markup lines</span>
             <span class="k">if</span> <span class="n">line</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">dom</span><span class="o">.</span><span class="n">last_chunk</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">dom</span><span class="o">.</span><span class="n">last_node</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
             <span class="n">prev_markup_cls</span> <span class="o">=</span> <span class="n">markup_cls</span>
 
@@ -524,32 +510,27 @@
 
     <span class="k">def</span> <span class="nf">_post_process_dom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">raw_dom</span><span class="p">):</span>
 
-        <span class="n">figure_evaluator</span> <span class="o">=</span> <span class="n">FigureEvaluator</span><span class="p">()</span>
-
         <span class="n">dom</span> <span class="o">=</span> <span class="n">Dom</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">raw_dom</span><span class="o">.</span><span class="n">iter_on_not_empty_chunk</span><span class="p">():</span>
-            <span class="n">previous_chunk</span> <span class="o">=</span> <span class="n">dom</span><span class="o">.</span><span class="n">last_chunk</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">CommentChunk</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">raw_dom</span><span class="o">.</span><span class="n">iter_on_not_empty_node</span><span class="p">():</span>
+            <span class="n">previous_node</span> <span class="o">=</span> <span class="n">dom</span><span class="o">.</span><span class="n">last_node</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">CommentNode</span><span class="p">):</span>
                 <span class="k">continue</span>
-            <span class="k">elif</span> <span class="n">previous_chunk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">previous_chunk</span><span class="o">.</span><span class="n">mergable</span><span class="p">(</span><span class="n">chunk</span><span class="p">):</span>
-                <span class="n">previous_chunk</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">InteractiveCodeChunk</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">line_chunk</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">to_line_chunk</span><span class="p">():</span>
-                    <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_chunk</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">FigureChunk</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">figure_command</span> <span class="ow">in</span> <span class="n">figure_evaluator</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">chunk</span><span class="p">)):</span>
-                    <span class="n">figure_chunk</span> <span class="o">=</span> <span class="n">figure_command</span><span class="o">.</span><span class="n">to_chunk</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-                    <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">figure_chunk</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">previous_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">previous_node</span><span class="o">.</span><span class="n">mergable</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+                <span class="n">previous_node</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="c1"># Fixme: could use childs ???</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">InteractiveCodeNode</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">line_node</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">to_line_node</span><span class="p">():</span>
+                    <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line_node</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">OutputChunk</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">previous_chunk</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">previous_chunk</span><span class="o">.</span><span class="n">is_executed</span><span class="p">:</span>
-                        <span class="n">chunk</span><span class="o">.</span><span class="n">code_chunk</span> <span class="o">=</span> <span class="n">previous_chunk</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">OutputNode</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">previous_node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">previous_node</span><span class="o">.</span><span class="n">is_executed</span><span class="p">:</span>
+                        <span class="n">node</span><span class="o">.</span><span class="n">code_node</span> <span class="o">=</span> <span class="n">previous_node</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Previous chunk must be code&#39;</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">TextChunk</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">chunk</span><span class="o">.</span><span class="n">has_format</span><span class="p">():</span>
-                        <span class="n">chunk</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">to_rst_format_chunk</span><span class="p">()</span>
-                <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+                        <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Previous node must be code&#39;</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">TextNode</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">has_format</span><span class="p">():</span>
+                        <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_rst_format_node</span><span class="p">()</span>
+                <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dom</span>
 
@@ -559,10 +540,10 @@
 
         <span class="sd">&quot;&quot;&quot;Return whether a title is defined.&quot;&quot;&quot;</span>
 
-        <span class="c1"># Fixme: test if first chunk ?</span>
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">RstChunk</span><span class="p">):</span>
-                <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
+        <span class="c1"># Fixme: test if first node ?</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">RstNode</span><span class="p">):</span>
+                <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
                 <span class="k">if</span> <span class="s1">&#39;=&#39;</span><span class="o">*</span><span class="p">(</span><span class="mi">3</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="ow">in</span> <span class="n">content</span><span class="p">:</span> <span class="c1"># Fixme: hardcoded !</span>
                     <span class="k">return</span> <span class="kc">True</span>
 
@@ -594,8 +575,12 @@
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
             <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">template_aggregator</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
-                <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">to_rst</span><span class="p">())</span></div>
+            <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">FigureNode</span><span class="p">):</span>
+                    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">iter_on_childs</span><span class="p">():</span>
+                        <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">to_rst</span><span class="p">())</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">to_rst</span><span class="p">())</span></div>
 
     <span class="c1">##############################################</span>
 
@@ -608,19 +593,19 @@
         <span class="n">notebook</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">language</span><span class="o">.</span><span class="n">notebook_metadata</span><span class="p">)</span>
 
         <span class="n">last_cell</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
             <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="c1"># Fixme: complete</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">RstChunk</span><span class="p">):</span>
-                <span class="n">markdown</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">RstNode</span><span class="p">):</span>
+                <span class="n">markdown</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
                 <span class="n">cell</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">CodeChunk</span><span class="p">):</span>
-                <span class="n">code</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">to_code</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">CodeNode</span><span class="p">):</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_code</span><span class="p">()</span>
                 <span class="n">cell</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_code_cell</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">chunk</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
                     <span class="n">cell</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">last_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">ImageChunk</span><span class="p">):</span>
-                <span class="n">node</span> <span class="o">=</span> <span class="n">chunk</span><span class="o">.</span><span class="n">to_node</span><span class="p">()</span>
+            <span class="k">elif</span> <span class="n">last_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ImageNode</span><span class="p">):</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_node</span><span class="p">()</span>
                 <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">last_cell</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
