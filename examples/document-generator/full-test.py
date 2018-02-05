@@ -71,7 +71,7 @@ a, b = 1, 2
 #f# foo('circuit.m4')
 
 # Insert Tikz figure
-#f# width = 3 * 300
+#f# width = 3 * 200
 #f# tikz('diode.tex',
 #f#       width=width)
 
@@ -84,7 +84,7 @@ plt.plot(x, y)
 
 # Insert a Matplotlib figure
 #f# save_figure('figure', 'my-figure.png',
-#f#             width=width)
+#f#             width=1280)
 #f#
 
 # Insert a table
