@@ -80,9 +80,9 @@
 
 .. End
 
-============
+==========
  Pyterate
-============
+==========
 
 |Pypi License|
 |Pypi Python Version|
@@ -138,6 +138,11 @@ News
 
 
 .. no title here
+
+V2 2017-11-28
+-------------
+
+* new design
 
 V1 2017-11-10
 -------------
