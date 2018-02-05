@@ -195,7 +195,9 @@ export_value(_)
                 # self._logger.info('Output {0.output_type}\n{0}'.format(output))
                 node.outputs = outputs
             for output in outputs:
-                if output.is_error and not isinstance(node, GuardedCodeNode):
+                if output.is_stream:
+                    print(output)
+                elif output.is_error and not isinstance(node, GuardedCodeNode):
                     self._log_error(code, output)
 
     ##############################################
