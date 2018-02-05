@@ -227,7 +227,7 @@ class DefaultRstFactorySettings:
     def __init__(self):
 
         if self.user_template_path is None:
-            user_template_path = os.path.realpath(os.path.join(self.input_path, 'pytrate-templates'))
+            user_template_path = os.path.realpath(os.path.join(self.input_path, 'pyterate-templates'))
             if os.path.exists(user_template_path):
                 self.user_template_path = user_template_path
 
