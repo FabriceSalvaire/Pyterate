@@ -175,12 +175,18 @@ class DefaultPython3Settings(LanguageSettings):
 
     jupyter_kernel = 'python3'
 
-    # Import some functions and define __file__ to the Python input path
+    # Import some functions
+    # define __file__ to the Python input path
+    # add file's directory to the Python  path
     setup_code = '''
+import os
+import sys
+
 from Pyterate.RstFactory.FigureTools import *
 '''
     document_setup_code = '''
 __file__ = '{file}'
+sys.path.append(os.path.dirname(__file__))
 '''
 
     ##############################################
