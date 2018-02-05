@@ -86,8 +86,7 @@ class Document:
         self._path = os.path.realpath(path) # input path
 
         if self._is_link:
-            factory = self.factory
-            path = factory.join_rst_document_path(os.path.relpath(self._path, factory.documents_path))
+            path = self.settings.join_rst_path(self.settings.relative_input_path(self._path))
             self._rst_path = remove_extension(path) + '.rst'
         else:
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
@@ -136,7 +135,7 @@ class Document:
 
     @property
     def rst_inner_path(self):
-        return os.path.sep + os.path.relpath(self._rst_path, self.factory.rst_source_path)
+        return os.path.sep + os.path.relpath(self._rst_path, self.settings.rst_path)
 
     @property
     def dom(self):
@@ -217,6 +216,10 @@ class Document:
         source = self._topic.join_path(source_path)
         basename = os.path.basename(source_path)
         target = self._topic.join_rst_path(basename)
+
+        # Fixme: too early check
+        # if not os.path.exists(source_path):
+        #     raise NameError("File {} doesn't exist, cannot create a symlink to {}".format(source_path, target))
 
         if not os.path.exists(target):
             os.symlink(source, target)
