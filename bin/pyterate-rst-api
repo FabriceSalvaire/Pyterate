@@ -31,6 +31,7 @@ logger = Logging.setup_logging()
 import argparse
 import os
 
+import Pyterate
 from Pyterate.ApiRstFactory import ApiRstFactory
 
 ####################################################################################################
@@ -47,9 +48,17 @@ parser.add_argument('--rst-api-path',
 parser.add_argument('--exclude', nargs='+',
                     help='rst API path')
 
+parser.add_argument('--version',
+                    action='store_true', default=False,
+                    help="Show version")
+
 args = parser.parse_args()
 
 ####################################################################################################
+
+if args.version:
+    Pyterate.show_version()
+    exit(0)
 
 if args.exclude:
     excluded_directory = args.exclude

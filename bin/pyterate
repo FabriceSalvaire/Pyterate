@@ -31,6 +31,7 @@ logger = Logging.setup_logging()
 import argparse
 import os
 
+import Pyterate
 from Pyterate.RstFactory.Document import Document
 from Pyterate.RstFactory.RstFactory import RstFactory
 from Pyterate.RstFactory.Settings import DefaultRstFactorySettings
@@ -60,9 +61,17 @@ parser.add_argument('--force',
                     action='store_true', default=False,
                     help="Force the figure generation")
 
+parser.add_argument('--version',
+                    action='store_true', default=False,
+                    help="Show version")
+
 args = parser.parse_args()
 
 ####################################################################################################
+
+if args.version:
+    Pyterate.show_version()
+    exit(0)
 
 if not os.path.exists(args.config):
     logger.info('Any config file, use default settings')
