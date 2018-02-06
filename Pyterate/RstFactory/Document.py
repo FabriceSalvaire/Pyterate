@@ -135,7 +135,7 @@ class Document:
 
     @property
     def rst_inner_path(self):
-        return os.path.sep + os.path.relpath(self._rst_path, self.settings.rst_path)
+        return os.path.relpath(self._rst_path, self._topic.rst_path)
 
     @property
     def dom(self):
