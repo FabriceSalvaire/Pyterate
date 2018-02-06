@@ -137,23 +137,23 @@ class Topic:
 
     ##############################################
 
-    def _readme_path(self):
+    def _index_path(self):
         # Fixme: hardcoded filename ???
         return self.join_path('index.rst')
 
     ##############################################
 
-    def _has_readme(self):
-        return os.path.exists(self._readme_path())
+    def _has_index(self):
+        return os.path.exists(self._index_path())
 
     ##############################################
 
-    def _read_readme(self):
+    def _read_index(self):
 
         """Read readme and collect figures"""
 
         figures = []
-        with open(self._readme_path()) as fh:
+        with open(self._index_path()) as fh:
             content = fh.read()
             for line in content.split('\n'):
                 if line.startswith(self.IMAGE_DIRECTIVE):
@@ -239,8 +239,8 @@ class Topic:
 
         kwargs = {}
 
-        if self._has_readme():
-            readme_content, figures = self._read_readme()
+        if self._has_index():
+            readme_content, figures = self._read_index()
             kwargs['user_content'] = readme_content
             # Fixme: external figure in readme / check PySpice code
             # if make_external_figure:
