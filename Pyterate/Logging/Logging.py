@@ -43,7 +43,7 @@ def setup_logging(application_name=APPLICATION_NAME, config_file=None):
         config_file = os.path.join(ConfigInstall.Path.config_directory,
                                    ConfigInstall.Logging.default_config_file)
 
-    logging_config = yaml.load(open(config_file, 'r'))
+    logging_config = yaml.load(open(config_file, 'r'), Loader=yaml.SafeLoader)
 
     if ConfigInstall.OS.on_linux:
         # Fixme: \033 is not interpreted in YAML
