@@ -8,9 +8,12 @@
     :language: python3
     :hidden:
 
+.. note::
+   You can see the source by clicking on the eye
 
 .. code-block:: py3
 
+    
     # A source code comment
     ##
     ###
@@ -86,7 +89,7 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
 .. code-block:: py3
 
     
-    # Intercative code
+    # Interactive code
 
 
 .. code-block:: py3
@@ -143,8 +146,8 @@ Format RST content with current locals dictionary using @<@...@>@ instead of {..
     ZeroDivisionError division by zero
     [0;31m---------------------------------------------------------------------------[0m
     [0;31mZeroDivisionError[0m                         Traceback (most recent call last)
-    [0;32m~/home/developpement/python/pyterate/examples/document-generator/full-test.py[0m in [0;36m<module>[0;34m()[0m
-    [0;32m----> 1[0;31m [0;36m1[0m[0;34m/[0m[0;36m0[0m[0;34m[0m[0m
+    [0;32m~/home/developpement/python/pyterate/examples/document-generator/full-test.py[0m in [0;36m<module>[0;34m[0m
+    [0;32m----> 1[0;31m [0;36m1[0m[0;34m/[0m[0;36m0[0m[0;34m[0m[0;34m[0m[0m
     [0m
     [0;31mZeroDivisionError[0m: division by zero
 

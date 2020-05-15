@@ -7,7 +7,7 @@
  Installation
 ==============
 
-**Note to Packagers: Please don't create Pyterate package (PiPY do the job)**
+**Note to Packagers: Please don't create Pyterate package (PyPI do the job)**
 
 On Windows
 ----------

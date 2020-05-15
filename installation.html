@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>3. Installation &mdash; Pyterate 2.0.0 documentation</title>
+  <title>3. Installation &mdash; Pyterate 2.0.1 documentation</title>
   
 
   
@@ -17,42 +17,38 @@
   
 
   
+  <script type="text/javascript" src="static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="static/documentation_options.js"></script>
+        <script src="static/jquery.js"></script>
+        <script src="static/underscore.js"></script>
+        <script src="static/doctools.js"></script>
+        <script src="static/language_data.js"></script>
+        <script src="static/getthecode.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="static/css/Pyterate.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="Pyterate 2.0.0 documentation" href="index.html"/>
-        <link rel="next" title="4. User FAQ" href="faq.html"/>
-        <link rel="prev" title="2. News" href="news.html"/> 
-
-  
-  <script src="static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="static/css/Pyterate.css" type="text/css" />
+  <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="4. User FAQ" href="faq.html" />
+    <link rel="prev" title="2. News" href="news.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -91,8 +87,21 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="news.html">2. News</a></li>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">1. Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#what-is-pyterate">1.1. What is Pyterate ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#how-is-pyterate-licensed">1.2. How is Pyterate licensed ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#going-further-with-pyterate">1.3. Going further with Pyterate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#what-are-the-features-of-the-documentation-generator">1.4. What are the features of the documentation generator ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#which-platforms-are-supported-by-pyterate">1.5. Which platforms are supported by Pyterate ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#how-to-install-pyterate">1.6. How to install Pyterate ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#which-version-of-python-is-required">1.7. Which version of Python is required ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="news.html">2. News</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="news.html#v2-2017-11-28">2.1. V2 2017-11-28</a></li>
+<li class="toctree-l2"><a class="reference internal" href="news.html#v1-2017-11-10">2.2. V1 2017-11-10</a></li>
+</ul>
+</li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Installation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#on-windows">3.1. On Windows</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#on-linux">3.2. On Linux</a></li>
@@ -103,12 +112,78 @@
 <li class="toctree-l2"><a class="reference internal" href="#dependencies">3.7. Dependencies</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="faq.html">4. User FAQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user-guide.html">5. User Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">6. Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="design-notes.html">7. Design Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">8. API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="development.html">9. Development &amp; Community</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">4. User FAQ</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="faq.html#how-to-get-help-or-report-an-issue">4.1. How to get help or report an issue ?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user-guide.html">5. User Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#commands">5.1. Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user-guide.html#documentation-generator">5.2. Documentation Generator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">6. Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/index.html#examples-embeded-in-pyterate">6.1. Examples embeded in Pyterate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="examples/document-generator/index.html">6.1.1. Document Generator Demo</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="examples/document-generator/full-test.html">6.1.1.1. A Restructuredtext Title</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="design-notes.html">7. Design Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design-notes.html#genesis">7.1. Genesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design-notes.html#new-design">7.2. New Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design-notes.html#markdown-versus-rst">7.3. Markdown versus rST</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">8. API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/Pyterate.html">8.1. Pyterate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/ApiRstFactory.html">8.1.1. ApiRstFactory</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Config.html">8.1.2. Config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Config/ConfigInstall.html">8.1.2.1. ConfigInstall</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Jupyter.html">8.1.3. Jupyter</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Logging.html">8.1.4. Logging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Logging/Logging.html">8.1.4.1. Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Template.html">8.1.6. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference-manual.html#indexes">8.2. Indexes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">9. Development &amp; Community</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#how-you-can-help">9.1. How you can help ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#contributors">9.2. Contributors</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="how-to-refer.html">10. How to Refer to Pyterate ?</a></li>
 </ul>
 
@@ -121,7 +196,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">Pyterate</a>
@@ -129,9 +204,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -154,7 +230,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>3. Installation</li>
+      <li><span class="section-number">3. </span>Installation</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -174,83 +250,83 @@
            <div itemprop="articleBody">
             
   <div class="section" id="installation">
-<span id="installation-page"></span><h1>3. Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p><strong>Note to Packagers: Please don’t create Pyterate package (PiPY do the job)</strong></p>
+<span id="installation-page"></span><h1><span class="section-number">3. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p><strong>Note to Packagers: Please don’t create Pyterate package (PyPI do the job)</strong></p>
 <div class="section" id="on-windows">
-<h2>3.1. On Windows<a class="headerlink" href="#on-windows" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.1. </span>On Windows<a class="headerlink" href="#on-windows" title="Permalink to this headline">¶</a></h2>
 <p>Firstly, you have to install the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda Distribution</a> so
 as to get a full featured Python 3 environment.</p>
 <p>Then open the <a class="reference external" href="https://docs.continuum.io/anaconda/navigator/">Anaconda Navigator</a> and launch a console for your root environment.</p>
 <p>You can now run <em>pip</em> to install Pyterate in your root environment using this command:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install Pyterate
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install Pyterate
 </pre></div>
 </div>
 </div>
 <div class="section" id="on-linux">
-<h2>3.2. On Linux<a class="headerlink" href="#on-linux" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2. </span>On Linux<a class="headerlink" href="#on-linux" title="Permalink to this headline">¶</a></h2>
 <p>Firstly, you have to install Python 3 from your distribution.</p>
 <p>Then you can install Pyterate using <em>pip</em> or from source. See supra.</p>
 </div>
 <div class="section" id="on-osx">
-<h2>3.3. On OSX<a class="headerlink" href="#on-osx" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3. </span>On OSX<a class="headerlink" href="#on-osx" title="Permalink to this headline">¶</a></h2>
 <p>There are several ways to get Python on OSX:</p>
 <blockquote>
 <div><ul class="simple">
-<li>use the built in Python</li>
-<li>install <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a></li>
-<li>install the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda Distribution</a>.</li>
-<li>install from Brew <cite>brew install python3</cite> <strong>(reported to work)</strong></li>
+<li><p>use the built in Python</p></li>
+<li><p>install <a class="reference external" href="https://conda.io/miniconda.html">Miniconda</a></p></li>
+<li><p>install the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda Distribution</a>.</p></li>
+<li><p>install from Brew <cite>brew install python3</cite> <strong>(reported to work)</strong></p></li>
 </ul>
 </div></blockquote>
 <p>You can install Pyterate using <em>pip</em> or from source. See supra.</p>
 </div>
 <div class="section" id="installation-from-pypi-repository">
-<h2>3.4. Installation from PyPi Repository<a class="headerlink" href="#installation-from-pypi-repository" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.4. </span>Installation from PyPi Repository<a class="headerlink" href="#installation-from-pypi-repository" title="Permalink to this headline">¶</a></h2>
 <p>Pyterate is available on the Python Packages <a class="reference external" href="https://pypi.python.org/pypi">PyPI</a> repository at <a class="reference external" href="https://pypi.python.org/pypi/Pyterate">https://pypi.python.org/pypi/Pyterate</a></p>
 <p>Run this command in the console to install the latest release:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install Pyterate
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install Pyterate
 </pre></div>
 </div>
 </div>
 <div class="section" id="install-a-more-recent-version-from-github">
-<h2>3.5. Install a more recent version from Github<a class="headerlink" href="#install-a-more-recent-version-from-github" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5. </span>Install a more recent version from Github<a class="headerlink" href="#install-a-more-recent-version-from-github" title="Permalink to this headline">¶</a></h2>
 <p>If you want to install a version which is not yet released on Pypi, you can use one of theses
 commands to install the stable or devel branch:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>pip install git+https://github.com/FabriceSalvaire/Pyterate
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/FabriceSalvaire/Pyterate
 
 pip install git+https://github.com/FabriceSalvaire/Pyterate@devel
 </pre></div>
 </div>
 </div>
 <div class="section" id="installation-from-source">
-<h2>3.6. Installation from Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.6. </span>Installation from Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
 <p>The Pyterate source code is hosted at <a class="reference external" href="https://github.com/FabriceSalvaire/Pyterate">https://github.com/FabriceSalvaire/Pyterate</a></p>
 <p>You have to solution to get the source code, the first one is to clone the repository, but if you
 are not familiar with Git then you can simply download an archive either from the Pyterate Pypi page
 (at the bottom) or the GitHub page (see clone or download button).</p>
 <p>To clone the Git repository, run this command in a console:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>git clone https://github.com/FabriceSalvaire/Pyterate.git
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>git clone https://github.com/FabriceSalvaire/Pyterate.git
 </pre></div>
 </div>
 <p>Then to build and install Pyterate run these commands:</p>
-<div class="highlight-sh"><div class="highlight"><pre><span></span>python setup.py build
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>python setup.py build
 python setup.py install
 </pre></div>
 </div>
 </div>
 <div class="section" id="dependencies">
-<h2>3.7. Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.7. </span>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
 <p>Pyterate requires the following dependencies:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="http://python.org">Python</a> 3</li>
-<li>PyYAML</li>
+<li><p><a class="reference external" href="http://python.org">Python</a> 3</p></li>
+<li><p>PyYAML</p></li>
 </ul>
 </div></blockquote>
 <p>To generate the documentation, you will need in addition:</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference external" href="http://sphinx-doc.org">Sphinx</a></li>
+<li><p><a class="reference external" href="http://sphinx-doc.org">Sphinx</a></p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -258,9 +334,7 @@ python setup.py install
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -269,7 +343,7 @@ python setup.py install
         <a href="faq.html" class="btn btn-neutral float-right" title="4. User FAQ" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="news.html" class="btn btn-neutral" title="2. News" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="news.html" class="btn btn-neutral float-left" title="2. News" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -278,11 +352,11 @@ python setup.py install
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Fabrice Salvaire.
+        &copy; Copyright 2020, Fabrice Salvaire
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -295,38 +369,15 @@ python setup.py install
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'2.0.0',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="static/jquery.js"></script>
-      <script type="text/javascript" src="static/underscore.js"></script>
-      <script type="text/javascript" src="static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-      <script type="text/javascript" src="static/getthecode.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(false);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

@@ -1,8 +1,0 @@
-
-=================
- FigureEvaluator
-=================
-
-.. automodule:: Pyterate.RstFactory.FigureEvaluator
-   :members:
-   :show-inheritance:
