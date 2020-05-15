@@ -45,12 +45,13 @@ except:
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 # for directory in ,:
 
-Pyterate_path = os.path.abspath(os.path.join(__file__, *['..']*4))
-sys.path.insert(0, Pyterate_path)
+# Pyterate_path = os.path.abspath(os.path.join(__file__, *['..']*4))
+# sys.path.insert(0, Pyterate_path)
 
 ####################################################################################################
 
-exec(compile(open(os.path.join(Pyterate_path, 'setup_data.py')).read(), 'setup_data.py', 'exec'))
+# exec(compile(open(os.path.join(Pyterate_path, 'setup_data.py')).read(), 'setup_data.py', 'exec'))
+import Pyterate
 
 ####################################################################################################
 #
@@ -95,7 +96,7 @@ copyright = '{0.year}, Fabrice Salvaire'.format(datetime.now())
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = setup_dict['version']
+release = Pyterate.__version__
 # The short X.Y version.
 version = '.'.join(release.split('.')[:2])
 
