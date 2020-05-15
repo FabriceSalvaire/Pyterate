@@ -36,13 +36,13 @@ What are the main features ?
 
 The documentation generator features:
 
- * intermixing of code, text, `LaTeX formulae <https://www.mathjax.org>`_, figures and plots
- * use the `reStructuredText <https://en.wikipedia.org/wiki/ReStructuredText>`_ syntax for text
- * use the |Sphinx|_ generator
- * embed computations in the text content
- * generation of circuit schematics using |Circuit_macros|_
- * generation of figures using |Tikz|_
- * generation of plots using |Matplotlib|_
+* intermixing of code, text, `LaTeX formulae <https://www.mathjax.org>`_, figures and plots
+* use the `reStructuredText <https://en.wikipedia.org/wiki/ReStructuredText>`_ syntax for text
+* use the |Sphinx|_ generator
+* embed computations in the text content
+* generation of circuit schematics using |Circuit_macros|_
+* generation of figures using |Tikz|_
+* generation of plots using |Matplotlib|_
 
 How to install it ?
 -------------------
