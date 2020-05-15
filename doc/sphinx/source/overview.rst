@@ -39,8 +39,11 @@ What are the features of the documentation generator ?
 
 The documentation generator features:
 
+.. https://daringfireball.net/projects/markdown/syntax
+
  * intermixing of code, text, `LaTeX formulae <https://www.mathjax.org>`_, figures and plots
- * use the `reStructuredText <https://en.wikipedia.org/wiki/ReStructuredText>`_ syntax for text
+ * use the `reStructuredText <https://en.wikipedia.org/wiki/ReStructuredText>`_ or `Markdown
+   <https://en.wikipedia.org/wiki/Markdown>`_ syntax for text
  * use the |Sphinx|_ generator
  * embed computations in the text content
  * generation of circuit schematics using |Circuit_macros|_

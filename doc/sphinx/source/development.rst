@@ -8,7 +8,7 @@ Pyterate is an open-source project, and relies on its community of users to keep
 
 Pyterate source code and issues are managed on `Github <https://github.com/FabriceSalvaire/Pyterate>`_.
 
-**Note to Packagers: Please don't create Pyterate package (PiPY do the job)**
+**Note to Packagers: Please don't create Pyterate package (PyPI do the job)**
 
 How you can help ?
 ------------------
