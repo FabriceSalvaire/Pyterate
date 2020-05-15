@@ -1,0 +1,59 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+
+import argparse
+import os
+
+####################################################################################################
+
+parser = argparse.ArgumentParser(description='Fix markup')
+
+parser.add_argument('root_path', metavar='RootPath',
+                    help="root path")
+
+args = parser.parse_args()
+
+####################################################################################################
+
+extension = '.py'
+
+####################################################################################################
+
+def process_file(path):
+
+    # print(path)
+
+    with open(path) as fh:
+        lines = []
+        for line in fh.readlines():
+            if line.startswith('#'):
+                line = line.replace('#!#', '#r#')
+                line = line.replace('#fig#', '#f#')
+                # print(line[:4].rstrip())
+                if line.startswith('#itxt#'):
+                    line = "#f# getthecode('{}')".format(line[len('#itxt#'):].strip())
+                if line.startswith('#i#'):
+                    line = "#f# literal_include('{}')".format(line[len('#itxt#'):].strip())
+                if line.startswith('#cm#'):
+                    line = "#f# circuit_macros('{}')".format(line[len('#cm#'):].strip())
+                if 'save_figure' in line:
+                    p0 = line.index('(')
+                    p1 = line.index(',')
+                    p2 = line.index(')')
+                    line = "#f# save_figure('{}', {})".format(line[p0+1:p1].strip(), line[p1+1:p2].strip())
+            lines.append(line)
+
+    with open(path, 'w') as fh:
+        for line in lines:
+            fh.write(line)
+
+####################################################################################################
+
+root_path = os.path.realpath(args.root_path)
+
+for path, directories, files in os.walk(root_path):
+    for filename in files:
+        if filename.endswith(extension):
+            absolut_path = os.path.join(path, filename)
+            process_file(absolut_path)
