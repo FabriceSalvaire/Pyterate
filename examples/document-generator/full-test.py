@@ -1,3 +1,6 @@
+#r# .. note::
+#r#    You can see the source by clicking on the eye
+
 # A source code comment
 ##
 ###
@@ -44,7 +47,7 @@ foo = 1
 #l# for x in ():
 #l#   1 / 0 / 0
 
-# Intercative code
+# Interactive code
 #<i#
 1 + 1
 2 * 4 * 2
