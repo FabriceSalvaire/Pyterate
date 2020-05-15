@@ -116,7 +116,8 @@ def clean(ctx):
 def show_python_site(ctx):
     ctx.run('python3 -m site')
 
-@task(update_git_sha)
+# update_git_sha
+@task()
 def build(ctx):
     ctx.run('python3 setup.py build')
 
