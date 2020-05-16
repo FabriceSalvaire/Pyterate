@@ -89,20 +89,17 @@ class Node(metaclass=MarkupRegistry):
 
     @classmethod
     def code_block_directive(cls, lexer):
-
         return cls.directive('code-block', (lexer,))
 
     ##############################################
 
     def __init__(self, document):
-
         self._document = document # to pass settings ...
         self._lines = []
 
     ##############################################
 
     def __repr__(self):
-
         return '<{}>\n\n'.format(self.__class__.__name__) + str(self)
 
     ##############################################
@@ -182,13 +179,11 @@ class Node(metaclass=MarkupRegistry):
     ##############################################
 
     def to_rst(self):
-
         return ''
 
     ##############################################
 
     def to_markdown(self):
-
         return convert_markup(self.to_rst(), from_format='rst', to_format='markdown_strict')
 
 ####################################################################################################
@@ -198,17 +193,13 @@ class ExecutedNode(Node):
     ##############################################
 
     def __init__(self, document):
-
         super().__init__(document)
-
         self.outputs = []
 
     ##############################################
 
     def __bool__(self):
-
         # Fixme: precompute
-
         for line in self._lines:
             if line.strip():
                 return True
@@ -221,7 +212,6 @@ class TextNode(Node):
     ##############################################
 
     def has_format(self):
-
         for line in self._lines:
             if self.opening_format_markup in line:
                 return True
@@ -236,7 +226,6 @@ class Dom:
     ##############################################
 
     def __init__(self):
-
         self._nodes = []
 
     ##############################################
@@ -257,7 +246,6 @@ class Dom:
     ##############################################
 
     def iter_on_not_empty_node(self):
-
         for node in self._nodes:
             if node:
                 yield node
@@ -265,7 +253,6 @@ class Dom:
     ##############################################
 
     def append(self, node):
-
         # self._logger.debug(repr(node))
         self._nodes.append(node)
 
@@ -273,7 +260,6 @@ class Dom:
 
     @property
     def last_node(self):
-
         if self._nodes:
             return self._nodes[-1]
         else:
