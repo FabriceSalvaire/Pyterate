@@ -87,10 +87,8 @@ class ImageNode(Node):
     ##############################################
 
     def to_base64(self):
-
         with open(self._absolut_path, 'rb') as fh:
             image_base64 = base64.encodebytes(fh.read()).decode('ascii')
-
         return image_base64
 
     ##############################################
@@ -135,9 +133,7 @@ class ExternalFigureNode(ImageNode):
     ##############################################
 
     def __init__(self, document, source_path, figure_path, **kwargs):
-
         super().__init__(document, figure_path, **kwargs)
-
         self._source_path = Path(source_path) # Fixme: absolut ???
 
     ##############################################
@@ -149,7 +145,6 @@ class ExternalFigureNode(ImageNode):
     ##############################################
 
     def __bool__(self):
-
         if self.absolut_path.exists():
             return timestamp(self._source_path) > timestamp(self.absolut_path)
         else:
@@ -166,9 +161,7 @@ class LocaleFigureNode(ImageNode):
     ##############################################
 
     def __init__(self, document, source, **kwargs):
-
         target = document.symlink_source(Path(source))
-
         super().__init__(document, target, **kwargs)
 
 ####################################################################################################
@@ -182,9 +175,7 @@ class SaveFigureNode(ImageNode):
     ##############################################
 
     def __init__(self, document, figure, figure_filename, **kwargs):
-
         super().__init__(document, figure_filename, **kwargs)
-
         self._figure = figure
 
         # Fixme: don't call CodeNode ctor / Mixin ?
@@ -192,7 +183,6 @@ class SaveFigureNode(ImageNode):
     ##############################################
 
     def to_code(self):
-
         return 'save_figure({}, "{}")'.format(self._figure, self.absolut_path)
 
 ####################################################################################################
@@ -218,45 +208,36 @@ class TableFigureNode(Node):
     ##############################################
 
     def _iter_on_columns(self):
-
         return enumerate(self._columns)
 
     ##############################################
 
     def _update_column_length(self, i, value):
-
         self._column_length[i] = max(len(str(value)), self._column_length[i])
 
     ##############################################
 
     def _rule(self, rule_chr):
-
         column_rule = [rule_chr*self._column_length[i]
                        for i in range(len(self._column_length))]
-
         return ' '.join(column_rule) + '\n'
 
     ##############################################
 
     def _format_line(self, values):
-
         padded_values = [' '*(self._column_length[i] - len(value)) + value
                          for i, value in enumerate(values)]
-
         return ' '.join(padded_values) + '\n'
 
     ##############################################
 
     def _table_is_not_exported(self):
-
         return isinstance(self._table, str)
 
     ##############################################
 
     def to_code(self):
-
         # Fixme: API -> to figure ???
-
         if self._table_is_not_exported():
             return 'export_value({})'.format(self._table)
         else:
@@ -265,7 +246,6 @@ class TableFigureNode(Node):
     ##############################################
 
     def _exported_value(self):
-
         # Fixme: 0 str() ???
         json_data = self.outputs[0].result
         return json.loads(json_data[1:-1])

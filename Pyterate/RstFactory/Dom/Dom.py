@@ -38,7 +38,6 @@ __all__ = [
 ####################################################################################################
 
 import logging
-import os
 
 from ..MarkupConverter import convert_markup
 from .Registry import MarkupRegistry
