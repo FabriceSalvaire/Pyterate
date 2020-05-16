@@ -28,6 +28,7 @@ __all__ = [
 
 ####################################################################################################
 
+from pathlib import Path
 import base64
 import json
 import logging
@@ -53,7 +54,7 @@ class ImageNode(Node):
     def __init__(self, document, path, **kwargs):
 
         self._document = document
-        self._path = path
+        self._path = Path(path)
         self._absolut_path = self.document.topic.join_rst_path(path)
 
         self._scale = kwargs.get('scale', None)
@@ -122,7 +123,7 @@ class ImageNode(Node):
         #
         # ![svg image](data:image/svg+xml,URL_ENCODED_SVG]
 
-        if self.path.endswith('.png') and os.path.exists(self.absolut_path):
+        if self.path.suffix == 'png' and self.absolut_path.exists():
             return nbv4.new_output('display_data', data={'image/png': self.to_base64()})
         else:
             return None
@@ -137,7 +138,7 @@ class ExternalFigureNode(ImageNode):
 
         super().__init__(document, figure_path, **kwargs)
 
-        self._source_path = source_path # Fixme: absolut ???
+        self._source_path = Path(source_path) # Fixme: absolut ???
 
     ##############################################
 
@@ -149,7 +150,7 @@ class ExternalFigureNode(ImageNode):
 
     def __bool__(self):
 
-        if os.path.exists(self.absolut_path):
+        if self.absolut_path.exists():
             return timestamp(self._source_path) > timestamp(self.absolut_path)
         else:
             return True
@@ -166,7 +167,7 @@ class LocaleFigureNode(ImageNode):
 
     def __init__(self, document, source, **kwargs):
 
-        target = document.symlink_source(source)
+        target = document.symlink_source(Path(source))
 
         super().__init__(document, target, **kwargs)
 

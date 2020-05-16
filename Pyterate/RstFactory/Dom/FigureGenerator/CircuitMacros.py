@@ -20,6 +20,7 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import logging
 import os
 import subprocess
@@ -30,8 +31,7 @@ from ..FigureMarkups import ExternalFigureNode
 
 ####################################################################################################
 
-# home_path = os.getenv('HOME') # Unix only
-CIRCUIT_MACROS_PATH = os.path.join(os.path.expanduser('~'), 'texmf', 'Circuit_macros')
+CIRCUIT_MACROS_PATH = Path.home().joinpath('texmf', 'Circuit_macros')
 
 ####################################################################################################
 
@@ -60,7 +60,7 @@ class CircuitMacrosNode(ExternalFigureNode):
 
     def make_figure(self):
 
-        self._logger.info("\nMake circuit macros figure " + self.source_path)
+        self._logger.info('\nMake circuit macros figure {}'.format(self.source_path))
         try:
             self._make_figure()
         except subprocess.CalledProcessError:
@@ -83,7 +83,7 @@ class CircuitMacrosNode(ExternalFigureNode):
 
         # Generate LaTeX file
 
-        picture_tex_path = os.path.join(tmp_dir.name, 'picture.tex')
+        picture_tex_path = Path(tmp_dir.name).joinpath('picture.tex')
 
         picture_tex_header = r'''
     \documentclass[11pt]{article}
@@ -100,7 +100,7 @@ class CircuitMacrosNode(ExternalFigureNode):
             # Run dpic in pgf mode
             m4_command = (
                 'm4',
-                '-I' + circuit_macros_path,
+                '-I' + str(circuit_macros_path),
                 'pgf.m4',
                 'libcct.m4',
                 self.source_path,
@@ -135,13 +135,13 @@ class CircuitMacrosNode(ExternalFigureNode):
         subprocess.check_call(latex_command, stdout=dev_null, stderr=subprocess.STDOUT)
 
         os.chdir(current_dir)
-        basename = os.path.splitext(os.path.basename(self.source_path))[0]
-        pdf_path = os.path.join(dst_path, basename + '.pdf')
-        png_path = os.path.join(dst_path, basename + '.png')
+        basename = self.source_path.stem
+        pdf_path = dst_path.joinpath(basename + '.pdf')
+        png_path = dst_path.joinpath(basename + '.png')
 
-        self._logger.info('Generate ' + png_path)
+        self._logger.info('Generate {}'.format(png_path))
         # print('Generate ' + png_path)
-        shutil.copy(os.path.join(tmp_dir.name, 'picture-figure0.pdf'), pdf_path)
+        shutil.copy(Path(tmp_dir.name).joinpath('picture-figure0.pdf'), pdf_path)
 
         # Convert PDF to PNG
 
@@ -157,9 +157,10 @@ class CircuitMacrosNode(ExternalFigureNode):
             '-A', '8',
             '-O', 'resolution=300', # ,colorspace=rgb,alpha
             '-F', 'png',
-            '-o', png_path,
-            pdf_path,
+            '-o', str(png_path),
+            str(pdf_path),
             '1'
         )
         subprocess.check_call(mutool_command, stdout=dev_null, stderr=subprocess.STDOUT)
-        os.rename(png_path.replace('.png', '1.png'), png_path)
+        output_png_path = png_path.parent.joinpath(png_path.stem + '1.png')
+        output_png_path.rename(png_path)

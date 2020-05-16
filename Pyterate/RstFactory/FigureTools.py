@@ -27,12 +27,11 @@ __all__ = [
 
 ####################################################################################################
 
+from pathlib import Path
 import json
 import logging
 
 import numpy
-
-from ..Tools.Path import file_extension
 
 ####################################################################################################
 
@@ -44,7 +43,7 @@ def save_figure(figure, figure_path):
 
     """ This function is called from document to save a figure. """
 
-    figure_format = file_extension(figure_path)[1:] # foo.png -> png
+    figure_format = Path(figure_path).suffix[1:] # remove .
     _module_logger.info("\nSave figure " + figure_path)
     figure.savefig(
         figure_path,

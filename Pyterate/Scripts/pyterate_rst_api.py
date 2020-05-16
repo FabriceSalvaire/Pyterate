@@ -25,6 +25,7 @@ logger = Logging.setup_logging()
 
 ####################################################################################################
 
+from pathlib import Path
 import argparse
 import os
 
@@ -41,7 +42,7 @@ def main():
                         help='module path')
 
     parser.add_argument('--rst-api-path',
-                        default=os.path.join('doc', 'sphinx', 'source', 'api'),
+                        default=Path().join_path('doc', 'sphinx', 'source', 'api'),
                         help='rst API path')
 
     parser.add_argument('--exclude', nargs='+',

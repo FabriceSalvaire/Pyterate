@@ -24,6 +24,7 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import logging
 import os
 
@@ -98,7 +99,7 @@ class RstFactory:
         # walk top down so as to generate the subtopics first
         self._topics.clear()
         for topic_path, _, _ in os.walk(self._settings.input_path, topdown=False, followlinks=True):
-            self._process_topic(topic_path)
+            self._process_topic(Path(topic_path))
 
         if self._document_failures:
             self._logger.warning(

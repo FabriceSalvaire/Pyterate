@@ -34,6 +34,7 @@ In comparison to *sphinx-apidoc*, it generates sorter titles.
 
 ####################################################################################################
 
+from pathlib import path
 import logging
 import os
 
@@ -68,22 +69,22 @@ class ApiRstFactory:
 
     def __init__(self, module_path, rst_directory, excluded_directory):
 
-        self._rst_directory = os.path.realpath(rst_directory)
-        self._root_module_path = os.path.realpath(module_path)
+        self._rst_directory = Path(rst_directory).resolve()
+        self._root_module_path = Path(module_path).resolve()
 
-        self._excluded_directory = [os.path.join(self._root_module_path, x)
+        self._excluded_directory = [self._root_module_path.joinpath(x)
                                     for x in excluded_directory]
-        self._root_module_name = os.path.basename(self._root_module_path)
+        self._root_module_name = self._root_module_path.name
 
         self._logger.info('RST API Path:     {}'.format(self._rst_directory))
         self._logger.info('Root Module Path: {}'.format(self._root_module_path))
         self._logger.info('Root Module Name: {}'.format(self._root_module_name))
         self._logger.info('Exclude:' + '\n  '.join(self._excluded_directory))
 
-        template_path = os.path.join(os.path.dirname(__file__), 'templates') # Fixme: custom
+        template_path = Path(__file__).parent.joinpath('templates') # Fixme: custom
         self._template_environment = TemplateEnvironment(template_path)
 
-        if not os.path.exists(self._rst_directory):
+        if not self._rst_directory.exists():
             os.makedirs(self._rst_directory)
 
         self._process_recursively()
@@ -98,11 +99,12 @@ class ApiRstFactory:
 
             if module_path in self._excluded_directory:
                 continue
+            module_path = Path(module_path)
 
             sub_directories = [
                 sub_directory
                 for sub_directory in sub_directories
-                if (os.path.join(module_path, sub_directory) not in self._excluded_directory
+                if (str(module_path.joinpath(sub_directory)) not in self._excluded_directory
                     and sub_directory != '__pycache__')
             ]
 
@@ -115,7 +117,7 @@ class ApiRstFactory:
                 sub_modules = [
                     sub_directory
                     for sub_directory in sub_directories
-                    if self.is_python_directory_module(os.path.join(module_path, sub_directory))
+                    if self.is_python_directory_module(module_path.joinpath(sub_directory))
                 ]
                 self._process_directory_module(module_path, sorted(python_files), sorted(sub_modules))
 
@@ -123,14 +125,14 @@ class ApiRstFactory:
 
     def _process_directory_module(self, module_path, python_files, sub_modules):
 
-        directory_module_name = os.path.basename(module_path)
+        directory_module_name = module_path.parent
         directory_module_python_path = self.module_path_to_python_path(module_path)
         dst_directory = self.join_rst_path(self.python_path_to_path(directory_module_python_path))
         self._logger.info('Directory Module Name: {}'.format(directory_module_name))
         self._logger.info('Directory Module Python Path: {}'.format(directory_module_python_path))
         self._logger.info('Dest Path: {}'.format(dst_directory))
 
-        if (python_files or sub_modules) and not os.path.exists(dst_directory):
+        if (python_files or sub_modules) and not dst_directory.exists():
             os.mkdir(dst_directory)
 
         # Generate a RST file per module
@@ -140,7 +142,7 @@ class ApiRstFactory:
             module_names.append(module_name)
             self._logger.info('  Module: {}'.format(module_name))
             rst = self._generate_rst_module(directory_module_python_path, module_name)
-            rst_file_name = os.path.join(dst_directory, module_name + '.rst')
+            rst_file_name = dst_directory.joinpath(module_name + '.rst')
             with open(rst_file_name, 'w') as fh:
                 fh.write(rst)
 
@@ -150,7 +152,7 @@ class ApiRstFactory:
             directory_module_name,
             sorted(module_names + sub_modules),
         )
-        rst_file_name = os.path.join(os.path.dirname(dst_directory), directory_module_name + '.rst')
+        rst_file_name = dst_directory.parent.joinpath(directory_module_name + '.rst')
         with open(rst_file_name, 'w') as fh:
             fh.write(rst)
 
@@ -161,7 +163,7 @@ class ApiRstFactory:
 
         # path has __init__.py
 
-        return os.path.exists(os.path.join(path, cls.INIT_FILE_NAME))
+        return path.joinpath(cls.INIT_FILE_NAME).exists()
 
     ##############################################
 
@@ -181,14 +183,14 @@ class ApiRstFactory:
     @staticmethod
     def path_to_python_path(path):
 
-        return path.replace(os.path.sep, '.')
+        return str(path).replace(os.sep, '.')
 
     ##############################################
 
     @staticmethod
     def python_path_to_path(python_path):
 
-        return python_path.replace('.', os.path.sep)
+        return Path(python_path.replace('.', os.sep))
 
     ##############################################
 
@@ -214,7 +216,7 @@ class ApiRstFactory:
 
     def join_rst_path(self, path):
 
-        return os.path.join(self._rst_directory, path)
+        return self._rst_directory.joinpath(path)
 
     ##############################################
 
@@ -224,7 +226,7 @@ class ApiRstFactory:
             'toc.jinja2',
             module=directory_module_path,
             title=directory_module_name,
-            submodules=[os.path.join(directory_module_name, module_name) for module_name in submodules],
+            submodules=[Path(directory_module_name).joinpath(module_name) for module_name in submodules],
         )
 
     ##############################################

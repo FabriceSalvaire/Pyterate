@@ -53,7 +53,7 @@ class GeneratedImageNode:
     def __bool__(self):
 
         # return False # it is up to the generator to decide if it overwrite
-        if os.path.exists(self.absolut_path):
+        if self.absolut_path.exists():
             return self._query()
         else:
             return False

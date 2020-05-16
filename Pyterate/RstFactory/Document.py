@@ -29,7 +29,6 @@ from nbformat import v4 as nbv4
 ####################################################################################################
 
 from ..Template import TemplateAggregator
-from ..Tools.Path import remove_extension
 from ..Tools.Timestamp import timestamp
 from .Dom.Dom import Dom, TextNode
 from .Dom.Markups import (
@@ -76,16 +75,16 @@ class Document:
 
         self._topic = topic
         self._input_file = input_file
-        self._basename = remove_extension(input_file)
+        self._basename = input_file.stem
         self._language = language
 
         path = topic.join_path(input_file)
-        self._is_link = os.path.islink(path)
-        self._path = os.path.realpath(path) # input path
+        self._is_link = path.is_symlink()
+        self._path = path.resolve() # input path
 
         if self._is_link:
             path = self.settings.join_rst_path(self.settings.relative_input_path(self._path))
-            self._rst_path = remove_extension(path) + '.rst'
+            self._rst_path = path.stem + '.rst'
         else:
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
 
@@ -133,7 +132,7 @@ class Document:
 
     @property
     def rst_inner_path(self):
-        return os.path.relpath(self._rst_path, self._topic.rst_path)
+        return self._rst_path.relative_to(self._topic.rst_path)
 
     @property
     def dom(self):
@@ -185,7 +184,7 @@ class Document:
 
     @property
     def rst_timestamp(self):
-        if os.path.exists(self._rst_path):
+        if self._rst_path.exists():
             return timestamp(self._rst_path)
         else:
             return -1
@@ -200,7 +199,7 @@ class Document:
 
     def run(self):
 
-        self._logger.info("\nRun document " + self._path)
+        self._logger.info('\nRun document {}'.format(self._path))
         node_evaluator = NodeEvaluator(self._language)
         if not node_evaluator.run(self._dom, self._path):
             self._logger.error("Failed to run document {}".format(self._path))
@@ -211,15 +210,15 @@ class Document:
     def symlink_source(self, source_path):
 
         source = self._topic.join_path(source_path)
-        basename = os.path.basename(source_path)
+        basename = source_path.name
         target = self._topic.join_rst_path(basename)
 
         # Fixme: too early check
-        # if not os.path.exists(source_path):
+        # if not source_path.exists():
         #     raise NameError("File {} doesn't exist, cannot create a symlink to {}".format(source_path, target))
 
-        if not os.path.exists(target):
-            os.symlink(source, target)
+        if not target.exists():
+            target.symlink_to(source)
 
         return basename
 
@@ -393,8 +392,8 @@ class Document:
 
         # place the input file in the rst path
         link_path = self._topic.join_rst_path(self._input_file)
-        if not os.path.exists(link_path):
-            os.symlink(self._path, link_path)
+        if not link_path.exists():
+            link_path.symlink_to(self._path)
 
         kwargs = {
             'input_file':self._input_file,
@@ -420,7 +419,10 @@ class Document:
 
     def make_notebook(self):
 
-        """Generate a notebook file."""
+        """Generate a notebook file.
+
+        https://nbformat.readthedocs.io/en/latest
+        """
 
         notebook = nbv4.new_notebook()
 

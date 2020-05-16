@@ -23,6 +23,7 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import logging
 import os
 
@@ -49,8 +50,8 @@ class Topic:
     def __init__(self, factory, relative_path):
 
         self._factory = factory
-        self._relative_path = relative_path # relative input path
-        self._basename = os.path.basename(relative_path) # topic directory
+        self._relative_path = Path(relative_path) # relative input path
+        self._basename = relative_path.name # topic directory
 
         self._path = self.settings.join_input_path(relative_path) # input path
         self._rst_path = self.settings.join_rst_path(relative_path) # output path
@@ -61,11 +62,11 @@ class Topic:
 
         input_files = list(self._input_files_iterator()) # Fixme: better ?
         if input_files:
-            self._logger.info("\nProcess Topic: " + relative_path)
+            self._logger.info('\nProcess Topic: {}'.format(relative_path))
             os.makedirs(self._rst_path, exist_ok=True) # removed code
             for filename, language in input_files:
                 self._logger.info("\nFound input '{}' handled by {}".format(self.join_path(filename), language.name))
-                document = Document(self, filename, language)
+                document = Document(self, Path(filename), language)
                 if document.is_link:
                     self._logger.info("\n  found link: " + filename)
                     self._links.append(document)
@@ -77,7 +78,7 @@ class Topic:
 
     def __bool__(self):
         # Fixme: usage ???
-        return os.path.exists(self._rst_path)
+        return self._rst_path.exists()
         # return bool(self._documents) or bool(self._links)
 
     ##############################################
@@ -105,18 +106,18 @@ class Topic:
     ##############################################
 
     def join_path(self, *args):
-        return os.path.join(self._path, *args)
+        return self._path.joinpath(*args)
 
     def join_rst_path(self, *args):
-        return os.path.join(self._rst_path, *args)
+        return self._rst_path.joinpath(*args)
 
     ##############################################
 
     def _input_files_iterator(self):
 
         for basename in os.listdir(self._path):
-            path = os.path.join(self._path, basename)
-            if os.path.isfile(path):
+            path = self._path.joinpath(basename)
+            if path.is_file():
                 language = self.settings.language_for(path)
                 if language and not self._is_file_skipped(path, language):
                     yield basename, language
@@ -144,7 +145,7 @@ class Topic:
     ##############################################
 
     def _has_index(self):
-        return os.path.exists(self._index_path())
+        return self._index_path().exists()
 
     ##############################################
 
@@ -201,7 +202,7 @@ class Topic:
 
         for filename in os.listdir(self._rst_path):
             path = self.join_rst_path(filename)
-            if os.path.isdir(path):
+            if path.is_dir():
                 yield path # absolut path
 
     ##############################################
@@ -209,8 +210,8 @@ class Topic:
     def _subtopic_iterator(self):
 
         for path in self._directory_iterator():
-            if os.path.exists(os.path.join(path, 'index.rst')): # Fixme: hardcoded filename !
-                relative_path = os.path.relpath(path, self.settings.rst_path)
+            if path.joinpath('index.rst').exists(): # Fixme: hardcoded filename !
+                relative_path = path.relative_to(self.settings.rst_path)
                 topic = self._factory.topics[relative_path]
                 yield topic
 
@@ -235,7 +236,7 @@ class Topic:
             return
 
         toc_path = self.join_rst_path('index.rst')
-        self._logger.info("\nCreate TOC " + toc_path)
+        self._logger.info('\nCreate TOC {}'.format(toc_path))
 
         kwargs = {}
 

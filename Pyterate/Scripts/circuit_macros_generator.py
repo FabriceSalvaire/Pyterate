@@ -22,6 +22,7 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import argparse
 import os
 
@@ -42,5 +43,4 @@ def main():
 
     args = argument_parser.parse_args()
 
-    CircuitMacrosGenerator.generate(os.path.realpath(args.m4_path),
-                                    os.path.realpath(args.dst_path))
+    CircuitMacrosGenerator.generate(Path(args.m4_path).resolve(), Path(args.dst_path).resolve())

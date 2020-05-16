@@ -60,7 +60,7 @@ class TikzNode(ExternalFigureNode):
 
     def make_figure(self):
 
-        self._logger.info("\nMake Tikz figure " + self.source_path)
+        self._logger.info('\nMake Tikz figure {}'.format(self.source_path))
         try:
             self._make_figure()
         except subprocess.CalledProcessError:
@@ -83,7 +83,7 @@ class TikzNode(ExternalFigureNode):
                 '-shell-escape',
                 '-interaction=batchmode',
                 # '-output-directory=' + tmp_dir,
-                os.path.basename(self.source_path),
+                str(self.source_path.name),
             )
             dev_null = open(os.devnull, 'w')
             subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)

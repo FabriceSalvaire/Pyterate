@@ -25,6 +25,7 @@ logger = Logging.setup_logging()
 
 ####################################################################################################
 
+from pathlib import Path
 import argparse
 import os
 
@@ -71,7 +72,7 @@ def main():
         Pyterate.show_version()
         exit(0)
 
-    if not os.path.exists(args.config):
+    if not Path(args.config).exists():
         logger.info('Any config file, use default settings')
         settings = DefaultRstFactorySettings()
     else:
@@ -86,11 +87,12 @@ def main():
     rst_factory = RstFactory(settings)
 
     if args.document_path:
+        document_path = Path(document_path)
         settings = rst_factory.settings
-        document_path = settings.relative_input_path(args.document_path)
-        topic = Topic(rst_factory, os.path.dirname(document_path))
+        document_path = settings.relative_input_path(document_path)
+        topic = Topic(rst_factory, document_path.parent)
         language = settings.language_for(args.document_path)
-        document = Document(topic, os.path.basename(document_path), language)
+        document = Document(topic, document_path.name, language)
         topic.process_document(document)
     else:
         rst_factory.process_recursively()

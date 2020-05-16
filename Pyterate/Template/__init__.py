@@ -43,7 +43,7 @@ class TemplateEnvironment:
 
         """
 
-        self._search_path = search_path
+        self._search_path = [str(x) for x in search_path]
 
         self._environment = Environment(
             # loader=PackageLoader('', 'templates'),

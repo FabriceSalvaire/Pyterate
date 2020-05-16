@@ -28,6 +28,7 @@ __all__ = [
 ####################################################################################################
 
 # import logging
+from pathlib import Path
 
 from .Dom import Node
 
@@ -48,7 +49,7 @@ class LiteralIncludeNode(Node):
     def __init__(self, document, include_path):
 
         super().__init__(document)
-        self._include_filename = document.symlink_source(include_path)
+        self._include_filename = document.symlink_source(Path(include_path))
 
     ##############################################
 

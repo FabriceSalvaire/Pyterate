@@ -40,8 +40,7 @@ LOG_LEVEL_ENV = APPLICATION_NAME + 'LogLevel'
 def setup_logging(application_name=APPLICATION_NAME, config_file=None):
 
     if config_file is None:
-        config_file = os.path.join(ConfigInstall.Path.config_directory,
-                                   ConfigInstall.Logging.default_config_file)
+        config_file = ConfigInstall.Path.config_directory.joinpath(ConfigInstall.Logging.default_config_file)
 
     logging_config = yaml.load(open(config_file, 'r'), Loader=yaml.SafeLoader)
 

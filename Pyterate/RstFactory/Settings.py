@@ -24,6 +24,7 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import logging
 import os
 import re
@@ -123,7 +124,7 @@ class LanguageSettings:
         """
 
         for extension in cls.extensions:
-            if path.endswith(extension):
+            if path.suffix == extension:
                 return cls.filename_filter(path)
         return False
 
@@ -140,7 +141,7 @@ class LanguageSettings:
 
         """
 
-        basename = os.path.basename(path)
+        basename = Path(path).name
         for pattern in cls.excluded_file_patterns:
             if re.match(pattern, basename):
                 cls._logger.info("\nExclude '{}' for '{}'".format(basename, pattern))
@@ -179,6 +180,7 @@ class DefaultPython3Settings(LanguageSettings):
     # define __file__ to the Python input path
     # add file's directory to the Python  path
     setup_code = '''
+from pathlib import Path
 import os
 import sys
 
@@ -186,7 +188,7 @@ from Pyterate.RstFactory.FigureTools import *
 '''
     document_setup_code = '''
 __file__ = '{file}'
-sys.path.append(os.path.dirname(__file__))
+sys.path.append(str(Path(__file__).parent))
 '''
 
     ##############################################
@@ -204,11 +206,11 @@ class DefaultRstFactorySettings:
     """Class to define the Rst Factory settings."""
 
     # Input path
-    input_path = 'examples' # Path of the documents
+    input_path = Path('examples') # Path of the documents
 
     # RST paths
-    rst_source_path = 'doc/sphinx/source' # Path of the RST source directory
-    rst_directory = 'examples' # Relative path of the documents in the RST sources
+    rst_source_path = Path('doc/sphinx/source') # Path of the RST source directory
+    rst_directory = Path('examples') # Relative path of the documents in the RST sources
 
     # Templates
     user_template_path = None # User template path
@@ -233,11 +235,11 @@ class DefaultRstFactorySettings:
     def __init__(self):
 
         if self.user_template_path is None:
-            user_template_path = os.path.realpath(os.path.join(self.input_path, 'pyterate-templates'))
-            if os.path.exists(user_template_path):
+            user_template_path = self.input_path.joinpath('pyterate-templates').resolve()
+            if user_template_path.exists():
                 self.user_template_path = user_template_path
 
-        template_path = os.path.join(os.path.dirname(__file__), 'templates')
+        template_path = Path(__file__).parent.joinpath('templates')
         search_path = []
         if self.user_template_path:
             self._logger.info('\nUser template path: {}'.format(self.user_template_path))
@@ -246,13 +248,13 @@ class DefaultRstFactorySettings:
         self._template_environment = TemplateEnvironment(search_path)
 
         # Fixme: handle ~
-        self.input_path = os.path.realpath(self.input_path)
+        self.input_path = self.input_path.resolve()
 
-        self.rst_source_path = os.path.realpath(self.rst_source_path)
-        self.rst_path = os.path.join(self.rst_source_path, self.rst_directory)
+        self.rst_source_path = self.rst_source_path.resolve()
+        self.rst_path = self.rst_source_path.joinpath(self.rst_directory)
 
-        self._logger.info("\nInput Path: " + self.input_path)
-        self._logger.info("\nRST Path: " + self.rst_path)
+        self._logger.info('\nInput Path: {}'.format(self.input_path))
+        self._logger.info('\nRST Path: {}'.format(self.rst_path))
 
     ##############################################
 
@@ -263,16 +265,16 @@ class DefaultRstFactorySettings:
     ##############################################
 
     def join_input_path(self, *args):
-        return os.path.join(self.input_path, *args)
+        return self.input_path.joinpath(*args)
 
     def join_rst_path(self, *args):
-        return os.path.join(self.rst_path, *args)
+        return self.rst_path.joinpath(*args)
 
     ##############################################
 
     def relative_input_path(self, path):
 
-        relative_path = os.path.relpath(path, self.input_path)
+        relative_path = path.relative_to(self.input_path)
         if relative_path == '.':
             return ''
         else:
