@@ -22,6 +22,7 @@
 
 __all__ = [
     'ExternalFigureNode',
+    'ImageNode',
     'LocaleFigureNode',
     'SaveFigureNode',
 ]
@@ -103,7 +104,7 @@ class ImageNode(Node):
 
     ##############################################
 
-    def to_node(self):
+    def to_output_cell(self):
 
         # Using attachments
         #
@@ -160,6 +161,7 @@ class ImageNode(Node):
             mime_type = 'image/png'
             path = self._absolut_path.parent.joinpath(self._absolut_path.stem + '.png')
             self._logger.warning('convert {} -> {}'.format(self._absolut_path, path))
+            # Fixme: require convert ...
             command = ('convert', 'svg:' + self._absolut_path.name, 'png:' + path.name)
             subprocess.check_call(command, cwd=str(self._absolut_path.parent), shell=False)
         else:

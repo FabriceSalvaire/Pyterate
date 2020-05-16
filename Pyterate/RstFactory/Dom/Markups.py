@@ -28,23 +28,37 @@ __all__ = [
     'HiddenCodeNode',
     'InteractiveCodeNode',
     'LiteralNode',
-    'MarkdownNode',
     'MarkdownFormatNode',
+    'MarkdownNode',
     'OutputNode',
-    'RstNode',
     'RstFormatNode',
+    'RstNode',
 ]
 
 ####################################################################################################
 
 import logging
 
+from nbformat import v4 as nbv4
+
 from ..MarkupConverter import convert_markup
-from .Dom import Node, ExecutedNode, TextNode
+from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin
+from .FigureMarkups import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
+from .LitteralIncludeMarkups import LiteralIncludeNode
 
 ####################################################################################################
 
 _module_logger = logging.getLogger(__name__)
+
+####################################################################################################
+
+class MarkdownMixin:
+
+    ##############################################
+
+    def to_rst(self):
+        # markdown_strict
+        return convert_markup(self.to_markdown(), from_format='md', to_format='rst')
 
 ####################################################################################################
 
@@ -56,6 +70,8 @@ class CommentNode(Node):
 class FigureNode(Node):
 
     MARKUP = 'f'
+
+    _logger = _module_logger.getChild('FigureNode')
 
     ##############################################
 
@@ -72,6 +88,28 @@ class FigureNode(Node):
 
     def iter_on_childs(self):
         return iter(self._childs)
+
+    ##############################################
+
+    def to_cell(self):
+
+        cell = []
+        for child in self.iter_on_childs():
+            # skip LitteralIncludeMarkups.GetthecodeNode
+            if isinstance(child, (LiteralIncludeNode, TableFigureNode)):
+                markdown = child.to_markdown()
+                _ = nbv4.new_markdown_cell(markdown)
+                cell.append(_)
+            elif isinstance(child, SaveFigureNode):
+                pass
+            elif isinstance(child, ImageNode):
+                _ = child.to_cell()
+                if _ is not None:
+                    cell.append(_)
+            else:
+                self._logger.info("Unsupported figure child node type {}".format(type(node)))
+
+        return cell
 
 ####################################################################################################
 
@@ -102,7 +140,6 @@ class LiteralNode(Node):
     ##############################################
 
     def to_rst(self):
-
         if bool(self):
             source = self.indent_lines(self._lines)
             # rst = self.directive('class', args=('literal-node',)) # Don't work !
@@ -110,15 +147,13 @@ class LiteralNode(Node):
         else:
             return ''
 
-####################################################################################################
-
-class MarkdownMixin:
-
     ##############################################
 
-    def to_rst(self):
-        # markdown_strict
-        return convert_markup(self.to_markdown(), from_format='md', to_format='rst')
+    def to_cell(self):
+        markdown = '```\n'
+        markdown += self.to_markdown()
+        markdown += '```\n'
+        return nbv4.new_markdown_cell(markdown)
 
 ####################################################################################################
 
@@ -140,7 +175,7 @@ class MarkdownNode(MarkdownMixin, TextNode):
 
 ####################################################################################################
 
-class FormatNode(ExecutedNode):
+class FormatNode(MarkdownCellMixin, ExecutedNode):
 
     ##############################################
 
@@ -216,6 +251,15 @@ class CodeNode(ExecutedNode):
             if not line.startswith('pylab.show') and not line.startswith('plt.show'):
                 source += line + '\n'
         return source
+
+    ##############################################
+
+    def to_cell(self):
+        code = self.to_code()
+        cell = nbv4.new_code_cell(code)
+        for output in self.outputs:
+            cell.outputs.append(output.node)
+        return cell
 
 ####################################################################################################
 
@@ -307,3 +351,8 @@ class OutputNode(Node):
                 rst += self.indent_output(output)
 
         return rst + '\n'
+
+    ##############################################
+
+    def to_cell(self):
+        return None

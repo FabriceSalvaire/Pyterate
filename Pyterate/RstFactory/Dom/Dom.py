@@ -29,15 +29,18 @@
 ####################################################################################################
 
 __all__ = [
-    'Node',
     'Dom',
     'ExecutedNode',
+    'MarkdownCellMixin',
+    'Node',
     'TextNode',
 ]
 
 ####################################################################################################
 
 import logging
+
+from nbformat import v4 as nbv4
 
 from ..MarkupConverter import convert_markup
 from .Registry import MarkupRegistry
@@ -185,6 +188,11 @@ class Node(metaclass=MarkupRegistry):
     def to_markdown(self):
         return convert_markup(self.to_rst(), from_format='rst', to_format='markdown_strict')
 
+    ##############################################
+
+    def to_cell(self):
+        raise NotImplementedError
+
 ####################################################################################################
 
 class ExecutedNode(Node):
@@ -206,7 +214,17 @@ class ExecutedNode(Node):
 
 ####################################################################################################
 
-class TextNode(Node):
+class MarkdownCellMixin:
+
+    ##############################################
+
+    def to_cell(self):
+        markdown = self.to_markdown()
+        return nbv4.new_markdown_cell(markdown)
+
+####################################################################################################
+
+class TextNode(MarkdownCellMixin, Node):
 
     ##############################################
 
