@@ -1,6 +1,3 @@
-#! /usr/bin/env python3
-# -*- Python -*-
-
 ####################################################################################################
 #
 # Pyterate - Sphinx add-ons to create API documentation for Python projects
@@ -36,34 +33,35 @@ from Pyterate.ApiRstFactory import ApiRstFactory
 
 ####################################################################################################
 
-parser = argparse.ArgumentParser(description='Generate API Documentation')
+def main():
 
-parser.add_argument('module_path', metavar='ModulePath',
-                    help='module path')
+    parser = argparse.ArgumentParser(description='Generate API Documentation')
 
-parser.add_argument('--rst-api-path',
-                    default=os.path.join('doc', 'sphinx', 'source', 'api'),
-                    help='rst API path')
+    parser.add_argument('module_path', metavar='ModulePath',
+                        help='module path')
 
-parser.add_argument('--exclude', nargs='+',
-                    help='rst API path')
+    parser.add_argument('--rst-api-path',
+                        default=os.path.join('doc', 'sphinx', 'source', 'api'),
+                        help='rst API path')
 
-parser.add_argument('--version',
-                    action='store_true', default=False,
-                    help="Show version")
+    parser.add_argument('--exclude', nargs='+',
+                        help='rst API path')
 
-args = parser.parse_args()
+    parser.add_argument('--version',
+                        action='store_true', default=False,
+                        help="Show version")
 
-####################################################################################################
+    args = parser.parse_args()
 
-if args.version:
-    Pyterate.show_version()
-    exit(0)
 
-if args.exclude:
-    excluded_directory = args.exclude
-else:
-    excluded_directory = ()
+    if args.version:
+        Pyterate.show_version()
+        exit(0)
 
-rst_factory = ApiRstFactory(args.module_path, args.rst_api_path, excluded_directory)
-# Fixme: API ???
+    if args.exclude:
+        excluded_directory = args.exclude
+    else:
+        excluded_directory = ()
+
+    rst_factory = ApiRstFactory(args.module_path, args.rst_api_path, excluded_directory)
+    # Fixme: API ???
