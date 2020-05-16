@@ -32,7 +32,7 @@ from pathlib import Path
 import base64
 import json
 import logging
-import os
+import subprocess
 
 from nbformat import v4 as nbv4
 
@@ -41,13 +41,15 @@ from .Dom import Node
 
 ####################################################################################################
 
-# _module_logger = logging.getLogger(__name__)
+_module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
 class ImageNode(Node):
 
     COMMAND = None
+
+    _logger = _module_logger.getChild('ImageNode')
 
     ##############################################
 
@@ -86,9 +88,17 @@ class ImageNode(Node):
 
     ##############################################
 
-    def to_base64(self):
-        with open(self._absolut_path, 'rb') as fh:
-            image_base64 = base64.encodebytes(fh.read()).decode('ascii')
+    def to_base64(self, path=None):
+
+        if path is None:
+            path = self._absolut_path
+
+        with open(path, 'rb') as fh:
+            data = fh.read()
+            image_base64 = base64.encodebytes(data)
+            image_base64 = image_base64.decode('ascii')
+            # image_base64 = image_base64.replace('\n', '')
+
         return image_base64
 
     ##############################################
@@ -121,9 +131,51 @@ class ImageNode(Node):
         #
         # ![svg image](data:image/svg+xml,URL_ENCODED_SVG]
 
-        if self.path.suffix == 'png' and self.absolut_path.exists():
-            return nbv4.new_output('display_data', data={'image/png': self.to_base64()})
+        if not self.absolut_path.exists():
+            mime_type = None
+        elif self.path.suffix == '.png':
+            mime_type = 'image/png'
+        elif self.path.suffix == '.svg':
+            mime_type = 'image/svg+xml'
         else:
+            mime_type = None
+
+        if mime_type is not None:
+            return nbv4.new_output('display_data', data={mime_type: self.to_base64()})
+        else:
+            self._logger.warning('unsupported image format {}'.format(self.absolut_path))
+            return None
+
+    ##############################################
+
+    def to_cell(self):
+
+        path = None
+        if not self.absolut_path.exists():
+            mime_type = None
+        elif self.path.suffix == '.png':
+            mime_type = 'image/png'
+        elif self.path.suffix == '.svg':
+            # Fixme: Jupyter does not display SVG ???
+            mime_type = 'image/png'
+            path = self._absolut_path.parent.joinpath(self._absolut_path.stem + '.png')
+            self._logger.warning('convert {} -> {}'.format(self._absolut_path, path))
+            command = ('convert', 'svg:' + self._absolut_path.name, 'png:' + path.name)
+            subprocess.check_call(command, cwd=str(self._absolut_path.parent), shell=False)
+        else:
+            mime_type = None
+
+        if mime_type is not None:
+            markdown = "![{0}](attachment:{0})".format(self.path)
+            attachments = {
+                str(self.path): {
+                    mime_type: self.to_base64(path),
+                }
+            }
+            cell = nbv4.new_markdown_cell(markdown, attachments=attachments)
+            return cell
+        else:
+            self._logger.warning('unsupported image format {}'.format(self.absolut_path))
             return None
 
 ####################################################################################################
@@ -290,3 +342,10 @@ class TableFigureNode(Node):
         rst += self._rule('=')
 
         return rst + '\n'
+
+    ##############################################
+
+    # def to_markdown(self):
+    #     markdown = super().to_markdown()
+    #     print(markdown)
+    #     return 'Table:\n' + markdown

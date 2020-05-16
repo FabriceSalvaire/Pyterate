@@ -29,8 +29,10 @@ __all__ = [
     'InteractiveCodeNode',
     'LiteralNode',
     'MarkdownNode',
+    'MarkdownFormatNode',
     'OutputNode',
     'RstNode',
+    'RstFormatNode',
 ]
 
 ####################################################################################################
@@ -86,7 +88,7 @@ class RstNode(TextNode):
 
     ##############################################
 
-    def to_rst_format_node(self):
+    def to_format_node(self):
         return RstFormatNode(self)
 
 ####################################################################################################
@@ -110,7 +112,17 @@ class LiteralNode(Node):
 
 ####################################################################################################
 
-class MarkdownNode(TextNode):
+class MarkdownMixin:
+
+    ##############################################
+
+    def to_rst(self):
+        # markdown_strict
+        return convert_markup(self.to_markdown(), from_format='md', to_format='rst')
+
+####################################################################################################
+
+class MarkdownNode(MarkdownMixin, TextNode):
 
     """ This class represents a RST content. """
 
@@ -123,23 +135,36 @@ class MarkdownNode(TextNode):
 
     ##############################################
 
-    def to_rst(self):
-        return convert_markup(self.to_markdown(), from_format='md', to_format='rst')
-
-    ##############################################
-
-    # def to_rst_format_node(self):
-    #     return RstFormatNode(self)
+    def to_format_node(self):
+        return MarkdownFormatNode(self)
 
 ####################################################################################################
 
-class RstFormatNode(ExecutedNode):
+class FormatNode(ExecutedNode):
 
     ##############################################
 
-    def __init__(self, rst_node):
-        super().__init__(rst_node.document)
-        self._lines = rst_node._lines
+    def __init__(self, node):
+        super().__init__(node.document)
+        self._lines = node._lines
+
+    ##############################################
+
+    def to_code(self):
+
+        txt = '\n'.join(self._lines)
+        txt = txt.replace('{', '{{') # to escape them
+        txt = txt.replace('}', '}}')
+        txt = txt.replace(self.opening_format_markup, '{')
+        txt = txt.replace(self.closing_format_markup, '}')
+        txt = txt.replace(self.escaped_opening_format_markup, self.opening_format_markup)
+        txt = txt.replace(self.escaped_closing_format_markup, self.closing_format_markup)
+
+        return 'print(r"""' + txt + '""".format(**locals()))\n'
+
+####################################################################################################
+
+class RstFormatNode(FormatNode):
 
     ##############################################
 
@@ -147,19 +172,15 @@ class RstFormatNode(ExecutedNode):
         # Fixmes: more than one output
         return str(self.outputs[0]) + '\n'
 
+####################################################################################################
+
+class MarkdownFormatNode(MarkdownMixin, FormatNode):
+
     ##############################################
 
-    def to_code(self):
-
-        rst = '\n'.join(self._lines)
-        rst = rst.replace('{', '{{') # to escape them
-        rst = rst.replace('}', '}}')
-        rst = rst.replace(self.opening_format_markup, '{')
-        rst = rst.replace(self.closing_format_markup, '}')
-        rst = rst.replace(self.escaped_opening_format_markup, self.opening_format_markup)
-        rst = rst.replace(self.escaped_closing_format_markup, self.closing_format_markup)
-
-        return 'print(r"""' + rst + '""".format(**locals()))\n'
+    def to_markdown(self):
+        # Fixmes: more than one output
+        return str(self.outputs[0]) + '\n'
 
 ####################################################################################################
 

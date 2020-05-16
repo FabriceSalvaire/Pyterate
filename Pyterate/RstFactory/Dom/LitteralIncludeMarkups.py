@@ -49,6 +49,7 @@ class LiteralIncludeNode(Node):
     def __init__(self, document, include_path):
         super().__init__(document)
         self._include_filename = document.symlink_source(Path(include_path))
+        self._include_path = document.topic.join_path(include_path)
 
     ##############################################
 
@@ -57,6 +58,15 @@ class LiteralIncludeNode(Node):
             'literalinclude',
             args=(self._include_filename,),
         )
+
+    ##############################################
+
+    def to_markdown(self):
+        text = '```\n'
+        with open(self._include_path) as fh:
+            text += fh.read()
+        text += '```\n'
+        return text
 
 ####################################################################################################
 

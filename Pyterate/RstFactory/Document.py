@@ -21,7 +21,6 @@
 ####################################################################################################
 
 import logging
-import os
 
 import nbformat
 from nbformat import v4 as nbv4
@@ -31,14 +30,9 @@ from nbformat import v4 as nbv4
 from ..Template import TemplateAggregator
 from ..Tools.Timestamp import timestamp
 from .Dom.Dom import Dom, TextNode
-from .Dom.Markups import (
-    CommentNode,
-    RstNode,
-    CodeNode, InteractiveCodeNode,
-    OutputNode,
-    FigureNode
-)
-from .Dom.FigureMarkups import ImageNode, ExternalFigureNode
+from .Dom.FigureMarkups import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
+from .Dom.LitteralIncludeMarkups import LiteralIncludeNode
+from .Dom.Markups import *
 from .Dom.Registry import MarkupRegistry
 from .NodeEvaluator import NodeEvaluator
 
@@ -362,7 +356,7 @@ class Document:
                         raise NameError('Previous node must be code')
                 elif isinstance(node, TextNode):
                     if node.has_format():
-                        node = node.to_rst_format_node()
+                        node = node.to_format_node()
                 dom.append(node)
 
         return dom
@@ -432,7 +426,7 @@ class Document:
         for node in self._dom:
             cell = None
             # Fixme: complete
-            if isinstance(node, RstNode):
+            if isinstance(node, (RstNode, RstFormatNode, MarkdownNode, MarkdownFormatNode)):
                 markdown = node.to_markdown()
                 cell = nbv4.new_markdown_cell(markdown)
             elif isinstance(node, CodeNode):
@@ -440,13 +434,41 @@ class Document:
                 cell = nbv4.new_code_cell(code)
                 for output in node.outputs:
                     cell.outputs.append(output.node)
+            elif isinstance(node, OutputNode):
+                pass
             elif last_cell is not None and isinstance(node, ImageNode):
                 node = node.to_node()
                 if node is not None:
                     last_cell.outputs.append(node)
-            if cell is not None:
-                notebook.cells.append(cell)
-                last_cell = cell
+            elif isinstance(node, LiteralNode):
+                markdown = '```\n'
+                markdown += node.to_markdown()
+                markdown += '```\n'
+                cell = nbv4.new_markdown_cell(markdown)
+            elif isinstance(node, FigureNode):
+                cell = []
+                for child in node.iter_on_childs():
+                    # skip LitteralIncludeMarkups.GetthecodeNode
+                    if isinstance(child, (LiteralIncludeNode, TableFigureNode)):
+                        markdown = child.to_markdown()
+                        _ = nbv4.new_markdown_cell(markdown)
+                        cell.append(_)
+                    elif isinstance(child, SaveFigureNode):
+                        pass
+                    elif isinstance(child, ImageNode):
+                        _ = child.to_cell()
+                        if _ is not None:
+                            cell.append(_)
+                    else:
+                        self._logger.info("Unsupported figure child node type {}".format(type(node)))
+            else:
+                self._logger.info("Unsupported node type {}".format(type(node)))
+            if cell:
+                if not isinstance(cell, list):
+                    last_cell = cell
+                    cell = [cell]
+                for _ in cell:
+                    notebook.cells.append(_)
 
         path = self._topic.join_rst_path(self.nb_filename)
         self._logger.info("\nCreate Notebook file {}".format(path))
