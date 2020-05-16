@@ -50,7 +50,7 @@ def save_figure(figure, figure_path):
         format=figure_format,
         dpi=150,
         orientation='landscape', papertype='a4',
-        transparent=True, frameon=False,
+        transparent=True, facecolor=None,
     )
 
 
