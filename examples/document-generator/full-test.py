@@ -43,6 +43,10 @@ foo = 1
 #r#
 #r#     I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
 
+#m# Format Markdown content with current locals dictionary using @@<<@@...@@>>@@ instead of {...}.
+#m#
+#m# $$I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)$$
+
 # Add Python code as a literal block
 #l# for x in ():
 #l#   1 / 0 / 0
@@ -95,7 +99,7 @@ N = 2
 x = np.arange(-N, N, 0.5)
 y = np.arange(-N, N, 0.5)
 xx, yy = np.meshgrid(x, y, sparse=True)
-z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2)
+z = np.sin(xx**2 + yy**2) / (xx**2 + yy**2 + .1)
 #f# export('z', grid_size='x.shape[0]')
 #f# table(z, str_format='{:.1f}')
 #f# table('z', columns=[chr(ord('A') + i) for i in range(grid_size)], str_format='{:.3f}')
