@@ -22,12 +22,9 @@
 
 ####################################################################################################
 
-import glob
-import os
 import sys
 
-from setuptools import setup, find_packages
-setuptools_available = True
+from setuptools import setup
 
 ####################################################################################################
 
@@ -35,51 +32,7 @@ if sys.version_info < (3,):
     print('Pyterate requires Python 3', file=sys.stderr)
     sys.exit(1)
 
-exec(compile(open('setup_data.py').read(), 'setup_data.py', 'exec'))
-
 ####################################################################################################
 
-def read_requirement():
-    return [requirement.strip() for requirement in open('requirements.txt').readlines()]
-
-####################################################################################################
-
-def glob_templates(*args):
-    path = os.path.join(*args)
-    return [os.path.relpath(x, path)
-            for x in glob.glob(os.path.join(path, 'templates', '*jinja2'))]
-
-####################################################################################################
-
-setup_dict.update(dict(
-    # include_package_data=True, # Look in MANIFEST.in
-    packages=find_packages(exclude=['unit-test']),
-    scripts=glob.glob('bin/*'),
-    package_data={
-        'Pyterate.Config': ['logging.yml'],
-        'Pyterate.ApiRstFactory': glob_templates('Pyterate', 'ApiRstFactory'),
-        'Pyterate.RstFactory': glob_templates('Pyterate', 'RstFactory'),
-    },
-
-    platforms='any',
-    zip_safe=False, # due to data files
-
-    # cf. http://pypi.python.org/pypi?%3Aaction=list_classifiers
-    classifiers=[
-        'Development Status :: 5 - Production/Stable',
-        'Framework :: Sphinx :: Extension',
-        'Intended Audience :: Developers',
-        'Intended Audience :: Education',
-        'Intended Audience :: Science/Research',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.4',
-        'Topic :: Software Development :: Documentation',
-        ],
-
-    install_requires=read_requirement(),
-))
-
-####################################################################################################
-
+from setup_data import setup_dict
 setup(**setup_dict)
