@@ -58,21 +58,17 @@ class FigureNode(Node):
     ##############################################
 
     def __init__(self, document):
-
         super().__init__(document)
-
         self._childs = []
 
     ##############################################
 
     def append_child(self, child):
-
         self._childs.append(child)
 
     ##############################################
 
     def iter_on_childs(self):
-
         return iter(self._childs)
 
 ####################################################################################################
@@ -91,7 +87,6 @@ class RstNode(TextNode):
     ##############################################
 
     def to_rst_format_node(self):
-
         return RstFormatNode(self)
 
 ####################################################################################################
@@ -134,7 +129,6 @@ class MarkdownNode(TextNode):
     ##############################################
 
     # def to_rst_format_node(self):
-    #
     #     return RstFormatNode(self)
 
 ####################################################################################################
@@ -144,17 +138,13 @@ class RstFormatNode(ExecutedNode):
     ##############################################
 
     def __init__(self, rst_node):
-
         super().__init__(rst_node.document)
-
         self._lines = rst_node._lines
 
     ##############################################
 
     def to_rst(self):
-
         # Fixmes: more than one output
-
         return str(self.outputs[0]) + '\n'
 
     ##############################################
@@ -239,9 +229,7 @@ class InteractiveLineCodeNode(CodeNode):
     ##############################################
 
     def __init__(self, document, line):
-
         super().__init__(document)
-
         self.append(line)
 
     ##############################################
@@ -268,7 +256,6 @@ class HiddenCodeNode(CodeNode):
     ##############################################
 
     def to_rst(self):
-
         return ''
 
 ####################################################################################################
