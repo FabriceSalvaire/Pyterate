@@ -54,14 +54,12 @@ class ParseError(Exception):
     ##############################################
 
     def __init__(self, message, line):
-
         self._message = message
         self._line = line
 
     ##############################################
 
     def __repr__(self):
-
         return "{0.message} on line\n{0._line}".format(self)
 
 ####################################################################################################
@@ -187,7 +185,6 @@ class Document:
 
     @property
     def rst_timestamp(self):
-
         if os.path.exists(self._rst_path):
             return timestamp(self._rst_path)
         else:
@@ -423,7 +420,7 @@ class Document:
 
     def make_notebook(self):
 
-        """Generate the notebook file."""
+        """Generate a notebook file."""
 
         notebook = nbv4.new_notebook()
 
