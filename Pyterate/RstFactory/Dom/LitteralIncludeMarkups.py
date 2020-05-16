@@ -47,14 +47,12 @@ class LiteralIncludeNode(Node):
     ##############################################
 
     def __init__(self, document, include_path):
-
         super().__init__(document)
         self._include_filename = document.symlink_source(Path(include_path))
 
     ##############################################
 
     def to_rst(self):
-
         return self.directive(
             'literalinclude',
             args=(self._include_filename,),
@@ -71,7 +69,6 @@ class GetthecodeNode(LiteralIncludeNode):
     ##############################################
 
     def to_rst(self):
-
         return self.directive(
             'getthecode',
             args=(self._include_filename,),
