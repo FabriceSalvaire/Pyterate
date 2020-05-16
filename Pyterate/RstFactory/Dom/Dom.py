@@ -189,7 +189,7 @@ class Node(metaclass=MarkupRegistry):
 
     def to_markdown(self):
 
-        return convert_markup(self.to_rst(), from_format='rst', to_format='md')
+        return convert_markup(self.to_rst(), from_format='rst', to_format='markdown_strict')
 
 ####################################################################################################
 
