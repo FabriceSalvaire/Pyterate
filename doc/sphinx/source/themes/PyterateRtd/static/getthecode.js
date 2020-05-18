@@ -26,5 +26,5 @@ $(document).ready(function() {
     });
 
     // Add icon to download link
-    $('li.getthecode-filename-link > a').append('<i class="fa fa-download" aria-hidden="true"></i>');
+    // $('li.getthecode-filename-link > a').append(' <i class="fa fa-download" aria-hidden="true"></i>');
 });
