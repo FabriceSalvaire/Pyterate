@@ -1,0 +1,14 @@
+
+=========
+ Scripts
+=========
+
+.. toctree::
+    Scripts/circuit_macros_generator
+    Scripts/format_rst_table
+    Scripts/pyterate
+    Scripts/pyterate_rst_api
+
+.. automodule:: Pyterate.Scripts
+   :members:
+   :show-inheritance:

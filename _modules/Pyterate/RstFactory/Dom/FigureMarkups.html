@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.FigureMarkups &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.Dom.FigureMarkups &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -270,16 +276,18 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s1">&#39;ExternalFigureNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;ImageNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;LocaleFigureNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;SaveFigureNode&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">####################################################################################################</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">base64</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
@@ -288,20 +296,22 @@
 
 <span class="c1">####################################################################################################</span>
 
-<span class="c1"># _module_logger = logging.getLogger(__name__)</span>
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="k">class</span> <span class="nc">ImageNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+<div class="viewcode-block" id="ImageNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.ImageNode">[docs]</a><span class="k">class</span> <span class="nc">ImageNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;ImageNode&#39;</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_document</span> <span class="o">=</span> <span class="n">document</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_scale</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -333,16 +343,22 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">to_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_base64</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="n">image_base64</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">())</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="n">image_base64</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">encodebytes</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="n">image_base64</span> <span class="o">=</span> <span class="n">image_base64</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">)</span>
+            <span class="c1"># image_base64 = image_base64.replace(&#39;\n&#39;, &#39;&#39;)</span>
 
         <span class="k">return</span> <span class="n">image_base64</span>
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">to_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">to_output_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="c1"># Using attachments</span>
         <span class="c1">#</span>
@@ -370,10 +386,53 @@
         <span class="c1">#</span>
         <span class="c1"># ![svg image](data:image/svg+xml,URL_ENCODED_SVG]</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_output</span><span class="p">(</span><span class="s1">&#39;display_data&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;image/png&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_base64</span><span class="p">()})</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.png&#39;</span><span class="p">:</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.svg&#39;</span><span class="p">:</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="s1">&#39;image/svg+xml&#39;</span>
         <span class="k">else</span><span class="p">:</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">mime_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_output</span><span class="p">(</span><span class="s1">&#39;display_data&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="n">mime_type</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_base64</span><span class="p">()})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;unsupported image format </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">))</span>
             <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.png&#39;</span><span class="p">:</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">suffix</span> <span class="o">==</span> <span class="s1">&#39;.svg&#39;</span><span class="p">:</span>
+            <span class="c1"># Fixme: Jupyter does not display SVG ???</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="s1">&#39;image/png&#39;</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;convert </span><span class="si">{}</span><span class="s1"> -&gt; </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span><span class="p">,</span> <span class="n">path</span><span class="p">))</span>
+            <span class="c1"># Fixme: require convert ...</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;convert&#39;</span><span class="p">,</span> <span class="s1">&#39;svg:&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;png:&#39;</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_absolut_path</span><span class="o">.</span><span class="n">parent</span><span class="p">),</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">mime_type</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">mime_type</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">markdown</span> <span class="o">=</span> <span class="s2">&quot;![</span><span class="si">{0}</span><span class="s2">](attachment:</span><span class="si">{0}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="n">attachments</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">):</span> <span class="p">{</span>
+                    <span class="n">mime_type</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_base64</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="n">cell</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">,</span> <span class="n">attachments</span><span class="o">=</span><span class="n">attachments</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">cell</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;unsupported image format </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">))</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
 
 <span class="c1">####################################################################################################</span>
 
@@ -382,10 +441,8 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">source_path</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_source_path</span> <span class="o">=</span> <span class="n">source_path</span> <span class="c1"># Fixme: absolut ???</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_source_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span> <span class="c1"># Fixme: absolut ???</span>
 
     <span class="c1">##############################################</span>
 
@@ -396,8 +453,7 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_source_path</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span></div>
@@ -413,9 +469,7 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
-        <span class="n">target</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">symlink_source</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
-
+        <span class="n">target</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">symlink_source</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">source</span><span class="p">))</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
@@ -429,9 +483,7 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">figure</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_figure</span> <span class="o">=</span> <span class="n">figure</span>
 
         <span class="c1"># Fixme: don&#39;t call CodeNode ctor / Mixin ?</span>
@@ -439,7 +491,6 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="s1">&#39;save_figure(</span><span class="si">{}</span><span class="s1">, &quot;</span><span class="si">{}</span><span class="s1">&quot;)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_figure</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
@@ -465,45 +516,36 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_iter_on_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_columns</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_update_column_length</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_rule</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rule_chr</span><span class="p">):</span>
-
         <span class="n">column_rule</span> <span class="o">=</span> <span class="p">[</span><span class="n">rule_chr</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">))]</span>
-
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">column_rule</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_format_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
-
         <span class="n">padded_values</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39; &#39;</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_column_length</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">))</span> <span class="o">+</span> <span class="n">value</span>
                          <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">)]</span>
-
         <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">padded_values</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_table_is_not_exported</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="c1"># Fixme: API -&gt; to figure ???</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_table_is_not_exported</span><span class="p">():</span>
             <span class="k">return</span> <span class="s1">&#39;export_value(</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_table</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -512,7 +554,6 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_exported_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="c1"># Fixme: 0 str() ???</span>
         <span class="n">json_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">result</span>
         <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">json_data</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
@@ -557,6 +598,13 @@
         <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rule</span><span class="p">(</span><span class="s1">&#39;=&#39;</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="c1"># def to_markdown(self):</span>
+    <span class="c1">#     markdown = super().to_markdown()</span>
+    <span class="c1">#     print(markdown)</span>
+    <span class="c1">#     return &#39;Table:\n&#39; + markdown</span>
 </pre></div>
 
            </div>

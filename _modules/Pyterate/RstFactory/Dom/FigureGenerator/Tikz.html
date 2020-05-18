@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.FigureGenerator.Tikz &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.Dom.FigureGenerator.Tikz &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -308,7 +314,7 @@
 
     <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make Tikz figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Make Tikz figure </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_make_figure</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
@@ -321,7 +327,7 @@
         <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span> <span class="k">as</span> <span class="n">tmp_dir</span><span class="p">:</span>
             <span class="c1"># self._logger.info(&#39;Temporary directory &#39; + tmp_dir)</span>
 
-            <span class="c1"># current_dir = os.curdir</span>
+            <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
             <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">)</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="c1"># Fixme: symlink</span>
 
@@ -331,12 +337,14 @@
                 <span class="s1">&#39;-shell-escape&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;-interaction=batchmode&#39;</span><span class="p">,</span>
                 <span class="c1"># &#39;-output-directory=&#39; + tmp_dir,</span>
-                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">),</span>
+                <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
             <span class="p">)</span>
             <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
             <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
 
-            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">)</span></div>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">)</span>
+
+            <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -1,0 +1,8 @@
+
+==========================
+ circuit_macros_generator
+==========================
+
+.. automodule:: Pyterate.Scripts.circuit_macros_generator
+   :members:
+   :show-inheritance:

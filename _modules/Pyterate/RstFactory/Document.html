@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Document &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.Document &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -269,7 +275,6 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
 
 <span class="kn">import</span> <span class="nn">nbformat</span>
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
@@ -277,17 +282,10 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="kn">from</span> <span class="nn">..Template</span> <span class="kn">import</span> <span class="n">TemplateAggregator</span>
-<span class="kn">from</span> <span class="nn">..Tools.Path</span> <span class="kn">import</span> <span class="n">remove_extension</span>
 <span class="kn">from</span> <span class="nn">..Tools.Timestamp</span> <span class="kn">import</span> <span class="n">timestamp</span>
 <span class="kn">from</span> <span class="nn">.Dom.Dom</span> <span class="kn">import</span> <span class="n">Dom</span><span class="p">,</span> <span class="n">TextNode</span>
-<span class="kn">from</span> <span class="nn">.Dom.Markups</span> <span class="kn">import</span> <span class="p">(</span>
-    <span class="n">CommentNode</span><span class="p">,</span>
-    <span class="n">RstNode</span><span class="p">,</span>
-    <span class="n">CodeNode</span><span class="p">,</span> <span class="n">InteractiveCodeNode</span><span class="p">,</span>
-    <span class="n">OutputNode</span><span class="p">,</span>
-    <span class="n">FigureNode</span>
-<span class="p">)</span>
 <span class="kn">from</span> <span class="nn">.Dom.FigureMarkups</span> <span class="kn">import</span> <span class="n">ImageNode</span><span class="p">,</span> <span class="n">ExternalFigureNode</span>
+<span class="kn">from</span> <span class="nn">.Dom.Markups</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">.Dom.Registry</span> <span class="kn">import</span> <span class="n">MarkupRegistry</span>
 <span class="kn">from</span> <span class="nn">.NodeEvaluator</span> <span class="kn">import</span> <span class="n">NodeEvaluator</span>
 
@@ -302,14 +300,12 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_message</span> <span class="o">=</span> <span class="n">message</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_line</span> <span class="o">=</span> <span class="n">line</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0.message}</span><span class="s2"> on line</span><span class="se">\n</span><span class="si">{0._line}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
@@ -326,16 +322,16 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span> <span class="o">=</span> <span class="n">topic</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span> <span class="o">=</span> <span class="n">input_file</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_basename</span> <span class="o">=</span> <span class="n">remove_extension</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_basename</span> <span class="o">=</span> <span class="n">input_file</span><span class="o">.</span><span class="n">stem</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_language</span> <span class="o">=</span> <span class="n">language</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">input_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_is_link</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">islink</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="c1"># input path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_link</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">is_symlink</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span> <span class="c1"># input path</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_link</span><span class="p">:</span>
             <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">relative_input_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span> <span class="o">=</span> <span class="n">remove_extension</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.rst&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;.rst&#39;</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rst_filename</span><span class="p">)</span>
 
@@ -383,7 +379,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rst_inner_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">relpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">rst_path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">rst_path</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">dom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -435,8 +431,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">rst_timestamp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">return</span> <span class="n">timestamp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_rst_path</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
@@ -451,7 +446,7 @@
 
     <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Run document &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Run document </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">))</span>
         <span class="n">node_evaluator</span> <span class="o">=</span> <span class="n">NodeEvaluator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_language</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">node_evaluator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to run document </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">))</span>
@@ -462,15 +457,15 @@
     <span class="k">def</span> <span class="nf">symlink_source</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">source_path</span><span class="p">):</span>
 
         <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span>
-        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">source_path</span><span class="p">)</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="n">source_path</span><span class="o">.</span><span class="n">name</span>
         <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="n">basename</span><span class="p">)</span>
 
         <span class="c1"># Fixme: too early check</span>
-        <span class="c1"># if not os.path.exists(source_path):</span>
+        <span class="c1"># if not source_path.exists():</span>
         <span class="c1">#     raise NameError(&quot;File {} doesn&#39;t exist, cannot create a symlink to {}&quot;.format(source_path, target))</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">target</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">target</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">target</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">basename</span>
 
@@ -614,7 +609,7 @@
                         <span class="k">raise</span> <span class="ne">NameError</span><span class="p">(</span><span class="s1">&#39;Previous node must be code&#39;</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">TextNode</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">has_format</span><span class="p">():</span>
-                        <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_rst_format_node</span><span class="p">()</span>
+                        <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_format_node</span><span class="p">()</span>
                 <span class="n">dom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">dom</span>
@@ -644,8 +639,8 @@
 
         <span class="c1"># place the input file in the rst path</span>
         <span class="n">link_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">link_path</span><span class="p">):</span>
-            <span class="n">os</span><span class="o">.</span><span class="n">symlink</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,</span> <span class="n">link_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">link_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+            <span class="n">link_path</span><span class="o">.</span><span class="n">symlink_to</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">)</span>
 
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;input_file&#39;</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">_input_file</span><span class="p">,</span>
@@ -671,7 +666,10 @@
 
 <div class="viewcode-block" id="Document.make_notebook"><a class="viewcode-back" href="../../../api/Pyterate/RstFactory/Document.html#Pyterate.RstFactory.Document.Document.make_notebook">[docs]</a>    <span class="k">def</span> <span class="nf">make_notebook</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="sd">&quot;&quot;&quot;Generate the notebook file.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Generate a notebook file.</span>
+
+<span class="sd">        https://nbformat.readthedocs.io/en/latest</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">notebook</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_notebook</span><span class="p">()</span>
 
@@ -679,23 +677,18 @@
 
         <span class="n">last_cell</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span><span class="p">:</span>
-            <span class="n">cell</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="c1"># Fixme: complete</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">RstNode</span><span class="p">):</span>
-                <span class="n">markdown</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
-                <span class="n">cell</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">CodeNode</span><span class="p">):</span>
-                <span class="n">code</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_code</span><span class="p">()</span>
-                <span class="n">cell</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_code_cell</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
-                <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
-                    <span class="n">cell</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">last_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ImageNode</span><span class="p">):</span>
-                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_node</span><span class="p">()</span>
-                <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">last_cell</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">notebook</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
-                <span class="n">last_cell</span> <span class="o">=</span> <span class="n">cell</span>
+            <span class="k">if</span> <span class="n">last_cell</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ImageNode</span><span class="p">):</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_output_cell</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">last_cell</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cell</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">to_cell</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">cell</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">cell</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">last_cell</span> <span class="o">=</span> <span class="n">cell</span>
+                        <span class="n">cell</span> <span class="o">=</span> <span class="p">[</span><span class="n">cell</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">cell</span><span class="p">:</span>
+                        <span class="n">notebook</span><span class="o">.</span><span class="n">cells</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_topic</span><span class="o">.</span><span class="n">join_rst_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nb_filename</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Create Notebook file </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>

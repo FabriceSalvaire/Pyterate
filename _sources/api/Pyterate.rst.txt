@@ -9,6 +9,7 @@
     Pyterate/Jupyter
     Pyterate/Logging
     Pyterate/RstFactory
+    Pyterate/Scripts
     Pyterate/Template
     Pyterate/Tools
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.Markups &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.Dom.Markups &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -276,8 +282,10 @@
     <span class="s1">&#39;HiddenCodeNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;InteractiveCodeNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;LiteralNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MarkdownFormatNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;MarkdownNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;OutputNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;RstFormatNode&#39;</span><span class="p">,</span>
     <span class="s1">&#39;RstNode&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
@@ -285,12 +293,26 @@
 
 <span class="kn">import</span> <span class="nn">logging</span>
 
+<span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
+
 <span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="kn">import</span> <span class="n">convert_markup</span>
-<span class="kn">from</span> <span class="nn">.Dom</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">ExecutedNode</span><span class="p">,</span> <span class="n">TextNode</span>
+<span class="kn">from</span> <span class="nn">.Dom</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">ExecutedNode</span><span class="p">,</span> <span class="n">TextNode</span><span class="p">,</span> <span class="n">MarkdownCellMixin</span>
+<span class="kn">from</span> <span class="nn">.FigureMarkups</span> <span class="kn">import</span> <span class="n">ImageNode</span><span class="p">,</span> <span class="n">ExternalFigureNode</span><span class="p">,</span> <span class="n">TableFigureNode</span><span class="p">,</span> <span class="n">SaveFigureNode</span>
+<span class="kn">from</span> <span class="nn">.LitteralIncludeMarkups</span> <span class="kn">import</span> <span class="n">LiteralIncludeNode</span>
 
 <span class="c1">####################################################################################################</span>
 
 <span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<span class="k">class</span> <span class="nc">MarkdownMixin</span><span class="p">:</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># markdown_strict</span>
+        <span class="k">return</span> <span class="n">convert_markup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(),</span> <span class="n">from_format</span><span class="o">=</span><span class="s1">&#39;md&#39;</span><span class="p">,</span> <span class="n">to_format</span><span class="o">=</span><span class="s1">&#39;rst&#39;</span><span class="p">)</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -303,25 +325,45 @@
 
     <span class="n">MARKUP</span> <span class="o">=</span> <span class="s1">&#39;f&#39;</span>
 
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;FigureNode&#39;</span><span class="p">)</span>
+
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_childs</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">append_child</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">child</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_childs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">iter_on_childs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_childs</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_childs</span><span class="p">)</span></div>
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_on_childs</span><span class="p">():</span>
+            <span class="c1"># skip LitteralIncludeMarkups.GetthecodeNode</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="p">(</span><span class="n">LiteralIncludeNode</span><span class="p">,</span> <span class="n">TableFigureNode</span><span class="p">)):</span>
+                <span class="n">markdown</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
+                <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">SaveFigureNode</span><span class="p">):</span>
+                <span class="k">pass</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">ImageNode</span><span class="p">):</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_cell</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">_</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">cell</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Unsupported figure child node type </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)))</span>
+
+        <span class="k">return</span> <span class="n">cell</span></div>
 
 <span class="c1">####################################################################################################</span>
 
@@ -338,8 +380,7 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">to_rst_format_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
+    <span class="k">def</span> <span class="nf">to_format_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">RstFormatNode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
@@ -353,17 +394,24 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">if</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_lines</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
             <span class="c1"># rst = self.directive(&#39;class&#39;, args=(&#39;literal-node&#39;,)) # Don&#39;t work !</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_block_directive</span><span class="p">(</span><span class="s1">&#39;py&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="n">source</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
+            <span class="k">return</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">markdown</span> <span class="o">=</span> <span class="s1">&#39;```</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">markdown</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
+        <span class="n">markdown</span> <span class="o">+=</span> <span class="s1">&#39;```</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="MarkdownNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownNode">[docs]</a><span class="k">class</span> <span class="nc">MarkdownNode</span><span class="p">(</span><span class="n">TextNode</span><span class="p">):</span>
+<div class="viewcode-block" id="MarkdownNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownNode">[docs]</a><span class="k">class</span> <span class="nc">MarkdownNode</span><span class="p">(</span><span class="n">MarkdownMixin</span><span class="p">,</span> <span class="n">TextNode</span><span class="p">):</span>
 
     <span class="sd">&quot;&quot;&quot; This class represents a RST content. &quot;&quot;&quot;</span>
 
@@ -376,48 +424,52 @@
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">convert_markup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(),</span> <span class="n">from_format</span><span class="o">=</span><span class="s1">&#39;md&#39;</span><span class="p">,</span> <span class="n">to_format</span><span class="o">=</span><span class="s1">&#39;rst&#39;</span><span class="p">)</span></div>
-
-    <span class="c1">##############################################</span>
-
-    <span class="c1"># def to_rst_format_node(self):</span>
-    <span class="c1">#</span>
-    <span class="c1">#     return RstFormatNode(self)</span>
+    <span class="k">def</span> <span class="nf">to_format_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">MarkdownFormatNode</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="k">class</span> <span class="nc">RstFormatNode</span><span class="p">(</span><span class="n">ExecutedNode</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">FormatNode</span><span class="p">(</span><span class="n">MarkdownCellMixin</span><span class="p">,</span> <span class="n">ExecutedNode</span><span class="p">):</span>
 
     <span class="c1">##############################################</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rst_node</span><span class="p">):</span>
-
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">rst_node</span><span class="o">.</span><span class="n">document</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="n">rst_node</span><span class="o">.</span><span class="n">_lines</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-        <span class="c1"># Fixmes: more than one output</span>
-
-        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">document</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">_lines</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_code</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="n">rst</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;{{&#39;</span><span class="p">)</span> <span class="c1"># to escape them</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;}}&#39;</span><span class="p">)</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opening_format_markup</span><span class="p">,</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closing_format_markup</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">escaped_opening_format_markup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opening_format_markup</span><span class="p">)</span>
-        <span class="n">rst</span> <span class="o">=</span> <span class="n">rst</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">escaped_closing_format_markup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">closing_format_markup</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;{&#39;</span><span class="p">,</span> <span class="s1">&#39;{{&#39;</span><span class="p">)</span> <span class="c1"># to escape them</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;}&#39;</span><span class="p">,</span> <span class="s1">&#39;}}&#39;</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opening_format_markup</span><span class="p">,</span> <span class="s1">&#39;{&#39;</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">closing_format_markup</span><span class="p">,</span> <span class="s1">&#39;}&#39;</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">escaped_opening_format_markup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">opening_format_markup</span><span class="p">)</span>
+        <span class="n">txt</span> <span class="o">=</span> <span class="n">txt</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">escaped_closing_format_markup</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">closing_format_markup</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="s1">&#39;print(r&quot;&quot;&quot;&#39;</span> <span class="o">+</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;&quot;&quot;&quot;.format(**locals()))</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="k">return</span> <span class="s1">&#39;print(r&quot;&quot;&quot;&#39;</span> <span class="o">+</span> <span class="n">txt</span> <span class="o">+</span> <span class="s1">&#39;&quot;&quot;&quot;.format(**locals()))</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="RstFormatNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.RstFormatNode">[docs]</a><span class="k">class</span> <span class="nc">RstFormatNode</span><span class="p">(</span><span class="n">FormatNode</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Fixmes: more than one output</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="MarkdownFormatNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Markups.html#Pyterate.RstFactory.Dom.Markups.MarkdownFormatNode">[docs]</a><span class="k">class</span> <span class="nc">MarkdownFormatNode</span><span class="p">(</span><span class="n">MarkdownMixin</span><span class="p">,</span> <span class="n">FormatNode</span><span class="p">):</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Fixmes: more than one output</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
 
 <span class="c1">####################################################################################################</span>
 
@@ -452,7 +504,16 @@
             <span class="c1"># Fixme:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;pylab.show&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;plt.show&#39;</span><span class="p">):</span>
                 <span class="n">source</span> <span class="o">+=</span> <span class="n">line</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="k">return</span> <span class="n">source</span></div>
+        <span class="k">return</span> <span class="n">source</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_code</span><span class="p">()</span>
+        <span class="n">cell</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_code_cell</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span><span class="p">:</span>
+            <span class="n">cell</span><span class="o">.</span><span class="n">outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="o">.</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cell</span></div>
 
 <span class="c1">####################################################################################################</span>
 
@@ -487,9 +548,7 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
@@ -516,7 +575,6 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="s1">&#39;&#39;</span></div>
 
 <span class="c1">####################################################################################################</span>
@@ -546,7 +604,12 @@
             <span class="k">if</span> <span class="n">output</span><span class="o">.</span><span class="n">is_stream</span><span class="p">:</span>
                 <span class="n">rst</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">indent_output</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+        <span class="k">return</span> <span class="n">rst</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
 </pre></div>
 
            </div>

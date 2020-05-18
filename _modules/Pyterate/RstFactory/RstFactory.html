@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.RstFactory &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.RstFactory &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -272,6 +278,7 @@
 
 <span class="c1">####################################################################################################</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 
@@ -346,7 +353,7 @@
         <span class="c1"># walk top down so as to generate the subtopics first</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_topics</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">topic_path</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_settings</span><span class="o">.</span><span class="n">input_path</span><span class="p">,</span> <span class="n">topdown</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">followlinks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process_topic</span><span class="p">(</span><span class="n">topic_path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_process_topic</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">topic_path</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_document_failures</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>

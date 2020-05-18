@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.Dom &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.Dom.Dom &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -277,16 +283,18 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;Node&#39;</span><span class="p">,</span>
     <span class="s1">&#39;Dom&#39;</span><span class="p">,</span>
     <span class="s1">&#39;ExecutedNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;MarkdownCellMixin&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Node&#39;</span><span class="p">,</span>
     <span class="s1">&#39;TextNode&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">####################################################################################################</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
 <span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="kn">import</span> <span class="n">convert_markup</span>
 <span class="kn">from</span> <span class="nn">.Registry</span> <span class="kn">import</span> <span class="n">MarkupRegistry</span>
@@ -337,20 +345,17 @@
 
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">code_block_directive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lexer</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span><span class="s1">&#39;code-block&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">lexer</span><span class="p">,))</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_document</span> <span class="o">=</span> <span class="n">document</span> <span class="c1"># to pass settings ...</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="s1">&#39;&lt;</span><span class="si">{}</span><span class="s1">&gt;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
@@ -430,14 +435,17 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">return</span> <span class="s1">&#39;&#39;</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">convert_markup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_rst</span><span class="p">(),</span> <span class="n">from_format</span><span class="o">=</span><span class="s1">&#39;rst&#39;</span><span class="p">,</span> <span class="n">to_format</span><span class="o">=</span><span class="s1">&#39;markdown_strict&#39;</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">convert_markup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_rst</span><span class="p">(),</span> <span class="n">from_format</span><span class="o">=</span><span class="s1">&#39;rst&#39;</span><span class="p">,</span> <span class="n">to_format</span><span class="o">=</span><span class="s1">&#39;md&#39;</span><span class="p">)</span></div>
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <span class="c1">####################################################################################################</span>
 
@@ -446,17 +454,13 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">):</span>
-
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">outputs</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="c1"># Fixme: precompute</span>
-
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                 <span class="k">return</span> <span class="kc">True</span>
@@ -464,12 +468,21 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="TextNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Dom.html#Pyterate.RstFactory.Dom.Dom.TextNode">[docs]</a><span class="k">class</span> <span class="nc">TextNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">MarkdownCellMixin</span><span class="p">:</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="k">def</span> <span class="nf">to_cell</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">markdown</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>
+
+<span class="c1">####################################################################################################</span>
+
+<div class="viewcode-block" id="TextNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/Dom.html#Pyterate.RstFactory.Dom.Dom.TextNode">[docs]</a><span class="k">class</span> <span class="nc">TextNode</span><span class="p">(</span><span class="n">MarkdownCellMixin</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">has_format</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opening_format_markup</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="k">return</span> <span class="kc">True</span>
@@ -484,7 +497,6 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1">##############################################</span>
@@ -505,7 +517,6 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">iter_on_not_empty_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">node</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">node</span>
@@ -513,7 +524,6 @@
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">append</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
-
         <span class="c1"># self._logger.debug(repr(node))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
 
@@ -521,7 +531,6 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">last_node</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_nodes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>

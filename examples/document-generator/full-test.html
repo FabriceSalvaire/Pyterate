@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>6.1.1.1. A Restructuredtext Title &mdash; Pyterate 2.0.1 documentation</title>
+  <title>6.1.1.1. A Restructuredtext Title &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -164,14 +164,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -254,13 +260,26 @@
            <div itemprop="articleBody">
             
   <div class="getthecode">
+
 <div class="getthecode-header">
   <ul>
-  <li class="getthecode-filename">full-test.py</li>
-  <li class="getthecode-filename-link"><a href="../../downloads/c3e20896d45729b3dd37b566def9e52a/full-test.py"><span >full-test.py</span></a></li>
+    
+    <li class="getthecode-filename-link">
+      <a href="../../downloads/c3e20896d45729b3dd37b566def9e52a/full-test.py" download=full-test.py type="text/x-python" target="_blank" rel="noreferrer noopener"><span>
+        full-test.py
+        <i class="fa fa-download" aria-hidden="true"></i>
+      </span></a>
+    </li>
+
+    <li class="getthecode-notebook-link">
+      <a href="../../downloads/34e6cf279103f827176c6101e0b5fca8/full-test.ipynb" download=full-test.ipynb type="application/x-ipynb+json" target="_blank" rel="noreferrer noopener"><span>
+        full-test.ipynb
+        <i class="fa fa-download" aria-hidden="true"></i>
+      </span></a>
+    </li>
+
   </ul>
-</div>
-<div class="highlight-python3 highlight-hidden"><div class="highlight"><pre><span></span><span class="c1">#r# .. note::</span>
+</div><div class="highlight-python3 highlight-hidden"><div class="highlight"><pre><span></span><span class="c1">#r# .. note::</span>
 <span class="c1">#r#    You can see the source by clicking on the eye</span>
 
 <span class="c1"># A source code comment</span>
@@ -304,6 +323,10 @@
 <span class="c1">#r# .. math::</span>
 <span class="c1">#r#</span>
 <span class="c1">#r#     I_d = @&lt;@value@&gt;@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)</span>
+
+<span class="c1">#m# Format Markdown content with current locals dictionary using @@&lt;&lt;@@...@@&gt;&gt;@@ instead of {...}.</span>
+<span class="c1">#m#</span>
+<span class="c1">#m# $$I_d = @&lt;@value@&gt;@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)$$</span>
 
 <span class="c1"># Add Python code as a literal block</span>
 <span class="c1">#l# for x in ():</span>
@@ -357,7 +380,7 @@
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>
 <span class="c1">#f# export(&#39;z&#39;, grid_size=&#39;x.shape[0]&#39;)</span>
 <span class="c1">#f# table(z, str_format=&#39;{:.1f}&#39;)</span>
 <span class="c1">#f# table(&#39;z&#39;, columns=[chr(ord(&#39;A&#39;) + i) for i in range(grid_size)], str_format=&#39;{:.3f}&#39;)</span>
@@ -403,6 +426,10 @@
 </pre></div>
 </div>
 <p>Format RST content with current locals dictionary using &#64;&lt;&#64;…&#64;&gt;&#64; instead of {…}.</p>
+<div class="math notranslate nohighlight">
+\[I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)\]</div>
+<p>Format Markdown content with current locals dictionary using &#64;&lt;&#64;…&#64;&gt;&#64;
+instead of {…}.</p>
 <div class="math notranslate nohighlight">
 \[I_d = 369 I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)\]</div>
 <div class="highlight-py3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add Python code as a literal block</span>
@@ -458,13 +485,19 @@
 </pre></div>
 </div>
 <div class="getthecode">
+
 <div class="getthecode-header">
   <ul>
-  <li class="getthecode-filename">RingModulator.py</li>
-  <li class="getthecode-filename-link"><a href="../../downloads/3077daad189d3ca66434eb2c3fba0c91/RingModulator.py"><span >RingModulator.py</span></a></li>
+    
+    <li class="getthecode-filename-link">
+      <a href="../../downloads/3077daad189d3ca66434eb2c3fba0c91/RingModulator.py" download=RingModulator.py type="text/x-python" target="_blank" rel="noreferrer noopener"><span>
+        RingModulator.py
+        <i class="fa fa-download" aria-hidden="true"></i>
+      </span></a>
+    </li>
+
   </ul>
-</div>
-<div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1">#skip#</span>
+</div><div class="highlight-py3"><div class="highlight"><pre><span></span><span class="c1">#skip#</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -559,7 +592,7 @@
 <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">N</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
 <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sparse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">xx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="o">.</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -594,47 +627,47 @@
 </tr>
 <tr class="row-odd"><td><p>-0.2</p></td>
 <td><p>-0.0</p></td>
-<td><p>0.5</p></td>
+<td><p>0.4</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
-<td><p>0.8</p></td>
-<td><p>0.8</p></td>
-<td><p>0.5</p></td>
+<td><p>0.7</p></td>
+<td><p>0.4</p></td>
 <td><p>-0.0</p></td>
 </tr>
 <tr class="row-even"><td><p>-0.2</p></td>
 <td><p>0.2</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
-<td><p>1.0</p></td>
-<td><p>1.0</p></td>
-<td><p>1.0</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
+<td><p>0.7</p></td>
 <td><p>0.2</p></td>
 </tr>
 <tr class="row-odd"><td><p>-0.2</p></td>
 <td><p>0.3</p></td>
 <td><p>0.8</p></td>
-<td><p>1.0</p></td>
-<td><p>nan</p></td>
-<td><p>1.0</p></td>
+<td><p>0.7</p></td>
+<td><p>0.0</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
 <td><p>0.3</p></td>
 </tr>
 <tr class="row-even"><td><p>-0.2</p></td>
 <td><p>0.2</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
-<td><p>1.0</p></td>
-<td><p>1.0</p></td>
-<td><p>1.0</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
+<td><p>0.7</p></td>
 <td><p>0.2</p></td>
 </tr>
 <tr class="row-odd"><td><p>-0.2</p></td>
 <td><p>-0.0</p></td>
-<td><p>0.5</p></td>
+<td><p>0.4</p></td>
+<td><p>0.7</p></td>
 <td><p>0.8</p></td>
-<td><p>0.8</p></td>
-<td><p>0.8</p></td>
-<td><p>0.5</p></td>
+<td><p>0.7</p></td>
+<td><p>0.4</p></td>
 <td><p>-0.0</p></td>
 </tr>
 <tr class="row-even"><td><p>-0.0</p></td>
@@ -671,77 +704,77 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>0.124</p></td>
+<tr class="row-even"><td><p>0.122</p></td>
 <td><p>-0.005</p></td>
-<td><p>-0.192</p></td>
-<td><p>-0.211</p></td>
-<td><p>-0.189</p></td>
-<td><p>-0.211</p></td>
-<td><p>-0.192</p></td>
+<td><p>-0.188</p></td>
+<td><p>-0.206</p></td>
+<td><p>-0.185</p></td>
+<td><p>-0.206</p></td>
+<td><p>-0.188</p></td>
 <td><p>-0.005</p></td>
 </tr>
 <tr class="row-odd"><td><p>-0.005</p></td>
-<td><p>-0.217</p></td>
-<td><p>-0.033</p></td>
-<td><p>0.239</p></td>
-<td><p>0.346</p></td>
-<td><p>0.239</p></td>
-<td><p>-0.033</p></td>
-<td><p>-0.217</p></td>
+<td><p>-0.213</p></td>
+<td><p>-0.032</p></td>
+<td><p>0.230</p></td>
+<td><p>0.331</p></td>
+<td><p>0.230</p></td>
+<td><p>-0.032</p></td>
+<td><p>-0.213</p></td>
 </tr>
-<tr class="row-even"><td><p>-0.192</p></td>
-<td><p>-0.033</p></td>
-<td><p>0.455</p></td>
-<td><p>0.759</p></td>
-<td><p>0.841</p></td>
-<td><p>0.759</p></td>
-<td><p>0.455</p></td>
-<td><p>-0.033</p></td>
+<tr class="row-even"><td><p>-0.188</p></td>
+<td><p>-0.032</p></td>
+<td><p>0.433</p></td>
+<td><p>0.703</p></td>
+<td><p>0.765</p></td>
+<td><p>0.703</p></td>
+<td><p>0.433</p></td>
+<td><p>-0.032</p></td>
 </tr>
-<tr class="row-odd"><td><p>-0.211</p></td>
-<td><p>0.239</p></td>
-<td><p>0.759</p></td>
-<td><p>0.959</p></td>
-<td><p>0.990</p></td>
-<td><p>0.959</p></td>
-<td><p>0.759</p></td>
-<td><p>0.239</p></td>
+<tr class="row-odd"><td><p>-0.206</p></td>
+<td><p>0.230</p></td>
+<td><p>0.703</p></td>
+<td><p>0.799</p></td>
+<td><p>0.707</p></td>
+<td><p>0.799</p></td>
+<td><p>0.703</p></td>
+<td><p>0.230</p></td>
 </tr>
-<tr class="row-even"><td><p>-0.189</p></td>
-<td><p>0.346</p></td>
-<td><p>0.841</p></td>
-<td><p>0.990</p></td>
-<td><p>nan</p></td>
-<td><p>0.990</p></td>
-<td><p>0.841</p></td>
-<td><p>0.346</p></td>
+<tr class="row-even"><td><p>-0.185</p></td>
+<td><p>0.331</p></td>
+<td><p>0.765</p></td>
+<td><p>0.707</p></td>
+<td><p>0.000</p></td>
+<td><p>0.707</p></td>
+<td><p>0.765</p></td>
+<td><p>0.331</p></td>
 </tr>
-<tr class="row-odd"><td><p>-0.211</p></td>
-<td><p>0.239</p></td>
-<td><p>0.759</p></td>
-<td><p>0.959</p></td>
-<td><p>0.990</p></td>
-<td><p>0.959</p></td>
-<td><p>0.759</p></td>
-<td><p>0.239</p></td>
+<tr class="row-odd"><td><p>-0.206</p></td>
+<td><p>0.230</p></td>
+<td><p>0.703</p></td>
+<td><p>0.799</p></td>
+<td><p>0.707</p></td>
+<td><p>0.799</p></td>
+<td><p>0.703</p></td>
+<td><p>0.230</p></td>
 </tr>
-<tr class="row-even"><td><p>-0.192</p></td>
-<td><p>-0.033</p></td>
-<td><p>0.455</p></td>
-<td><p>0.759</p></td>
-<td><p>0.841</p></td>
-<td><p>0.759</p></td>
-<td><p>0.455</p></td>
-<td><p>-0.033</p></td>
+<tr class="row-even"><td><p>-0.188</p></td>
+<td><p>-0.032</p></td>
+<td><p>0.433</p></td>
+<td><p>0.703</p></td>
+<td><p>0.765</p></td>
+<td><p>0.703</p></td>
+<td><p>0.433</p></td>
+<td><p>-0.032</p></td>
 </tr>
 <tr class="row-odd"><td><p>-0.005</p></td>
-<td><p>-0.217</p></td>
-<td><p>-0.033</p></td>
-<td><p>0.239</p></td>
-<td><p>0.346</p></td>
-<td><p>0.239</p></td>
-<td><p>-0.033</p></td>
-<td><p>-0.217</p></td>
+<td><p>-0.213</p></td>
+<td><p>-0.032</p></td>
+<td><p>0.230</p></td>
+<td><p>0.331</p></td>
+<td><p>0.230</p></td>
+<td><p>-0.032</p></td>
+<td><p>-0.213</p></td>
 </tr>
 </tbody>
 </table>

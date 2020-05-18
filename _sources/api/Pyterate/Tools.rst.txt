@@ -5,7 +5,6 @@
 
 .. toctree::
     Tools/Generators
-    Tools/Path
     Tools/Timestamp
 
 .. automodule:: Pyterate.Tools

@@ -1,0 +1,8 @@
+
+==================
+ format_rst_table
+==================
+
+.. automodule:: Pyterate.Scripts.format_rst_table
+   :members:
+   :show-inheritance:

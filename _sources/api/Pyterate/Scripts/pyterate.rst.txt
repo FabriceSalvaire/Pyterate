@@ -1,0 +1,8 @@
+
+==========
+ pyterate
+==========
+
+.. automodule:: Pyterate.Scripts.pyterate
+   :members:
+   :show-inheritance:

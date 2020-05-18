@@ -27,13 +27,13 @@ To get help, use :code:`--help` option.
  Documentation Generator
 -------------------------
 
-The document generator has a similar purpose than a IPython notebook, but rather based on the
-concept of `literate programming <https://en.wikipedia.org/wiki/Literate_programming>`_.  Indeed a
-document is a true Python file that can be executed, since additional contents like texts or figures
-are embedded in comments.  Consequently the content is stored in a text file that can be easily
+The document generator has a similar purpose to that of a IPython notebook, but this one is based on
+the concept of `literate programming <https://en.wikipedia.org/wiki/Literate_programming>`_.
+Indeed, a document is a true Python file that can be executed, since additional contents like texts
+or figures are embedded in comments.  Therefore, content is stored in a text file that can be easily
 edited in a text editor, while a IPython notebook is a JSON file designed for a Web editor/viewer
 application.  Both solutions can generate HTML files, but this one is more suited to generate a
-static documentation, while a IPython Notebook permits to modify the content in live.  In fact both
+static documentation, while a IPython Notebook allows to modify the content in live.  In fact, both
 approaches are complementary.
 
 The program *pyterate* walks recursively through a directory, *examples* by default,
@@ -141,18 +141,18 @@ called directive comments:
  * ``#o#`` instructs to include the sdtout of the previous Python code chunk,
  * ``#l#`` instructs to add Python code as a literal block,
 
-The generator provides a more sophisticated way to embed computations in the RST documentation using
-the Python string :func:`format` function. You just have to use the *@<@...@>@* syntax instead of
-*{...}*, then the RST string will be formatted using the current locals dictionary as parameter to
-:func:`format`.  Note you can use hidden Python code to prepare data for this purpose.
+The generator provides a more sophisticated way to embed computations in RST/Markdown documentation
+using the Python string :func:`format` function. You just have to use the *@<@...@>@* syntax instead
+of *{...}*, then the RST/Markdown string will be formatted using the current locals dictionary as
+parameter to :func:`format`.  Note you can use hidden Python code to prepare data for this purpose.
 
 You can get the effect of ``#o#`` for each line of a code block by surrounding the code with ``#<i#``
 and ``#i>#``.
 
-You can protect a code block against exception by surrounding the code with ``#<e#`` and ``#e>#``.
+You can protect a code block against exceptions by surrounding the code with ``#<e#`` and ``#e>#``.
 
-You can execute codes in the generator side with the special markup ``#f#``, this feature permits to
-extend Pyterate with custom code.
+You can execute codes in the generator side with the special markup ``#f#``, this powerful feature
+permits to extend Pyterate with custom codes.
 
 The documentation generator will do these actions for each file:
 

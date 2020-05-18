@@ -1,0 +1,8 @@
+
+==================
+ pyterate_rst_api
+==================
+
+.. automodule:: Pyterate.Scripts.pyterate_rst_api
+   :members:
+   :show-inheritance:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros &mdash; Pyterate 2.0.1 documentation</title>
+  <title>Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -162,14 +162,20 @@
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -268,6 +274,7 @@
 
 <span class="c1">####################################################################################################</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
@@ -278,8 +285,7 @@
 
 <span class="c1">####################################################################################################</span>
 
-<span class="c1"># home_path = os.getenv(&#39;HOME&#39;) # Unix only</span>
-<span class="n">CIRCUIT_MACROS_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~&#39;</span><span class="p">),</span> <span class="s1">&#39;texmf&#39;</span><span class="p">,</span> <span class="s1">&#39;Circuit_macros&#39;</span><span class="p">)</span>
+<span class="n">CIRCUIT_MACROS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;texmf&#39;</span><span class="p">,</span> <span class="s1">&#39;Circuit_macros&#39;</span><span class="p">)</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -292,6 +298,15 @@
     <span class="sd">&quot;&quot;&quot; This class represents an image block for a circuit macros figure. &quot;&quot;&quot;</span>
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;circuit_macros&#39;</span>
+
+    <span class="n">_PICTURE_TEX_HEADER</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    \documentclass[11pt]</span><span class="si">{article}</span><span class="s1"></span>
+<span class="s1">    \usepackage</span><span class="si">{tikz}</span><span class="s1"></span>
+<span class="s1">    \usetikzlibrary</span><span class="si">{external}</span><span class="s1"></span>
+<span class="s1">    \tikzexternalize</span>
+<span class="s1">    \pagestyle</span><span class="si">{empty}</span><span class="s1"></span>
+<span class="s1">    \begin</span><span class="si">{document}</span><span class="s1"></span>
+<span class="s1">&#39;&#39;&#39;</span>
 
     <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;CircuitMacrosImage&#39;</span><span class="p">)</span>
 
@@ -308,7 +323,7 @@
 
     <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make circuit macros figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Make circuit macros figure </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_make_figure</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
@@ -331,24 +346,15 @@
 
         <span class="c1"># Generate LaTeX file</span>
 
-        <span class="n">picture_tex_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;picture.tex&#39;</span><span class="p">)</span>
-
-        <span class="n">picture_tex_header</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
-<span class="s1">    \documentclass[11pt]</span><span class="si">{article}</span><span class="s1"></span>
-<span class="s1">    \usepackage</span><span class="si">{tikz}</span><span class="s1"></span>
-<span class="s1">    \usetikzlibrary</span><span class="si">{external}</span><span class="s1"></span>
-<span class="s1">    \tikzexternalize</span>
-<span class="s1">    \pagestyle</span><span class="si">{empty}</span><span class="s1"></span>
-<span class="s1">    \begin</span><span class="si">{document}</span><span class="s1"></span>
-<span class="s1">&#39;&#39;&#39;</span>
+        <span class="n">picture_tex_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;picture.tex&#39;</span><span class="p">)</span>
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">picture_tex_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">picture_tex_header</span><span class="p">)</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_PICTURE_TEX_HEADER</span><span class="p">)</span>
 
             <span class="c1"># Run dpic in pgf mode</span>
             <span class="n">m4_command</span> <span class="o">=</span> <span class="p">(</span>
                 <span class="s1">&#39;m4&#39;</span><span class="p">,</span>
-                <span class="s1">&#39;-I&#39;</span> <span class="o">+</span> <span class="n">circuit_macros_path</span><span class="p">,</span>
+                <span class="s1">&#39;-I&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">circuit_macros_path</span><span class="p">),</span>
                 <span class="s1">&#39;pgf.m4&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;libcct.m4&#39;</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">,</span>
@@ -372,7 +378,7 @@
 
         <span class="c1"># Run LaTeX to generate PDF</span>
 
-        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">curdir</span>
+        <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">latex_command</span> <span class="o">=</span> <span class="p">(</span>
             <span class="s1">&#39;pdflatex&#39;</span><span class="p">,</span>
@@ -383,13 +389,13 @@
         <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">latex_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
 
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
-        <span class="n">basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">pdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_path</span><span class="p">,</span> <span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
-        <span class="n">png_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dst_path</span><span class="p">,</span> <span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
+        <span class="n">basename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="o">.</span><span class="n">stem</span>
+        <span class="n">pdf_path</span> <span class="o">=</span> <span class="n">dst_path</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.pdf&#39;</span><span class="p">)</span>
+        <span class="n">png_path</span> <span class="o">=</span> <span class="n">dst_path</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">basename</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generate &#39;</span> <span class="o">+</span> <span class="n">png_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Generate </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">png_path</span><span class="p">))</span>
         <span class="c1"># print(&#39;Generate &#39; + png_path)</span>
-        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;picture-figure0.pdf&#39;</span><span class="p">),</span> <span class="n">pdf_path</span><span class="p">)</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;picture-figure0.pdf&#39;</span><span class="p">),</span> <span class="n">pdf_path</span><span class="p">)</span>
 
         <span class="c1"># Convert PDF to PNG</span>
 
@@ -405,12 +411,13 @@
             <span class="s1">&#39;-A&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span>
             <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;resolution=300&#39;</span><span class="p">,</span> <span class="c1"># ,colorspace=rgb,alpha</span>
             <span class="s1">&#39;-F&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="n">png_path</span><span class="p">,</span>
-            <span class="n">pdf_path</span><span class="p">,</span>
+            <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">png_path</span><span class="p">),</span>
+            <span class="nb">str</span><span class="p">(</span><span class="n">pdf_path</span><span class="p">),</span>
             <span class="s1">&#39;1&#39;</span>
         <span class="p">)</span>
         <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">mutool_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">png_path</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.png&#39;</span><span class="p">,</span> <span class="s1">&#39;1.png&#39;</span><span class="p">),</span> <span class="n">png_path</span><span class="p">)</span></div>
+        <span class="n">output_png_path</span> <span class="o">=</span> <span class="n">png_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">png_path</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;1.png&#39;</span><span class="p">)</span>
+        <span class="n">output_png_path</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">png_path</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

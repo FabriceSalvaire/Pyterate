@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. User Guide &mdash; Pyterate 2.0.1 documentation</title>
+  <title>5. User Guide &mdash; Pyterate 2.1.0 documentation</title>
   
 
   
@@ -62,7 +62,7 @@
             
             
               <div class="version">
-                2.0
+                2.1
               </div>
             
           
@@ -164,14 +164,20 @@
 <li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Template.html">8.1.6. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Template/Filters.html">8.1.6.1. Filters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Tools.html">8.1.7. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Generators.html">8.1.7.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Path.html">8.1.7.2. Path</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Timestamp.html">8.1.7.3. Timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Template.html">8.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -266,13 +272,13 @@
 </div>
 <div class="section" id="documentation-generator">
 <h2><span class="section-number">5.2. </span>Documentation Generator<a class="headerlink" href="#documentation-generator" title="Permalink to this headline">¶</a></h2>
-<p>The document generator has a similar purpose than a IPython notebook, but rather based on the
-concept of <a class="reference external" href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a>.  Indeed a
-document is a true Python file that can be executed, since additional contents like texts or figures
-are embedded in comments.  Consequently the content is stored in a text file that can be easily
+<p>The document generator has a similar purpose to that of a IPython notebook, but this one is based on
+the concept of <a class="reference external" href="https://en.wikipedia.org/wiki/Literate_programming">literate programming</a>.
+Indeed, a document is a true Python file that can be executed, since additional contents like texts
+or figures are embedded in comments.  Therefore, content is stored in a text file that can be easily
 edited in a text editor, while a IPython notebook is a JSON file designed for a Web editor/viewer
 application.  Both solutions can generate HTML files, but this one is more suited to generate a
-static documentation, while a IPython Notebook permits to modify the content in live.  In fact both
+static documentation, while a IPython Notebook allows to modify the content in live.  In fact, both
 approaches are complementary.</p>
 <p>The program <em>pyterate</em> walks recursively through a directory, <em>examples</em> by default,
 and processes each Python file.  To skip a file, add <code class="code docutils literal notranslate"><span class="pre">#skip</span></code> at the first or second line of
@@ -380,15 +386,15 @@ called directive comments:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">#l#</span></code> instructs to add Python code as a literal block,</p></li>
 </ul>
 </div></blockquote>
-<p>The generator provides a more sophisticated way to embed computations in the RST documentation using
-the Python string <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> function. You just have to use the <em>&#64;&lt;&#64;…&#64;&gt;&#64;</em> syntax instead of
-<em>{…}</em>, then the RST string will be formatted using the current locals dictionary as parameter to
-<a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a>.  Note you can use hidden Python code to prepare data for this purpose.</p>
+<p>The generator provides a more sophisticated way to embed computations in RST/Markdown documentation
+using the Python string <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> function. You just have to use the <em>&#64;&lt;&#64;…&#64;&gt;&#64;</em> syntax instead
+of <em>{…}</em>, then the RST/Markdown string will be formatted using the current locals dictionary as
+parameter to <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a>.  Note you can use hidden Python code to prepare data for this purpose.</p>
 <p>You can get the effect of <code class="docutils literal notranslate"><span class="pre">#o#</span></code> for each line of a code block by surrounding the code with <code class="docutils literal notranslate"><span class="pre">#&lt;i#</span></code>
 and <code class="docutils literal notranslate"><span class="pre">#i&gt;#</span></code>.</p>
-<p>You can protect a code block against exception by surrounding the code with <code class="docutils literal notranslate"><span class="pre">#&lt;e#</span></code> and <code class="docutils literal notranslate"><span class="pre">#e&gt;#</span></code>.</p>
-<p>You can execute codes in the generator side with the special markup <code class="docutils literal notranslate"><span class="pre">#f#</span></code>, this feature permits to
-extend Pyterate with custom code.</p>
+<p>You can protect a code block against exceptions by surrounding the code with <code class="docutils literal notranslate"><span class="pre">#&lt;e#</span></code> and <code class="docutils literal notranslate"><span class="pre">#e&gt;#</span></code>.</p>
+<p>You can execute codes in the generator side with the special markup <code class="docutils literal notranslate"><span class="pre">#f#</span></code>, this powerful feature
+permits to extend Pyterate with custom codes.</p>
 <p>The documentation generator will do these actions for each file:</p>
 <blockquote>
 <div><ul class="simple">
