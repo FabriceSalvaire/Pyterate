@@ -73,7 +73,7 @@ class TikzNode(ExternalFigureNode):
         with tempfile.TemporaryDirectory() as tmp_dir:
             # self._logger.info('Temporary directory ' + tmp_dir)
 
-            # current_dir = os.curdir
+            current_dir = os.getcwd()
             os.chdir(tmp_dir)
             shutil.copy(self.source_path, '.') # Fixme: symlink
 
@@ -89,3 +89,5 @@ class TikzNode(ExternalFigureNode):
             subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
 
             shutil.copy(self.path, self.absolut_path)
+
+            os.chdir(current_dir)

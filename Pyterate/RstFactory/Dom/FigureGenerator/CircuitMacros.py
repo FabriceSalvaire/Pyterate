@@ -45,6 +45,15 @@ class CircuitMacrosNode(ExternalFigureNode):
 
     COMMAND = 'circuit_macros'
 
+    _PICTURE_TEX_HEADER = r'''
+    \documentclass[11pt]{article}
+    \usepackage{tikz}
+    \usetikzlibrary{external}
+    \tikzexternalize
+    \pagestyle{empty}
+    \begin{document}
+'''
+
     _logger = _module_logger.getChild('CircuitMacrosImage')
 
     ##############################################
@@ -85,17 +94,8 @@ class CircuitMacrosNode(ExternalFigureNode):
 
         picture_tex_path = Path(tmp_dir.name).joinpath('picture.tex')
 
-        picture_tex_header = r'''
-    \documentclass[11pt]{article}
-    \usepackage{tikz}
-    \usetikzlibrary{external}
-    \tikzexternalize
-    \pagestyle{empty}
-    \begin{document}
-'''
-
         with open(picture_tex_path, 'w') as f:
-            f.write(picture_tex_header)
+            f.write(self._PICTURE_TEX_HEADER)
 
             # Run dpic in pgf mode
             m4_command = (
@@ -124,7 +124,7 @@ class CircuitMacrosNode(ExternalFigureNode):
 
         # Run LaTeX to generate PDF
 
-        current_dir = os.curdir
+        current_dir = os.getcwd()
         os.chdir(tmp_dir.name)
         latex_command = (
             'pdflatex',
