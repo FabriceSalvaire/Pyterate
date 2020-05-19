@@ -31,7 +31,13 @@ from ..FigureMarkups import ExternalFigureNode
 
 ####################################################################################################
 
+# http://ece.uwaterloo.ca/~aplevich/Circuit_macros
 CIRCUIT_MACROS_PATH = Path.home().joinpath('texmf', 'Circuit_macros')
+
+LATEX_COMMAND = 'pdflatex'
+
+# https://mupdf.com/docs/manual-mutool-convert.html
+MUTOOL_COMMAND = 'mutool'
 
 ####################################################################################################
 
@@ -41,7 +47,15 @@ _module_logger = logging.getLogger(__name__)
 
 class CircuitMacrosNode(ExternalFigureNode):
 
-    """ This class represents an image block for a circuit macros figure. """
+    """This class represents an image block for a Circuit_macros figure.
+
+    Pyterate requires the following dependencies to generate Circuit_Macros figures:
+
+      * http://ece.uwaterloo.ca/~aplevich/Circuit_macros
+      * pdflatex
+      * https://mupdf.com/docs/manual-mutool-convert.html
+
+    """
 
     COMMAND = 'circuit_macros'
 
@@ -52,7 +66,7 @@ class CircuitMacrosNode(ExternalFigureNode):
     \tikzexternalize
     \pagestyle{empty}
     \begin{document}
-'''
+    '''
 
     _logger = _module_logger.getChild('CircuitMacrosImage')
 
@@ -60,7 +74,8 @@ class CircuitMacrosNode(ExternalFigureNode):
 
     def __init__(self, document, m4_filename, **kwargs):
 
-        figure_path = m4_filename.replace('.m4', '.png')
+        m4_filename = Path(m4_filename)
+        figure_path = m4_filename.parent.joinpath(m4_filename.stem + '.png')
         source_path = document.topic.join_path('m4', m4_filename) # Fixme: m4 directory ???
 
         super().__init__(document, source_path, figure_path, **kwargs)
@@ -78,9 +93,9 @@ class CircuitMacrosNode(ExternalFigureNode):
     ##############################################
 
     def _make_figure(self,
-                  # density=300,
-                  # transparent='white',
-                  circuit_macros_path=CIRCUIT_MACROS_PATH):
+                     # density=300,
+                     # transparent='white',
+                     circuit_macros_path=CIRCUIT_MACROS_PATH):
 
         dst_path = self.document.topic_rst_path
 
@@ -88,6 +103,7 @@ class CircuitMacrosNode(ExternalFigureNode):
         tmp_dir = tempfile.TemporaryDirectory()
         self._logger.info('Temporary directory ' + tmp_dir.name)
 
+        # Fixme: Posix only
         dev_null = open(os.devnull, 'w')
 
         # Generate LaTeX file
@@ -107,13 +123,17 @@ class CircuitMacrosNode(ExternalFigureNode):
             )
             dpic_command = ('dpic', '-g')
 
-            m4_process = subprocess.Popen(m4_command,
-                                          #shell=True,
-                                          stdout=subprocess.PIPE)
-            dpic_process = subprocess.Popen(dpic_command,
-                                            #shell=True,
-                                            stdin=m4_process.stdout,
-                                            stdout=subprocess.PIPE)
+            m4_process = subprocess.Popen(
+                m4_command,
+                #shell=True,
+                stdout=subprocess.PIPE,
+            )
+            dpic_process = subprocess.Popen(
+                dpic_command,
+                #shell=True,
+                stdin=m4_process.stdout,
+                stdout=subprocess.PIPE,
+            )
             m4_process.stdout.close()
             dpic_rc = dpic_process.wait()
             if dpic_rc:
@@ -127,7 +147,7 @@ class CircuitMacrosNode(ExternalFigureNode):
         current_dir = os.getcwd()
         os.chdir(tmp_dir.name)
         latex_command = (
-            'pdflatex',
+            LATEX_COMMAND,
             '-shell-escape',
             # '-output-directory=' + tmp_dir.name,
             'picture.tex',
@@ -152,7 +172,7 @@ class CircuitMacrosNode(ExternalFigureNode):
         #                       stdout=dev_null, stderr=subprocess.STDOUT)
 
         mutool_command = (
-            'mutool',
+            MUTOOL_COMMAND,
             'convert',
             '-A', '8',
             '-O', 'resolution=300', # ,colorspace=rgb,alpha

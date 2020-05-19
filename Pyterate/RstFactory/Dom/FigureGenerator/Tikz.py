@@ -20,6 +20,7 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import logging
 import os
 import shutil
@@ -45,13 +46,14 @@ class TikzNode(ExternalFigureNode):
 
     COMMAND = 'tikz'
 
-    _logger = _module_logger.getChild('TikzImage')
+    _logger = _module_logger.getChild('TikzNode')
 
     ##############################################
 
     def __init__(self, document, tex_filename, **kwargs):
 
-        figure_path = tex_filename.replace('.tex', '.svg')
+        tex_filename = Path(tex_filename)
+        figure_path = tex_filename.parent.joinpath(tex_filename.stem + '.svg') # Fixme: monkey patch pathlib ?
         source_path = document.topic.join_path('tex', tex_filename) # Fixme: tex directory ???
 
         super().__init__(document, source_path, figure_path, **kwargs)
@@ -75,6 +77,7 @@ class TikzNode(ExternalFigureNode):
 
             current_dir = os.getcwd()
             os.chdir(tmp_dir)
+
             shutil.copy(self.source_path, '.') # Fixme: symlink
 
             # Run LaTeX to generate PDF

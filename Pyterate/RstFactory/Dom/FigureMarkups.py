@@ -48,6 +48,17 @@ _module_logger = logging.getLogger(__name__)
 
 class ImageNode(Node):
 
+    """Class to implement an image node.
+
+    Accept these image reST arguments:
+
+      * scale
+      * with
+      * height
+      * align
+
+    """
+
     COMMAND = None
 
     _logger = _module_logger.getChild('ImageNode')
@@ -80,7 +91,7 @@ class ImageNode(Node):
     def to_rst(self):
 
         args = (self._path,)
-        kwargs = dict(align='center')
+        kwargs = dict(align='center') # Fixme: align
         for key in ('scale', 'width', 'height'):
             value = getattr(self, '_' + key)
             if value:
