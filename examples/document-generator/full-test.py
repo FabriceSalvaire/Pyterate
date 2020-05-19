@@ -74,13 +74,17 @@ a, b = 1, 2
 #f# image('kicad-pyspice-example.sch.svg')
 
 # Insert Circuit_macros diagram
-#f# foo = circuit_macros
-#f# foo('circuit.m4')
+#f# _ = circuit_macros
+#f# _('circuit.m4')
 
 # Insert Tikz figure
+# An image node accept theses reST image parameters: align, scale, height, width
 #f# width = 3 * 200
 #f# tikz('diode.tex',
 #f#       width=width)
+
+# Insert a generated figure
+#f# generated_figure('my-generator', 'generated_figure1.png', arg1='value1')
 
 import numpy as np
 import matplotlib.pyplot as plt

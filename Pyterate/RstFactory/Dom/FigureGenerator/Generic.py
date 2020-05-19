@@ -32,55 +32,76 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class GeneratedImageNode:
+class GeneratedImageNode(ExternalFigureNode):
 
-    """ This class represents a Tikz figure. """
+    """This class represents a generated figure.
+
+    Syntax::
+
+        generated_figure(command, figure_filename, arg1=value1, ...)
+
+    Command API::
+
+        # Test if the figure must be regenerated
+        # return "uptodate" or nothing
+        command --query absolut_figure_path
+
+        command --arg1=value1 ... absolut_figure_path
+
+    """
 
     COMMAND = 'generated_figure'
 
-    _logger = _module_logger.getChild('TikzImage')
+    _logger = _module_logger.getChild('GeneratedImageNode')
 
     ##############################################
 
     def __init__(self, document, command, figure_path, **kwargs):
 
-        super().__init__(document, figure_path, **kwargs)
+        source_path = '' # Fixme: passed to Path()
+
+        super().__init__(document, source_path, figure_path, **kwargs)
 
         self._command = command
+        self._kwargs = {
+            key:value
+            for key, value in kwargs.items()
+            if key not in ('align', 'scale', 'height', 'width')
+        }
 
     ##############################################
 
     def __bool__(self):
 
-        # return False # it is up to the generator to decide if it overwrite
+        # it is up to the generator to decide if it overwrite
         if self.absolut_path.exists():
             return self._query()
         else:
-            return False
+            return True
 
     ##############################################
 
     def make_figure(self):
 
-        self._logger.info("\nMake figure " + self.path)
+        self._logger.info('\nMake figure {}'.format(self.absolut_path))
         try:
             self._generate()
         except subprocess.CalledProcessError:
-            self._logger.error("Failed to make figure", self.path)
+            self._logger.error('Failed to make figure', self.absolut_path)
 
     ##############################################
 
     def _query(self):
 
+        self._logger.info('\nQuery figure {}'.format(self.absolut_path))
         command = (
             self._command,
             '--query',
-            self.path,
             self.absolut_path,
         )
-        dev_null = open(os.devnull, 'w')
+        dev_null = open(os.devnull, 'w') # Fixme: Posix only
         rc = subprocess.check_output(command, stdout=dev_null, stderr=subprocess.STDOUT)
-        return rc.strip() == 'uptodate'
+        return rc.strip() != 'uptodate'
 
     ##############################################
 
@@ -88,7 +109,6 @@ class GeneratedImageNode:
 
         command = (
             self._command,
-            self.path,
             self.absolut_path,
         )
         dev_null = open(os.devnull, 'w')

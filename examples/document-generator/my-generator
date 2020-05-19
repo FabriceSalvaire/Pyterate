@@ -1,0 +1,68 @@
+#! /usr/bin/env python3
+
+####################################################################################################
+#
+# Pyterate - Sphinx add-ons to create API documentation for Python projects
+# Copyright (C) 2020 Salvaire Fabrice
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+####################################################################################################
+
+"""Generator example"""
+
+####################################################################################################
+
+from pathlib import Path
+import argparse
+import os
+import sys
+import subprocess
+
+####################################################################################################
+
+argument_parser = argparse.ArgumentParser(
+    description='Generator example')
+
+argument_parser.add_argument(
+    'figure_path', metavar='FIGURE_PATH',
+    help='figure path',
+)
+
+argument_parser.add_argument(
+    '--query',
+    default=False,
+    help='query',
+)
+
+argument_parser.add_argument(
+    '--arg1',
+    help='argument 1',
+)
+
+args = argument_parser.parse_args()
+
+if args.query:
+    # figure must be generated
+    print('')
+    # else
+    # print('uptodate')
+else:
+    src_path = Path(__file__).parent.joinpath('kicad-pyspice-example.sch.svg')
+    command = (
+        'convert',
+        src_path,
+        args.figure_path,
+    )
+    subprocess.check_call(command)
