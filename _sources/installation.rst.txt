@@ -9,6 +9,25 @@
 
 **Note to Packagers: Please don't create Pyterate package (PyPI do the job)**
 
+Dependencies
+------------
+
+Pyterate requires the following dependencies to generate figures.
+
+To generate Circuit_Macros figures:
+
+ * |Circuit_macros|_
+ * pdflatex
+ * ``mutool`` tool from https://mupdf.com
+
+To generate Tikz figures:
+
+ * pdflatex
+
+To convert SVG to PNG image.
+
+* ``convert`` tool from https://imagemagick.org/index.php
+
 On Windows
 ----------
 
@@ -88,18 +107,3 @@ Then to build and install Pyterate run these commands:
 
   python setup.py build
   python setup.py install
-
-Dependencies
-------------
-
-Pyterate requires the following dependencies:
-
- * |Python|_ 3
- * PyYAML
-
-.. * pip
-.. * virtualenv
-
-To generate the documentation, you will need in addition:
-
- * |Sphinx|_

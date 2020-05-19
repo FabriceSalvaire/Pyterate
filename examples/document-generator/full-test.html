@@ -103,13 +103,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../installation.html#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../installation.html#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">4. User FAQ</a><ul>
@@ -278,6 +278,14 @@
       </span></a>
     </li>
 
+    <li class="getthecode-notebook-link">
+      <a href="https://nbviewer.jupyter.org/urls/fabricesalvaire.github.io/Pyterate/downloads/34e6cf279103f827176c6101e0b5fca8/full-test.ipynb"
+         target="_blank" rel="noreferrer noopener"><span>
+        Open in nbviewer
+         <i class="fa fa-external-link" aria-hidden="true"></i>
+      </span></a>
+    </li>
+
   </ul>
 </div><div class="highlight-python3 highlight-hidden"><div class="highlight"><pre><span></span><span class="c1">#r# .. note::</span>
 <span class="c1">#r#    You can see the source by clicking on the eye</span>
@@ -355,13 +363,17 @@
 <span class="c1">#f# image(&#39;kicad-pyspice-example.sch.svg&#39;)</span>
 
 <span class="c1"># Insert Circuit_macros diagram</span>
-<span class="c1">#f# foo = circuit_macros</span>
-<span class="c1">#f# foo(&#39;circuit.m4&#39;)</span>
+<span class="c1">#f# _ = circuit_macros</span>
+<span class="c1">#f# _(&#39;circuit.m4&#39;)</span>
 
 <span class="c1"># Insert Tikz figure</span>
+<span class="c1"># An image node accept theses reST image parameters: align, scale, height, width</span>
 <span class="c1">#f# width = 3 * 200</span>
 <span class="c1">#f# tikz(&#39;diode.tex&#39;,</span>
 <span class="c1">#f#       width=width)</span>
+
+<span class="c1"># Insert a generated figure</span>
+<span class="c1">#f# generated_figure(&#39;my-generator&#39;, &#39;generated_figure1.png&#39;, arg1=&#39;value1&#39;)</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -573,9 +585,14 @@ instead of {…}.</p>
 </div>
 <img alt="../../images/circuit.png" class="align-center" src="../../images/circuit.png" />
 <div class="highlight-py3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Insert Tikz figure</span>
+<span class="c1"># An image node accept theses reST image parameters: align, scale, height, width</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../../images/diode.svg"><img alt="../../images/diode.svg" class="align-center" src="../../images/diode.svg" width="600" /></a>
+<div class="highlight-py3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Insert a generated figure</span>
+</pre></div>
+</div>
+<img alt="../../images/generated_figure1.png" class="align-center" src="../../images/generated_figure1.png" />
 <div class="highlight-py3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="n">figure</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>

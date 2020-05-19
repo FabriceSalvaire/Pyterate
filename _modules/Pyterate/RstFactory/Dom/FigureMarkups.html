@@ -101,13 +101,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">4. User FAQ</a><ul>
@@ -302,6 +302,17 @@
 
 <div class="viewcode-block" id="ImageNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.ImageNode">[docs]</a><span class="k">class</span> <span class="nc">ImageNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
 
+    <span class="sd">&quot;&quot;&quot;Class to implement an image node.</span>
+
+<span class="sd">    Accept these image reST arguments:</span>
+
+<span class="sd">      * scale</span>
+<span class="sd">      * with</span>
+<span class="sd">      * height</span>
+<span class="sd">      * align</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;ImageNode&#39;</span><span class="p">)</span>
@@ -334,7 +345,7 @@
     <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="p">,)</span>
-        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span> <span class="c1"># Fixme: align</span>
         <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">):</span>
             <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="n">key</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
@@ -500,6 +511,8 @@
     <span class="sd">&quot;&quot;&quot; This class represents a table figure. &quot;&quot;&quot;</span>
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;table&#39;</span>
+
+    <span class="n">_PANDOC_MARKDOWN</span> <span class="o">=</span> <span class="s1">&#39;markdown_strict&#39;</span>
 
     <span class="c1">##############################################</span>
 

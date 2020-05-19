@@ -103,13 +103,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">4. User FAQ</a><ul>
@@ -270,8 +270,20 @@
 <dl class="py class">
 <dt id="Pyterate.RstFactory.Dom.FigureGenerator.Generic.GeneratedImageNode">
 <em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.FigureGenerator.Generic.</code><code class="sig-name descname">GeneratedImageNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">command</span></em>, <em class="sig-param"><span class="n">figure_path</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../../_modules/Pyterate/RstFactory/Dom/FigureGenerator/Generic.html#GeneratedImageNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureGenerator.Generic.GeneratedImageNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>This class represents a Tikz figure.</p>
+<dd><p>Bases: <a class="reference internal" href="../FigureMarkups.html#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode" title="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode</span></code></a></p>
+<p>This class represents a generated figure.</p>
+<p>Syntax:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generated_figure</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">figure_filename</span><span class="p">,</span> <span class="n">arg1</span><span class="o">=</span><span class="n">value1</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Command API:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test if the figure must be regenerated</span>
+<span class="c1"># return &quot;uptodate&quot; or nothing</span>
+<span class="n">command</span> <span class="o">--</span><span class="n">query</span> <span class="n">absolut_figure_path</span>
+
+<span class="n">command</span> <span class="o">--</span><span class="n">arg1</span><span class="o">=</span><span class="n">value1</span> <span class="o">...</span> <span class="n">absolut_figure_path</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </div>

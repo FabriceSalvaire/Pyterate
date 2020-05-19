@@ -101,13 +101,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../installation.html">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../installation.html#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../faq.html">4. User FAQ</a><ul>
@@ -295,7 +295,7 @@
 
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
-<span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="kn">import</span> <span class="n">convert_markup</span>
+<span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="kn">import</span> <span class="n">markdown_to_rest</span>
 <span class="kn">from</span> <span class="nn">.Dom</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">ExecutedNode</span><span class="p">,</span> <span class="n">TextNode</span><span class="p">,</span> <span class="n">MarkdownCellMixin</span>
 <span class="kn">from</span> <span class="nn">.FigureMarkups</span> <span class="kn">import</span> <span class="n">ImageNode</span><span class="p">,</span> <span class="n">ExternalFigureNode</span><span class="p">,</span> <span class="n">TableFigureNode</span><span class="p">,</span> <span class="n">SaveFigureNode</span>
 <span class="kn">from</span> <span class="nn">.LitteralIncludeMarkups</span> <span class="kn">import</span> <span class="n">LiteralIncludeNode</span>
@@ -312,7 +312,7 @@
 
     <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># markdown_strict</span>
-        <span class="k">return</span> <span class="n">convert_markup</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">(),</span> <span class="n">from_format</span><span class="o">=</span><span class="s1">&#39;md&#39;</span><span class="p">,</span> <span class="n">to_format</span><span class="o">=</span><span class="s1">&#39;rst&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">markdown_to_rest</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">())</span>
 
 <span class="c1">####################################################################################################</span>
 

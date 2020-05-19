@@ -200,11 +200,22 @@ instead of {…}.
 
     
     # Insert Tikz figure
+    # An image node accept theses reST image parameters: align, scale, height, width
 
 
 .. image:: diode.svg
     :align: center
     :width: 600
+
+
+.. code-block:: py3
+
+    
+    # Insert a generated figure
+
+
+.. image:: generated_figure1.png
+    :align: center
 
 
 .. code-block:: py3

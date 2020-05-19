@@ -101,13 +101,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">4. User FAQ</a><ul>
@@ -286,55 +286,76 @@
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="GeneratedImageNode"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/Generic.html#Pyterate.RstFactory.Dom.FigureGenerator.Generic.GeneratedImageNode">[docs]</a><span class="k">class</span> <span class="nc">GeneratedImageNode</span><span class="p">:</span>
+<div class="viewcode-block" id="GeneratedImageNode"><a class="viewcode-back" href="../../../../../api/Pyterate/RstFactory/Dom/FigureGenerator/Generic.html#Pyterate.RstFactory.Dom.FigureGenerator.Generic.GeneratedImageNode">[docs]</a><span class="k">class</span> <span class="nc">GeneratedImageNode</span><span class="p">(</span><span class="n">ExternalFigureNode</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot; This class represents a Tikz figure. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;This class represents a generated figure.</span>
+
+<span class="sd">    Syntax::</span>
+
+<span class="sd">        generated_figure(command, figure_filename, arg1=value1, ...)</span>
+
+<span class="sd">    Command API::</span>
+
+<span class="sd">        # Test if the figure must be regenerated</span>
+<span class="sd">        # return &quot;uptodate&quot; or nothing</span>
+<span class="sd">        command --query absolut_figure_path</span>
+
+<span class="sd">        command --arg1=value1 ... absolut_figure_path</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;generated_figure&#39;</span>
 
-    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;TikzImage&#39;</span><span class="p">)</span>
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;GeneratedImageNode&#39;</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">source_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># Fixme: passed to Path()</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">source_path</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">key</span><span class="p">:</span><span class="n">value</span>
+            <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;align&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="c1"># return False # it is up to the generator to decide if it overwrite</span>
+        <span class="c1"># it is up to the generator to decide if it overwrite</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_query</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">make_figure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Make figure &quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Make figure </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_generate</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Failed to make figure&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;Failed to make figure&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="nf">_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Query figure </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">))</span>
         <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">,</span>
             <span class="s1">&#39;--query&#39;</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="c1"># Fixme: Posix only</span>
         <span class="n">rc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">rc</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;uptodate&#39;</span>
+        <span class="k">return</span> <span class="n">rc</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;uptodate&#39;</span>
 
     <span class="c1">##############################################</span>
 
@@ -342,7 +363,6 @@
 
         <span class="n">command</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>

@@ -101,13 +101,13 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../installation.html">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../../../installation.html#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../../faq.html">4. User FAQ</a><ul>
@@ -274,6 +274,7 @@
 
 <span class="c1">####################################################################################################</span>
 
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
@@ -299,13 +300,14 @@
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;tikz&#39;</span>
 
-    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;TikzImage&#39;</span><span class="p">)</span>
+    <span class="n">_logger</span> <span class="o">=</span> <span class="n">_module_logger</span><span class="o">.</span><span class="n">getChild</span><span class="p">(</span><span class="s1">&#39;TikzNode&#39;</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">tex_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-        <span class="n">figure_path</span> <span class="o">=</span> <span class="n">tex_filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;.tex&#39;</span><span class="p">,</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)</span>
+        <span class="n">tex_filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tex_filename</span><span class="p">)</span>
+        <span class="n">figure_path</span> <span class="o">=</span> <span class="n">tex_filename</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">tex_filename</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;.svg&#39;</span><span class="p">)</span> <span class="c1"># Fixme: monkey patch pathlib ?</span>
         <span class="n">source_path</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="s1">&#39;tex&#39;</span><span class="p">,</span> <span class="n">tex_filename</span><span class="p">)</span> <span class="c1"># Fixme: tex directory ???</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">source_path</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -329,6 +331,7 @@
 
             <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
             <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="p">)</span>
+
             <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span> <span class="c1"># Fixme: symlink</span>
 
             <span class="c1"># Run LaTeX to generate PDF</span>

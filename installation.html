@@ -103,13 +103,13 @@
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">3. Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#on-windows">3.1. On Windows</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#on-linux">3.2. On Linux</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#on-osx">3.3. On OSX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation-from-pypi-repository">3.4. Installation from PyPi Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-a-more-recent-version-from-github">3.5. Install a more recent version from Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#installation-from-source">3.6. Installation from Source</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#dependencies">3.7. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dependencies">3.1. Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-windows">3.2. On Windows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-linux">3.3. On Linux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#on-osx">3.4. On OSX</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-pypi-repository">3.5. Installation from PyPi Repository</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-a-more-recent-version-from-github">3.6. Install a more recent version from Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-from-source">3.7. Installation from Source</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">4. User FAQ</a><ul>
@@ -258,8 +258,30 @@
   <div class="section" id="installation">
 <span id="installation-page"></span><h1><span class="section-number">3. </span>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
 <p><strong>Note to Packagers: Please don’t create Pyterate package (PyPI do the job)</strong></p>
+<div class="section" id="dependencies">
+<h2><span class="section-number">3.1. </span>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Pyterate requires the following dependencies to generate figures.</p>
+<p>To generate Circuit_Macros figures:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><a class="reference external" href="http://ece.uwaterloo.ca/~aplevich/Circuit_macros">Circuit_macros</a></p></li>
+<li><p>pdflatex</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mutool</span></code> tool from <a class="reference external" href="https://mupdf.com">https://mupdf.com</a></p></li>
+</ul>
+</div></blockquote>
+<p>To generate Tikz figures:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>pdflatex</p></li>
+</ul>
+</div></blockquote>
+<p>To convert SVG to PNG image.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">convert</span></code> tool from <a class="reference external" href="https://imagemagick.org/index.php">https://imagemagick.org/index.php</a></p></li>
+</ul>
+</div>
 <div class="section" id="on-windows">
-<h2><span class="section-number">3.1. </span>On Windows<a class="headerlink" href="#on-windows" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.2. </span>On Windows<a class="headerlink" href="#on-windows" title="Permalink to this headline">¶</a></h2>
 <p>Firstly, you have to install the <a class="reference external" href="https://www.anaconda.com/download/">Anaconda Distribution</a> so
 as to get a full featured Python 3 environment.</p>
 <p>Then open the <a class="reference external" href="https://docs.continuum.io/anaconda/navigator/">Anaconda Navigator</a> and launch a console for your root environment.</p>
@@ -269,12 +291,12 @@ as to get a full featured Python 3 environment.</p>
 </div>
 </div>
 <div class="section" id="on-linux">
-<h2><span class="section-number">3.2. </span>On Linux<a class="headerlink" href="#on-linux" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.3. </span>On Linux<a class="headerlink" href="#on-linux" title="Permalink to this headline">¶</a></h2>
 <p>Firstly, you have to install Python 3 from your distribution.</p>
 <p>Then you can install Pyterate using <em>pip</em> or from source. See supra.</p>
 </div>
 <div class="section" id="on-osx">
-<h2><span class="section-number">3.3. </span>On OSX<a class="headerlink" href="#on-osx" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.4. </span>On OSX<a class="headerlink" href="#on-osx" title="Permalink to this headline">¶</a></h2>
 <p>There are several ways to get Python on OSX:</p>
 <blockquote>
 <div><ul class="simple">
@@ -287,7 +309,7 @@ as to get a full featured Python 3 environment.</p>
 <p>You can install Pyterate using <em>pip</em> or from source. See supra.</p>
 </div>
 <div class="section" id="installation-from-pypi-repository">
-<h2><span class="section-number">3.4. </span>Installation from PyPi Repository<a class="headerlink" href="#installation-from-pypi-repository" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.5. </span>Installation from PyPi Repository<a class="headerlink" href="#installation-from-pypi-repository" title="Permalink to this headline">¶</a></h2>
 <p>Pyterate is available on the Python Packages <a class="reference external" href="https://pypi.python.org/pypi">PyPI</a> repository at <a class="reference external" href="https://pypi.python.org/pypi/Pyterate">https://pypi.python.org/pypi/Pyterate</a></p>
 <p>Run this command in the console to install the latest release:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install Pyterate
@@ -295,7 +317,7 @@ as to get a full featured Python 3 environment.</p>
 </div>
 </div>
 <div class="section" id="install-a-more-recent-version-from-github">
-<h2><span class="section-number">3.5. </span>Install a more recent version from Github<a class="headerlink" href="#install-a-more-recent-version-from-github" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.6. </span>Install a more recent version from Github<a class="headerlink" href="#install-a-more-recent-version-from-github" title="Permalink to this headline">¶</a></h2>
 <p>If you want to install a version which is not yet released on Pypi, you can use one of theses
 commands to install the stable or devel branch:</p>
 <div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>pip install git+https://github.com/FabriceSalvaire/Pyterate
@@ -305,7 +327,7 @@ pip install git+https://github.com/FabriceSalvaire/Pyterate@devel
 </div>
 </div>
 <div class="section" id="installation-from-source">
-<h2><span class="section-number">3.6. </span>Installation from Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
+<h2><span class="section-number">3.7. </span>Installation from Source<a class="headerlink" href="#installation-from-source" title="Permalink to this headline">¶</a></h2>
 <p>The Pyterate source code is hosted at <a class="reference external" href="https://github.com/FabriceSalvaire/Pyterate">https://github.com/FabriceSalvaire/Pyterate</a></p>
 <p>You have to solution to get the source code, the first one is to clone the repository, but if you
 are not familiar with Git then you can simply download an archive either from the Pyterate Pypi page
@@ -319,22 +341,6 @@ are not familiar with Git then you can simply download an archive either from th
 python setup.py install
 </pre></div>
 </div>
-</div>
-<div class="section" id="dependencies">
-<h2><span class="section-number">3.7. </span>Dependencies<a class="headerlink" href="#dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Pyterate requires the following dependencies:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><a class="reference external" href="http://python.org">Python</a> 3</p></li>
-<li><p>PyYAML</p></li>
-</ul>
-</div></blockquote>
-<p>To generate the documentation, you will need in addition:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><a class="reference external" href="http://sphinx-doc.org">Sphinx</a></p></li>
-</ul>
-</div></blockquote>
 </div>
 </div>
 
