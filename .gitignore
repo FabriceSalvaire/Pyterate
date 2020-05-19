@@ -1,6 +1,7 @@
 *~
 __pycache__
 
+texput.log
 doc/sphinx/build/
 doc/sphinx/source/api/
 doc/sphinx/source/examples/
