@@ -41,7 +41,7 @@ import logging
 
 from nbformat import v4 as nbv4
 
-from ..MarkupConverter import convert_markup
+from ..MarkupConverter import markdown_to_rest
 from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin
 from .FigureMarkups import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
 from .LitteralIncludeMarkups import LiteralIncludeNode
@@ -58,7 +58,7 @@ class MarkdownMixin:
 
     def to_rst(self):
         # markdown_strict
-        return convert_markup(self.to_markdown(), from_format='md', to_format='rst')
+        return markdown_to_rest(self.to_markdown())
 
 ####################################################################################################
 

@@ -258,6 +258,8 @@ class TableFigureNode(Node):
 
     COMMAND = 'table'
 
+    _PANDOC_MARKDOWN = 'markdown_strict'
+
     ##############################################
 
     def __init__(self, document, table, columns=None, str_format='{}'):

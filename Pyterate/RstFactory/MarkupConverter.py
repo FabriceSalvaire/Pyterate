@@ -27,7 +27,9 @@
 ####################################################################################################
 
 __all__ = [
-    'convert_markup',
+    # 'convert_markup',
+    'rest_to_markdown',
+    'markdown_to_rest',
 ]
 
 ####################################################################################################
@@ -48,3 +50,34 @@ except ImportError:
     _module_logger.warning('pypandoc is not installed')
     def convert_markup(*args, **kwargs):
         return 'ERROR: pypandoc is not installed'
+
+####################################################################################################
+
+def markdown_to_rest(md_text, markdown_format='markdown'):
+    rest_text = convert_markup(md_text, from_format=markdown_format, to_format='rst')
+    return rest_text
+
+####################################################################################################
+
+def rest_to_markdown(rest_text, markdown_format='markdown'):
+
+    # markdown:
+    #    add ::: line
+    #    LaTeX ok
+    #    table not ok
+    # markdown_strict:
+    #     add \ to LaTeX
+    #     table ok
+    # gfm:
+    #    add <div> ... </div>
+    #     \[ latex ... \]
+
+    # _module_logger.info(rest_text)
+    _ = convert_markup(rest_text, from_format='rst', to_format=markdown_format)
+
+    md_text = ''
+    for line in _.splitlines():
+        if not line.startswith(':::'):
+            md_text += line + '\n'
+
+    return md_text

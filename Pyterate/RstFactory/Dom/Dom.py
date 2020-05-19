@@ -42,7 +42,7 @@ import logging
 
 from nbformat import v4 as nbv4
 
-from ..MarkupConverter import convert_markup
+from ..MarkupConverter import rest_to_markdown
 from .Registry import MarkupRegistry
 
 ####################################################################################################
@@ -56,6 +56,8 @@ class Node(metaclass=MarkupRegistry):
     """ This class represents a node of lines in the source. """
 
     MARKUP = None
+
+    _PANDOC_MARKDOWN = 'markdown'
 
     ##############################################
 
@@ -186,7 +188,7 @@ class Node(metaclass=MarkupRegistry):
     ##############################################
 
     def to_markdown(self):
-        return convert_markup(self.to_rst(), from_format='rst', to_format='markdown_strict')
+        return rest_to_markdown(self.to_rst(), self._PANDOC_MARKDOWN)
 
     ##############################################
 
