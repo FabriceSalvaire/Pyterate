@@ -113,6 +113,9 @@ A typical Python file contains these lines::
     #f# tikz('diode.tex',
     #f#       width=width)
 
+    # Insert a generated figure
+    #f# generated_figure('my-generator', 'generated_figure1.png', arg1='value1')
+
     import matplotlib.pyplot as plt
     figure = plt.figure(1, (20, 10))
 
