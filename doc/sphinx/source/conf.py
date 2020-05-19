@@ -312,6 +312,9 @@ intersphinx_mapping = {'http://docs.python.org/': None}
 # Getthecode
 #
 
+# ../../downloads/34e6cf279103f827176c6101e0b5fca8/full-test.ipynb
+# https://fabricesalvaire.github.io/Pyterate/downloads/34e6cf279103f827176c6101e0b5fca8/full-test.ipynb
+
 getthecode_header_template = '''
 <div class="getthecode-header">
   <ul>
@@ -327,6 +330,14 @@ getthecode_header_template = '''
       <a href="{{ notebook_url }}" download={{ notebook_filename }} type="application/x-ipynb+json" target="_blank" rel="noreferrer noopener"><span>
         {{ notebook_filename }}
         <i class="fa fa-download" aria-hidden="true"></i>
+      </span></a>
+    </li>
+
+    <li class="getthecode-notebook-link">
+      <a href="{{ 'https://nbviewer.jupyter.org/urls/fabricesalvaire.github.io/Pyterate/' + notebook_url|replace('../', '') }}"
+         target="_blank" rel="noreferrer noopener"><span>
+        Open in nbviewer
+         <i class="fa fa-external-link" aria-hidden="true"></i>
       </span></a>
     </li>
 {% endif %}
