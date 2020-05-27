@@ -25,6 +25,7 @@
 ####################################################################################################
 
 from pathlib import Path
+import json
 import logging
 import os
 
@@ -63,6 +64,19 @@ class RstFactory:
         self._topics = {}
         self._document_failures = []
 
+        self._load_failure()
+
+    ##############################################
+
+    def _load_failure(self):
+        json_path = self.settings.failure_path
+        if json_path.exists():
+            with open(json_path, 'r') as fh:
+                self._failures = json.load(fh)
+                self._logger.warning('loaded failures from {}'.format(json_path))
+        else:
+            self._failures = []
+
     ##############################################
 
     @property
@@ -72,6 +86,11 @@ class RstFactory:
     @property
     def topics(self):
         return self._topics
+
+    ##############################################
+
+    def was_failure(self, document):
+        return str(document.path) in self._failures
 
     ##############################################
 
@@ -101,7 +120,13 @@ class RstFactory:
         for topic_path, _, _ in os.walk(self._settings.input_path, topdown=False, followlinks=True):
             self._process_topic(Path(topic_path))
 
+        failure_path = self.settings.failure_path
         if self._document_failures:
-            self._logger.warning(
-                "These documents failed:\n" +
-                '\n'.join([document.path for document in self._document_failures]))
+            documents = [str(document.path) for document in self._document_failures]
+            self._logger.warning('These documents failed:\n' + '\n'.join(documents))
+
+            with open(failure_path, 'w') as fh:
+                json.dump(documents, fh, indent=4)
+                self._logger.warning('Dumped failures in {}'.format(failure_path))
+        else:
+            failure_path.unlink(missing_ok=True)

@@ -26,7 +26,6 @@
 
 from pathlib import Path
 import logging
-import os
 import re
 import sys
 
@@ -226,6 +225,8 @@ class DefaultRstFactorySettings:
         DefaultPython3Settings,
     )
 
+    failure_filename = '.pyterate-failures.json'
+
     ##############################################
 
     _logger = _module_logger.getChild('RstFactorySettings')
@@ -288,3 +289,9 @@ class DefaultRstFactorySettings:
             if language.filename_match(path):
                 return language
         return None
+
+    ##############################################
+
+    @property
+    def failure_path(self):
+        return self.join_input_path(self.failure_filename)

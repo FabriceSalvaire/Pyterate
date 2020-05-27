@@ -84,6 +84,10 @@ class Document:
     ##############################################
 
     @property
+    def factory(self):
+        return self._topic.factory
+
+    @property
     def topic(self):
         return self._topic
 
@@ -186,7 +190,7 @@ class Document:
 
     def __bool__(self):
         """Return True if source is older than rst."""
-        return self.source_timestamp > self.rst_timestamp
+        return self.source_timestamp > self.rst_timestamp or self.factory.was_failure(self)
 
     ##############################################
 
