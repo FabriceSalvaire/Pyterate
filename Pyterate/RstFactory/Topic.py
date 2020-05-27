@@ -166,7 +166,6 @@ class Topic:
     ##############################################
 
     def process_documents(self):
-
         for document in self._documents:
             self.process_document(document)
 
