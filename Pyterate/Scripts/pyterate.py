@@ -28,6 +28,7 @@ logger = Logging.setup_logging()
 from pathlib import Path
 import argparse
 import os
+import sys
 
 import Pyterate
 from Pyterate.RstFactory.Document import Document
@@ -70,15 +71,18 @@ def main():
 
     if args.version:
         Pyterate.show_version()
-        exit(0)
+        sys.exit(0)
 
     if not Path(args.config).exists():
         logger.info('Any config file, use default settings')
         settings = DefaultRstFactorySettings()
     else:
         logger.info('Load config file {}'.format(args.config))
-        exec(open(args.config).read())
-        settings = RstFactorySettings()
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('Config', args.config)
+        Config = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(Config)
+        settings = Config.RstFactorySettings()
 
     settings.run_code = not args.skip_code_execution
     settings.make_external_figure = not args.skip_external_figure
@@ -87,7 +91,7 @@ def main():
     rst_factory = RstFactory(settings)
 
     if args.document_path:
-        document_path = Path(document_path)
+        document_path = Path(args.document_path)
         settings = rst_factory.settings
         document_path = settings.relative_input_path(document_path)
         topic = Topic(rst_factory, document_path.parent)
