@@ -34,7 +34,7 @@ In comparison to *sphinx-apidoc*, it generates sorter titles.
 
 ####################################################################################################
 
-from pathlib import path
+from pathlib import Path
 import logging
 import os
 
@@ -82,7 +82,7 @@ class ApiRstFactory:
         self._logger.info('Exclude:' + '\n  '.join(self._excluded_directory))
 
         template_path = Path(__file__).parent.joinpath('templates') # Fixme: custom
-        self._template_environment = TemplateEnvironment(template_path)
+        self._template_environment = TemplateEnvironment([template_path])
 
         if not self._rst_directory.exists():
             os.makedirs(self._rst_directory)
@@ -125,7 +125,7 @@ class ApiRstFactory:
 
     def _process_directory_module(self, module_path, python_files, sub_modules):
 
-        directory_module_name = module_path.parent
+        directory_module_name = module_path.name
         directory_module_python_path = self.module_path_to_python_path(module_path)
         dst_directory = self.join_rst_path(self.python_path_to_path(directory_module_python_path))
         self._logger.info('Directory Module Name: {}'.format(directory_module_name))
@@ -160,16 +160,13 @@ class ApiRstFactory:
 
     @classmethod
     def is_python_directory_module(cls, path):
-
         # path has __init__.py
-
         return path.joinpath(cls.INIT_FILE_NAME).exists()
 
     ##############################################
 
     @classmethod
     def is_python_file(cls, file_name):
-
         return (
             file_name.endswith('.py') and
             file_name != cls.INIT_FILE_NAME and
@@ -182,46 +179,40 @@ class ApiRstFactory:
 
     @staticmethod
     def path_to_python_path(path):
-
         return str(path).replace(os.sep, '.')
 
     ##############################################
 
     @staticmethod
     def python_path_to_path(python_path):
-
         return Path(python_path.replace('.', os.sep))
 
     ##############################################
 
     @staticmethod
     def join_python_path(*args):
-
         return '.'.join(args)
 
     ##############################################
 
     @staticmethod
     def filename_to_module(file_name):
-
-        return file_name[:-3] # suppress '.py'
+        return Path(file_name).stem
 
     ##############################################
 
     def module_path_to_python_path(self, path):
-
-        return self.path_to_python_path(self._root_module_name + path[len(self._root_module_path):])
+        start = len(str(self._root_module_path))
+        return self.path_to_python_path(self._root_module_name + str(path)[start:])
 
     ##############################################
 
     def join_rst_path(self, path):
-
         return self._rst_directory.joinpath(path)
 
     ##############################################
 
     def _generate_toc(self, directory_module_path, directory_module_name, submodules):
-
         return self._template_environment.render(
             'toc.jinja2',
             module=directory_module_path,
@@ -232,7 +223,6 @@ class ApiRstFactory:
     ##############################################
 
     def _generate_rst_module(self, module_path, module_name):
-
         return self._template_environment.render(
             'module.jinja2',
             title=module_name,

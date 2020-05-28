@@ -39,10 +39,11 @@ class TemplateEnvironment:
         Parameters:
 
         search_path
-             string or list of strings
+             list of strings
 
         """
 
+        # string or list of strings
         self._search_path = [str(x) for x in search_path]
 
         self._environment = Environment(

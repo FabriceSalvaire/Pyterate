@@ -42,7 +42,7 @@ def main():
                         help='module path')
 
     parser.add_argument('--rst-api-path',
-                        default=Path().join_path('doc', 'sphinx', 'source', 'api'),
+                        default=Path().joinpath('doc', 'sphinx', 'source', 'api'),
                         help='rst API path')
 
     parser.add_argument('--exclude', nargs='+',
