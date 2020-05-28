@@ -20,7 +20,9 @@
 
 ####################################################################################################
 
+from pathlib import Path
 import logging
+import os
 
 import nbformat
 from nbformat import v4 as nbv4
@@ -72,13 +74,13 @@ class Document:
         self._language = language
 
         path = topic.join_path(input_file)
-        self._is_link = path.is_symlink()
-        self._path = path.resolve() # input path
 
+        self._is_link = path.is_symlink()
         if self._is_link:
-            path = self.settings.join_rst_path(self.settings.relative_input_path(self._path))
-            self._rst_path = path.stem + '.rst'
+            self._path = path # symlink
+            self._rst_path = None
         else:
+            self._path = path.resolve() # Python input path
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
 
     ##############################################
@@ -140,6 +142,24 @@ class Document:
     @property
     def is_link(self):
         return self._is_link
+
+    @property
+    def link_py(self):
+        """return the Python symlink path"""
+        if self._is_link:
+            return Path(os.readlink(self._path))
+        else:
+            return None
+
+    @property
+    def link_rst(self):
+        """return the reST symlink path"""
+        if self._is_link:
+            link = self.link_py
+            # Fixme: to func
+            return link.parent.joinpath(link.stem + '.rst')
+        else:
+            return None
 
     ##############################################
 
@@ -205,6 +225,9 @@ class Document:
     ##############################################
 
     def symlink_source(self, source_path):
+        """Create a symlink to a source in the reST document directory"""
+
+        # used by LocaleFigureNode
 
         source = self._topic.join_path(source_path)
         basename = source_path.name

@@ -251,7 +251,7 @@ class Topic:
         # Sort the TOC
         # Fixme: sometimes we want a particular order !
         file_dict = {document.basename:document.rst_filename for document in self._documents}
-        file_dict.update({link.basename:link.rst_inner_path for link in self._links})
+        file_dict.update({link.basename:link.link_rst for link in self._links})
         kwargs['toc_items'] = [file_dict[x] for x in sorted(file_dict.keys())]
 
         self._retrieve_subtopics()
