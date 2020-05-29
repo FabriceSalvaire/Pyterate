@@ -115,6 +115,7 @@ class Node(metaclass=MarkupRegistry):
                     pass
             else:
                 subprocess.check_call(command, stdout=subprocess.DEVNULL, shell=False)
+            cls._logger.info('\nFound dependency: %s', command[0])
         except FileNotFoundError:
             cls._logger.error('\nA dependency is missing:\n  %s\n  %s', command[0], help)
 
