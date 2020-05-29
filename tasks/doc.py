@@ -46,7 +46,7 @@ EXAMPLES_PATH = SOURCE_PATH.joinpath('examples')
 def clean_build(ctx):
     # ctx.run('rm -rf {}'.format(BUILD_PATH))
     if BUILD_PATH.exists():
-        shutil.rmtree(BUILD_PATH)
+        shutil.rmtree(BUILD_PATH, ignore_errors=True)
 
 ####################################################################################################
 
@@ -54,7 +54,7 @@ def clean_build(ctx):
 def clean_api(ctx):
     # ctx.run('rm -rf {}'.format(API_PATH))
     if API_PATH.exists():
-        shutil.rmtree(API_PATH)
+        shutil.rmtree(API_PATH, ignore_errors=True)
 
 
 # Fixme: fails if setenv.sh
@@ -70,7 +70,7 @@ def make_api(ctx):
 
 @task()
 def clean_examples(ctx):
-    shutil.rmtree(EXAMPLES_PATH)
+    shutil.rmtree(EXAMPLES_PATH, ignore_errors=True)
 
 
 # _update_git_sha
