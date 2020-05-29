@@ -61,6 +61,8 @@ def markdown_to_rest(md_text, markdown_format='markdown'):
 
 def rest_to_markdown(rest_text, markdown_format='markdown'):
 
+    # Fixme: use markdown_strict+tex_math_dollars
+
     # markdown:
     #    add ::: line
     #    LaTeX ok
@@ -68,6 +70,7 @@ def rest_to_markdown(rest_text, markdown_format='markdown'):
     # markdown_strict:
     #     add \ to LaTeX
     #     table ok
+    # markdown_strict+tex_math_dollars:
     # gfm:
     #    add <div> ... </div>
     #     \[ latex ... \]
