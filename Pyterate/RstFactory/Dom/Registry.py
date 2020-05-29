@@ -97,3 +97,15 @@ class MarkupRegistry(type):
     @classmethod
     def extensions(cls):
         return cls._extensions_.values()
+
+    ##############################################
+
+    @classmethod
+    def do_check_environment(cls):
+        for cls in MarkupRegistry._registry_:
+            if hasattr(cls, 'check_environment'):
+                cls.check_environment()
+            else:
+                mangled_name = '_{}__check_environment'.format(cls.__name__)
+                if hasattr(cls, mangled_name):
+                    getattr(cls, mangled_name)()
