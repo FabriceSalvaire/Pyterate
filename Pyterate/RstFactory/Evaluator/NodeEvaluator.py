@@ -18,11 +18,13 @@
 #
 ####################################################################################################
 
+"""Module to implements the DOM evaluator using Jupyter for the code scope.
+
+"""
+
 ####################################################################################################
 
-__all__ = [
-    'NodeEvaluator',
-]
+__all__ = ['NodeEvaluator']
 
 ####################################################################################################
 
@@ -30,9 +32,9 @@ import json
 import logging
 import tempfile
 
-from ..Jupyter import JupyterClient
-from .Dom.Markups import GuardedCodeNode, FigureNode
-from .Dom.Registry import MarkupRegistry
+from Pyterate.Jupyter import JupyterClient
+from ..Dom.Markups import GuardedCodeNode, FigureNode
+from ..Dom.Registry import MarkupRegistry
 
 ####################################################################################################
 
@@ -45,13 +47,11 @@ class NodeEvaluatorError(Exception):
     ##############################################
 
     def __init__(self, code):
-
         self._code = code
 
     ##############################################
 
     def __repr__(self):
-
         return "Syntax error in \n{0._code}".format(self)
 
 ####################################################################################################
@@ -69,13 +69,11 @@ class NodeCommand:
     ##############################################
 
     def __repr__(self):
-
         return '{0.__class__.__name__} {0._name} {0._args} {0._kwargs}'.format(self)
 
     ##############################################
 
     def to_node(self, document):
-
         node_cls = MarkupRegistry.command_to_class(self._name)
         return node_cls(document, *self._args, **self._kwargs)
 
@@ -97,23 +95,23 @@ export_value(_)
         self._language = language
         self._start_jupyter(language)
 
+        # locales and globales for the sandbox to execute the figure scope
         self._commands = []
-
-        self._sandbox_globals = {
+        self._sandbox_locales = None
+        self._sandbox_globales = {
             '__command__': self._commands,
             'export': self._export,
         }
-
+        # register a wrapper for each command
         for name in MarkupRegistry.commands():
-            self._sandbox_globals[name] = self._make_figure_wrapper(name)
+            self._sandbox_globales[name] = self._make_figure_wrapper(name)
 
-        self._sandbox_locals = None
         self._has_error = None
 
     ##############################################
 
     def _start_jupyter(self, language):
-
+        """Start Jupyter kernel for a language"""
         self._working_directory = tempfile.TemporaryDirectory()
         self._jupyter_client = JupyterClient(self._working_directory.name, kernel=language.jupyter_kernel)
         code = self._language.setup_code # .format(**kwargs)
@@ -121,26 +119,22 @@ export_value(_)
 
     ##############################################
 
-    def _export_method(self, method):
-
-        def wrapper(*args, **kwargs):
-            method(self, *args, **kwargs)
-
-        return wrapper
+    # def _export_method(self, method):
+    #     def wrapper(*args, **kwargs):
+    #         method(self, *args, **kwargs)
+    #     return wrapper
 
     ##############################################
 
     def _make_figure_wrapper(self, name):
-
+        """Return a wrapper for a command"""
         def wrapper(*args, **kwargs):
             self._commands.append(NodeCommand(name, args, kwargs))
-
         return wrapper
 
     ##############################################
 
     def _log_error(self, code, output):
-
         self._has_error = True
         self._logger.error(
             "Error in document {}\n".format(self._document_path) +
@@ -166,7 +160,7 @@ export_value(_)
         value = json.loads(json_data[1:-1]) # remove quote
 
         self._logger.info('Export value: value \n{} = {}'.format(name, value))
-        self._sandbox_locals[name] = value
+        self._sandbox_locales[name] = value
 
     ##############################################
 
@@ -184,7 +178,9 @@ export_value(_)
 
     ##############################################
 
-    def _run_code_node(self, node):
+    def _run_node_code(self, node):
+
+        """Run code on Jupyter Kernel"""
 
         code = node.to_code()
         if code:
@@ -205,16 +201,33 @@ export_value(_)
 
     def _eval_figure(self, node):
 
+        """Execute the code of a figure in the sandbox.
+
+        The magic use a wrapper for each command to collect them.
+
+        """
+
         self._commands.clear()
 
         code = str(node)
-
         try:
-            exec(compile(code, 'inline', 'exec'), self._sandbox_globals, self._sandbox_locals)
+            exec(compile(code, 'inline', 'exec'), self._sandbox_globales, self._sandbox_locales)
         except SyntaxError:
             raise NodeEvaluatorError(code)
 
-        return self._commands
+        return self._commands  # a list of NodeCommand instances
+
+    ##############################################
+
+    def _run_figure_code(self, node):
+
+        """Run figure code in Pyterate"""
+
+        for figure_command in self._eval_figure(node):
+            figure_node = figure_command.to_node(node.document)
+            node.append_child(figure_node)
+            if figure_node.is_executed:
+                self._run_node_code(figure_node)
 
     ##############################################
 
@@ -222,21 +235,19 @@ export_value(_)
 
         self._document_path = document_path
 
-        code = self._language.document_setup_code.format(file=document_path)
-        self._jupyter_client.run_cell(code)
+        # run setup code
+        setup_code = self._language.document_setup_code.format(file=document_path)
+        self._jupyter_client.run_cell(setup_code)
 
-        self._sandbox_locals = {}
+        # clear states
+        self._sandbox_locales = {}
         self._has_error = False
 
         for node in dom:
             if node.is_executed:
-                self._run_code_node(node)
+                self._run_node_code(node)  # in Jupyter
             elif isinstance(node, FigureNode) and eval_figure:
                 # Note: save_figure() requires a reST directory
-                for figure_command in self._eval_figure(node):
-                    figure_node = figure_command.to_node(node.document)
-                    node.append_child(figure_node)
-                    if figure_node.is_executed:
-                        self._run_code_node(figure_node)
+                self._run_figure_code(node)  # in Pyterate and Jupyter
 
         return not self._has_error

@@ -32,10 +32,10 @@ from nbformat import v4 as nbv4
 from ..Template import TemplateAggregator
 from ..Tools.Timestamp import timestamp
 from .Dom.Dom import Dom, TextNode
-from .Dom.FigureMarkups import ImageNode, ExternalFigureNode
+from .Dom.FigureNodes import ImageNode, ExternalFigureNode
 from .Dom.Markups import *
 from .Dom.Registry import MarkupRegistry
-from .NodeEvaluator import NodeEvaluator
+from .Evaluator.NodeEvaluator import NodeEvaluator
 
 ####################################################################################################
 
@@ -328,7 +328,7 @@ class Document:
     ##############################################
 
     def _source_to_nodes(self, source):
-        """Build the DOM from the source"""
+        """Build the raw DOM from the source"""
 
         dom = Dom()
         prev_markup_cls = None
@@ -362,6 +362,7 @@ class Document:
     ##############################################
 
     def _post_process_dom(self, raw_dom):
+        """Perform some post-processing on DOM"""
 
         dom = Dom()
         for node in raw_dom.iter_on_not_empty_node():

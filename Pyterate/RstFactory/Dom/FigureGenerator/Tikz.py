@@ -27,7 +27,7 @@ import shutil
 import subprocess
 import tempfile
 
-from ..FigureMarkups import ExternalFigureNode
+from ..FigureNodes import ExternalFigureNode
 
 ####################################################################################################
 

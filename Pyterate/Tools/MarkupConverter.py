@@ -18,7 +18,7 @@
 #
 ####################################################################################################
 
-"""Helper to convert markup languages.
+"""Helpers to convert markup languages.
 
 * Pandoc a universal document converter https://pandoc.org
 

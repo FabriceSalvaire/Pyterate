@@ -18,8 +18,7 @@
 #
 ####################################################################################################
 
-""" This module implements a RST files generator for documents.
-"""
+__all__ = ['Topic']
 
 ####################################################################################################
 
@@ -29,7 +28,7 @@ import os
 
 from ..Template import TemplateAggregator
 from .Document import Document, ParseError
-from .NodeEvaluator import NodeEvaluatorError
+from .Evaluator.NodeEvaluator import NodeEvaluatorError
 
 ####################################################################################################
 
@@ -38,6 +37,10 @@ _module_logger = logging.getLogger(__name__)
 ####################################################################################################
 
 class Topic:
+
+    """Class to implement a RST topic, basically a sub-directory.
+
+    """
 
     _logger = _module_logger.getChild('Topic')
 
@@ -200,7 +203,6 @@ class Topic:
     ##############################################
 
     def _directory_iterator(self):
-
         for filename in os.listdir(self._rst_path):
             path = self.join_rst_path(filename)
             if path.is_dir():
@@ -209,7 +211,6 @@ class Topic:
     ##############################################
 
     def _subtopic_iterator(self):
-
         for path in self._directory_iterator():
             if path.joinpath('index.rst').exists(): # Fixme: hardcoded filename !
                 relative_path = path.relative_to(self.settings.rst_path)
@@ -219,11 +220,9 @@ class Topic:
     ##############################################
 
     def _retrieve_subtopics(self):
-
         # Fixme: ???
         if not self:
             return None
-
         self._subtopics = list(self._subtopic_iterator())
 
     ##############################################

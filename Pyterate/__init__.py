@@ -22,5 +22,6 @@
 
 __version__ = '2.1.3'
 
+# used in Scripts
 def show_version():
     print('Pyterate Version {}'.format(__version__))

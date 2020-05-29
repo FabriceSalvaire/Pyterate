@@ -42,7 +42,7 @@ import logging
 
 from nbformat import v4 as nbv4
 
-from ..MarkupConverter import rest_to_markdown
+from Pyterate.Tools.MarkupConverter import rest_to_markdown
 from .Registry import MarkupRegistry
 
 ####################################################################################################

@@ -183,7 +183,7 @@ from pathlib import Path
 import os
 import sys
 
-from Pyterate.RstFactory.FigureTools import *
+from Pyterate.RstFactory.Evaluator.FigureTools import *
 '''
     document_setup_code = '''
 __file__ = '{file}'

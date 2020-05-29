@@ -30,6 +30,8 @@ _module_logger = logging.getLogger(__name__)
 
 class MarkupRegistry(type):
 
+    """Class to implement the markup registry"""
+
     # Fixme: __xxx__
 
     __command_map__ = {}

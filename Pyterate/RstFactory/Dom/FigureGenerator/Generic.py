@@ -24,7 +24,7 @@ import logging
 import os
 import subprocess
 
-from ..FigureMarkups import ExternalFigureNode
+from ..FigureNodes import ExternalFigureNode
 
 ####################################################################################################
 

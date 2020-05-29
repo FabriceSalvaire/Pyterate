@@ -18,6 +18,10 @@
 #
 ####################################################################################################
 
+"""This module contains all the class markups.
+
+"""
+
 ####################################################################################################
 
 __all__ = [
@@ -41,10 +45,10 @@ import logging
 
 from nbformat import v4 as nbv4
 
-from ..MarkupConverter import markdown_to_rest
+from Pyterate.Tools.MarkupConverter import markdown_to_rest
 from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin
-from .FigureMarkups import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
-from .LitteralIncludeMarkups import LiteralIncludeNode
+from .FigureNodes import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
+from .LitteralIncludeNodes import LiteralIncludeNode
 
 ####################################################################################################
 
@@ -95,7 +99,7 @@ class FigureNode(Node):
 
         cell = []
         for child in self.iter_on_childs():
-            # skip LitteralIncludeMarkups.GetthecodeNode
+            # skip LitteralIncludeNodes.GetthecodeNode
             if isinstance(child, (LiteralIncludeNode, TableFigureNode)):
                 markdown = child.to_markdown()
                 _ = nbv4.new_markdown_cell(markdown)

@@ -20,8 +20,8 @@
 ####################################################################################################
 
 from . import Markups
-from . import FigureMarkups
-from . import LitteralIncludeMarkups
+from . import FigureNodes
+from . import LitteralIncludeNodes
 
 # Load default extensions
 from . import FigureGenerator
