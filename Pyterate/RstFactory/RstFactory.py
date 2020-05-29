@@ -93,10 +93,12 @@ class RstFactory:
     def was_failure(self, document):
         return str(document.path) in self._failures
 
-    ##############################################
-
     def register_failure(self, document):
         self._document_failures.append(document)
+
+    @property
+    def has_failure(self):
+        return bool(self._document_failures)
 
     ##############################################
 
@@ -123,12 +125,14 @@ class RstFactory:
             self._process_topic(Path(topic_path))
 
         failure_path = self._settings.failure_path
-        if self._document_failures:
+        if self.has_failure:
             documents = [str(document.path) for document in self._document_failures]
             self._logger.warning('These documents failed:\n' + '\n'.join(documents))
 
             with open(failure_path, 'w') as fh:
                 json.dump(documents, fh, indent=4)
                 self._logger.warning('Dumped failures in {}'.format(failure_path))
+            return False
         else:
             failure_path.unlink(missing_ok=True)
+            return True

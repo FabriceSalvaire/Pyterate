@@ -142,6 +142,11 @@ def main():
         topic = Topic(rst_factory, document_path.parent)
         language = settings.language_for(args.document_path)
         document = Document(topic, document_path.name, language)
-        topic.process_document(document)
+        rc = not rst_factory.has_failure
     else:
-        rst_factory.process_recursively()
+        rc = rst_factory.process_recursively()
+
+    if rc:
+        sys.exit(0)
+    else:
+        sys.exit(1)
