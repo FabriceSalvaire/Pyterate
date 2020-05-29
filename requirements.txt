@@ -1,8 +1,8 @@
-astunparse
 Jinja2
+PyYAML>=3.10
 jupyter
 jupyter-client
 nbformat
-PyYAML>=3.10
+pypandoc>=1.5
 sphinx
 sphinxcontrib-getthecode>=1.2.1
