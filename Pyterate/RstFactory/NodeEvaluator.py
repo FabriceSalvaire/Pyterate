@@ -196,7 +196,8 @@ export_value(_)
                 node.outputs = outputs
             for output in outputs:
                 if output.is_stream:
-                    print(output)
+                    # print(output) # Fixme: why print ???
+                    self._logger.info('\n' + str(output))
                 elif output.is_error and not isinstance(node, GuardedCodeNode):
                     self._log_error(code, output)
 
@@ -217,7 +218,7 @@ export_value(_)
 
     ##############################################
 
-    def run(self, dom, document_path):
+    def run(self, dom, document_path, eval_figure=True):
 
         self._document_path = document_path
 
@@ -230,7 +231,8 @@ export_value(_)
         for node in dom:
             if node.is_executed:
                 self._run_code_node(node)
-            elif isinstance(node, FigureNode):
+            elif isinstance(node, FigureNode) and eval_figure:
+                # Note: save_figure() requires a reST directory
                 for figure_command in self._eval_figure(node):
                     figure_node = figure_command.to_node(node.document)
                     node.append_child(figure_node)

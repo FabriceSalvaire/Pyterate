@@ -63,7 +63,8 @@ class Topic:
         input_files = list(self._input_files_iterator()) # Fixme: better ?
         if input_files:
             self._logger.info('\nProcess Topic: {}'.format(relative_path))
-            os.makedirs(self._rst_path, exist_ok=True) # removed code
+            if self.settings.make_rst:
+                os.makedirs(self._rst_path, exist_ok=True) # removed code
             for filename, language in input_files:
                 self._logger.info("\nFound input '{}' handled by {}".format(self.join_path(filename), language.name))
                 document = Document(self, Path(filename), language)
@@ -188,11 +189,12 @@ class Topic:
         if self.settings.force or document:
             if self.settings.run_code:
                 document.run()
-            document.make_rst()
+            if self.settings.make_rst:
+                document.make_rst()
             make_notebook = True
         if self.settings.make_external_figure:
             document.make_external_figure(self.settings.force)
-        if make_notebook:
+        if self.settings.make_notebook and make_notebook:
             document.make_notebook()
 
     ##############################################
@@ -229,6 +231,9 @@ class Topic:
     def make_toc(self):
 
         """ Create the TOC. """
+
+        if not self.settings.make_rst:
+            return
 
         # Fixme: ???
         if not self:

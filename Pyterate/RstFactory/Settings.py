@@ -217,6 +217,8 @@ class DefaultRstFactorySettings:
     # Flags
     show_counters = False # Show documents counters in toc
     run_code = False # Run code
+    make_rst = True
+    make_notebook = True
     make_external_figure = False # Generate external figures
     force = False # Force the figure generation
 

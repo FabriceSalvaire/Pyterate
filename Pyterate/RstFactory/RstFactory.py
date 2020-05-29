@@ -59,7 +59,8 @@ class RstFactory:
 
         self._settings = settings
 
-        os.makedirs(self._settings.rst_path, exist_ok=True)
+        if self._settings.make_rst:
+            os.makedirs(self._settings.rst_path, exist_ok=True)
 
         self._topics = {}
         self._document_failures = []
@@ -69,7 +70,7 @@ class RstFactory:
     ##############################################
 
     def _load_failure(self):
-        json_path = self.settings.failure_path
+        json_path = self._settings.failure_path
         if json_path.exists():
             with open(json_path, 'r') as fh:
                 self._failures = json.load(fh)
@@ -107,7 +108,8 @@ class RstFactory:
         self._topics[relative_topic_path] = topic # collect topics
 
         topic.process_documents()
-        topic.make_toc()
+        if self._settings.make_rst:
+            topic.make_toc()
 
     ##############################################
 
@@ -120,7 +122,7 @@ class RstFactory:
         for topic_path, _, _ in os.walk(self._settings.input_path, topdown=False, followlinks=True):
             self._process_topic(Path(topic_path))
 
-        failure_path = self.settings.failure_path
+        failure_path = self._settings.failure_path
         if self._document_failures:
             documents = [str(document.path) for document in self._document_failures]
             self._logger.warning('These documents failed:\n' + '\n'.join(documents))

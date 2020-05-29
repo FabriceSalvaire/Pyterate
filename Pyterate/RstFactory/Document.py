@@ -60,7 +60,7 @@ class ParseError(Exception):
 
 class Document:
 
-    """ This class is responsible to process an document. """
+    """This class is responsible to process a document."""
 
     _logger = _module_logger.getChild('Document')
 
@@ -215,10 +215,9 @@ class Document:
     ##############################################
 
     def run(self):
-
         self._logger.info('\nRun document {}'.format(self._path))
         node_evaluator = NodeEvaluator(self._language)
-        if not node_evaluator.run(self._dom, self._path):
+        if not node_evaluator.run(self._dom, self._path, eval_figure=self.settings.make_rst):
             self._logger.error("Failed to run document {}".format(self._path))
             self.factory.register_failure(self)
 
@@ -237,7 +236,7 @@ class Document:
         # if not source_path.exists():
         #     raise NameError("File {} doesn't exist, cannot create a symlink to {}".format(source_path, target))
 
-        if not target.exists():
+        if not target.exists() and self.settings.make_rst:
             target.symlink_to(source)
 
         return basename
@@ -329,6 +328,7 @@ class Document:
     ##############################################
 
     def _source_to_nodes(self, source):
+        """Build the DOM from the source"""
 
         dom = Dom()
         prev_markup_cls = None
@@ -346,7 +346,7 @@ class Document:
             # Fixme: invalid markup
             # self._logger.info('Markup {} \n'.format(markup_cls) + line.rstrip())
 
-            # new node ?
+            # Is it new node ?
             if markup_cls != prev_markup_cls:
                 node = markup_cls(self)
                 dom.append(node)
@@ -397,7 +397,7 @@ class Document:
         for node in self._dom:
             if isinstance(node, RstNode):
                 content = str(node)
-                if '='*(3+2) in content: # Fixme: hardcoded !
+                if '='*(3+2) in content:  # Fixme: hardcoded !
                     return True
 
         return False
@@ -421,7 +421,7 @@ class Document:
 
         has_title = self._has_title()
         if not has_title:
-            kwargs['title'] = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
+            kwargs['title'] = self._basename.replace('-', ' ').title()  # Fixme: Capitalize of
 
         template_aggregator = TemplateAggregator(self.settings.template_environment)
         template_aggregator.append('document', **kwargs)
