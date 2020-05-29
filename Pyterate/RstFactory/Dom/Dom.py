@@ -39,6 +39,7 @@ __all__ = [
 ####################################################################################################
 
 import logging
+import subprocess
 
 from nbformat import v4 as nbv4
 
@@ -94,6 +95,28 @@ class Node(metaclass=MarkupRegistry):
     @classmethod
     def code_block_directive(cls, lexer):
         return cls.directive('code-block', (lexer,))
+
+    ##############################################
+
+    @classmethod
+    def check_command(cls, *command, help='', protect=False):
+
+        # command = list(command)
+        # command[0] += '-debug'
+
+        try:
+            if protect:
+                try:
+                    subprocess.check_call(command,
+                                          stdout=subprocess.DEVNULL,
+                                          stderr=subprocess.DEVNULL,
+                                          shell=False)
+                except subprocess.CalledProcessError:
+                    pass
+            else:
+                subprocess.check_call(command, stdout=subprocess.DEVNULL, shell=False)
+        except FileNotFoundError:
+            cls._logger.error('\nA dependency is missing:\n  %s\n  %s', command[0], help)
 
     ##############################################
 

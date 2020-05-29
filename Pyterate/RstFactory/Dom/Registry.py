@@ -18,6 +18,8 @@
 #
 ####################################################################################################
 
+__all__ = ['MarkupRegistry']
+
 ####################################################################################################
 
 import logging
@@ -32,14 +34,14 @@ class MarkupRegistry(type):
 
     """Class to implement the markup registry"""
 
-    # Fixme: __xxx__
+    _registry_ = []
 
-    __command_map__ = {}
-    __extensions__ = {}
-    __markup_map__ = {}
+    _command_map_ = {}
+    _extensions_ = {}
+    _markup_map_ = {}
 
-    __enclosing_markups__ = []
-    __markups__ = []
+    _enclosing_markups_ = []
+    _markups_ = []
 
     _logger = _module_logger.getChild('MarkupRegistry')
 
@@ -54,38 +56,44 @@ class MarkupRegistry(type):
 
         type.__init__(cls, class_name, base_classes, attributes)
 
+        cls._registry_.append(cls)
+
         if hasattr(cls, 'MARKUP') and cls.MARKUP:
             MarkupRegistry._logger.info('Register {} for markup "{}"'.format(cls, cls.MARKUP))
-            MarkupRegistry.__markup_map__[cls.MARKUP] = cls
+            MarkupRegistry._markup_map_[cls.MARKUP] = cls
             if hasattr(cls, 'ENCLOSING_MARKUP'):
-                array = MarkupRegistry.__enclosing_markups__
+                array = MarkupRegistry._enclosing_markups_
             else:
-                array = MarkupRegistry.__markups__
+                array = MarkupRegistry._markups_
             array.append(cls.MARKUP)
         elif hasattr(cls, 'COMMAND') and cls.COMMAND:
             MarkupRegistry._logger.info('Register {} for command "{}"'.format(cls, cls.COMMAND))
-            MarkupRegistry.__command_map__[cls.COMMAND] = cls
+            MarkupRegistry._command_map_[cls.COMMAND] = cls
             if hasattr(cls, 'make_figure'):
-                MarkupRegistry.__extensions__[cls.COMMAND] = cls
+                MarkupRegistry._extensions_[cls.COMMAND] = cls
 
     ##############################################
 
     @classmethod
     def is_valid_makup(cls, markup):
-        return markup in cls.__markups__
+        return markup in cls._markups_
 
     @classmethod
     def is_valid_enclosing_makup(cls, markup):
-        return markup in cls.__enclosing_markups__
+        return markup in cls._enclosing_markups_
 
     @classmethod
     def markup_to_class(cls, markup):
-        return cls.__markup_map__[markup]
+        return cls._markup_map_[markup]
 
     @classmethod
     def command_to_class(cls, command):
-        return cls.__command_map__[command]
+        return cls._command_map_[command]
 
     @classmethod
     def commands(cls):
-        return cls.__command_map__.keys()
+        return cls._command_map_.keys()
+
+    @classmethod
+    def extensions(cls):
+        return cls._extensions_.values()

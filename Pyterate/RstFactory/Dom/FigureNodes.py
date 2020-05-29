@@ -69,6 +69,12 @@ class ImageNode(Node):
 
     ##############################################
 
+    @classmethod
+    def __check_environment(cls):
+        cls.check_command('convert', '--version', help='ImageMagick https://imagemagick.org')
+
+    ##############################################
+
     def __init__(self, document, path, **kwargs):
 
         self._document = document

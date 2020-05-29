@@ -35,26 +35,30 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-LATEX_COMMAND = 'pdflatex'
-# LATEX_COMMAND = 'lualatex'
-
-####################################################################################################
-
 class TikzNode(ExternalFigureNode):
 
     """ This class represents an image block for a Tikz figure. """
 
     COMMAND = 'tikz'
 
+    LATEX_COMMAND = 'pdflatex'
+    # LATEX_COMMAND = 'lualatex'
+
     _logger = _module_logger.getChild('TikzNode')
+
+    ##############################################
+
+    @classmethod
+    def check_environment(cls):
+        cls.check_command(cls.LATEX_COMMAND, '--version', help='LaTeX')
 
     ##############################################
 
     def __init__(self, document, tex_filename, **kwargs):
 
         tex_filename = Path(tex_filename)
-        figure_path = tex_filename.parent.joinpath(tex_filename.stem + '.svg') # Fixme: monkey patch pathlib ?
-        source_path = document.topic.join_path('tex', tex_filename) # Fixme: tex directory ???
+        figure_path = tex_filename.parent.joinpath(tex_filename.stem + '.svg')  # Fixme: monkey patch pathlib ?
+        source_path = document.topic.join_path('tex', tex_filename)  # Fixme: tex directory ???
 
         super().__init__(document, source_path, figure_path, **kwargs)
 
@@ -78,18 +82,17 @@ class TikzNode(ExternalFigureNode):
             current_dir = os.getcwd()
             os.chdir(tmp_dir)
 
-            shutil.copy(self.source_path, '.') # Fixme: symlink
+            shutil.copy(self.source_path, '.')  # Fixme: symlink
 
             # Run LaTeX to generate PDF
             command = (
-                LATEX_COMMAND,
+                self.LATEX_COMMAND,
                 '-shell-escape',
                 '-interaction=batchmode',
                 # '-output-directory=' + tmp_dir,
                 str(self.source_path.name),
             )
-            dev_null = open(os.devnull, 'w')
-            subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
+            subprocess.check_call(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
             shutil.copy(self.path, self.absolut_path)
 

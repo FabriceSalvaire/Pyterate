@@ -31,16 +31,6 @@ from ..FigureNodes import ExternalFigureNode
 
 ####################################################################################################
 
-# http://ece.uwaterloo.ca/~aplevich/Circuit_macros
-CIRCUIT_MACROS_PATH = Path.home().joinpath('texmf', 'Circuit_macros')
-
-LATEX_COMMAND = 'pdflatex'
-
-# https://mupdf.com/docs/manual-mutool-convert.html
-MUTOOL_COMMAND = 'mutool'
-
-####################################################################################################
-
 _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
@@ -59,6 +49,13 @@ class CircuitMacrosNode(ExternalFigureNode):
 
     COMMAND = 'circuit_macros'
 
+    M4_COMMAND = 'm4'  # GNU M4
+    DPIC_COMMAND = 'dpic'  # http://ece.uwaterloo.ca/~aplevich/Circuit_macros
+    LATEX_COMMAND = 'pdflatex'
+    MUTOOL_COMMAND = 'mutool'  # https://mupdf.com/docs/manual-mutool-convert.html
+
+    CIRCUIT_MACROS_PATH = Path.home().joinpath('texmf', 'Circuit_macros')
+
     _PICTURE_TEX_HEADER = r'''
     \documentclass[11pt]{article}
     \usepackage{tikz}
@@ -72,11 +69,20 @@ class CircuitMacrosNode(ExternalFigureNode):
 
     ##############################################
 
+    @classmethod
+    def check_environment(cls):
+        cls.check_command(cls.M4_COMMAND, '--version', help='GNU M4')
+        cls.check_command(cls.DPIC_COMMAND, '--foo', protect=True, help='http://ece.uwaterloo.ca/~aplevich/Circuit_macros')
+        cls.check_command(cls.LATEX_COMMAND, '--version', help='LaTeX')
+        cls.check_command(cls.MUTOOL_COMMAND, '--foo', protect=True, help='https://mupdf.com/docs/manual-mutool-convert.html')
+
+    ##############################################
+
     def __init__(self, document, m4_filename, **kwargs):
 
         m4_filename = Path(m4_filename)
         figure_path = m4_filename.parent.joinpath(m4_filename.stem + '.png')
-        source_path = document.topic.join_path('m4', m4_filename) # Fixme: m4 directory ???
+        source_path = document.topic.join_path('m4', m4_filename)  # Fixme: m4 directory ???
 
         super().__init__(document, source_path, figure_path, **kwargs)
 
@@ -103,34 +109,31 @@ class CircuitMacrosNode(ExternalFigureNode):
         tmp_dir = tempfile.TemporaryDirectory()
         self._logger.info('Temporary directory ' + tmp_dir.name)
 
-        # Fixme: Posix only
-        dev_null = open(os.devnull, 'w')
-
         # Generate LaTeX file
 
         picture_tex_path = Path(tmp_dir.name).joinpath('picture.tex')
 
-        with open(picture_tex_path, 'w') as f:
-            f.write(self._PICTURE_TEX_HEADER)
+        with open(picture_tex_path, 'w') as fh:
+            fh.write(self._PICTURE_TEX_HEADER)
 
             # Run dpic in pgf mode
             m4_command = (
-                'm4',
+                self.M4_COMMAND,
                 '-I' + str(circuit_macros_path),
                 'pgf.m4',
                 'libcct.m4',
                 self.source_path,
             )
-            dpic_command = ('dpic', '-g')
+            dpic_command = (self.DPIC_COMMAND, '-g')
 
             m4_process = subprocess.Popen(
                 m4_command,
-                #shell=True,
+                # shell=True,
                 stdout=subprocess.PIPE,
             )
             dpic_process = subprocess.Popen(
                 dpic_command,
-                #shell=True,
+                # shell=True,
                 stdin=m4_process.stdout,
                 stdout=subprocess.PIPE,
             )
@@ -139,20 +142,20 @@ class CircuitMacrosNode(ExternalFigureNode):
             if dpic_rc:
                 raise subprocess.CalledProcessError(dpic_rc, 'dpic')
             dpic_output = dpic_process.stdout.read().decode('utf-8')
-            f.write(dpic_output)
-            f.write(r'\end{document}')
+            fh.write(dpic_output)
+            fh.write(r'\end{document}')
 
         # Run LaTeX to generate PDF
 
         current_dir = os.getcwd()
         os.chdir(tmp_dir.name)
         latex_command = (
-            LATEX_COMMAND,
+            self.LATEX_COMMAND,
             '-shell-escape',
             # '-output-directory=' + tmp_dir.name,
             'picture.tex',
         )
-        subprocess.check_call(latex_command, stdout=dev_null, stderr=subprocess.STDOUT)
+        subprocess.check_call(latex_command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
         os.chdir(current_dir)
         basename = self.source_path.stem
@@ -169,18 +172,18 @@ class CircuitMacrosNode(ExternalFigureNode):
         #                        '-density', str(density),
         #                        '-transparent', str(transparent),
         #                        pdf_path, png_path),
-        #                       stdout=dev_null, stderr=subprocess.STDOUT)
+        #                       stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
         mutool_command = (
-            MUTOOL_COMMAND,
+            self.MUTOOL_COMMAND,
             'convert',
             '-A', '8',
-            '-O', 'resolution=300', # ,colorspace=rgb,alpha
+            '-O', 'resolution=300',  # ,colorspace=rgb,alpha
             '-F', 'png',
             '-o', str(png_path),
             str(pdf_path),
             '1'
         )
-        subprocess.check_call(mutool_command, stdout=dev_null, stderr=subprocess.STDOUT)
+        subprocess.check_call(mutool_command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         output_png_path = png_path.parent.joinpath(png_path.stem + '1.png')
         output_png_path.rename(png_path)

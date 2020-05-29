@@ -58,13 +58,13 @@ class GeneratedImageNode(ExternalFigureNode):
 
     def __init__(self, document, command, figure_path, **kwargs):
 
-        source_path = '' # Fixme: passed to Path()
+        source_path = ''  # Fixme: passed to Path()
 
         super().__init__(document, source_path, figure_path, **kwargs)
 
         self._command = command
         self._kwargs = {
-            key:value
+            key: value
             for key, value in kwargs.items()
             if key not in ('align', 'scale', 'height', 'width')
         }
@@ -99,8 +99,7 @@ class GeneratedImageNode(ExternalFigureNode):
             '--query',
             self.absolut_path,
         )
-        dev_null = open(os.devnull, 'w') # Fixme: Posix only
-        rc = subprocess.check_output(command, stdout=dev_null, stderr=subprocess.STDOUT)
+        rc = subprocess.check_output(command, stderr=subprocess.STDOUT)
         return rc.strip() != 'uptodate'
 
     ##############################################
@@ -111,5 +110,4 @@ class GeneratedImageNode(ExternalFigureNode):
             self._command,
             self.absolut_path,
         )
-        dev_null = open(os.devnull, 'w')
-        subprocess.check_call(command, stdout=dev_null, stderr=subprocess.STDOUT)
+        subprocess.check_call(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)

@@ -118,6 +118,14 @@ def main():
 
     from Pyterate.RstFactory.RstFactory import RstFactory
 
+    from Pyterate.RstFactory.Dom.Registry import MarkupRegistry
+    for cls in MarkupRegistry._registry_:
+        if hasattr(cls, 'check_environment'):
+            cls.check_environment()
+        mangled_name = '_{}__check_environment'.format(cls.__name__)
+        if hasattr(cls, mangled_name):
+            getattr(cls, mangled_name)()
+
     # Process ...
 
     if args.skip_processing:
