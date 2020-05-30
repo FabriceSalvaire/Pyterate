@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.2.3. FigureMarkups &mdash; Pyterate 2.1.0 documentation</title>
+  <title>8.1.5.3.2. NodeEvaluator &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="8.1.5.2.4. LitteralIncludeMarkups" href="LitteralIncludeMarkups.html" />
-    <link rel="prev" title="8.1.5.2.2.3. Tikz" href="FigureGenerator/Tikz.html" /> 
+    <link rel="next" title="8.1.5.4. RstFactory" href="../RstFactory.html" />
+    <link rel="prev" title="8.1.5.3.1. FigureTools" href="FigureTools.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -155,13 +155,11 @@
 </li>
 <li class="toctree-l3 current"><a class="reference internal" href="../../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="../Document.html">8.1.5.1. Document</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Dom.html">8.1.5.2. Dom</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="../Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../Scripts.html">8.1.6. Scripts</a><ul>
@@ -177,7 +175,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -242,15 +241,15 @@
         
           <li><a href="../../RstFactory.html"><span class="section-number">8.1.5. </span>RstFactory</a> &raquo;</li>
         
-          <li><a href="../Dom.html"><span class="section-number">8.1.5.2. </span>Dom</a> &raquo;</li>
+          <li><a href="../Evaluator.html"><span class="section-number">8.1.5.3. </span>Evaluator</a> &raquo;</li>
         
-      <li><span class="section-number">8.1.5.2.3. </span>FigureMarkups</li>
+      <li><span class="section-number">8.1.5.3.2. </span>NodeEvaluator</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../../_sources/api/Pyterate/RstFactory/Dom/FigureMarkups.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/Pyterate/RstFactory/Evaluator/NodeEvaluator.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -263,44 +262,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Pyterate.RstFactory.Dom.FigureMarkups">
-<span id="figuremarkups"></span><h1><span class="section-number">8.1.5.2.3. </span>FigureMarkups<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.FigureMarkups" title="Permalink to this headline">¶</a></h1>
-<dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="sig-name descname">ExternalFigureNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">source_path</span></em>, <em class="sig-param"><span class="n">figure_path</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#ExternalFigureNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ExternalFigureNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.FigureMarkups.ImageNode" title="Pyterate.RstFactory.Dom.FigureMarkups.ImageNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageNode</span></code></a></p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.ImageNode">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="sig-name descname">ImageNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#ImageNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.ImageNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="Dom.html#Pyterate.RstFactory.Dom.Dom.Node" title="Pyterate.RstFactory.Dom.Dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.Dom.Node</span></code></a></p>
-<p>Class to implement an image node.</p>
-<p>Accept these image reST arguments:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>scale</p></li>
-<li><p>with</p></li>
-<li><p>height</p></li>
-<li><p>align</p></li>
-</ul>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="sig-name descname">LocaleFigureNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">source</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#LocaleFigureNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.LocaleFigureNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.FigureMarkups.ImageNode" title="Pyterate.RstFactory.Dom.FigureMarkups.ImageNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageNode</span></code></a></p>
-<p>This class represents an image block for a figure.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.FigureMarkups.</code><code class="sig-name descname">SaveFigureNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">figure</span></em>, <em class="sig-param"><span class="n">figure_filename</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/FigureMarkups.html#SaveFigureNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.FigureMarkups.SaveFigureNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.FigureMarkups.ImageNode" title="Pyterate.RstFactory.Dom.FigureMarkups.ImageNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.FigureMarkups.ImageNode</span></code></a></p>
-<p>This class represents an image block for a saved figure.</p>
-</dd></dl>
-
+  <div class="section" id="module-Pyterate.RstFactory.Evaluator.NodeEvaluator">
+<span id="nodeevaluator"></span><h1><span class="section-number">8.1.5.3.2. </span>NodeEvaluator<a class="headerlink" href="#module-Pyterate.RstFactory.Evaluator.NodeEvaluator" title="Permalink to this headline">¶</a></h1>
+<p>Module to implements the DOM evaluator using Jupyter for the code scope.</p>
 </div>
 
 
@@ -311,10 +275,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="LitteralIncludeMarkups.html" class="btn btn-neutral float-right" title="8.1.5.2.4. LitteralIncludeMarkups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../RstFactory.html" class="btn btn-neutral float-right" title="8.1.5.4. RstFactory" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="FigureGenerator/Tikz.html" class="btn btn-neutral float-left" title="8.1.5.2.2.3. Tikz" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="FigureTools.html" class="btn btn-neutral float-left" title="8.1.5.3.1. FigureTools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

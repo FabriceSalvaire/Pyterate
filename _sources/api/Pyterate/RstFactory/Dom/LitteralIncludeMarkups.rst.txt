@@ -1,8 +1,0 @@
-
-========================
- LitteralIncludeMarkups
-========================
-
-.. automodule:: Pyterate.RstFactory.Dom.LitteralIncludeMarkups
-   :members:
-   :show-inheritance:

@@ -5,6 +5,7 @@
 
 .. toctree::
     Tools/Generators
+    Tools/MarkupConverter
     Tools/Timestamp
 
 .. automodule:: Pyterate.Tools

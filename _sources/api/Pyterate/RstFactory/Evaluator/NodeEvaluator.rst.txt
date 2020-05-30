@@ -3,6 +3,6 @@
  NodeEvaluator
 ===============
 
-.. automodule:: Pyterate.RstFactory.NodeEvaluator
+.. automodule:: Pyterate.RstFactory.Evaluator.NodeEvaluator
    :members:
    :show-inheritance:

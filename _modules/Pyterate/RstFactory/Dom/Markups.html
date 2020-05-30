@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.Markups &mdash; Pyterate 2.1.0 documentation</title>
+  <title>Pyterate.RstFactory.Dom.Markups &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -154,12 +154,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,7 +173,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -272,6 +271,10 @@
 <span class="c1">#</span>
 <span class="c1">####################################################################################################</span>
 
+<span class="sd">&quot;&quot;&quot;This module contains all the class markups.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="c1">####################################################################################################</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
@@ -295,10 +298,10 @@
 
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
-<span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="kn">import</span> <span class="n">markdown_to_rest</span>
+<span class="kn">from</span> <span class="nn">Pyterate.Tools.MarkupConverter</span> <span class="kn">import</span> <span class="n">markdown_to_rest</span>
 <span class="kn">from</span> <span class="nn">.Dom</span> <span class="kn">import</span> <span class="n">Node</span><span class="p">,</span> <span class="n">ExecutedNode</span><span class="p">,</span> <span class="n">TextNode</span><span class="p">,</span> <span class="n">MarkdownCellMixin</span>
-<span class="kn">from</span> <span class="nn">.FigureMarkups</span> <span class="kn">import</span> <span class="n">ImageNode</span><span class="p">,</span> <span class="n">ExternalFigureNode</span><span class="p">,</span> <span class="n">TableFigureNode</span><span class="p">,</span> <span class="n">SaveFigureNode</span>
-<span class="kn">from</span> <span class="nn">.LitteralIncludeMarkups</span> <span class="kn">import</span> <span class="n">LiteralIncludeNode</span>
+<span class="kn">from</span> <span class="nn">.FigureNodes</span> <span class="kn">import</span> <span class="n">ImageNode</span><span class="p">,</span> <span class="n">ExternalFigureNode</span><span class="p">,</span> <span class="n">TableFigureNode</span><span class="p">,</span> <span class="n">SaveFigureNode</span>
+<span class="kn">from</span> <span class="nn">.LitteralIncludeNodes</span> <span class="kn">import</span> <span class="n">LiteralIncludeNode</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -349,7 +352,7 @@
 
         <span class="n">cell</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">iter_on_childs</span><span class="p">():</span>
-            <span class="c1"># skip LitteralIncludeMarkups.GetthecodeNode</span>
+            <span class="c1"># skip LitteralIncludeNodes.GetthecodeNode</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="p">(</span><span class="n">LiteralIncludeNode</span><span class="p">,</span> <span class="n">TableFigureNode</span><span class="p">)):</span>
                 <span class="n">markdown</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">to_markdown</span><span class="p">()</span>
                 <span class="n">_</span> <span class="o">=</span> <span class="n">nbv4</span><span class="o">.</span><span class="n">new_markdown_cell</span><span class="p">(</span><span class="n">markdown</span><span class="p">)</span>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.1. ApiRstFactory &mdash; Pyterate 2.1.0 documentation</title>
+  <title>8.1.1. ApiRstFactory &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -156,12 +156,10 @@
 <li class="toctree-l3"><a class="reference internal" href="RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Scripts.html">8.1.6. Scripts</a><ul>
@@ -177,7 +175,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -263,6 +262,16 @@
 <h1><span class="section-number">8.1.1. </span>ApiRstFactory<a class="headerlink" href="#apirstfactory" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 </div>
+<span class="target" id="module-Pyterate.ApiRstFactory"></span><p>This module provides a tool similar to <a class="reference external" href="http://www.sphinx-doc.org/en/master/man/sphinx-apidoc.html">sphinx-apidoc</a> to generate automatically the Sphinx
+sources for an API documentation using the <a class="reference external" href="http://www.sphinx-doc.org/en/master/ext/autodoc.html">autodoc extension</a>.</p>
+<p>In comparison to <em>sphinx-apidoc</em>, it generates sorter titles.</p>
+<dl class="py class">
+<dt id="Pyterate.ApiRstFactory.ApiRstFactory">
+<em class="property">class </em><code class="sig-prename descclassname">Pyterate.ApiRstFactory.</code><code class="sig-name descname">ApiRstFactory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">module_path</span></em>, <em class="sig-param"><span class="n">rst_directory</span></em>, <em class="sig-param"><span class="n">excluded_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/Pyterate/ApiRstFactory.html#ApiRstFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.ApiRstFactory.ApiRstFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>This class build recursively a Sphinx API documentation from a Python root module.</p>
+</dd></dl>
+
 </div>
 
 

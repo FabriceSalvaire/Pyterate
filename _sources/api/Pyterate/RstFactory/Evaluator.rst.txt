@@ -1,0 +1,12 @@
+
+===========
+ Evaluator
+===========
+
+.. toctree::
+    Evaluator/FigureTools
+    Evaluator/NodeEvaluator
+
+.. automodule:: Pyterate.RstFactory.Evaluator
+   :members:
+   :show-inheritance:

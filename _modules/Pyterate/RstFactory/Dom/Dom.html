@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.Dom &mdash; Pyterate 2.1.0 documentation</title>
+  <title>Pyterate.RstFactory.Dom.Dom &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -154,12 +154,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,7 +173,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -293,10 +292,11 @@
 <span class="c1">####################################################################################################</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">subprocess</span>
 
 <span class="kn">from</span> <span class="nn">nbformat</span> <span class="kn">import</span> <span class="n">v4</span> <span class="k">as</span> <span class="n">nbv4</span>
 
-<span class="kn">from</span> <span class="nn">..MarkupConverter</span> <span class="kn">import</span> <span class="n">rest_to_markdown</span>
+<span class="kn">from</span> <span class="nn">Pyterate.Tools.MarkupConverter</span> <span class="kn">import</span> <span class="n">rest_to_markdown</span>
 <span class="kn">from</span> <span class="nn">.Registry</span> <span class="kn">import</span> <span class="n">MarkupRegistry</span>
 
 <span class="c1">####################################################################################################</span>
@@ -348,6 +348,29 @@
     <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">code_block_directive</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">lexer</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span><span class="s1">&#39;code-block&#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">lexer</span><span class="p">,))</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">check_command</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">command</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">protect</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+
+        <span class="c1"># command = list(command)</span>
+        <span class="c1"># command[0] += &#39;-debug&#39;</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">protect</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span>
+                                          <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+                                          <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span>
+                                          <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="n">shell</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Found dependency: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+            <span class="bp">cls</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">A dependency is missing:</span><span class="se">\n</span><span class="s1">  </span><span class="si">%s</span><span class="se">\n</span><span class="s1">  </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">command</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">help</span><span class="p">)</span>
 
     <span class="c1">##############################################</span>
 

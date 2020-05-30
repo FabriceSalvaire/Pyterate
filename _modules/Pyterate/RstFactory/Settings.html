@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Settings &mdash; Pyterate 2.1.0 documentation</title>
+  <title>Pyterate.RstFactory.Settings &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -154,12 +154,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,7 +173,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../api/Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -280,7 +279,6 @@
 
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">re</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 
@@ -438,7 +436,7 @@
 <span class="s1">import os</span>
 <span class="s1">import sys</span>
 
-<span class="s1">from Pyterate.RstFactory.FigureTools import *</span>
+<span class="s1">from Pyterate.RstFactory.Evaluator.FigureTools import *</span>
 <span class="s1">&#39;&#39;&#39;</span>
     <span class="n">document_setup_code</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">__file__ = &#39;</span><span class="si">{file}</span><span class="s1">&#39;</span>
@@ -472,6 +470,8 @@
     <span class="c1"># Flags</span>
     <span class="n">show_counters</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Show documents counters in toc</span>
     <span class="n">run_code</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Run code</span>
+    <span class="n">make_rst</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">make_notebook</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="n">make_external_figure</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Generate external figures</span>
     <span class="n">force</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># Force the figure generation</span>
 
@@ -479,6 +479,8 @@
     <span class="n">languages</span> <span class="o">=</span> <span class="p">(</span>
         <span class="n">DefaultPython3Settings</span><span class="p">,</span>
     <span class="p">)</span>
+
+    <span class="n">failure_filename</span> <span class="o">=</span> <span class="s1">&#39;.pyterate-failures.json&#39;</span>
 
     <span class="c1">##############################################</span>
 
@@ -541,7 +543,13 @@
         <span class="k">for</span> <span class="n">language</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">languages</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">language</span><span class="o">.</span><span class="n">filename_match</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">language</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="c1">##############################################</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">failure_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">join_input_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">failure_filename</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.FigureGenerator.Generic &mdash; Pyterate 2.1.0 documentation</title>
+  <title>Pyterate.RstFactory.Dom.FigureGenerator.Generic &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -154,12 +154,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,7 +173,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -278,7 +277,7 @@
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">subprocess</span>
 
-<span class="kn">from</span> <span class="nn">..FigureMarkups</span> <span class="kn">import</span> <span class="n">ExternalFigureNode</span>
+<span class="kn">from</span> <span class="nn">..FigureNodes</span> <span class="kn">import</span> <span class="n">ExternalFigureNode</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -312,13 +311,13 @@
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
-        <span class="n">source_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span> <span class="c1"># Fixme: passed to Path()</span>
+        <span class="n">source_path</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># Fixme: passed to Path()</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">source_path</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_command</span> <span class="o">=</span> <span class="n">command</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_kwargs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="n">key</span><span class="p">:</span><span class="n">value</span>
+            <span class="n">key</span><span class="p">:</span> <span class="n">value</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;align&#39;</span><span class="p">,</span> <span class="s1">&#39;scale&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;width&#39;</span><span class="p">)</span>
         <span class="p">}</span>
@@ -353,8 +352,7 @@
             <span class="s1">&#39;--query&#39;</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="c1"># Fixme: Posix only</span>
-        <span class="n">rc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+        <span class="n">rc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">check_output</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rc</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">!=</span> <span class="s1">&#39;uptodate&#39;</span>
 
     <span class="c1">##############################################</span>
@@ -365,8 +363,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_command</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">absolut_path</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span></div>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

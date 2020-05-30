@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros &mdash; Pyterate 2.1.0 documentation</title>
+  <title>Pyterate.RstFactory.Dom.FigureGenerator.CircuitMacros &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -154,12 +154,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,7 +173,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -281,17 +280,7 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
 
-<span class="kn">from</span> <span class="nn">..FigureMarkups</span> <span class="kn">import</span> <span class="n">ExternalFigureNode</span>
-
-<span class="c1">####################################################################################################</span>
-
-<span class="c1"># http://ece.uwaterloo.ca/~aplevich/Circuit_macros</span>
-<span class="n">CIRCUIT_MACROS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;texmf&#39;</span><span class="p">,</span> <span class="s1">&#39;Circuit_macros&#39;</span><span class="p">)</span>
-
-<span class="n">LATEX_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;pdflatex&#39;</span>
-
-<span class="c1"># https://mupdf.com/docs/manual-mutool-convert.html</span>
-<span class="n">MUTOOL_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;mutool&#39;</span>
+<span class="kn">from</span> <span class="nn">..FigureNodes</span> <span class="kn">import</span> <span class="n">ExternalFigureNode</span>
 
 <span class="c1">####################################################################################################</span>
 
@@ -313,6 +302,13 @@
 
     <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;circuit_macros&#39;</span>
 
+    <span class="n">M4_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;m4&#39;</span>  <span class="c1"># GNU M4</span>
+    <span class="n">DPIC_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;dpic&#39;</span>  <span class="c1"># http://ece.uwaterloo.ca/~aplevich/Circuit_macros</span>
+    <span class="n">LATEX_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;pdflatex&#39;</span>
+    <span class="n">MUTOOL_COMMAND</span> <span class="o">=</span> <span class="s1">&#39;mutool&#39;</span>  <span class="c1"># https://mupdf.com/docs/manual-mutool-convert.html</span>
+
+    <span class="n">CIRCUIT_MACROS_PATH</span> <span class="o">=</span> <span class="n">Path</span><span class="o">.</span><span class="n">home</span><span class="p">()</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;texmf&#39;</span><span class="p">,</span> <span class="s1">&#39;Circuit_macros&#39;</span><span class="p">)</span>
+
     <span class="n">_PICTURE_TEX_HEADER</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;&#39;&#39;</span>
 <span class="s1">    \documentclass[11pt]</span><span class="si">{article}</span><span class="s1"></span>
 <span class="s1">    \usepackage</span><span class="si">{tikz}</span><span class="s1"></span>
@@ -326,11 +322,20 @@
 
     <span class="c1">##############################################</span>
 
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">check_environment</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">check_command</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">M4_COMMAND</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;GNU M4&#39;</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">check_command</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">DPIC_COMMAND</span><span class="p">,</span> <span class="s1">&#39;--foo&#39;</span><span class="p">,</span> <span class="n">protect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;http://ece.uwaterloo.ca/~aplevich/Circuit_macros&#39;</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">check_command</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">LATEX_COMMAND</span><span class="p">,</span> <span class="s1">&#39;--version&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;LaTeX&#39;</span><span class="p">)</span>
+        <span class="bp">cls</span><span class="o">.</span><span class="n">check_command</span><span class="p">(</span><span class="bp">cls</span><span class="o">.</span><span class="n">MUTOOL_COMMAND</span><span class="p">,</span> <span class="s1">&#39;--foo&#39;</span><span class="p">,</span> <span class="n">protect</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;https://mupdf.com/docs/manual-mutool-convert.html&#39;</span><span class="p">)</span>
+
+    <span class="c1">##############################################</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">m4_filename</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 
         <span class="n">m4_filename</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">m4_filename</span><span class="p">)</span>
         <span class="n">figure_path</span> <span class="o">=</span> <span class="n">m4_filename</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">m4_filename</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;.png&#39;</span><span class="p">)</span>
-        <span class="n">source_path</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="s1">&#39;m4&#39;</span><span class="p">,</span> <span class="n">m4_filename</span><span class="p">)</span> <span class="c1"># Fixme: m4 directory ???</span>
+        <span class="n">source_path</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="s1">&#39;m4&#39;</span><span class="p">,</span> <span class="n">m4_filename</span><span class="p">)</span>  <span class="c1"># Fixme: m4 directory ???</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">,</span> <span class="n">source_path</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -357,34 +362,31 @@
         <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">TemporaryDirectory</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Temporary directory &#39;</span> <span class="o">+</span> <span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
 
-        <span class="c1"># Fixme: Posix only</span>
-        <span class="n">dev_null</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">devnull</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
-
         <span class="c1"># Generate LaTeX file</span>
 
         <span class="n">picture_tex_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="s1">&#39;picture.tex&#39;</span><span class="p">)</span>
 
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">picture_tex_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_PICTURE_TEX_HEADER</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">picture_tex_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_PICTURE_TEX_HEADER</span><span class="p">)</span>
 
             <span class="c1"># Run dpic in pgf mode</span>
             <span class="n">m4_command</span> <span class="o">=</span> <span class="p">(</span>
-                <span class="s1">&#39;m4&#39;</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">M4_COMMAND</span><span class="p">,</span>
                 <span class="s1">&#39;-I&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">circuit_macros_path</span><span class="p">),</span>
                 <span class="s1">&#39;pgf.m4&#39;</span><span class="p">,</span>
                 <span class="s1">&#39;libcct.m4&#39;</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="p">,</span>
             <span class="p">)</span>
-            <span class="n">dpic_command</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;dpic&#39;</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">)</span>
+            <span class="n">dpic_command</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">DPIC_COMMAND</span><span class="p">,</span> <span class="s1">&#39;-g&#39;</span><span class="p">)</span>
 
             <span class="n">m4_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
                 <span class="n">m4_command</span><span class="p">,</span>
-                <span class="c1">#shell=True,</span>
+                <span class="c1"># shell=True,</span>
                 <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">dpic_process</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">Popen</span><span class="p">(</span>
                 <span class="n">dpic_command</span><span class="p">,</span>
-                <span class="c1">#shell=True,</span>
+                <span class="c1"># shell=True,</span>
                 <span class="n">stdin</span><span class="o">=</span><span class="n">m4_process</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span>
                 <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">PIPE</span><span class="p">,</span>
             <span class="p">)</span>
@@ -393,20 +395,20 @@
             <span class="k">if</span> <span class="n">dpic_rc</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">CalledProcessError</span><span class="p">(</span><span class="n">dpic_rc</span><span class="p">,</span> <span class="s1">&#39;dpic&#39;</span><span class="p">)</span>
             <span class="n">dpic_output</span> <span class="o">=</span> <span class="n">dpic_process</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dpic_output</span><span class="p">)</span>
-            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\end</span><span class="si">{document}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dpic_output</span><span class="p">)</span>
+            <span class="n">fh</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\end</span><span class="si">{document}</span><span class="s1">&#39;</span><span class="p">)</span>
 
         <span class="c1"># Run LaTeX to generate PDF</span>
 
         <span class="n">current_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">tmp_dir</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="n">latex_command</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">LATEX_COMMAND</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">LATEX_COMMAND</span><span class="p">,</span>
             <span class="s1">&#39;-shell-escape&#39;</span><span class="p">,</span>
             <span class="c1"># &#39;-output-directory=&#39; + tmp_dir.name,</span>
             <span class="s1">&#39;picture.tex&#39;</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">latex_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">latex_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
 
         <span class="n">os</span><span class="o">.</span><span class="n">chdir</span><span class="p">(</span><span class="n">current_dir</span><span class="p">)</span>
         <span class="n">basename</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_path</span><span class="o">.</span><span class="n">stem</span>
@@ -423,19 +425,19 @@
         <span class="c1">#                        &#39;-density&#39;, str(density),</span>
         <span class="c1">#                        &#39;-transparent&#39;, str(transparent),</span>
         <span class="c1">#                        pdf_path, png_path),</span>
-        <span class="c1">#                       stdout=dev_null, stderr=subprocess.STDOUT)</span>
+        <span class="c1">#                       stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)</span>
 
         <span class="n">mutool_command</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">MUTOOL_COMMAND</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">MUTOOL_COMMAND</span><span class="p">,</span>
             <span class="s1">&#39;convert&#39;</span><span class="p">,</span>
             <span class="s1">&#39;-A&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">,</span>
-            <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;resolution=300&#39;</span><span class="p">,</span> <span class="c1"># ,colorspace=rgb,alpha</span>
+            <span class="s1">&#39;-O&#39;</span><span class="p">,</span> <span class="s1">&#39;resolution=300&#39;</span><span class="p">,</span>  <span class="c1"># ,colorspace=rgb,alpha</span>
             <span class="s1">&#39;-F&#39;</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">,</span>
             <span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">png_path</span><span class="p">),</span>
             <span class="nb">str</span><span class="p">(</span><span class="n">pdf_path</span><span class="p">),</span>
             <span class="s1">&#39;1&#39;</span>
         <span class="p">)</span>
-        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">mutool_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">dev_null</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
+        <span class="n">subprocess</span><span class="o">.</span><span class="n">check_call</span><span class="p">(</span><span class="n">mutool_command</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">DEVNULL</span><span class="p">,</span> <span class="n">stderr</span><span class="o">=</span><span class="n">subprocess</span><span class="o">.</span><span class="n">STDOUT</span><span class="p">)</span>
         <span class="n">output_png_path</span> <span class="o">=</span> <span class="n">png_path</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="n">png_path</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s1">&#39;1.png&#39;</span><span class="p">)</span>
         <span class="n">output_png_path</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">png_path</span><span class="p">)</span></div>
 </pre></div>

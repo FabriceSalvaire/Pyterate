@@ -1,0 +1,8 @@
+
+=============
+ FigureNodes
+=============
+
+.. automodule:: Pyterate.RstFactory.Dom.FigureNodes
+   :members:
+   :show-inheritance:

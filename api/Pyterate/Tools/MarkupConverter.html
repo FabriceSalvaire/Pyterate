@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.4. MarkupConverter &mdash; Pyterate 2.1.0 documentation</title>
+  <title>8.1.8.2. MarkupConverter &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="8.1.5.5. NodeEvaluator" href="NodeEvaluator.html" />
-    <link rel="prev" title="8.1.5.3. FigureTools" href="FigureTools.html" /> 
+    <link rel="next" title="8.1.8.3. Timestamp" href="Timestamp.html" />
+    <link rel="prev" title="8.1.8.1. Generators" href="Generators.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -153,15 +153,13 @@
 <li class="toctree-l4"><a class="reference internal" href="../Logging/Logging.html">8.1.4.1. Logging</a></li>
 </ul>
 </li>
-<li class="toctree-l3 current"><a class="reference internal" href="../RstFactory.html">8.1.5. RstFactory</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="Document.html">8.1.5.1. Document</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../RstFactory.html">8.1.5. RstFactory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory/Document.html">8.1.5.1. Document</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory/Dom.html">8.1.5.2. Dom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,9 +173,10 @@
 <li class="toctree-l4"><a class="reference internal" href="../Template/Filters.html">8.1.7.1. Filters</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../Tools.html">8.1.8. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="../Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../Tools.html">8.1.8. Tools</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="Generators.html">8.1.8.1. Generators</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -240,15 +239,15 @@
         
           <li><a href="../../Pyterate.html"><span class="section-number">8.1. </span>Pyterate</a> &raquo;</li>
         
-          <li><a href="../RstFactory.html"><span class="section-number">8.1.5. </span>RstFactory</a> &raquo;</li>
+          <li><a href="../Tools.html"><span class="section-number">8.1.8. </span>Tools</a> &raquo;</li>
         
-      <li><span class="section-number">8.1.5.4. </span>MarkupConverter</li>
+      <li><span class="section-number">8.1.8.2. </span>MarkupConverter</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/api/Pyterate/RstFactory/MarkupConverter.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/api/Pyterate/Tools/MarkupConverter.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -261,9 +260,9 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Pyterate.RstFactory.MarkupConverter">
-<span id="markupconverter"></span><h1><span class="section-number">8.1.5.4. </span>MarkupConverter<a class="headerlink" href="#module-Pyterate.RstFactory.MarkupConverter" title="Permalink to this headline">¶</a></h1>
-<p>Helper to convert markup languages.</p>
+  <div class="section" id="module-Pyterate.Tools.MarkupConverter">
+<span id="markupconverter"></span><h1><span class="section-number">8.1.8.2. </span>MarkupConverter<a class="headerlink" href="#module-Pyterate.Tools.MarkupConverter" title="Permalink to this headline">¶</a></h1>
+<p>Helpers to convert markup languages.</p>
 <ul class="simple">
 <li><p>Pandoc a universal document converter <a class="reference external" href="https://pandoc.org">https://pandoc.org</a></p></li>
 </ul>
@@ -277,10 +276,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="NodeEvaluator.html" class="btn btn-neutral float-right" title="8.1.5.5. NodeEvaluator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Timestamp.html" class="btn btn-neutral float-right" title="8.1.8.3. Timestamp" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="FigureTools.html" class="btn btn-neutral float-left" title="8.1.5.3. FigureTools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Generators.html" class="btn btn-neutral float-left" title="8.1.8.1. Generators" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

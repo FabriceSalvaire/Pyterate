@@ -6,8 +6,8 @@
 .. toctree::
     Dom/Dom
     Dom/FigureGenerator
-    Dom/FigureMarkups
-    Dom/LitteralIncludeMarkups
+    Dom/FigureNodes
+    Dom/LitteralIncludeNodes
     Dom/Markups
     Dom/Registry
 

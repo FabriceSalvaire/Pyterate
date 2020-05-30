@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pyterate.RstFactory.Dom.LitteralIncludeMarkups &mdash; Pyterate 2.1.0 documentation</title>
+  <title>Pyterate.RstFactory.Evaluator.FigureTools &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -154,12 +154,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -175,7 +173,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../../../../api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../../../api/Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -236,7 +235,7 @@
         
           <li><a href="../../../index.html">Module code</a> &raquo;</li>
         
-      <li>Pyterate.RstFactory.Dom.LitteralIncludeMarkups</li>
+      <li>Pyterate.RstFactory.Evaluator.FigureTools</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -251,7 +250,7 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for Pyterate.RstFactory.Dom.LitteralIncludeMarkups</h1><div class="highlight"><pre>
+  <h1>Source code for Pyterate.RstFactory.Evaluator.FigureTools</h1><div class="highlight"><pre>
 <span></span><span class="c1">####################################################################################################</span>
 <span class="c1">#</span>
 <span class="c1"># Pyterate - Sphinx add-ons to create API documentation for Python projects</span>
@@ -272,72 +271,58 @@
 <span class="c1">#</span>
 <span class="c1">####################################################################################################</span>
 
+<span class="sd">&quot;&quot;&quot;Helpers for figures.</span>
+
+<span class="sd">Theses functions are executed in a Jupyter kernel.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
 <span class="c1">####################################################################################################</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s1">&#39;LiteralIncludeNode&#39;</span><span class="p">,</span>
-    <span class="s1">&#39;GetthecodeNode&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;save_figure&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;export_value&#39;</span><span class="p">,</span>
 <span class="p">]</span>
 
 <span class="c1">####################################################################################################</span>
 
-<span class="c1"># import logging</span>
 <span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
-<span class="kn">from</span> <span class="nn">.Dom</span> <span class="kn">import</span> <span class="n">Node</span>
-
-<span class="c1">####################################################################################################</span>
-
-<span class="c1"># _module_logger = logging.getLogger(__name__)</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="LiteralIncludeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.LiteralIncludeNode">[docs]</a><span class="k">class</span> <span class="nc">LiteralIncludeNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
-
-    <span class="sd">&quot;&quot;&quot;This class represents a literal include block.&quot;&quot;&quot;</span>
-
-    <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;literal_include&#39;</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">document</span><span class="p">,</span> <span class="n">include_path</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">document</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_include_filename</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">symlink_source</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">include_path</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_include_path</span> <span class="o">=</span> <span class="n">document</span><span class="o">.</span><span class="n">topic</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">include_path</span><span class="p">)</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span>
-            <span class="s1">&#39;literalinclude&#39;</span><span class="p">,</span>
-            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_filename</span><span class="p">,),</span>
-        <span class="p">)</span>
-
-    <span class="c1">##############################################</span>
-
-    <span class="k">def</span> <span class="nf">to_markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;```</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_path</span><span class="p">)</span> <span class="k">as</span> <span class="n">fh</span><span class="p">:</span>
-            <span class="n">text</span> <span class="o">+=</span> <span class="n">fh</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-        <span class="n">text</span> <span class="o">+=</span> <span class="s1">&#39;```</span><span class="se">\n</span><span class="s1">&#39;</span>
-        <span class="k">return</span> <span class="n">text</span></div>
+<span class="n">_module_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="c1">####################################################################################################</span>
 
-<div class="viewcode-block" id="GetthecodeNode"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html#Pyterate.RstFactory.Dom.LitteralIncludeMarkups.GetthecodeNode">[docs]</a><span class="k">class</span> <span class="nc">GetthecodeNode</span><span class="p">(</span><span class="n">LiteralIncludeNode</span><span class="p">):</span>
+<div class="viewcode-block" id="save_figure"><a class="viewcode-back" href="../../../../api/Pyterate/RstFactory/Evaluator/FigureTools.html#Pyterate.RstFactory.Evaluator.FigureTools.save_figure">[docs]</a><span class="k">def</span> <span class="nf">save_figure</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">figure_path</span><span class="p">):</span>
 
-    <span class="sd">&quot;&quot;&quot;This class represents a literal include block.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; This function is called from document to save a figure. &quot;&quot;&quot;</span>
 
-    <span class="n">COMMAND</span> <span class="o">=</span> <span class="s1">&#39;getthecode&#39;</span>
+    <span class="n">figure_format</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">figure_path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1"># remove .</span>
+    <span class="n">_module_logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Save figure &quot;</span> <span class="o">+</span> <span class="n">figure_path</span><span class="p">)</span>
+    <span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span>
+        <span class="n">figure_path</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="n">figure_format</span><span class="p">,</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="mi">150</span><span class="p">,</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;landscape&#39;</span><span class="p">,</span> <span class="n">papertype</span><span class="o">=</span><span class="s1">&#39;a4&#39;</span><span class="p">,</span>
+        <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span></div>
 
-    <span class="c1">##############################################</span>
+<span class="c1">####################################################################################################</span>
 
-    <span class="k">def</span> <span class="nf">to_rst</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">directive</span><span class="p">(</span>
-            <span class="s1">&#39;getthecode&#39;</span><span class="p">,</span>
-            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_include_filename</span><span class="p">,),</span>
-            <span class="n">kwargs</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">language</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lexer</span><span class="p">),</span>
-        <span class="p">)</span></div>
+<span class="k">def</span> <span class="nf">export_value</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="c1"># Can export basic type: str, int, float</span>
+    <span class="c1"># as well as tuple, list or dict of basic type</span>
+
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 </pre></div>
 
            </div>

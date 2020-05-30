@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1. Pyterate &mdash; Pyterate 2.1.0 documentation</title>
+  <title>8.1. Pyterate &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -156,12 +156,10 @@
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
 <li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -177,7 +175,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
@@ -285,18 +284,20 @@
 <li class="toctree-l4"><a class="reference internal" href="Pyterate/RstFactory/Dom/FigureGenerator/Tikz.html">8.1.5.2.2.3. Tikz</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Dom/FigureMarkups.html">8.1.5.2.3. FigureMarkups</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Dom/LitteralIncludeMarkups.html">8.1.5.2.4. LitteralIncludeMarkups</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Dom/FigureNodes.html">8.1.5.2.3. FigureNodes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Dom/LitteralIncludeNodes.html">8.1.5.2.4. LitteralIncludeNodes</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Dom/Markups.html">8.1.5.2.5. Markups</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Dom/Registry.html">8.1.5.2.6. Registry</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Evaluator.html">8.1.5.3. Evaluator</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Evaluator/FigureTools.html">8.1.5.3.1. FigureTools</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Pyterate/RstFactory/Evaluator/NodeEvaluator.html">8.1.5.3.2. NodeEvaluator</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/RstFactory.html">8.1.5.4. RstFactory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Settings.html">8.1.5.5. Settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/RstFactory/Topic.html">8.1.5.6. Topic</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
@@ -312,7 +313,8 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Pyterate/Tools.html">8.1.8. Tools</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/MarkupConverter.html">8.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Pyterate/Tools/Timestamp.html">8.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>

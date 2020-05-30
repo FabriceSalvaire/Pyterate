@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8.1.5.2.1. Dom &mdash; Pyterate 2.1.4 documentation</title>
+  <title>8.1.5.2.4. LitteralIncludeNodes &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
   <link rel="stylesheet" href="../../../../static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../../genindex.html" />
     <link rel="search" title="Search" href="../../../../search.html" />
-    <link rel="next" title="8.1.5.2.2. FigureGenerator" href="FigureGenerator.html" />
-    <link rel="prev" title="8.1.5.2. Dom" href="../Dom.html" /> 
+    <link rel="next" title="8.1.5.2.5. Markups" href="Markups.html" />
+    <link rel="prev" title="8.1.5.2.3. FigureNodes" href="FigureNodes.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -243,13 +243,13 @@
         
           <li><a href="../Dom.html"><span class="section-number">8.1.5.2. </span>Dom</a> &raquo;</li>
         
-      <li><span class="section-number">8.1.5.2.1. </span>Dom</li>
+      <li><span class="section-number">8.1.5.2.4. </span>LitteralIncludeNodes</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../../_sources/api/Pyterate/RstFactory/Dom/Dom.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../../_sources/api/Pyterate/RstFactory/Dom/LitteralIncludeNodes.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -262,25 +262,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-Pyterate.RstFactory.Dom.Dom">
-<span id="dom"></span><h1><span class="section-number">8.1.5.2.1. </span>Dom<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.Dom" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-Pyterate.RstFactory.Dom.LitteralIncludeNodes">
+<span id="litteralincludenodes"></span><h1><span class="section-number">8.1.5.2.4. </span>LitteralIncludeNodes<a class="headerlink" href="#module-Pyterate.RstFactory.Dom.LitteralIncludeNodes" title="Permalink to this headline">¶</a></h1>
+<p>This module contains literal include nodes.</p>
 <dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.Dom.ExecutedNode">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.Dom.</code><code class="sig-name descname">ExecutedNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Dom.html#ExecutedNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom.ExecutedNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.Dom.Node" title="Pyterate.RstFactory.Dom.Dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.Dom.Node</span></code></a></p>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeNodes.LiteralIncludeNode">
+<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.LitteralIncludeNodes.</code><code class="sig-name descname">LiteralIncludeNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">include_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeNodes.html#LiteralIncludeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeNodes.LiteralIncludeNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="Dom.html#Pyterate.RstFactory.Dom.Dom.Node" title="Pyterate.RstFactory.Dom.Dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.Dom.Node</span></code></a></p>
+<p>This class represents a literal include block.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.Dom.Node">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.Dom.</code><code class="sig-name descname">Node</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Dom.html#Node"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom.Node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.8)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>This class represents a node of lines in the source.</p>
-</dd></dl>
-
-<dl class="py class">
-<dt id="Pyterate.RstFactory.Dom.Dom.TextNode">
-<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.Dom.</code><code class="sig-name descname">TextNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/Dom.html#TextNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.Dom.TextNode" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.Dom.MarkdownCellMixin</span></code>, <a class="reference internal" href="#Pyterate.RstFactory.Dom.Dom.Node" title="Pyterate.RstFactory.Dom.Dom.Node"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.Dom.Node</span></code></a></p>
+<dt id="Pyterate.RstFactory.Dom.LitteralIncludeNodes.GetthecodeNode">
+<em class="property">class </em><code class="sig-prename descclassname">Pyterate.RstFactory.Dom.LitteralIncludeNodes.</code><code class="sig-name descname">GetthecodeNode</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">document</span></em>, <em class="sig-param"><span class="n">include_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/Pyterate/RstFactory/Dom/LitteralIncludeNodes.html#GetthecodeNode"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#Pyterate.RstFactory.Dom.LitteralIncludeNodes.GetthecodeNode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#Pyterate.RstFactory.Dom.LitteralIncludeNodes.LiteralIncludeNode" title="Pyterate.RstFactory.Dom.LitteralIncludeNodes.LiteralIncludeNode"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pyterate.RstFactory.Dom.LitteralIncludeNodes.LiteralIncludeNode</span></code></a></p>
+<p>This class represents a literal include block.</p>
 </dd></dl>
 
 </div>
@@ -293,10 +289,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="FigureGenerator.html" class="btn btn-neutral float-right" title="8.1.5.2.2. FigureGenerator" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Markups.html" class="btn btn-neutral float-right" title="8.1.5.2.5. Markups" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../Dom.html" class="btn btn-neutral float-left" title="8.1.5.2. Dom" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="FigureNodes.html" class="btn btn-neutral float-left" title="8.1.5.2.3. FigureNodes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

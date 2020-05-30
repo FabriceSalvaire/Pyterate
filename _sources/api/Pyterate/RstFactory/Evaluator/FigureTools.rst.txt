@@ -3,6 +3,6 @@
  FigureTools
 =============
 
-.. automodule:: Pyterate.RstFactory.FigureTools
+.. automodule:: Pyterate.RstFactory.Evaluator.FigureTools
    :members:
    :show-inheritance:

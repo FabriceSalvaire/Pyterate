@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>5. User Guide &mdash; Pyterate 2.1.0 documentation</title>
+  <title>5. User Guide &mdash; Pyterate 2.1.4 documentation</title>
   
 
   
@@ -26,7 +26,6 @@
         <script src="static/doctools.js"></script>
         <script src="static/language_data.js"></script>
         <script src="static/getthecode.js"></script>
-        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="static/js/theme.js"></script>
 
@@ -37,7 +36,7 @@
   <link rel="stylesheet" href="static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="6. Examples" href="examples/index.html" />
+    <link rel="next" title="6. Design Notes" href="design-notes.html" />
     <link rel="prev" title="4. User FAQ" href="faq.html" /> 
 </head>
 
@@ -121,76 +120,65 @@
 <li class="toctree-l2"><a class="reference internal" href="#documentation-generator">5.2. Documentation Generator</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="examples/index.html">6. Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/index.html#examples-embeded-in-pyterate">6.1. Examples embeded in Pyterate</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples/document-generator/index.html">6.1.1. Document Generator Demo</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="examples/document-generator/full-test.html">6.1.1.1. A Restructuredtext Title</a></li>
+<li class="toctree-l1"><a class="reference internal" href="design-notes.html">6. Design Notes</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="design-notes.html#genesis">6.1. Genesis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design-notes.html#new-design">6.2. New Design</a></li>
+<li class="toctree-l2"><a class="reference internal" href="design-notes.html#markdown-versus-rst">6.3. Markdown versus rST</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">7. API Documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api/Pyterate.html">7.1. Pyterate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/ApiRstFactory.html">7.1.1. ApiRstFactory</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Config.html">7.1.2. Config</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Config/ConfigInstall.html">7.1.2.1. ConfigInstall</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Jupyter.html">7.1.3. Jupyter</a><ul class="simple">
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Logging.html">7.1.4. Logging</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Logging/Logging.html">7.1.4.1. Logging</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/RstFactory.html">7.1.5. RstFactory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Document.html">7.1.5.1. Document</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Dom.html">7.1.5.2. Dom</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Evaluator.html">7.1.5.3. Evaluator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/RstFactory.html">7.1.5.4. RstFactory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Settings.html">7.1.5.5. Settings</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Topic.html">7.1.5.6. Topic</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Scripts.html">7.1.6. Scripts</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/circuit_macros_generator.html">7.1.6.1. circuit_macros_generator</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/format_rst_table.html">7.1.6.2. format_rst_table</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/pyterate.html">7.1.6.3. pyterate</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/pyterate_rst_api.html">7.1.6.4. pyterate_rst_api</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Template.html">7.1.7. Template</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Template/Filters.html">7.1.7.1. Filters</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Tools.html">7.1.8. Tools</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Generators.html">7.1.8.1. Generators</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/MarkupConverter.html">7.1.8.2. MarkupConverter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Timestamp.html">7.1.8.3. Timestamp</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="reference-manual.html#indexes">7.2. Indexes</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="design-notes.html">7. Design Notes</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="design-notes.html#genesis">7.1. Genesis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design-notes.html#new-design">7.2. New Design</a></li>
-<li class="toctree-l2"><a class="reference internal" href="design-notes.html#markdown-versus-rst">7.3. Markdown versus rST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="development.html">8. Development &amp; Community</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="development.html#how-you-can-help">8.1. How you can help ?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="development.html#contributors">8.2. Contributors</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="reference-manual.html">8. API Documentation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="api/Pyterate.html">8.1. Pyterate</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/ApiRstFactory.html">8.1.1. ApiRstFactory</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Config.html">8.1.2. Config</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Config/ConfigInstall.html">8.1.2.1. ConfigInstall</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Jupyter.html">8.1.3. Jupyter</a><ul class="simple">
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Logging.html">8.1.4. Logging</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Logging/Logging.html">8.1.4.1. Logging</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/RstFactory.html">8.1.5. RstFactory</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Document.html">8.1.5.1. Document</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Dom.html">8.1.5.2. Dom</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/FigureTools.html">8.1.5.3. FigureTools</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/MarkupConverter.html">8.1.5.4. MarkupConverter</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/NodeEvaluator.html">8.1.5.5. NodeEvaluator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/RstFactory.html">8.1.5.6. RstFactory</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Settings.html">8.1.5.7. Settings</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/RstFactory/Topic.html">8.1.5.8. Topic</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Scripts.html">8.1.6. Scripts</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/circuit_macros_generator.html">8.1.6.1. circuit_macros_generator</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/format_rst_table.html">8.1.6.2. format_rst_table</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/pyterate.html">8.1.6.3. pyterate</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Scripts/pyterate_rst_api.html">8.1.6.4. pyterate_rst_api</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Template.html">8.1.7. Template</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Template/Filters.html">8.1.7.1. Filters</a></li>
-</ul>
-</li>
-<li class="toctree-l3"><a class="reference internal" href="api/Pyterate/Tools.html">8.1.8. Tools</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Generators.html">8.1.8.1. Generators</a></li>
-<li class="toctree-l4"><a class="reference internal" href="api/Pyterate/Tools/Timestamp.html">8.1.8.2. Timestamp</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="reference-manual.html#indexes">8.2. Indexes</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="development.html">9. Development &amp; Community</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="development.html#how-you-can-help">9.1. How you can help ?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="development.html#contributors">9.2. Contributors</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="how-to-refer.html">10. How to Refer to Pyterate ?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="how-to-refer.html">9. How to Refer to Pyterate ?</a></li>
 </ul>
 
             
@@ -419,7 +407,7 @@ permits to extend Pyterate with custom codes.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="examples/index.html" class="btn btn-neutral float-right" title="6. Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="design-notes.html" class="btn btn-neutral float-right" title="6. Design Notes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="faq.html" class="btn btn-neutral float-left" title="4. User FAQ" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

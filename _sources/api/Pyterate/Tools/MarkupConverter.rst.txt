@@ -3,6 +3,6 @@
  MarkupConverter
 =================
 
-.. automodule:: Pyterate.RstFactory.MarkupConverter
+.. automodule:: Pyterate.Tools.MarkupConverter
    :members:
    :show-inheritance:
