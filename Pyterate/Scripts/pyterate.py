@@ -24,7 +24,6 @@ __all__ = ['main']
 
 from pathlib import Path
 import argparse
-import sys
 
 import Pyterate.Logging.Logging as Logging
 _logger = Logging.setup_logging()
@@ -91,7 +90,7 @@ def main():
     if args.version:
         import Pyterate
         Pyterate.show_version()
-        sys.exit(0)
+        return
 
     # Load config ...
 
@@ -125,7 +124,7 @@ def main():
     # Process ...
 
     if args.skip_processing:
-        sys.exit(0)
+        return
 
     rst_factory = RstFactory(settings)
 
@@ -138,11 +137,9 @@ def main():
         topic = Topic(rst_factory, document_path.parent)
         language = settings.language_for(args.document_path)
         document = Document(topic, document_path.name, language)
-        rc = not rst_factory.has_failure
+        has_failure = not rst_factory.has_failure
     else:
-        rc = rst_factory.process_recursively()
+        has_failure = rst_factory.process_recursively()
 
-    if rc:
-        return 0
-    else:
+    if has_failure:
         return 1
