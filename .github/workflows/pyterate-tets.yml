@@ -26,4 +26,5 @@ jobs:
         pip install -r requirements.txt
     - name: run examples
       run: |
-        ./bin/pyterate --only-run
+        python setup.py install
+        pyterate --only-run
