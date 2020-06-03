@@ -124,6 +124,8 @@ class RstFactory:
         for topic_path, _, _ in os.walk(self._settings.input_path, topdown=False, followlinks=True):
             self._process_topic(Path(topic_path))
 
+        self._logger.info('Done')
+
         failure_path = self._settings.failure_path
         if self.has_failure:
             documents = [str(document.path) for document in self._document_failures]
@@ -134,5 +136,6 @@ class RstFactory:
                 self._logger.warning('Dumped failures in {}'.format(failure_path))
             return False
         else:
+            self._logger.info('Here')
             failure_path.unlink(missing_ok=True)
             return True
