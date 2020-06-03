@@ -142,7 +142,7 @@ def main():
     else:
         rc = rst_factory.process_recursively()
 
-    self._logger.info(str(rc))
+    _logger.info(str(rc))
     if rc:
         sys.exit(0)
     else:
