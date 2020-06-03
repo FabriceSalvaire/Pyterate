@@ -32,6 +32,9 @@ jobs:
     - name: Install Pyterate
       run: |
         python setup.py install
+    - name: Debug scripts
+      run: |
+        python continuous-integration/platform.py
     - name: Make API doc
       run: |
         pyterate-rst-api Pyterate
