@@ -144,6 +144,8 @@ def main():
 
     _logger.info(str(rc))
     if rc:
+        _logger.info('call exit 0')
         sys.exit(0)
     else:
+        _logger.info('call exit 1')
         sys.exit(1)
