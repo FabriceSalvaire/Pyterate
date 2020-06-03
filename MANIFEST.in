@@ -16,7 +16,7 @@ include requirements.txt requirements-dev.txt
 include .travis.yml
 include bower/bower.json
 include bin/pyterate-rst-api bin/pyterate
-recursive-include Pyterate *.py *.yml *py.in
+recursive-include Pyterate *.py *.yml *.jinja2
 recursive-include doc *
 recursive-include doc/sphinx/source/_static *
 recursive-include doc/sphinx/source/_templates *
