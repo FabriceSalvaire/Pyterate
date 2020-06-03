@@ -41,7 +41,7 @@ jobs:
     - name: Run examples
       run: |
         pyterate --only-run
-    - name: Make examples RST
-      run: |
-        # --skip-rst --skip-external-figure --skip-notebook
-        pyterate --skip-external-figure --skip-notebook
+    # - name: Make examples RST
+    #   run: |
+    #     # --skip-rst --skip-external-figure --skip-notebook
+    #     pyterate --skip-external-figure --skip-notebook
