@@ -134,6 +134,8 @@ class RstFactory:
                 self._logger.warning('Dumped failures in {}'.format(failure_path))
             return False
         else:
+            self._logger.info(str(failure_path))
             if failure_path.exists():
                 failure_path.unlink(missing_ok=True)
+                self._logger.info('HERE')
             return True
