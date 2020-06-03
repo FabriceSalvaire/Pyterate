@@ -20,5 +20,6 @@
 #
 ####################################################################################################
 
+import sys
 from Pyterate.Scripts.pyterate import main
-main()
+sys.exit(main())

@@ -142,10 +142,7 @@ def main():
     else:
         rc = rst_factory.process_recursively()
 
-    _logger.info(str(rc))
     if rc:
-        _logger.info('call exit 0')
-        sys.exit(0)
+        return 0
     else:
-        _logger.info('call exit 1')
-        sys.exit(1)
+        return 1
