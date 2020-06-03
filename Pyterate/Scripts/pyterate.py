@@ -137,7 +137,7 @@ def main():
         topic = Topic(rst_factory, document_path.parent)
         language = settings.language_for(args.document_path)
         document = Document(topic, document_path.name, language)
-        has_failure = not rst_factory.has_failure
+        has_failure = rst_factory.has_failure
     else:
         has_failure = rst_factory.process_recursively()
 

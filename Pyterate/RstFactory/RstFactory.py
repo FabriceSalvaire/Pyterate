@@ -132,7 +132,7 @@ class RstFactory:
             with open(failure_path, 'w') as fh:
                 json.dump(documents, fh, indent=4)
                 self._logger.warning('Dumped failures in {}'.format(failure_path))
-            return False
+            return True
         else:
             failure_path.unlink(missing_ok=True)
-            return True
+            return False
