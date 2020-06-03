@@ -142,4 +142,5 @@ def main():
         has_failure = rst_factory.process_recursively()
 
     if has_failure:
+        _logger.error('Failed')
         return 1
