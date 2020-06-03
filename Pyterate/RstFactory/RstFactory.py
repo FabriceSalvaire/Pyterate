@@ -137,5 +137,5 @@ class RstFactory:
             self._logger.info(str(failure_path))
             if failure_path.exists():
                 failure_path.unlink(missing_ok=True)
-                self._logger.info('HERE')
+            self._logger.info('HERE 1')
             return True
