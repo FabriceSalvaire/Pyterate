@@ -220,6 +220,8 @@ class Document:
         if not node_evaluator.run(self._dom, self._path, eval_figure=self.settings.make_rst):
             self._logger.error("Failed to run document {}".format(self._path))
             self.factory.register_failure(self)
+        # Windows has an issue with the garbage collecting of the temporary working directory
+        node_evaluator.stop_jupyter()
 
     ##############################################
 

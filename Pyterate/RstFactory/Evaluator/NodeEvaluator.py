@@ -113,9 +113,17 @@ export_value(_)
     def _start_jupyter(self, language):
         """Start Jupyter kernel for a language"""
         self._working_directory = tempfile.TemporaryDirectory()
+        self._logger.info("Start Jupyter %s", self._working_directory.name)
         self._jupyter_client = JupyterClient(self._working_directory.name, kernel=language.jupyter_kernel)
         code = self._language.setup_code # .format(**kwargs)
         self._jupyter_client.run_cell(code)
+
+    ##############################################
+
+    def stop_jupyter(self):
+        self._logger.info("Stop Jupyter")
+        del self._jupyter_client
+        del self._working_directory
 
     ##############################################
 
