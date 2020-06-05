@@ -30,17 +30,14 @@ jobs:
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
     - name: Install Pyterate
-      run: |
-        python setup.py install
+      run: python setup.py install
     - name: Debug scripts
       run: |
         python continuous-integration/platform.py
     - name: Make API doc
-      run: |
-        pyterate-rst-api Pyterate
+      run: pyterate-rst-api Pyterate
     - name: Run examples
-      run: |
-        pyterate --only-run
+      run: pyterate --only-run
     # - name: Make examples RST
     #   run: |
     #     # --skip-rst --skip-external-figure --skip-notebook
