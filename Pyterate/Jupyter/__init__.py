@@ -203,7 +203,6 @@ class JupyterClient:
     ##############################################
 
     def __del__(self):
-
         self.close()
 
     ##############################################
@@ -226,7 +225,6 @@ class JupyterClient:
     ##############################################
 
     def close(self):
-
         self._logger.info('Stop kernel')
         # self._kernel_client.stop_channels() # Fixme: block ??? not documented ???
         self._kernel_manager.shutdown_kernel(now=True)
@@ -248,7 +246,6 @@ class JupyterClient:
 
     @staticmethod
     def message_id_match(message, message_id):
-
         return message['parent_header'].get('msg_id') == message_id
 
     ##############################################
