@@ -110,6 +110,7 @@ def main():
     settings.run_code = not args.skip_code_execution
 
     if args.only_run:
+        settings.force = True
         settings.make_external_figure = False
         settings.make_notebook = False
         settings.make_rst = False
