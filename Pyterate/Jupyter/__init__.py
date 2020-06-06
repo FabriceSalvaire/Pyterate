@@ -36,6 +36,7 @@ import base64
 import logging
 import os
 
+from ipykernel.inprocess import InProcessKernelManager
 from jupyter_client import KernelManager
 import nbformat.v4 as nbformat_v4
 
@@ -187,13 +188,16 @@ class JupyterClient:
 
     _logger = _module_logger.getChild('JupyterClient')
 
-    TIMEOUT = None
+    TIMEOUT = None  # -1 ???
 
     ##############################################
 
-    def __init__(self, working_directory, kernel='python3'):
+    def __init__(self, working_directory, kernel='python3', embed_kernel=False):
 
-        self._kernel_manager = KernelManager(kernel_name=kernel)
+        if embed_kernel:
+            self._kernel_manager = InProcessKernelManager(kernel_name=kernel)
+        else:
+            self._kernel_manager = KernelManager(kernel_name=kernel)
 
         stderr = open(os.devnull, 'w')
         self._kernel_manager.start_kernel(cwd=working_directory, stderr=stderr)
@@ -214,11 +218,12 @@ class JupyterClient:
         try:
             self._kernel_client.wait_for_ready()
         except RuntimeError:
-            self._logger.error('Timeout from starting kernel')
+            message = 'Timeout from starting kernel'
+            self._logger.error(message)
             # \nTry restarting python session and running again
             self._kernel_client.stop_channels()
             self._kernel_manager.shutdown_kernel()
-            raise
+            raise TimeoutError(message)
 
         self._kernel_client.allow_stdin = False
 
@@ -226,7 +231,9 @@ class JupyterClient:
 
     def close(self):
         self._logger.info('Stop kernel')
-        # self._kernel_client.stop_channels() # Fixme: block ??? not documented ???
+        # Pweave as this line
+        #   Fixme: block ??? not documented ???
+        #   self._kernel_client.stop_channels()
         self._kernel_manager.shutdown_kernel(now=True)
 
     ##############################################
@@ -259,13 +266,18 @@ class JupyterClient:
         while True:
             try:
                 # Get a message from the shell channel
+                # timeout = self.timeout
+                # if timeout < 0:
+                #     timeout = None
                 message = self._kernel_client.get_shell_msg(timeout=self.TIMEOUT)
                 # self._logger.debug('message {}'.format(message))
             except Empty:
                 # if self._interrupt_on_timeout:
                 #     self._kernel_manager.interrupt_kernel()
                 #     break
-                raise TimeoutError('Cell execution timed out') # , see log for details.
+                message = 'Cell execution timed out'  # , see log for details.
+                self._logger.error(message)
+                raise TimeoutError(message)
 
             if self.message_id_match(message, message_id):
                 break
@@ -303,9 +315,11 @@ class JupyterClient:
                 message = self._kernel_client.iopub_channel.get_msg(block=True, timeout=4)
                 # self._logger.debug('message {}'.format(message))
             except Empty:
-                self._logger.error('Timeout waiting for IOPub output')
-                # \nTry restarting python session and running weave again
-                raise RuntimeError('Timeout waiting for IOPub output')
+                message = 'Timeout waiting for IOPub output'
+                self._logger.error(message)
+                # \nTry restarting python session and running again
+                raise TimeoutError(message)
+
             # stdout from InProcessKernelManager has no parent_header
             if not self.message_id_match(message, message_id) and message['msg_type'] != 'stream':
                 continue
@@ -321,7 +335,7 @@ class JupyterClient:
 
             if message_type == 'status':
                 if content['execution_state'] == 'idle':
-                    break
+                    break  # exit while loop
                 else:
                     continue
             elif message_type == 'execute_input':

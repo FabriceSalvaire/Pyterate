@@ -214,7 +214,7 @@ class Document:
 
     ##############################################
 
-    def run(self):
+    def _run(self):
         self._logger.info('\nRun document {}'.format(self._path))
         node_evaluator = NodeEvaluator(self._language)
         if not node_evaluator.run(self._dom, self._path, eval_figure=self.settings.make_rst):
@@ -222,6 +222,26 @@ class Document:
             self.factory.register_failure(self)
         # Windows has an issue with the garbage collecting of the temporary working directory
         node_evaluator.stop_jupyter()
+
+    ##############################################
+
+    def run(self):
+        self._run()
+
+        # tenacity like code
+        # try_counter = 0
+        # while True:
+        #     if try_counter:
+        #         self._logger.error('Retry to run Jupyter kernel ...')
+        #     if try_counter > 10:
+        #         self._logger.error('Retry done')
+        #         raise RuntimeError('Too much timeout')
+        #     try:
+        #         self._run()
+        #     except TimeoutError:
+        #         # Fixme: cleanup ???
+        #         try_counter += 1
+        #         self._logger.error('Catched timeout')
 
     ##############################################
 
