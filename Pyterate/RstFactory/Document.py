@@ -258,6 +258,7 @@ class Document:
         # if not source_path.exists():
         #     raise NameError("File {} doesn't exist, cannot create a symlink to {}".format(source_path, target))
 
+        # Fixme: Windows UCA
         if not target.exists() and self.settings.make_rst:
             target.symlink_to(source)
 
