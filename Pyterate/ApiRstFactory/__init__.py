@@ -76,13 +76,14 @@ class ApiRstFactory:
                                     for x in excluded_directory]
         self._root_module_name = self._root_module_path.name
 
-        self._logger.info('RST API Path:     {}'.format(self._rst_directory))
-        self._logger.info('Root Module Path: {}'.format(self._root_module_path))
-        self._logger.info('Root Module Name: {}'.format(self._root_module_name))
-        self._logger.info('Exclude:' + '\n  '.join(self._excluded_directory))
+        self._logger.info(f'RST API Path:     {self._rst_directory}')
+        self._logger.info(f'Root Module Path: {self._root_module_path}')
+        self._logger.info(f'Root Module Name: {self._root_module_name}')
+        self._logger.info('Exclude:' + (os.linesep + '  ').join(self._excluded_directory))
 
-        template_path = Path(__file__).parent.joinpath('templates') # Fixme: custom
+        template_path = Path(__file__).parent.joinpath('templates')   # Fixme: custom
         self._template_environment = TemplateEnvironment([template_path])
+        self._logger.info(f'Template Path: {template_path}')
 
         if not self._rst_directory.exists():
             os.makedirs(self._rst_directory)
