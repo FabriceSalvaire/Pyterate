@@ -5,10 +5,18 @@
 {{rule}}
 {%- endmacro %}
 
+{# :private-members: #}
+{# :special-members: #}
+{# :inherited-members: #}
+{# :show-inheritance: #}
+{# :ignore-module-all: #}
+{# :exclude-members: #}
+
 {% macro rst_automodule(module) -%}
 .. automodule:: {{module}}
-   :members:
-   :show-inheritance:
+    :members:
+    :undoc-members:
+    :show-inheritance:
 {% endmacro -%}
 
 {% macro rst_toctree(items) -%}
