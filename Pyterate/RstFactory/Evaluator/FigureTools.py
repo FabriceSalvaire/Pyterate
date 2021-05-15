@@ -51,6 +51,7 @@ def save_figure(figure, figure_path):
 
     figure_format = Path(figure_path).suffix[1:] # remove .
     _module_logger.info("\nSave figure " + figure_path)
+    # https://matplotlib.org/stable/api/figure_api.html?highlight=savefig#matplotlib.figure.Figure.savefig
     figure.savefig(
         figure_path,
         format=figure_format,
