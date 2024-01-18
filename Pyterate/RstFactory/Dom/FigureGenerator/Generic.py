@@ -57,11 +57,8 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def __init__(self, document, command, figure_path, **kwargs):
-
         source_path = ''  # Fixme: passed to Path()
-
         super().__init__(document, source_path, figure_path, **kwargs)
-
         self._command = command
         self._kwargs = {
             key: value
@@ -72,7 +69,6 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def __bool__(self):
-
         # it is up to the generator to decide if it overwrite
         if self.absolut_path.exists():
             return self._query()
@@ -82,7 +78,6 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def make_figure(self):
-
         self._logger.info('\nMake figure {}'.format(self.absolut_path))
         try:
             self._generate()
@@ -92,7 +87,6 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def _query(self):
-
         self._logger.info('\nQuery figure {}'.format(self.absolut_path))
         command = (
             self._command,
@@ -105,7 +99,6 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def _generate(self):
-
         command = (
             self._command,
             self.absolut_path,

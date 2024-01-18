@@ -106,7 +106,6 @@ class JupyterOutput:
     ##############################################
 
     def __init__(self, notebook_node):
-
         self._node = notebook_node
 
     ##############################################
@@ -154,7 +153,6 @@ class JupyterOutput:
     ##############################################
 
     def __str__(self):
-
         if self.is_error:
             traceback = '\n'.join(self._node.traceback)
             return "{0.ename} {0.evalue}\n{1}".format(self._node, traceback)
@@ -169,11 +167,9 @@ class JupyterOutput:
     ##############################################
 
     def write_image(self, path):
-
         image = self.image
         if image is None:
             raise NameError("This node don't have an image")
-
         with open(path, 'wb') as fh:
             fh.write(base64.b64decode(image))
 
@@ -193,15 +189,12 @@ class JupyterClient:
     ##############################################
 
     def __init__(self, working_directory, kernel='python3', embed_kernel=False):
-
         if embed_kernel:
             self._kernel_manager = InProcessKernelManager(kernel_name=kernel)
         else:
             self._kernel_manager = KernelManager(kernel_name=kernel)
-
         stderr = open(os.devnull, 'w')
         self._kernel_manager.start_kernel(cwd=working_directory, stderr=stderr)
-
         self._init_client()
 
     ##############################################
@@ -212,7 +205,6 @@ class JupyterClient:
     ##############################################
 
     def _init_client(self):
-
         self._kernel_client = self._kernel_manager.client()
         self._kernel_client.start_channels()
         try:
@@ -224,7 +216,6 @@ class JupyterClient:
             self._kernel_client.stop_channels()
             self._kernel_manager.shutdown_kernel()
             raise TimeoutError(message)
-
         self._kernel_client.allow_stdin = False
 
     ##############################################
@@ -239,11 +230,8 @@ class JupyterClient:
     ##############################################
 
     def restart(self):
-
         self._logger.info('Restart kernel')
-
         # self._kernel_client.shutdown(restart=True) # ???
-
         # self._kernel_client.stop_channels()
         self._kernel_manager.restart_kernel(now=False) # 1s to cleanup
         # do we have to sleep ???
@@ -258,11 +246,8 @@ class JupyterClient:
     ##############################################
 
     def _wait_for_finish(self, message_id):
-
         """Wait for finish, with timeout"""
-
         # self._logger.debug('wait for finish, with timeout')
-
         while True:
             try:
                 # Get a message from the shell channel
@@ -290,12 +275,10 @@ class JupyterClient:
     ##############################################
 
     def run_cell(self, source):
-
         """Execute the source.
 
         Return a list of :class:`nbformat.NotebookNode` instance.
         """
-
         source = source.lstrip()
 
         cell = {}

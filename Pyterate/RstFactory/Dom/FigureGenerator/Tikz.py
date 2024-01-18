@@ -24,6 +24,7 @@ from pathlib import Path
 import logging
 import os
 import shutil
+
 import subprocess
 import tempfile
 
@@ -55,17 +56,14 @@ class TikzNode(ExternalFigureNode):
     ##############################################
 
     def __init__(self, document, tex_filename, **kwargs):
-
         tex_filename = Path(tex_filename)
         figure_path = tex_filename.parent.joinpath(tex_filename.stem + '.svg')  # Fixme: monkey patch pathlib ?
         source_path = document.topic.join_path('tex', tex_filename)  # Fixme: tex directory ???
-
         super().__init__(document, source_path, figure_path, **kwargs)
 
     ##############################################
 
     def make_figure(self):
-
         self._logger.info('\nMake Tikz figure {}'.format(self.source_path))
         try:
             self._make_figure()
@@ -75,15 +73,11 @@ class TikzNode(ExternalFigureNode):
     ##############################################
 
     def _make_figure(self):
-
         with tempfile.TemporaryDirectory() as tmp_dir:
             # self._logger.info('Temporary directory ' + tmp_dir)
-
             current_dir = os.getcwd()
             os.chdir(tmp_dir)
-
             shutil.copy(self.source_path, '.')  # Fixme: symlink
-
             # Run LaTeX to generate PDF
             command = (
                 self.LATEX_COMMAND,
@@ -93,7 +87,5 @@ class TikzNode(ExternalFigureNode):
                 str(self.source_path.name),
             )
             subprocess.check_call(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
             shutil.copy(self.path, self.absolut_path)
-
             os.chdir(current_dir)

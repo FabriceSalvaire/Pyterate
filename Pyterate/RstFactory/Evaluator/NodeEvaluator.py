@@ -61,7 +61,6 @@ class NodeCommand:
     ##############################################
 
     def __init__(self, name, args, kwargs):
-
         self._name = name
         self._args = args
         self._kwargs = kwargs
@@ -91,10 +90,8 @@ export_value(_)
     ##############################################
 
     def __init__(self, language):
-
         self._language = language
         self._start_jupyter(language)
-
         # locales and globales for the sandbox to execute the figure scope
         self._commands = []
         self._sandbox_locales = None
@@ -105,7 +102,6 @@ export_value(_)
         # register a wrapper for each command
         for name in MarkupRegistry.commands():
             self._sandbox_globales[name] = self._make_figure_wrapper(name)
-
         self._has_error = None
 
     ##############################################
@@ -153,33 +149,25 @@ export_value(_)
     ##############################################
 
     def _export_value(self, name, code):
-
         self._logger.info('Export value: code\n{} := {}'.format(name, code))
-
         outputs = self._jupyter_client.run_cell(code)
-
         for output in outputs:
             if output.is_error:
                 self._log_error(code, output)
-
         # Fixme: to func ??? , duplicated
         # Fixme: 0 str() ???
         json_data = outputs[0].result
         value = json.loads(json_data[1:-1]) # remove quote
-
         self._logger.info('Export value: value \n{} = {}'.format(name, value))
         self._sandbox_locales[name] = value
 
     ##############################################
 
     def _export(self, *names, **kwargs):
-
         self._logger.info('Export values\n{} {}'.format(names, kwargs))
-
         for name in names:
             code = 'export_value({})'.format(name)
             self._export_value(name, code)
-
         for name, code_value in kwargs.items():
             code = self.EXPORT_TEMPLATE.format(code_value)
             self._export_value(name, code)
@@ -187,9 +175,7 @@ export_value(_)
     ##############################################
 
     def _run_node_code(self, node):
-
         """Run code on Jupyter Kernel"""
-
         code = node.to_code()
         if code:
             # self._logger.info('Execute\n{}'.format(code))
@@ -208,29 +194,23 @@ export_value(_)
     ##############################################
 
     def _eval_figure(self, node):
-
         """Execute the code of a figure in the sandbox.
 
         The magic use a wrapper for each command to collect them.
 
         """
-
         self._commands.clear()
-
         code = str(node)
         try:
             exec(compile(code, 'inline', 'exec'), self._sandbox_globales, self._sandbox_locales)
         except SyntaxError:
             raise NodeEvaluatorError(code)
-
         return self._commands  # a list of NodeCommand instances
 
     ##############################################
 
     def _run_figure_code(self, node):
-
         """Run figure code in Pyterate"""
-
         for figure_command in self._eval_figure(node):
             figure_node = figure_command.to_node(node.document)
             node.append_child(figure_node)
@@ -240,22 +220,17 @@ export_value(_)
     ##############################################
 
     def run(self, dom, document_path, eval_figure=True):
-
         self._document_path = document_path
-
         # run setup code
         setup_code = self._language.document_setup_code.format(file=document_path)
         self._jupyter_client.run_cell(setup_code)
-
         # clear states
         self._sandbox_locales = {}
         self._has_error = False
-
         for node in dom:
             if node.is_executed:
                 self._run_node_code(node)  # in Jupyter
             elif isinstance(node, FigureNode) and eval_figure:
                 # Note: save_figure() requires a reST directory
                 self._run_figure_code(node)  # in Pyterate and Jupyter
-
         return not self._has_error
