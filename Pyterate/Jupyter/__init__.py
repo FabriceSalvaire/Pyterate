@@ -162,6 +162,8 @@ class JupyterOutput:
             return self._node.data['text/plain']
         elif self.is_display_data:
             # Fixme: other cases
+            if 'text/plain' in self._node.data:
+                return self._node.data['text/plain']
             return self._node.data['image/png']
 
     ##############################################
@@ -295,7 +297,8 @@ class JupyterClient:
                 # waiting. However, on slow networks, like in certain CI systems, waiting < 1 second
                 # might miss messages.  So long as the kernel sends a status:idle message when it
                 # finishes, we won't actually have to wait this long, anyway.
-                message = self._kernel_client.iopub_channel.get_msg(block=True, timeout=4)
+                # https://jupyter-client.readthedocs.io/en/stable/migration.html#zmqsocketchannel
+                message = self._kernel_client.iopub_channel.get_msg(timeout=4)
                 # self._logger.debug('message {}'.format(message))
             except Empty:
                 message = 'Timeout waiting for IOPub output'
