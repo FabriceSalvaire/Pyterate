@@ -64,7 +64,7 @@ class TikzNode(ExternalFigureNode):
     ##############################################
 
     def make_figure(self):
-        self._logger.info('\nMake Tikz figure {}'.format(self.source_path))
+        self._logger.info(os.linesep + 'Make Tikz figure {}'.format(self.source_path))
         try:
             self._make_figure()
         except subprocess.CalledProcessError:
@@ -87,5 +87,7 @@ class TikzNode(ExternalFigureNode):
                 str(self.source_path.name),
             )
             subprocess.check_call(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            # Fixme: pdf2svg not installed
+            # Class standalone Warning: Conversion failed!
             shutil.copy(self.path, self.absolut_path)
             os.chdir(current_dir)

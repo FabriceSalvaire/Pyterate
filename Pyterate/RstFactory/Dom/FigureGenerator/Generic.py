@@ -78,7 +78,7 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def make_figure(self):
-        self._logger.info('\nMake figure {}'.format(self.absolut_path))
+        self._logger.info(os.linesep + 'Make figure {}'.format(self.absolut_path))
         try:
             self._generate()
         except subprocess.CalledProcessError:
@@ -87,7 +87,7 @@ class GeneratedImageNode(ExternalFigureNode):
     ##############################################
 
     def _query(self):
-        self._logger.info('\nQuery figure {}'.format(self.absolut_path))
+        self._logger.info(os.linesep + 'Query figure {}'.format(self.absolut_path))
         command = (
             self._command,
             '--query',
@@ -103,4 +103,5 @@ class GeneratedImageNode(ExternalFigureNode):
             self._command,
             self.absolut_path,
         )
+        # Fixme: command not found
         subprocess.check_call(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
