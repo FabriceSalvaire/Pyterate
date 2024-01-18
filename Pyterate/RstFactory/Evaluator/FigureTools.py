@@ -54,7 +54,8 @@ def save_figure(figure, figure_path):
         figure_path,
         format=figure_format,
         dpi=150,
-        orientation='landscape', papertype='a4',
+        orientation='landscape',
+        # papertype='a4',
         transparent=True, facecolor=None,
     )
 
