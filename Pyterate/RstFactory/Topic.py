@@ -118,7 +118,6 @@ class Topic:
     ##############################################
 
     def _input_files_iterator(self):
-
         for basename in os.listdir(self._path):
             path = self._path.joinpath(basename)
             if path.is_file():
@@ -129,9 +128,7 @@ class Topic:
     ##############################################
 
     def _is_file_skipped(self, path, language):
-
         skip_pattern = language.enclose_markup(self.SKIP_PATTERN)
-
         with open(path) as fh:
             for i in range(2):
                 line = fh.readline() # .strip()
@@ -154,9 +151,7 @@ class Topic:
     ##############################################
 
     def _read_index(self):
-
         """Read readme and collect figures"""
-
         figures = []
         with open(self._index_path()) as fh:
             content = fh.read()
@@ -164,7 +159,6 @@ class Topic:
                 if line.startswith(self.IMAGE_DIRECTIVE):
                     figure = line[self.IMAGE_DIRECTIVE_LENGTH:]
                     figures.append(figure)
-
         return content, figures
 
     ##############################################

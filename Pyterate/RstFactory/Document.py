@@ -267,7 +267,6 @@ class Document:
     ##############################################
 
     def make_external_figure(self, force):
-
         # Fixme: simplify ???
         for node in self._dom:
             if isinstance(node, FigureNode):
