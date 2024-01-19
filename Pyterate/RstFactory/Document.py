@@ -398,7 +398,6 @@ class Document:
                     if node.has_format():
                         node = node.to_format_node()
                 dom.append(node)
-
         return dom
 
     ##############################################
