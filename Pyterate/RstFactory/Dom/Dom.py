@@ -64,7 +64,6 @@ class Node(metaclass=MarkupRegistry):
 
     @staticmethod
     def indent_lines(lines, indentation=4):
-
         indentation = ' '*indentation
         # Fixme: strip empty lines
         return '\n'.join([indentation + line.rstrip() for line in lines]) + '\n' # Fixme: if out ???
@@ -79,7 +78,6 @@ class Node(metaclass=MarkupRegistry):
 
     @staticmethod
     def directive(name, args=(), flags=(), kwargs={}):
-
         args_string = ' '.join([str(arg) for arg in args])
         rst = '\n.. {}:: {}\n'.format(name, args_string)
         indentation = ' '*4
@@ -87,7 +85,6 @@ class Node(metaclass=MarkupRegistry):
             rst += indentation + ':{}:\n'.format(flag)
         for key, value in kwargs.items():
             rst += indentation + ':{}: {}\n'.format(key, value)
-
         return rst + '\n'
 
     ##############################################
@@ -100,10 +97,8 @@ class Node(metaclass=MarkupRegistry):
 
     @classmethod
     def check_command(cls, *command, help='', protect=False):
-
         # command = list(command)
         # command[0] += '-debug'
-
         try:
             if protect:
                 try:

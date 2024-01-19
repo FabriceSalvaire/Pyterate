@@ -96,7 +96,6 @@ class FigureNode(Node):
     ##############################################
 
     def to_cell(self):
-
         cell = []
         for child in self.iter_on_childs():
             # skip LitteralIncludeNodes.GetthecodeNode
@@ -112,7 +111,6 @@ class FigureNode(Node):
                     cell.append(_)
             else:
                 self._logger.info("Unsupported figure child node type {}".format(type(node)))
-
         return cell
 
 ####################################################################################################
@@ -190,7 +188,6 @@ class FormatNode(MarkdownCellMixin, ExecutedNode):
     ##############################################
 
     def to_code(self):
-
         txt = '\n'.join(self._lines)
         txt = txt.replace('{', '{{') # to escape them
         txt = txt.replace('}', '}}')
@@ -198,7 +195,6 @@ class FormatNode(MarkdownCellMixin, ExecutedNode):
         txt = txt.replace(self.closing_format_markup, '}')
         txt = txt.replace(self.escaped_opening_format_markup, self.opening_format_markup)
         txt = txt.replace(self.escaped_closing_format_markup, self.closing_format_markup)
-
         return 'print(r"""' + txt + '""".format(**locals()))\n'
 
 ####################################################################################################
@@ -232,7 +228,6 @@ class CodeNode(ExecutedNode):
     ##############################################
 
     def to_rst(self):
-
         if bool(self):
             # Fixme: if previous is hidden : merge ???
             rst = self.code_block_directive(self.lexer)
@@ -304,14 +299,11 @@ class InteractiveLineCodeNode(CodeNode):
     ##############################################
 
     def to_rst(self):
-
         rst = super().to_rst()
-
         rst += self.code_block_directive('none')
         for output in self.outputs:
             if output.is_result:
                 rst += self.indent_output(output)
-
         return rst + '\n'
 
 ####################################################################################################
@@ -348,12 +340,10 @@ class OutputNode(Node):
     ##############################################
 
     def to_rst(self):
-
         rst = self.code_block_directive('none')
         for output in self._code_node.outputs:
             if output.is_stream:
                 rst += self.indent_output(output)
-
         return rst + '\n'
 
     ##############################################

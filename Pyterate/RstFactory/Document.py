@@ -67,7 +67,6 @@ class Document:
     ##############################################
 
     def __init__(self, topic, input_file, language):
-
         self._topic = topic
         self._input_file = input_file
         self._basename = input_file.stem
@@ -164,7 +163,6 @@ class Document:
     ##############################################
 
     def read(self):
-
         # Fixme: update doc
         # Fixme: API ??? called process_document()
 
@@ -180,10 +178,8 @@ class Document:
         formatted with variable from the locals dictionary using *@<@...@>@* instead of *{...}*.
 
         """
-
         with open(self._path) as fh:
             source = fh.readlines()
-
         dom = self._source_to_nodes(source)
         self._dom = self._post_process_dom(dom)
 
@@ -247,9 +243,7 @@ class Document:
 
     def symlink_source(self, source_path):
         """Create a symlink to a source in the reST document directory"""
-
         # used by LocaleFigureNode
-
         source = self._topic.join_path(source_path)
         basename = source_path.name
         target = self._topic.join_rst_path(basename)
@@ -278,7 +272,6 @@ class Document:
     ##############################################
 
     def _parse_line(self, line):
-
         markup = None
         open_markup = False
         close_markup = False
@@ -351,7 +344,6 @@ class Document:
 
     def _source_to_nodes(self, source):
         """Build the raw DOM from the source"""
-
         dom = Dom()
         prev_markup_cls = None
         self._stack = []
@@ -385,7 +377,6 @@ class Document:
 
     def _post_process_dom(self, raw_dom):
         """Perform some post-processing on DOM"""
-
         dom = Dom()
         for node in raw_dom.iter_on_not_empty_node():
             previous_node = dom.last_node
@@ -413,24 +404,19 @@ class Document:
     ##############################################
 
     def _has_title(self):
-
         """Return whether a title is defined."""
-
         # Fixme: test if first node ?
         for node in self._dom:
             if isinstance(node, RstNode):
                 content = str(node)
                 if '='*(3+2) in content:  # Fixme: hardcoded !
                     return True
-
         return False
 
     ##############################################
 
     def make_rst(self):
-
         """Generate the document RST file."""
-
         self._logger.info("\nCreate RST file {}".format(self._rst_path))
 
         # place the input file in the rst path
@@ -461,12 +447,10 @@ class Document:
     ##############################################
 
     def make_notebook(self):
-
         """Generate a notebook file.
 
         https://nbformat.readthedocs.io/en/latest
         """
-
         notebook = nbv4.new_notebook()
 
         notebook.metadata.update(self.language.notebook_metadata)

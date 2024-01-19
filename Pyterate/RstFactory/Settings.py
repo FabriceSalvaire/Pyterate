@@ -108,20 +108,17 @@ class LanguageSettings:
 
     @classmethod
     def enclose_markup(cls, markup):
-
         return cls.left_markup + markup + cls.right_markup
 
     ##############################################
 
     @classmethod
     def filename_match(cls, path):
-
         """Method to match a filename to a language handler.
 
         Return True if the file is taken.
 
         """
-
         for extension in cls.extensions:
             if path.suffix == extension:
                 return cls.filename_filter(path)
@@ -131,7 +128,6 @@ class LanguageSettings:
 
     @classmethod
     def filename_filter(cls, path):
-
         """Define a filename filter.
 
         Overwrite this method in subclass to define a custom filter.
@@ -139,7 +135,6 @@ class LanguageSettings:
         Return False if the file is excluded.
 
         """
-
         basename = Path(path).name
         for pattern in cls.excluded_file_patterns:
             if re.match(pattern, basename):
@@ -151,7 +146,6 @@ class LanguageSettings:
 
     @classmethod
     def rule_filter(cls, line):
-
         return False
 
 ####################################################################################################
@@ -170,7 +164,7 @@ class DefaultPython3Settings(LanguageSettings):
     right_markup = '#'
 
     lexer = 'py3'
-    error_lexer = 'pytb' # Fixme: py3con py3tb are unknown ???
+    error_lexer = 'pytb'   # Fixme: py3con py3tb are unknown ???
     console_lexer = 'none'
 
     jupyter_kernel = 'python3'
@@ -194,7 +188,6 @@ sys.path.append(str(Path(__file__).parent))
 
     @classmethod
     def rule_filter(cls, line):
-
         return (line.startswith('#'*10) or # long rule
                 line.startswith(' '*4 + '#'*10)) # short rule
 
@@ -236,7 +229,6 @@ class DefaultRstFactorySettings:
     ##############################################
 
     def __init__(self):
-
         if self.user_template_path is None:
             user_template_path = self.input_path.joinpath('pyterate-templates').resolve()
             if user_template_path.exists():
@@ -276,7 +268,6 @@ class DefaultRstFactorySettings:
     ##############################################
 
     def relative_input_path(self, path):
-
         relative_path = path.relative_to(self.input_path)
         if relative_path == '.':
             return ''
@@ -286,7 +277,6 @@ class DefaultRstFactorySettings:
     ##############################################
 
     def language_for(self, path):
-
         for language in self.languages:
             if language.filename_match(path):
                 return language

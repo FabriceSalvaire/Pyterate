@@ -48,7 +48,6 @@ class RstFactory:
     ##############################################
 
     def __init__(self, settings):
-
         """
         Parameters:
 
@@ -56,9 +55,7 @@ class RstFactory:
             :class:`RstFactory.Settings.DefaultRstFactorySettings` instance
 
         """
-
         self._settings = settings
-
         if self._settings.make_rst:
             os.makedirs(self._settings.rst_path, exist_ok=True)
 
@@ -103,9 +100,7 @@ class RstFactory:
     ##############################################
 
     def _process_topic(self, topic_path):
-
         relative_topic_path = self._settings.relative_input_path(topic_path)
-
         topic = Topic(self, relative_topic_path)
         self._topics[relative_topic_path] = topic # collect topics
 
@@ -116,9 +111,7 @@ class RstFactory:
     ##############################################
 
     def process_recursively(self):
-
         """Process recursively the documents directory."""
-
         # walk top down so as to generate the subtopics first
         self._topics.clear()
         for topic_path, _, _ in os.walk(self._settings.input_path, topdown=False, followlinks=True):
