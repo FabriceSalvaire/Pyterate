@@ -26,6 +26,7 @@
 
 from pathlib import Path
 import logging
+import os
 import re
 import sys
 
@@ -49,7 +50,7 @@ class LanguageSettings:
     name = None
 
     # Filename settings
-    extensions = () # e.g. '.py'
+    extensions = ()   # e.g. '.py'
     excluded_file_patterns = (
         # these file should be flymake temporary file
         'flymake_.*',
@@ -57,8 +58,9 @@ class LanguageSettings:
     )
 
     # Comment settings
-    comment = None # main comment token, e.g. '#' '//'
-    left_markup = None # markup is left_markup + markup + right_markup
+    comment = None   # main comment token, e.g. '#' '//'
+    docstring = None
+    left_markup = None   # markup is left_markup + markup + right_markup
     right_markup = None
 
     open_markup = '<'
@@ -76,9 +78,9 @@ class LanguageSettings:
     console_lexer = 'none'
 
     # Execution settings
-    jupyter_kernel = None # name of the kernel
-    setup_code = '' # some codes to be executed first
-    document_setup_code = '' # some codes to be executed first
+    jupyter_kernel = None   # name of the kernel
+    setup_code = ''   # some codes to be executed first
+    document_setup_code = ''   # some codes to be executed first
 
     notebook_metadata = {
         'kernelspec': {
@@ -160,6 +162,7 @@ class DefaultPython3Settings(LanguageSettings):
     extensions = ['.py']
 
     comment = '#'
+    docstring = '"""'    # Fixme: could be ''' as well
     left_markup = '#'
     right_markup = '#'
 
@@ -188,8 +191,8 @@ sys.path.append(str(Path(__file__).parent))
 
     @classmethod
     def rule_filter(cls, line):
-        return (line.startswith('#'*10) or # long rule
-                line.startswith(' '*4 + '#'*10)) # short rule
+        return (line.startswith('#'*10)   # long rule
+                or line.startswith(' '*4 + '#'*10))   # short rule
 
 ####################################################################################################
 
@@ -198,22 +201,22 @@ class DefaultRstFactorySettings:
     """Class to define the Rst Factory settings."""
 
     # Input path
-    input_path = Path('examples') # Path of the documents
+    input_path = Path('examples')   # Path of the documents
 
     # RST paths
-    rst_source_path = Path('doc/sphinx/source') # Path of the RST source directory
-    rst_directory = Path('examples') # Relative path of the documents in the RST sources
+    rst_source_path = Path('doc/sphinx/source')   # Path of the RST source directory
+    rst_directory = Path('examples')   # Relative path of the documents in the RST sources
 
     # Templates
-    user_template_path = None # User template path
+    user_template_path = None   # User template path
 
     # Flags
-    show_counters = False # Show documents counters in toc
-    run_code = False # Run code
+    show_counters = False   # Show documents counters in toc
+    run_code = False   # Run code
     make_rst = True
     make_notebook = True
-    make_external_figure = False # Generate external figures
-    force = False # Force the figure generation
+    make_external_figure = False   # Generate external figures
+    force = False   # Force the figure generation
 
     # List of LanguageSettings subclasses
     languages = (
@@ -237,7 +240,7 @@ class DefaultRstFactorySettings:
         template_path = Path(__file__).parent.joinpath('templates')
         search_path = []
         if self.user_template_path:
-            self._logger.info('\nUser template path: {}'.format(self.user_template_path))
+            self._logger.info(os.linesep + 'User template path: {}'.format(self.user_template_path))
             search_path.append(self.user_template_path)
         search_path.append(template_path)
         self._template_environment = TemplateEnvironment(search_path)
@@ -248,8 +251,8 @@ class DefaultRstFactorySettings:
         self.rst_source_path = self.rst_source_path.resolve()
         self.rst_path = self.rst_source_path.joinpath(self.rst_directory)
 
-        self._logger.info('\nInput Path: {}'.format(self.input_path))
-        self._logger.info('\nRST Path: {}'.format(self.rst_path))
+        self._logger.info(os.linesep + 'Input Path: {}'.format(self.input_path))
+        self._logger.info(os.linesep + 'RST Path: {}'.format(self.rst_path))
 
     ##############################################
 

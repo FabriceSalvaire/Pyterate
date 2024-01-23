@@ -24,6 +24,12 @@ foo = 1
 #m# [An inline-style link](https://www.python.org)
 #m#
 
+"""
+Markdown contents in docstring
+
+[Another link](https://www.python.org)
+"""
+
 foo = 1
 
 # Insert the output of the following python code

@@ -31,7 +31,7 @@ from nbformat import v4 as nbv4
 
 from ..Template import TemplateAggregator
 from ..Tools.Timestamp import timestamp
-from .Dom.Dom import Dom, TextNode
+from .Dom.Dom import Dom, Node, TextNode
 from .Dom.FigureNodes import ImageNode, ExternalFigureNode
 from .Dom.Markups import *
 from .Dom.Registry import MarkupRegistry
@@ -76,10 +76,10 @@ class Document:
 
         self._is_link = path.is_symlink()
         if self._is_link:
-            self._path = path # symlink
+            self._path = path   # symlink
             self._rst_path = None
         else:
-            self._path = path.resolve() # Python input path
+            self._path = path.resolve()   # Python input path
             self._rst_path = self._topic.join_rst_path(self.rst_filename)
 
     ##############################################
@@ -126,7 +126,7 @@ class Document:
 
     @property
     def nb_filename(self):
-        return self._basename + '.ipynb' # Fixme
+        return self._basename + '.ipynb'   # Fixme
 
     @property
     def rst_inner_path(self):
@@ -271,11 +271,12 @@ class Document:
 
     ##############################################
 
-    def _parse_line(self, line):
+    def _parse_line(self, line: str) -> list[Node, str]:
         markup = None
         open_markup = False
         close_markup = False
         parsed_line = line
+        docstring = False
 
         def is_valid_makup(markup):
             if not MarkupRegistry.is_valid_makup(markup):
@@ -299,7 +300,21 @@ class Document:
             else:
                 raise ParseError("Unbalanced markup", line)
 
-        if line.startswith(self._language.left_markup):
+        self._logger.info(os.linesep + line)
+
+        # line of form '"""...' ?
+        # It could be a module docstring,
+        # but others docstrings should be indented properly.
+        if line.startswith(self._language.docstring):
+            docstring = True
+            markup = 'm'
+            parsed_line = ''
+            if self._stack:
+                pop_stack(markup)
+            else:
+                push_stack(markup)
+        # line of form "#...#..." ?
+        elif line.startswith(self._language.left_markup):
             right = line.find(self._language.right_markup, 1)
             if right != -1:
                 markup = line[1:right]
@@ -327,9 +342,9 @@ class Document:
 
         enclosing_markup = open_markup or close_markup
 
-        if self._stack:
+        if not docstring and self._stack:
             if markup is None:
-                markup = self._stack[-1] # use enclosing markup
+                markup = self._stack[-1]   # use enclosing markup
             elif not enclosing_markup:
                 raise ParseError("Nested markup", line)
 
@@ -424,7 +439,7 @@ class Document:
             link_path.symlink_to(self._path)
 
         kwargs = {
-            'input_file':self._input_file,
+            'input_file': self._input_file,
         }
 
         has_title = self._has_title()
