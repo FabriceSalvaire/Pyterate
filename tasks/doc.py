@@ -123,7 +123,7 @@ def make_readme(ctx):
         fh.write(long_description)
         # import subprocess
         # subprocess.call(('rst2html', 'README.rst', 'README.html'))
-    ctx.run('rst2html README.rst README.html')
+    ctx.run('rst2html5.py README.rst README.html')
 
 ####################################################################################################
 
