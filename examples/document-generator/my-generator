@@ -26,8 +26,6 @@
 
 from pathlib import Path
 import argparse
-import os
-import sys
 import subprocess
 
 ####################################################################################################
@@ -43,6 +41,7 @@ argument_parser.add_argument(
 argument_parser.add_argument(
     '--query',
     default=False,
+    action='store_true',
     help='query',
 )
 
