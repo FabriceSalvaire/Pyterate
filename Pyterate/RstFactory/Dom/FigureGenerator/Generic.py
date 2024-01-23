@@ -91,7 +91,7 @@ class GeneratedImageNode(ExternalFigureNode):
         command = (
             self._command,
             '--query',
-            self.absolut_path,
+            str(self.absolut_path),
         )
         rc = subprocess.check_output(command, stderr=subprocess.STDOUT)
         return rc.strip() != 'uptodate'
@@ -101,7 +101,7 @@ class GeneratedImageNode(ExternalFigureNode):
     def _generate(self):
         command = (
             self._command,
-            self.absolut_path,
+            str(self.absolut_path),
         )
         # Fixme: command not found
         subprocess.check_call(command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
