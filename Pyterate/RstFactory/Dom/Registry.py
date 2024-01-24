@@ -54,9 +54,7 @@ class MarkupRegistry(type):
 
     def __init__(cls, class_name, base_classes, attributes):
         type.__init__(cls, class_name, base_classes, attributes)
-
         cls._registry_.append(cls)
-
         if hasattr(cls, 'MARKUP') and cls.MARKUP:
             MarkupRegistry._logger.info('Register {} for markup "{}"'.format(cls, cls.MARKUP))
             MarkupRegistry._markup_map_[cls.MARKUP] = cls

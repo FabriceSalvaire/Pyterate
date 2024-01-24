@@ -76,11 +76,9 @@ class ImageNode(Node):
     ##############################################
 
     def __init__(self, document, path, **kwargs):
-
         self._document = document
         self._path = Path(path)
         self._absolut_path = self.document.topic.join_rst_path(path)
-
         self._scale = kwargs.get('scale', None)
         self._width = kwargs.get('width', None)
         self._height = kwargs.get('height', None)
@@ -99,7 +97,6 @@ class ImageNode(Node):
     ##############################################
 
     def to_rst(self):
-
         args = (self._path,)
         kwargs = dict(align='center') # Fixme: align
         for key in ('scale', 'width', 'height'):
@@ -111,16 +108,13 @@ class ImageNode(Node):
     ##############################################
 
     def to_base64(self, path=None):
-
         if path is None:
             path = self._absolut_path
-
         with open(path, 'rb') as fh:
             data = fh.read()
             image_base64 = base64.encodebytes(data)
             image_base64 = image_base64.decode('ascii')
             # image_base64 = image_base64.replace('\n', '')
-
         return image_base64
 
     ##############################################
@@ -171,7 +165,6 @@ class ImageNode(Node):
     ##############################################
 
     def to_cell(self):
-
         path = None
         if not self.absolut_path.exists():
             mime_type = None
@@ -273,13 +266,10 @@ class TableFigureNode(Node):
     ##############################################
 
     def __init__(self, document, table, columns=None, str_format='{}'):
-
         super().__init__(document)
-
         self._table = table
         self._columns = columns
         self._format = str_format
-
         self._column_length = []
 
     ##############################################
@@ -330,9 +320,7 @@ class TableFigureNode(Node):
     ##############################################
 
     def to_rst(self):
-
         # see https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst
-
         if self._table_is_not_exported():
             table = self._exported_value()
         else:

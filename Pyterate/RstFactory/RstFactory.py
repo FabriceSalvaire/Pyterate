@@ -58,10 +58,8 @@ class RstFactory:
         self._settings = settings
         if self._settings.make_rst:
             os.makedirs(self._settings.rst_path, exist_ok=True)
-
         self._topics = {}
         self._document_failures = []
-
         self._load_failure()
 
     ##############################################

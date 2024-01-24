@@ -51,7 +51,6 @@ class Topic:
     ##############################################
 
     def __init__(self, factory, relative_path):
-
         self._factory = factory
         self._relative_path = Path(relative_path) # relative input path
         self._basename = relative_path.name # topic directory
@@ -170,9 +169,7 @@ class Topic:
     ##############################################
 
     def process_document(self, document):
-
         self._logger.info('Process document {}'.format(document.path))
-
         try:
             document.read()
         except (ParseError, NodeEvaluatorError) as exception:
@@ -181,7 +178,6 @@ class Topic:
             self.factory.register_failure(document)
             # Fixme: insert errors in rst
             return
-
         make_notebook = False
         if self.settings.force or document:
             if self.settings.run_code:
@@ -222,9 +218,7 @@ class Topic:
     ##############################################
 
     def make_toc(self):
-
         """ Create the TOC. """
-
         if not self.settings.make_rst:
             return
 

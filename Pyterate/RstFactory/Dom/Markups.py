@@ -243,7 +243,6 @@ class CodeNode(ExecutedNode):
     ##############################################
 
     def to_code(self):
-
         source = ''
         for line in self._lines:
             # Fixme:
@@ -277,7 +276,6 @@ class InteractiveCodeNode(CodeNode):
     ##############################################
 
     def to_line_node(self):
-
         nodes = []
         for line in self._lines:
             if not line.strip():

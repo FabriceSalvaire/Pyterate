@@ -79,17 +79,14 @@ class CircuitMacrosNode(ExternalFigureNode):
     ##############################################
 
     def __init__(self, document, m4_filename, **kwargs):
-
         m4_filename = Path(m4_filename)
         figure_path = m4_filename.parent.joinpath(m4_filename.stem + '.png')
         source_path = document.topic.join_path('m4', m4_filename)  # Fixme: m4 directory ???
-
         super().__init__(document, source_path, figure_path, **kwargs)
 
     ##############################################
 
     def make_figure(self):
-
         self._logger.info('\nMake circuit macros figure {}'.format(self.source_path))
         try:
             self._make_figure()
