@@ -4,7 +4,7 @@
 {% if user_content -%}
 {{user_content}}
 {% else %}
-{{ rst_title(title, character='#') }}
+{{ rst_title(title, character='#', use_myst=use_myst) }}
 {%- endif %}
 {%- endblock %}
 
@@ -20,12 +20,13 @@ This section has
 {%- endblock %}
 
 {% block toctree_section -%}
-.. toctree::
+{% if use_myst %}```{toctree}{% else %}.. toctree::{% endif %}
   :maxdepth: 1
 {% for subtopic in subtopics %}
-  {{subtopic}}/index.rst
+{% if not use_myst %}  {% endif %}{{subtopic}}/index{% if use_myst %}.md{% else %}.rst{% endif %}
 {% endfor %}
 {% for filename in toc_items %}
-  {{filename}}
+{% if not use_myst %}  {% endif %}{{filename}}
 {% endfor %}
+{% if use_myst %}```{% endif %}
 {%- endblock %}

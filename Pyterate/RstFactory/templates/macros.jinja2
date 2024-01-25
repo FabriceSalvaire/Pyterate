@@ -1,20 +1,26 @@
-{% macro rst_title(title, character) -%}
+{% macro rst_title(title, character, use_myst) -%}
 {% set rule = title|rst_rule_title(character) %}
+{% if use_myst %}
+# {{title}}
+{% else %}
 {{rule}}
  {{title}}
 {{rule}}
+{% endif %}
 {%- endmacro %}
 
-{% macro rst_toctree(items) -%}
-.. toctree::
+{% macro rst_toctree(items, use_myst) -%}
+{% if use_myst %}```{toctree}{% else %}.. toctree::{% endif %}
 {%- for item in items %}
     {{item}}
 {%- endfor %}
+{% if use_myst %}```{% endif %}
 {%- endmacro -%}
 
-{% macro rst_getthecode(file) -%}
-.. getthecode:: {{file}}
+{% macro rst_getthecode(file, use_myst) -%}
+{% if use_myst %}```{getthecode} {{file}}{% else %}.. getthecode:: {{file}}{% endif %}
     :language: python3
     :hidden:
     :notebook:
+{% if use_myst %}```{% endif %}
 {%- endmacro -%}

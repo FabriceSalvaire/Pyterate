@@ -4,11 +4,11 @@
 
 {% block title_section -%}
 {% if title -%}
-{{ rst_title(title, character='#') }}
+{{ rst_title(title, character='#', use_myst=use_myst) }}
 {%- endif %}
 {%- endblock %}
 
 {% block source_code_section %}
-{{ rst_getthecode(input_file) }}
+{{ rst_getthecode(input_file, use_myst) }}
 {% endblock %}
 

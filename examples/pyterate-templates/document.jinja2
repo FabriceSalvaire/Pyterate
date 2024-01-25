@@ -1,6 +1,13 @@
 {% extends "document_base.jinja2" %}
 
 {% block includes %}
+{% if use_myst %}
+```{include} /project-links.md
+```
+```{include} /abbreviation.md
+```
+{% else %}
 .. include:: /project-links.txt
 .. include:: /abbreviation.txt
+{% endif %}
 {% endblock %}
