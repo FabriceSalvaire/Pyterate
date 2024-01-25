@@ -23,6 +23,7 @@
 from pathlib import Path
 import logging
 import os
+from typing import TYPE_CHECKING
 
 import nbformat
 from nbformat import v4 as nbv4
@@ -33,11 +34,26 @@ from ..Template import TemplateAggregator
 from ..Tools.Timestamp import timestamp
 from .Dom.Dom import Dom, Node, TextNode
 from .Dom.FigureNodes import ImageNode, ExternalFigureNode
-from .Dom.Markups import *
+from .Dom.Markups import (
+    CodeNode,
+    CommentNode,
+    FigureNode,
+    InteractiveCodeNode,
+    # MarkdownNode,
+    OutputNode,
+    RstNode,
+)
 from .Dom.Registry import MarkupRegistry
 from .Evaluator.NodeEvaluator import NodeEvaluator
 
+if TYPE_CHECKING:
+    from ..RstFactory import RstFactory
+    from ..Settings import DefaultRstFactorySettings
+    from ..Topic import Topic
+
 ####################################################################################################
+
+NEWLINE = os.linesep
 
 _module_logger = logging.getLogger(__name__)
 
@@ -47,14 +63,14 @@ class ParseError(Exception):
 
     ##############################################
 
-    def __init__(self, message, line):
+    def __init__(self, message: str, line: str) -> None:
         self._message = message
         self._line = line
 
     ##############################################
 
-    def __repr__(self):
-        return "{0.message} on line\n{0._line}".format(self)
+    def __repr__(self) -> str:
+        return f"{self.message} on line{NEWLINE}{self._line}"
 
 ####################################################################################################
 
@@ -66,7 +82,7 @@ class Document:
 
     ##############################################
 
-    def __init__(self, topic, input_file, language):
+    def __init__(self, topic: 'Topic', input_file: Path, language: str) -> None:
         self._topic = topic
         self._input_file = input_file
         self._basename = input_file.stem
@@ -85,43 +101,43 @@ class Document:
     ##############################################
 
     @property
-    def factory(self):
+    def factory(self) -> 'RstFactory':
         return self._topic.factory
 
     @property
-    def topic(self):
+    def topic(self) -> 'Topic':
         return self._topic
 
     @property
-    def topic_path(self):
+    def topic_path(self) -> Path:
         return self._topic.path
 
     @property
-    def topic_rst_path(self):
+    def topic_rst_path(self) -> Path:
         return self._topic.rst_path
 
     @property
-    def factory(self):
-        return self._topic.factory
+    def settings(self) -> 'DefaultRstFactorySettings':
+        return self._topic.settings
 
     @property
     def settings(self):
         return self._topic.settings
 
     @property
-    def language(self):
+    def language(self) -> str:
         return self._language
 
     @property
-    def path(self):
+    def path(self) -> Path:
         return self._path
 
     @property
-    def basename(self):
+    def basename(self) -> str:
         return self._basename
 
     @property
-    def rst_filename(self):
+    def rst_filename(self) -> str:
         return self._basename + '.rst'
 
     @property
@@ -129,21 +145,21 @@ class Document:
         return self._basename + '.ipynb'   # Fixme
 
     @property
-    def rst_inner_path(self):
+    def rst_inner_path(self) -> Path:
         return self._rst_path.relative_to(self._topic.rst_path)
 
     @property
-    def dom(self):
+    def dom(self) -> Dom:
         return self._dom
 
     ##############################################
 
     @property
-    def is_link(self):
+    def is_link(self) -> bool:
         return self._is_link
 
     @property
-    def link_py(self):
+    def link_py(self) -> Path:
         """return the Python symlink path"""
         if self._is_link:
             return Path(os.readlink(self._path))
@@ -151,7 +167,7 @@ class Document:
             return None
 
     @property
-    def link_rst(self):
+    def link_rst(self) -> Path:
         """return the reST symlink path"""
         if self._is_link:
             link = self.link_py
@@ -162,12 +178,10 @@ class Document:
 
     ##############################################
 
-    def read(self):
+    def read(self) -> None:
         # Fixme: update doc
         # Fixme: API ??? called process_document()
-
         # Must be called first !
-
         """Parse the source code and extract nodes of codes, RST contents, plot and Tikz figures.  The
         source code is annoted using comment lines starting with special directives of the form
         *#directive name#*.  RST content lines start with *#!#*.  We can include a figure using
@@ -190,13 +204,13 @@ class Document:
     ##############################################
 
     @property
-    def source_timestamp(self):
+    def source_timestamp(self) -> int:
         return timestamp(self._path)
 
     ##############################################
 
     @property
-    def rst_timestamp(self):
+    def rst_timestamp(self) -> int:
         if self._rst_path.exists():
             return timestamp(self._rst_path)
         else:
@@ -204,24 +218,24 @@ class Document:
 
     ##############################################
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         """Return True if source is older than rst."""
         return self.source_timestamp > self.rst_timestamp or self.factory.was_failure(self)
 
     ##############################################
 
-    def _run(self):
-        self._logger.info('\nRun document {}'.format(self._path))
+    def _run(self) -> None:
+        self._logger.info(f'{NEWLINE}Run document {self._path}')
         node_evaluator = NodeEvaluator(self._language)
         if not node_evaluator.run(self._dom, self._path, eval_figure=self.settings.make_rst):
-            self._logger.error("Failed to run document {}".format(self._path))
+            self._logger.error(f"Failed to run document {self._path}")
             self.factory.register_failure(self)
         # Windows has an issue with the garbage collecting of the temporary working directory
         node_evaluator.stop_jupyter()
 
     ##############################################
 
-    def run(self):
+    def run(self) -> None:
         self._run()
 
         # tenacity like code
@@ -241,7 +255,7 @@ class Document:
 
     ##############################################
 
-    def symlink_source(self, source_path):
+    def symlink_source(self, source_path) -> str:
         """Create a symlink to a source in the reST document directory"""
         # used by LocaleFigureNode
         source = self._topic.join_path(source_path)
@@ -260,7 +274,7 @@ class Document:
 
     ##############################################
 
-    def make_external_figure(self, force):
+    def make_external_figure(self, force) -> None:
         # Fixme: simplify ???
         for node in self._dom:
             if isinstance(node, FigureNode):
@@ -300,7 +314,7 @@ class Document:
             else:
                 raise ParseError("Unbalanced markup", line)
 
-        self._logger.info(os.linesep + line)
+        self._logger.info(NEWLINE + line)
 
         # line of form '"""...' ?
         # It could be a module docstring,
@@ -357,7 +371,7 @@ class Document:
 
     ##############################################
 
-    def _source_to_nodes(self, source):
+    def _source_to_nodes(self, source) -> Dom:
         """Build the raw DOM from the source"""
         dom = Dom()
         prev_markup_cls = None
@@ -390,7 +404,7 @@ class Document:
 
     ##############################################
 
-    def _post_process_dom(self, raw_dom):
+    def _post_process_dom(self, raw_dom: Dom) -> Dom:
         """Perform some post-processing on DOM"""
         dom = Dom()
         for node in raw_dom.iter_on_not_empty_node():
@@ -417,7 +431,7 @@ class Document:
 
     ##############################################
 
-    def _has_title(self):
+    def _has_title(self) -> bool:
         """Return whether a title is defined."""
         # Fixme: test if first node ?
         for node in self._dom:
@@ -441,11 +455,9 @@ class Document:
         kwargs = {
             'input_file': self._input_file,
         }
-
         has_title = self._has_title()
         if not has_title:
             kwargs['title'] = self._basename.replace('-', ' ').title()  # Fixme: Capitalize of
-
         template_aggregator = TemplateAggregator(self.settings.template_environment)
         template_aggregator.append('document', **kwargs)
 
@@ -460,13 +472,12 @@ class Document:
 
     ##############################################
 
-    def make_notebook(self):
+    def make_notebook(self) -> None:
         """Generate a notebook file.
 
         https://nbformat.readthedocs.io/en/latest
         """
         notebook = nbv4.new_notebook()
-
         notebook.metadata.update(self.language.notebook_metadata)
 
         last_cell = None
@@ -485,6 +496,6 @@ class Document:
                         notebook.cells.append(_)
 
         path = self._topic.join_rst_path(self.nb_filename)
-        self._logger.info("\nCreate Notebook file {}".format(path))
+        self._logger.info(f"{NEWLINE}Create Notebook file {path}")
         with open(path, 'w') as fh:
             nbformat.write(notebook, fh)

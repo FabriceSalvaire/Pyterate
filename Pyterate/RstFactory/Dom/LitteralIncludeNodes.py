@@ -32,11 +32,14 @@ __all__ = [
 ####################################################################################################
 
 # import logging
+import os
 from pathlib import Path
 
 from .Dom import Node
 
 ####################################################################################################
+
+NEWLINE = os.linesep
 
 # _module_logger = logging.getLogger(__name__)
 
@@ -50,7 +53,7 @@ class LiteralIncludeNode(Node):
 
     ##############################################
 
-    def __init__(self, document, include_path):
+    def __init__(self, document, include_path) -> None:
         super().__init__(document)
         self._include_filename = document.symlink_source(Path(include_path))
         self._include_path = document.topic.join_path(include_path)
@@ -65,7 +68,7 @@ class LiteralIncludeNode(Node):
 
     ##############################################
 
-    def to_markdown(self):
+    def to_markdown(self) -> str:
         text = '```\n'
         with open(self._include_path) as fh:
             text += fh.read()

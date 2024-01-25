@@ -23,6 +23,7 @@ __all__ = ['Topic']
 ####################################################################################################
 
 from pathlib import Path
+from typing import TYPE_CHECKING, Iterator
 import logging
 import os
 
@@ -30,7 +31,13 @@ from ..Template import TemplateAggregator
 from .Document import Document, ParseError
 from .Evaluator.NodeEvaluator import NodeEvaluatorError
 
+if TYPE_CHECKING:
+    from .RstFactory import RstFactory
+    from .Settings import DefaultRstFactorySettings
+
 ####################################################################################################
+
+NEWLINE = os.linesep
 
 _module_logger = logging.getLogger(__name__)
 
@@ -50,36 +57,37 @@ class Topic:
 
     ##############################################
 
-    def __init__(self, factory, relative_path):
+    def __init__(self, factory: 'RstFactory', relative_path: Path) -> None:
         self._factory = factory
-        self._relative_path = Path(relative_path) # relative input path
-        self._basename = relative_path.name # topic directory
+        self._relative_path = Path(relative_path)   # relative input path
+        self._basename = relative_path.name   # topic directory
 
-        self._path = self.settings.join_input_path(relative_path) # input path
-        self._rst_path = self.settings.join_rst_path(relative_path) # output path
+        self._path = self.settings.join_input_path(relative_path)   # input path
+        self._rst_path = self.settings.join_rst_path(relative_path)   # output path
 
-        self._subtopics = [] # self._retrieve_subtopics()
+        self._subtopics = []   # self._retrieve_subtopics()
         self._documents = []
         self._links = []
 
-        input_files = list(self._input_files_iterator()) # Fixme: better ?
+        input_files = list(self._input_files_iterator())   # Fixme: better ?
         if input_files:
-            self._logger.info('\nProcess Topic: {}'.format(relative_path))
+            self._logger.info(f'{NEWLINE}Process Topic: {relative_path}')
             if self.settings.make_rst:
-                os.makedirs(self._rst_path, exist_ok=True) # removed code
+                os.makedirs(self._rst_path, exist_ok=True)   # removed code
             for filename, language in input_files:
-                self._logger.info("\nFound input '{}' handled by {}".format(self.join_path(filename), language.name))
+                path = self.join_path(filename)
+                self._logger.info(f"{NEWLINE}Found input '{path}' handled by {language.name}")
                 document = Document(self, Path(filename), language)
                 if document.is_link:
-                    self._logger.info("\n  found link: " + filename)
+                    self._logger.info(f"{NEWLINE}  found link: {filename}")
                     self._links.append(document)
                 else:
-                    self._logger.info("\n  found: " + filename)
+                    self._logger.info(f"{NEWLINE}  found: {filename}")
                     self._documents.append(document)
 
     ##############################################
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         # Fixme: usage ???
         return self._rst_path.exists()
         # return bool(self._documents) or bool(self._links)
@@ -87,11 +95,11 @@ class Topic:
     ##############################################
 
     @property
-    def factory(self):
+    def factory(self) -> 'RstFactory':
         return self._factory
 
     @property
-    def settings(self):
+    def settings(self) -> 'DefaultRstFactorySettings':
         return self._factory.settings
 
     @property
@@ -99,24 +107,24 @@ class Topic:
         return self._basename
 
     @property
-    def path(self):
+    def path(self) -> Path:
         return self._path
 
     @property
-    def rst_path(self):
+    def rst_path(self) -> Path:
         return self._rst_path
 
     ##############################################
 
-    def join_path(self, *args):
+    def join_path(self, *args) -> Path:
         return self._path.joinpath(*args)
 
-    def join_rst_path(self, *args):
+    def join_rst_path(self, *args) -> Path:
         return self._rst_path.joinpath(*args)
 
     ##############################################
 
-    def _input_files_iterator(self):
+    def _input_files_iterator(self) -> Iterator[[str, str]]:
         for basename in os.listdir(self._path):
             path = self._path.joinpath(basename)
             if path.is_file():
@@ -126,25 +134,25 @@ class Topic:
 
     ##############################################
 
-    def _is_file_skipped(self, path, language):
+    def _is_file_skipped(self, path: Path, language: str) -> bool:
         skip_pattern = language.enclose_markup(self.SKIP_PATTERN)
         with open(path) as fh:
             for i in range(2):
-                line = fh.readline() # .strip()
+                line = fh.readline()   # .strip()
                 if line.startswith(skip_pattern):
-                    self._logger.info('\nSkip file {}'.format(path))
+                    self._logger.info(f'{NEWLINE}Skip file {path}')
                     return True
         return False
 
     ##############################################
 
-    def _index_path(self):
+    def _index_path(self) -> Path:
         # Fixme: hardcoded filename ???
-        return self.join_path('index.rst')
+        return self.join_path(self.settings.add_extension('index'))
 
     ##############################################
 
-    def _has_index(self):
+    def _has_index(self) -> bool:
         return self._index_path().exists()
 
     ##############################################
@@ -154,7 +162,7 @@ class Topic:
         figures = []
         with open(self._index_path()) as fh:
             content = fh.read()
-            for line in content.split('\n'):
+            for line in content.split(NEWLINE):
                 if line.startswith(self.IMAGE_DIRECTIVE):
                     figure = line[self.IMAGE_DIRECTIVE_LENGTH:]
                     figures.append(figure)
@@ -162,19 +170,19 @@ class Topic:
 
     ##############################################
 
-    def process_documents(self):
-        for document in self._documents:
-            self.process_document(document)
+    def process_documents(self) -> None:
+        for _ in self._documents:
+            self.process_document(_)
 
     ##############################################
 
-    def process_document(self, document):
-        self._logger.info('Process document {}'.format(document.path))
+    def process_document(self, document: Document) -> None:
+        self._logger.info(f'Process document {document.path}')
         try:
             document.read()
         except (ParseError, NodeEvaluatorError) as exception:
             self._logger.error(exception)
-            self._logger.error("Failed to parse document {}".format(document.path))
+            self._logger.error(f"Failed to parse document {document.path}")
             self.factory.register_failure(document)
             # Fixme: insert errors in rst
             return
@@ -192,24 +200,26 @@ class Topic:
 
     ##############################################
 
-    def _directory_iterator(self):
+    def _directory_iterator(self) -> Iterator[Path]:
         for filename in os.listdir(self._rst_path):
             path = self.join_rst_path(filename)
             if path.is_dir():
-                yield path # absolut path
+                yield path   # absolut path
 
     ##############################################
 
-    def _subtopic_iterator(self):
+    def _subtopic_iterator(self) -> Iterator['Topic']:
         for path in self._directory_iterator():
-            if path.joinpath('index.rst').exists(): # Fixme: hardcoded filename !
+            # Fixme: hardcoded filename !
+            index_path = path.joinpath(self.settings.add_extension('index'))
+            if index_path.exists():
                 relative_path = path.relative_to(self.settings.rst_path)
                 topic = self._factory.topics[relative_path]
                 yield topic
 
     ##############################################
 
-    def _retrieve_subtopics(self):
+    def _retrieve_subtopics(self) -> None:
         # Fixme: ???
         if not self:
             return None
@@ -251,7 +261,7 @@ class Topic:
         kwargs['subtopics'] = sorted(subtopics)
 
         if self.settings.show_counters:
-            self._number_of_documents = len(self._documents) # don't count links twice
+            self._number_of_documents = len(self._documents)   # don't count links twice
             kwargs['number_of_links'] = len(self._links)
             kwargs['number_of_subtopics'] = len(self._subtopics)
             number_of_subtopics = sum([topic._number_of_documents for topic in self._subtopics])

@@ -19,12 +19,12 @@
 ####################################################################################################
 
 # Fixme: clean API !!!
-
 # Fixme: These classes do several tasks
-#  decode input
-#  store data
-#  to_rst generate RST
-#  to_code
+#   decode input
+#   store data
+#   to_rst generate RST
+#   to_code
+# Fixme: cyclic dependency
 
 ####################################################################################################
 
@@ -39,14 +39,24 @@ __all__ = [
 ####################################################################################################
 
 import logging
+import os
 import subprocess
+from typing import TYPE_CHECKING, Iterable
 
+# https://nbformat.readthedocs.io/en/latest/api.html#module-nbformat.v4
 from nbformat import v4 as nbv4
+from nbformat import NotebookNode
 
 from Pyterate.Tools.MarkupConverter import rest_to_markdown
 from .Registry import MarkupRegistry
 
+if TYPE_CHECKING:
+    from ..Document import Document
+    from ..Settings import Language
+
 ####################################################################################################
+
+NEWLINE = os.linesep
 
 _module_logger = logging.getLogger(__name__)
 
@@ -63,7 +73,7 @@ class Node(metaclass=MarkupRegistry):
     ##############################################
 
     @staticmethod
-    def indent_lines(lines, indentation=4):
+    def indent_lines(lines: list[str], indentation: int = 4) -> str:
         indentation = ' '*indentation
         # Fixme: strip empty lines
         return '\n'.join([indentation + line.rstrip() for line in lines]) + '\n' # Fixme: if out ???
@@ -71,8 +81,8 @@ class Node(metaclass=MarkupRegistry):
     ##############################################
 
     @classmethod
-    def indent_output(cls, output, indentation=4):
-        return cls.indent_lines(str(output).split('\n'), indentation)
+    def indent_output(cls, output, indentation: int = 4) -> str:
+        return cls.indent_lines(str(output).split(NEWLINE), indentation)
 
     ##############################################
 
@@ -96,16 +106,18 @@ class Node(metaclass=MarkupRegistry):
     ##############################################
 
     @classmethod
-    def check_command(cls, *command, help='', protect=False):
+    def check_command(cls, *command, help='', protect=False) -> None:
         # command = list(command)
         # command[0] += '-debug'
         try:
             if protect:
                 try:
-                    subprocess.check_call(command,
-                                          stdout=subprocess.DEVNULL,
-                                          stderr=subprocess.DEVNULL,
-                                          shell=False)
+                    subprocess.check_call(
+                        command,
+                        stdout=subprocess.DEVNULL,
+                        stderr=subprocess.DEVNULL,
+                        shell=False,
+                    )
                 except subprocess.CalledProcessError:
                     pass
             else:
@@ -116,23 +128,23 @@ class Node(metaclass=MarkupRegistry):
 
     ##############################################
 
-    def __init__(self, document):
-        self._document = document # to pass settings ...
+    def __init__(self, document: 'Document') -> None:
+        self._document = document   # to pass settings ...
         self._lines = []
 
     ##############################################
 
-    def __repr__(self):
-        return '<{}>\n\n'.format(self.__class__.__name__) + str(self)
+    def __repr__(self) -> str:
+        return f'<{self.__class__.__name__}>{NEWLINE}{NEWLINE}{self}'
 
     ##############################################
 
-    def __str__(self):
-        return '\n'.join(self._lines) + '\n'
+    def __str__(self) -> str:
+        return NEWLINE.join(self._lines) + NEWLINE
 
     ##############################################
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self._lines)
 
     ##############################################
@@ -142,71 +154,71 @@ class Node(metaclass=MarkupRegistry):
 
     ##############################################
 
-    def append(self, line):
+    def append(self, line: str) -> None:
         self._lines.append(line)
 
     ##############################################
 
-    def mergable(self, node):
+    def mergable(self, node: 'Node') -> bool:
         return self.__class__ is node.__class__
 
     ##############################################
 
-    def merge(self, node):
+    def merge(self, node: 'Node') -> None:
         self._lines.extend(node._lines)
 
     ##############################################
 
     @property
-    def is_executed(self):
+    def is_executed(self) -> bool:
         return hasattr(self, 'to_code')
 
     ##############################################
 
     @property
-    def document(self):
+    def document(self) -> 'Document':
         return self._document
 
     @property
-    def language(self):
+    def language(self) -> 'Language':
         return self._document.language
 
     ##############################################
 
     @property
-    def opening_format_markup(self):
+    def opening_format_markup(self) -> str:
         return self._document.language.opening_format_markup
 
     @property
-    def closing_format_markup(self):
+    def closing_format_markup(self) -> str:
         return self._document.language.closing_format_markup
 
     @property
-    def escaped_opening_format_markup(self):
+    def escaped_opening_format_markup(self) -> str:
         return self._document.language.escaped_opening_format_markup
 
     @property
-    def escaped_closing_format_markup(self):
+    def escaped_closing_format_markup(self) -> str:
         return self._document.language.escaped_closing_format_markup
 
     ##############################################
 
     @property
-    def lexer(self):
+    def lexer(self) -> str:
         return self.language.lexer
 
     @property
-    def error_lexer(self):
+    def error_lexer(self) -> str:
         return self.language.error_lexer
 
     ##############################################
 
-    def to_rst(self):
+    def to_rst(self) -> str:
         return ''
 
     ##############################################
 
-    def to_markdown(self):
+    def to_markdown(self) -> str:
         return rest_to_markdown(self.to_rst(), self._PANDOC_MARKDOWN)
 
     ##############################################
@@ -220,16 +232,16 @@ class ExecutedNode(Node):
 
     ##############################################
 
-    def __init__(self, document):
+    def __init__(self, document: 'Document') -> None:
         super().__init__(document)
         self.outputs = []
 
     ##############################################
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         # Fixme: precompute
-        for line in self._lines:
-            if line.strip():
+        for _ in self._lines:
+            if _.strip():
                 return True
         return False
 
@@ -239,7 +251,7 @@ class MarkdownCellMixin:
 
     ##############################################
 
-    def to_cell(self):
+    def to_cell(self) -> NotebookNode:
         markdown = self.to_markdown()
         return nbv4.new_markdown_cell(markdown)
 
@@ -249,9 +261,9 @@ class TextNode(MarkdownCellMixin, Node):
 
     ##############################################
 
-    def has_format(self):
-        for line in self._lines:
-            if self.opening_format_markup in line:
+    def has_format(self) -> bool:
+        for _ in self._lines:
+            if self.opening_format_markup in _:
                 return True
         return False
 
@@ -263,41 +275,41 @@ class Dom:
 
     ##############################################
 
-    def __init__(self):
+    def __init__(self) -> None:
         self._nodes = []
 
     ##############################################
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         return bool(self._nodes)
 
     ##############################################
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._nodes)
 
     ##############################################
 
-    def __iter__(self):
+    def __iter__(self) -> Iterable[Node]:
         return iter(self._nodes)
 
     ##############################################
 
-    def iter_on_not_empty_node(self):
-        for node in self._nodes:
-            if node:
-                yield node
+    def iter_on_not_empty_node(self) -> Iterable[Node]:
+        for _ in self._nodes:
+            if _:
+                yield _
 
     ##############################################
 
-    def append(self, node):
+    def append(self, node: Node) -> None:
         # self._logger.debug(repr(node))
         self._nodes.append(node)
 
     ##############################################
 
     @property
-    def last_node(self):
+    def last_node(self) -> Node:
         if self._nodes:
             return self._nodes[-1]
         else:

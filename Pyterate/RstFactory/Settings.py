@@ -265,12 +265,12 @@ class DefaultRstFactorySettings:
     def join_input_path(self, *args):
         return self.input_path.joinpath(*args)
 
-    def join_rst_path(self, *args):
+    def join_rst_path(self, *args) -> Path:
         return self.rst_path.joinpath(*args)
 
     ##############################################
 
-    def relative_input_path(self, path):
+    def relative_input_path(self, path) -> Path:
         relative_path = path.relative_to(self.input_path)
         if relative_path == '.':
             return ''
@@ -279,7 +279,7 @@ class DefaultRstFactorySettings:
 
     ##############################################
 
-    def language_for(self, path):
+    def language_for(self, path: Path) -> str:
         for language in self.languages:
             if language.filename_match(path):
                 return language
@@ -288,5 +288,5 @@ class DefaultRstFactorySettings:
     ##############################################
 
     @property
-    def failure_path(self):
+    def failure_path(self) -> Path:
         return self.join_input_path(self.failure_filename)

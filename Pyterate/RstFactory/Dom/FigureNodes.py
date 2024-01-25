@@ -37,7 +37,9 @@ from pathlib import Path
 import base64
 import json
 import logging
+import os
 import subprocess
+from typing import TYPE_CHECKING, Iterable
 
 from nbformat import v4 as nbv4
 
@@ -45,6 +47,8 @@ from Pyterate.Tools.Timestamp import timestamp
 from .Dom import Node
 
 ####################################################################################################
+
+NEWLINE = os.linesep
 
 _module_logger = logging.getLogger(__name__)
 
@@ -75,7 +79,7 @@ class ImageNode(Node):
 
     ##############################################
 
-    def __init__(self, document, path, **kwargs):
+    def __init__(self, document: 'Document', path, **kwargs) -> None:
         self._document = document
         self._path = Path(path)
         self._absolut_path = self.document.topic.join_rst_path(path)
@@ -87,18 +91,18 @@ class ImageNode(Node):
     ##############################################
 
     @property
-    def path(self):
+    def path(self) -> Path:
         return self._path
 
     @property
-    def absolut_path(self):
+    def absolut_path(self) -> Path:
         return self._absolut_path
 
     ##############################################
 
     def to_rst(self):
         args = (self._path,)
-        kwargs = dict(align='center') # Fixme: align
+        kwargs = dict(align='center')   # Fixme: align
         for key in ('scale', 'width', 'height'):
             value = getattr(self, '_' + key)
             if value:
@@ -107,14 +111,14 @@ class ImageNode(Node):
 
     ##############################################
 
-    def to_base64(self, path=None):
+    def to_base64(self, path=None) -> str:
         if path is None:
             path = self._absolut_path
         with open(path, 'rb') as fh:
             data = fh.read()
             image_base64 = base64.encodebytes(data)
             image_base64 = image_base64.decode('ascii')
-            # image_base64 = image_base64.replace('\n', '')
+            # image_base64 = image_base64.replace(NEWLINE, '')
         return image_base64
 
     ##############################################
@@ -200,19 +204,19 @@ class ExternalFigureNode(ImageNode):
 
     ##############################################
 
-    def __init__(self, document, source_path, figure_path, **kwargs):
+    def __init__(self, document: 'Document', source_path, figure_path, **kwargs):
         super().__init__(document, figure_path, **kwargs)
-        self._source_path = Path(source_path) # Fixme: absolut ???
+        self._source_path = Path(source_path)   # Fixme: absolut ???
 
     ##############################################
 
     @property
-    def source_path(self):
+    def source_path(self) -> Path:
         return self._source_path
 
     ##############################################
 
-    def __bool__(self):
+    def __bool__(self) -> bool:
         if self.absolut_path.exists():
             return timestamp(self._source_path) > timestamp(self.absolut_path)
         else:
@@ -228,7 +232,7 @@ class LocaleFigureNode(ImageNode):
 
     ##############################################
 
-    def __init__(self, document, source, **kwargs):
+    def __init__(self, document: 'Document', source, **kwargs) -> None:
         target = document.symlink_source(Path(source))
         super().__init__(document, target, **kwargs)
 
@@ -242,7 +246,7 @@ class SaveFigureNode(ImageNode):
 
     ##############################################
 
-    def __init__(self, document, figure, figure_filename, **kwargs):
+    def __init__(self, document: 'Document', figure, figure_filename, **kwargs) -> None:
         super().__init__(document, figure_filename, **kwargs)
         self._figure = figure
 
@@ -250,7 +254,7 @@ class SaveFigureNode(ImageNode):
 
     ##############################################
 
-    def to_code(self):
+    def to_code(self) -> str:
         return 'save_figure({}, "{}")'.format(self._figure, self.absolut_path)
 
 ####################################################################################################
@@ -265,7 +269,13 @@ class TableFigureNode(Node):
 
     ##############################################
 
-    def __init__(self, document, table, columns=None, str_format='{}'):
+    def __init__(
+        self,
+        document: 'Document',
+        table,
+        columns=None,
+        str_format='{}',
+    ) -> None:
         super().__init__(document)
         self._table = table
         self._columns = columns
@@ -274,12 +284,12 @@ class TableFigureNode(Node):
 
     ##############################################
 
-    def _iter_on_columns(self):
+    def _iter_on_columns(self) -> Iterable[[int, str]]:
         return enumerate(self._columns)
 
     ##############################################
 
-    def _update_column_length(self, i, value):
+    def _update_column_length(self, i: int, value) -> None:
         self._column_length[i] = max(len(str(value)), self._column_length[i])
 
     ##############################################
@@ -298,21 +308,21 @@ class TableFigureNode(Node):
 
     ##############################################
 
-    def _table_is_not_exported(self):
+    def _table_is_not_exported(self) -> bool:
         return isinstance(self._table, str)
 
     ##############################################
 
-    def to_code(self):
+    def to_code(self) -> str:
         # Fixme: API -> to figure ???
         if self._table_is_not_exported():
-            return 'export_value({})'.format(self._table)
+            return f'export_value({self._table})'
         else:
             return None
 
     ##############################################
 
-    def _exported_value(self):
+    def _exported_value(self) -> list:
         # Fixme: 0 str() ???
         json_data = self.outputs[0].result
         return json.loads(json_data[1:-1])
@@ -358,7 +368,7 @@ class TableFigureNode(Node):
 
     ##############################################
 
-    # def to_markdown(self):
+    # def to_markdown(self) -> str:
     #     markdown = super().to_markdown()
     #     print(markdown)
     #     return 'Table:\n' + markdown

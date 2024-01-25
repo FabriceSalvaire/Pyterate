@@ -42,15 +42,23 @@ __all__ = [
 ####################################################################################################
 
 import logging
+import os
+from typing import TYPE_CHECKING, Iterable
 
 from nbformat import v4 as nbv4
+from nbformat import NotebookNode
 
 from Pyterate.Tools.MarkupConverter import markdown_to_rest
 from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin
 from .FigureNodes import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
 from .LitteralIncludeNodes import LiteralIncludeNode
 
+if TYPE_CHECKING:
+    from ..Document import Document
+
 ####################################################################################################
+
+NEWLINE = os.linesep
 
 _module_logger = logging.getLogger(__name__)
 
@@ -58,9 +66,7 @@ _module_logger = logging.getLogger(__name__)
 
 class MarkdownMixin:
 
-    ##############################################
-
-    def to_rst(self):
+    def to_rst(self) -> str:
         # markdown_strict
         return markdown_to_rest(self.to_markdown())
 
@@ -79,23 +85,23 @@ class FigureNode(Node):
 
     ##############################################
 
-    def __init__(self, document):
+    def __init__(self, document: 'Document') -> None:
         super().__init__(document)
         self._childs = []
 
     ##############################################
 
-    def append_child(self, child):
+    def append_child(self, child: Node) -> None:
         self._childs.append(child)
 
     ##############################################
 
-    def iter_on_childs(self):
+    def iter_on_childs(self) -> Iterable[Node]:
         return iter(self._childs)
 
     ##############################################
 
-    def to_cell(self):
+    def to_cell(self) -> NotebookNode:
         cell = []
         for child in self.iter_on_childs():
             # skip LitteralIncludeNodes.GetthecodeNode
@@ -123,7 +129,7 @@ class RstNode(TextNode):
 
     ##############################################
 
-    def to_rst(self):
+    def to_rst(self) -> str:
         return str(self)
 
     ##############################################
@@ -151,28 +157,29 @@ class LiteralNode(Node):
 
     ##############################################
 
-    def to_cell(self):
-        markdown = '```\n'
+    def to_cell(self) -> NotebookNode:
+        _ = f'```{NEWLINE}'
+        markdown = _
         markdown += self.to_markdown()
-        markdown += '```\n'
+        markdown += _
         return nbv4.new_markdown_cell(markdown)
 
 ####################################################################################################
 
 class MarkdownNode(MarkdownMixin, TextNode):
 
-    """ This class represents a RST content. """
+    """ This class represents a Markdown content. """
 
     MARKUP = 'm'
 
     ##############################################
 
-    def to_markdown(self):
+    def to_markdown(self) -> str:
         return str(self)
 
     ##############################################
 
-    def to_format_node(self):
+    def to_format_node(self) -> 'MarkdownFormatNode':
         return MarkdownFormatNode(self)
 
 ####################################################################################################
@@ -181,14 +188,14 @@ class FormatNode(MarkdownCellMixin, ExecutedNode):
 
     ##############################################
 
-    def __init__(self, node):
+    def __init__(self, node: Node) -> None:
         super().__init__(node.document)
         self._lines = node._lines
 
     ##############################################
 
-    def to_code(self):
-        txt = '\n'.join(self._lines)
+    def to_code(self) -> str:
+        txt = NEWLINE.join(self._lines)
         txt = txt.replace('{', '{{') # to escape them
         txt = txt.replace('}', '}}')
         txt = txt.replace(self.opening_format_markup, '{')
@@ -242,17 +249,17 @@ class CodeNode(ExecutedNode):
 
     ##############################################
 
-    def to_code(self):
+    def to_code(self) -> str:
         source = ''
         for line in self._lines:
             # Fixme:
             if not line.startswith('pylab.show') and not line.startswith('plt.show'):
-                source += line + '\n'
+                source += line + NEWLINE
         return source
 
     ##############################################
 
-    def to_cell(self):
+    def to_cell(self) -> NotebookNode:
         code = self.to_code()
         cell = nbv4.new_code_cell(code)
         for output in self.outputs:
@@ -275,13 +282,13 @@ class InteractiveCodeNode(CodeNode):
 
     ##############################################
 
-    def to_line_node(self):
+    def to_line_node(self) -> list['InteractiveCodeNode']:
         nodes = []
         for line in self._lines:
             if not line.strip():
                 continue
-            node = InteractiveLineCodeNode(self._document, line)
-            nodes.append(node)
+            _ = InteractiveLineCodeNode(self._document, line)
+            nodes.append(_)
         return nodes
 
 ####################################################################################################
@@ -290,7 +297,7 @@ class InteractiveLineCodeNode(CodeNode):
 
     ##############################################
 
-    def __init__(self, document, line):
+    def __init__(self, document: 'Document', line: str):
         super().__init__(document)
         self.append(line)
 
@@ -328,11 +335,11 @@ class OutputNode(Node):
     ##############################################
 
     @property
-    def code_node(self):
+    def code_node(self) -> Node:
         return self._code_node
 
     @code_node.setter
-    def code_node(self, value):
+    def code_node(self, value: Node):
         self._code_node = value
 
     ##############################################
@@ -346,5 +353,5 @@ class OutputNode(Node):
 
     ##############################################
 
-    def to_cell(self):
+    def to_cell(self) -> Node:
         return None

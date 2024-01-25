@@ -29,6 +29,8 @@ import json
 import logging
 import os
 
+from .Document import Document
+from .Settings import DefaultRstFactorySettings
 from .Topic import Topic
 
 ####################################################################################################
@@ -47,7 +49,7 @@ class RstFactory:
 
     ##############################################
 
-    def __init__(self, settings):
+    def __init__(self, settings: DefaultRstFactorySettings):
         """
         Parameters:
 
@@ -64,7 +66,7 @@ class RstFactory:
 
     ##############################################
 
-    def _load_failure(self):
+    def _load_failure(self) -> None:
         json_path = self._settings.failure_path
         if json_path.exists():
             with open(json_path, 'r') as fh:
@@ -76,28 +78,28 @@ class RstFactory:
     ##############################################
 
     @property
-    def settings(self):
+    def settings(self) -> DefaultRstFactorySettings:
         return self._settings
 
     @property
-    def topics(self):
+    def topics(self) -> dict[Path, Topic]:
         return self._topics
 
     ##############################################
 
-    def was_failure(self, document):
+    def was_failure(self, document: Document) -> bool:
         return str(document.path) in self._failures
 
-    def register_failure(self, document):
+    def register_failure(self, document: Document):
         self._document_failures.append(document)
 
     @property
-    def has_failure(self):
+    def has_failure(self) -> bool:
         return bool(self._document_failures)
 
     ##############################################
 
-    def _process_topic(self, topic_path):
+    def _process_topic(self, topic_path: Path) -> None:
         relative_topic_path = self._settings.relative_input_path(topic_path)
         topic = Topic(self, relative_topic_path)
         self._topics[relative_topic_path] = topic # collect topics
@@ -108,7 +110,7 @@ class RstFactory:
 
     ##############################################
 
-    def process_recursively(self):
+    def process_recursively(self) -> bool:
         """Process recursively the documents directory."""
         # walk top down so as to generate the subtopics first
         self._topics.clear()
