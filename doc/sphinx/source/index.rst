@@ -162,11 +162,13 @@ Guidelines to cite Pyterate
   installation.rst
   faq.rst
   user-guide.rst
-  examples/index.rst
+  examples/index.md
   design-notes.rst
   reference-manual.rst
   development.rst
   how-to-refer.rst
+
+..   examples/index.rst
 
 ..
   roadmap.rst

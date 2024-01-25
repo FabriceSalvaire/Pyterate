@@ -1,8 +1,5 @@
-"""
-```{note}
-You can see the source by clicking on the eye
-```
-"""
+#r# .. note::
+#r#    You can see the source by clicking on the eye
 
 # A source code comment
 ##
@@ -11,11 +8,15 @@ You can see the source by clicking on the eye
 
 foo = 1
 
-"""
-## A Subtitle
-"""
+#r# ==========================
+#r#  A Restructuredtext Title
+#r# ==========================
 
 foo = 1
+
+#r#
+#r# Some reStructuredText contents
+#r#
 
 #m#
 #m# Some Markdown contents
@@ -42,17 +43,19 @@ foo = 1
 
 foo = 1
 
-"""
-Format Markdown content with current locals dictionary using @@<<@@...@@>>@@ instead of {...}.
+#r# Format RST content with current locals dictionary using @@<<@@...@@>>@@ instead of {...}.
+#r#
+#r# .. math::
+#r#
+#r#     I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
 
-```{math}
-I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)
-```
-"""
+#m# Format Markdown content with current locals dictionary using @@<<@@...@@>>@@ instead of {...}.
+#m#
+#m# $$I_d = @<@value@>@ I_s \left( e^{\frac{V_d}{n V_T}} - 1 \right)$$
 
 # Add Python code as a literal block
 #l# for x in ():
-#l#   1 / 0
+#l#   1 / 0 / 0
 
 # Interactive code
 #<i#
