@@ -49,8 +49,8 @@ from nbformat import v4 as nbv4
 from nbformat import NotebookNode
 
 from Pyterate.Tools.MarkupConverter import markdown_to_rest
-from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin
-from .FigureNodes import ImageNode, ExternalFigureNode, TableFigureNode, SaveFigureNode
+from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin, MystMixin
+from .FigureNodes import ImageNode, TableFigureNode, SaveFigureNode
 from .LitteralIncludeNodes import LiteralIncludeNode
 
 if TYPE_CHECKING:
@@ -134,12 +134,17 @@ class RstNode(TextNode):
 
     ##############################################
 
-    def to_format_node(self):
+    def to_myst(self) -> str:
+        return self.to_markdown()
+
+    ##############################################
+
+    def to_format_node(self) -> 'RstFormatNode':
         return RstFormatNode(self)
 
 ####################################################################################################
 
-class LiteralNode(Node):
+class LiteralNode(MystMixin, Node):
 
     """ This class represents a literal block. """
 
@@ -147,11 +152,15 @@ class LiteralNode(Node):
 
     ##############################################
 
-    def to_rst(self):
+    def _to_rst(self, use_myst: bool = False) -> str:
+        indentation = self.indentation(use_myst)
         if bool(self):
-            source = self.indent_lines(self._lines)
+            source = self.indent_lines(self._lines, indentation)
             # rst = self.directive('class', args=('literal-node',)) # Don't work !
-            return self.code_block_directive('py') + source + '\n'
+            rst = self.code_block_directive('py', use_myst) + source + NEWLINE
+            if use_myst:
+                rst += self.close_directive(use_myst)
+            return rst
         else:
             return ''
 
@@ -176,6 +185,9 @@ class MarkdownNode(MarkdownMixin, TextNode):
 
     def to_markdown(self) -> str:
         return str(self)
+
+    def to_myst(self) -> str:
+        return self.to_markdown()
 
     ##############################################
 
@@ -206,27 +218,31 @@ class FormatNode(MarkdownCellMixin, ExecutedNode):
 
 ####################################################################################################
 
-class RstFormatNode(FormatNode):
+class FormatNodeMixin:
+    # Fixme: ok ?
 
-    ##############################################
-
-    def to_rst(self):
+    def _to_rst(self) -> str:
         # Fixmes: more than one output
-        return str(self.outputs[0]) + '\n'
+        return str(self.outputs[0]) + NEWLINE
+
+    def to_myst(self) -> str:
+        return self._to_rst()
 
 ####################################################################################################
 
-class MarkdownFormatNode(MarkdownMixin, FormatNode):
-
-    ##############################################
-
-    def to_markdown(self):
-        # Fixmes: more than one output
-        return str(self.outputs[0]) + '\n'
+class RstFormatNode(FormatNodeMixin, FormatNode):
+    pass
 
 ####################################################################################################
 
-class CodeNode(ExecutedNode):
+class MarkdownFormatNode(MarkdownMixin, FormatNodeMixin, FormatNode):
+
+    def to_markdown(self) -> str:
+        return self._to_rst()
+
+####################################################################################################
+
+class CodeNode(MystMixin, ExecutedNode):
 
     """ This class represents a code block. """
 
@@ -234,16 +250,19 @@ class CodeNode(ExecutedNode):
 
     ##############################################
 
-    def to_rst(self):
+    def _to_rst(self, use_myst: bool = False) -> str:
+        indentation = self.indentation(use_myst)
         if bool(self):
             # Fixme: if previous is hidden : merge ???
-            rst = self.code_block_directive(self.lexer)
-            rst += self.indent_lines(self._lines)
+            rst = self.code_block_directive(self.lexer, use_myst)
+            rst += self.indent_lines(self._lines, indentation)
+            rst += self.close_directive(use_myst)
             for output in self.outputs:
                 if output.is_error:
-                    rst += self.code_block_directive(self.error_lexer)
-                    rst += self.indent_output(output)
-            return rst + '\n'
+                    rst += self.code_block_directive(self.error_lexer, use_myst)
+                    rst += self.indent_output(output, indentation)
+                    rst += self.close_directive(use_myst)
+            return rst + NEWLINE
         else:
             return '' # Fixme: ???
 
@@ -303,13 +322,16 @@ class InteractiveLineCodeNode(CodeNode):
 
     ##############################################
 
-    def to_rst(self):
-        rst = super().to_rst()
-        rst += self.code_block_directive('none')
+    def _to_rst(self, use_myst: bool = False) -> str:
+        indentation = self.indentation(use_myst)
+        rst = super()._to_rst(use_myst)
+        rst += self.code_block_directive('none', use_myst)
         for output in self.outputs:
             if output.is_result:
-                rst += self.indent_output(output)
-        return rst + '\n'
+                rst += self.indent_output(output, indentation)
+        rst += self.close_directive(use_myst)
+        rst += NEWLINE
+        return rst
 
 ####################################################################################################
 
@@ -324,9 +346,12 @@ class HiddenCodeNode(CodeNode):
     def to_rst(self):
         return ''
 
+    def to_myst(self):
+        return ''
+
 ####################################################################################################
 
-class OutputNode(Node):
+class OutputNode(MystMixin, Node):
 
     """ This class represents an output block. """
 
@@ -344,12 +369,15 @@ class OutputNode(Node):
 
     ##############################################
 
-    def to_rst(self):
-        rst = self.code_block_directive('none')
+    def _to_rst(self, use_myst: bool = False) -> str:
+        indentation = self.indentation(use_myst)
+        rst = self.code_block_directive('none', use_myst)
         for output in self._code_node.outputs:
             if output.is_stream:
-                rst += self.indent_output(output)
-        return rst + '\n'
+                rst += self.indent_output(output, indentation)
+        rst += self.close_directive(use_myst)
+        rst += NEWLINE
+        return rst
 
     ##############################################
 

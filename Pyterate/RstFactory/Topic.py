@@ -103,7 +103,11 @@ class Topic:
         return self._factory.settings
 
     @property
-    def basename(self):
+    def use_myst(self) -> bool:
+        return self.settings.use_myst
+
+    @property
+    def basename(self) -> str:
         return self._basename
 
     @property
@@ -227,19 +231,20 @@ class Topic:
 
     ##############################################
 
-    def make_toc(self):
+    def make_toc(self) -> None:
         """ Create the TOC. """
         if not self.settings.make_rst:
             return
-
         # Fixme: ???
         if not self:
             return
 
-        toc_path = self.join_rst_path('index.rst')
-        self._logger.info('\nCreate TOC {}'.format(toc_path))
+        toc_path = self.join_rst_path(self.settings.add_extension('index'))
+        self._logger.info(f'{NEWLINE}Create TOC {toc_path}')
 
-        kwargs = {}
+        kwargs = {
+            'use_myst': self.use_myst,
+        }
 
         if self._has_index():
             readme_content, figures = self._read_index()
@@ -248,12 +253,12 @@ class Topic:
             # if make_external_figure:
             #   ...
         else:
-            kwargs['title'] = self._basename.replace('-', ' ').title() # Fixme: Capitalize of
+            kwargs['title'] = self._basename.replace('-', ' ').title()   # Fixme: Capitalize of
 
         # Sort the TOC
         # Fixme: sometimes we want a particular order !
-        file_dict = {document.basename:document.rst_filename for document in self._documents}
-        file_dict.update({link.basename:link.link_rst for link in self._links})
+        file_dict = {_.basename: _.doc_filename for _ in self._documents}
+        file_dict.update({_.basename: _.link_rst for _ in self._links})
         kwargs['toc_items'] = [file_dict[x] for x in sorted(file_dict.keys())]
 
         self._retrieve_subtopics()

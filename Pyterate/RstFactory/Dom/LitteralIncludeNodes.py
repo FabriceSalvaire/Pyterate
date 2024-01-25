@@ -35,7 +35,7 @@ __all__ = [
 import os
 from pathlib import Path
 
-from .Dom import Node
+from .Dom import Node, MystMixin
 
 ####################################################################################################
 
@@ -45,7 +45,7 @@ NEWLINE = os.linesep
 
 ####################################################################################################
 
-class LiteralIncludeNode(Node):
+class LiteralIncludeNode(MystMixin, Node):
 
     """This class represents a literal include block."""
 
@@ -60,11 +60,14 @@ class LiteralIncludeNode(Node):
 
     ##############################################
 
-    def to_rst(self):
-        return self.directive(
+    def _to_rst(self, use_myst: bool = False) -> str:
+        rst = self.directive(
             'literalinclude',
             args=(self._include_filename,),
+            use_myst=use_myst,
         )
+        rst += self.close_directive(use_myst)
+        return rst
 
     ##############################################
 
@@ -85,9 +88,12 @@ class GetthecodeNode(LiteralIncludeNode):
 
     ##############################################
 
-    def to_rst(self):
-        return self.directive(
+    def _to_rst(self, use_myst: bool = False) -> str:
+        rst = self.directive(
             'getthecode',
             args=(self._include_filename,),
             kwargs=dict(language=self.lexer),
+            use_myst=use_myst,
         )
+        rst += self.close_directive(use_myst)
+        return rst

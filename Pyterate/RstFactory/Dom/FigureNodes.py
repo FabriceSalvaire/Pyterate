@@ -44,7 +44,10 @@ from typing import TYPE_CHECKING, Iterable
 from nbformat import v4 as nbv4
 
 from Pyterate.Tools.Timestamp import timestamp
-from .Dom import Node
+from .Dom import Node, MystMixin
+
+if TYPE_CHECKING:
+    from ..Document import Document
 
 ####################################################################################################
 
@@ -54,7 +57,7 @@ _module_logger = logging.getLogger(__name__)
 
 ####################################################################################################
 
-class ImageNode(Node):
+class ImageNode(MystMixin, Node):
 
     """Class to implement an image node.
 
@@ -100,14 +103,17 @@ class ImageNode(Node):
 
     ##############################################
 
-    def to_rst(self):
+    def _to_rst(self, use_myst: bool = False) -> str:
+        # https://myst-parser.readthedocs.io/en/latest/syntax/images_and_figures.html#block-level-images
         args = (self._path,)
         kwargs = dict(align='center')   # Fixme: align
         for key in ('scale', 'width', 'height'):
             value = getattr(self, '_' + key)
             if value:
                 kwargs[key] = value
-        return self.directive('image', args=args, kwargs=kwargs)
+        rst = self.directive('image', args=args, kwargs=kwargs, use_myst=use_myst)
+        rst += self.close_directive(use_myst)
+        return rst
 
     ##############################################
 
@@ -259,7 +265,7 @@ class SaveFigureNode(ImageNode):
 
 ####################################################################################################
 
-class TableFigureNode(Node):
+class TableFigureNode(MystMixin, Node):
 
     """ This class represents a table figure. """
 
@@ -294,17 +300,22 @@ class TableFigureNode(Node):
 
     ##############################################
 
-    def _rule(self, rule_chr):
-        column_rule = [rule_chr*self._column_length[i]
-                       for i in range(len(self._column_length))]
-        return ' '.join(column_rule) + '\n'
+    def _format_line(self, values: list[str], use_myst: bool = False) -> str:
+        padded_values = [' '*(self._column_length[i] - len(value)) + value
+                         for i, value in enumerate(values)]
+        sep = ' | ' if use_myst else ' '
+        _ = sep.join(padded_values)
+        if use_myst:
+            _ = f'| {_} |'
+        return _ + NEWLINE
 
     ##############################################
 
-    def _format_line(self, values):
-        padded_values = [' '*(self._column_length[i] - len(value)) + value
-                         for i, value in enumerate(values)]
-        return ' '.join(padded_values) + '\n'
+    def _rule(self, use_myst: bool = False) -> str:
+        rule_chr = '-' if use_myst else '='
+        column_rule = [rule_chr*self._column_length[i]
+                       for i in range(len(self._column_length))]
+        return self._format_line(column_rule, use_myst)
 
     ##############################################
 
@@ -329,42 +340,43 @@ class TableFigureNode(Node):
 
     ##############################################
 
-    def to_rst(self):
+    def _to_rst(self, use_myst: bool = False) -> str:
         # see https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst
         if self._table_is_not_exported():
             table = self._exported_value()
         else:
             table = self._table
-
-        number_of_columns = len(table[0])
+        # build a table of str
         str_table = []
+        number_of_columns = len(table[0])
         self._column_length = [0]*number_of_columns
         for line in table:
             if len(line) != number_of_columns:
                 raise NameError('Invalid table')
             str_line = []
             for i, value in enumerate(line):
-                str_value = self._format.format(value)
-                self._update_column_length(i, str_value)
-                str_line.append(str_value)
+                _ = self._format.format(value)
+                self._update_column_length(i, _)
+                str_line.append(_)
             str_table.append(str_line)
 
         rst = ''
-
-        rst += self._rule('=')
-
+        rule = self._rule(use_myst)
+        if not use_myst:
+            rst += rule
         if self._columns:
             for i, column in self._iter_on_columns():
                 self._update_column_length(i, column)
-            rst += self._format_line(self._columns)
-            rst += self._rule('=')
-
+            rst += self._format_line(self._columns, use_myst)
+        if not self._columns and use_myst:
+            rst += self._format_line(['...']*number_of_columns, use_myst)
+        if self._columns or use_myst:
+            rst += rule
         for line in str_table:
-            rst += self._format_line(line)
-
-        rst += self._rule('=')
-
-        return rst + '\n'
+            rst += self._format_line(line, use_myst)
+        if not use_myst:
+            rst += rule
+        return rst + NEWLINE
 
     ##############################################
 

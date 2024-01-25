@@ -96,7 +96,11 @@ class Document:
             self._rst_path = None
         else:
             self._path = path.resolve()   # Python input path
-            self._rst_path = self._topic.join_rst_path(self.rst_filename)
+            if self.use_myst:
+                _ = self.md_filename
+            else:
+                _ = self.rst_filename
+            self._rst_path = self._topic.join_rst_path(_)
 
     ##############################################
 
@@ -121,8 +125,8 @@ class Document:
         return self._topic.settings
 
     @property
-    def settings(self):
-        return self._topic.settings
+    def use_myst(self) -> bool:
+        return self.settings.use_myst
 
     @property
     def language(self) -> str:
@@ -141,7 +145,15 @@ class Document:
         return self._basename + '.rst'
 
     @property
-    def nb_filename(self):
+    def md_filename(self) -> str:
+        return self._basename + '.md'
+
+    @property
+    def doc_filename(self) -> str:
+        return self.settings.add_extension(self._basename)
+
+    @property
+    def nb_filename(self) -> str:
         return self._basename + '.ipynb'   # Fixme
 
     @property
@@ -443,9 +455,10 @@ class Document:
 
     ##############################################
 
-    def make_rst(self):
+    def make_rst(self) -> None:
         """Generate the document RST file."""
-        self._logger.info("\nCreate RST file {}".format(self._rst_path))
+        _ = 'MD' if self.use_myst else 'RST'
+        self._logger.info(f"{NEWLINE}Create {_} file {self._rst_path}")
 
         # place the input file in the rst path
         link_path = self._topic.join_rst_path(self._input_file)
@@ -454,6 +467,7 @@ class Document:
 
         kwargs = {
             'input_file': self._input_file,
+            'use_myst': self.use_myst,
         }
         has_title = self._has_title()
         if not has_title:
@@ -461,14 +475,16 @@ class Document:
         template_aggregator = TemplateAggregator(self.settings.template_environment)
         template_aggregator.append('document', **kwargs)
 
+        def to_rst(node: Node) -> str:
+            return node.to_myst() if self.use_myst else node.to_rst()
         with open(self._rst_path, 'w') as fh:
             fh.write(str(template_aggregator))
             for node in self._dom:
                 if isinstance(node, FigureNode):
                     for child in node.iter_on_childs():
-                        fh.write(child.to_rst())
+                        fh.write(to_rst(child))
                 else:
-                    fh.write(node.to_rst())
+                    fh.write(to_rst(node))
 
     ##############################################
 

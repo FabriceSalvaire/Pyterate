@@ -210,6 +210,9 @@ class DefaultRstFactorySettings:
     # Templates
     user_template_path = None   # User template path
 
+    # output_format = 'rst'
+    output_format = 'myst'
+
     # Flags
     show_counters = False   # Show documents counters in toc
     run_code = False   # Run code
@@ -257,12 +260,24 @@ class DefaultRstFactorySettings:
     ##############################################
 
     @property
-    def template_environment(self):
+    def use_myst(self) -> bool:
+        return self.output_format == 'myst'
+
+    ##############################################
+
+    @property
+    def template_environment(self) -> TemplateEnvironment:
         return self._template_environment
 
     ##############################################
 
-    def join_input_path(self, *args):
+    def add_extension(self, name: str) -> str:
+        _ = '.md' if self.use_myst else '.rst'
+        return name + _
+
+    ##############################################
+
+    def join_input_path(self, *args) -> Path:
         return self.input_path.joinpath(*args)
 
     def join_rst_path(self, *args) -> Path:

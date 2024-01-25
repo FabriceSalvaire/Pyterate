@@ -32,6 +32,7 @@ __all__ = [
     'Dom',
     'ExecutedNode',
     'MarkdownCellMixin',
+    'MystMixin',
     'Node',
     'TextNode',
 ]
@@ -69,14 +70,34 @@ class Node(metaclass=MarkupRegistry):
     MARKUP = None
 
     _PANDOC_MARKDOWN = 'markdown'
+    RST_INDENTATION = 4
+
+    ##############################################
+
+    @classmethod
+    def indentation(cls, use_myst: bool) -> int:
+        if use_myst:
+            return 0
+        else:
+            return cls.RST_INDENTATION
 
     ##############################################
 
     @staticmethod
     def indent_lines(lines: list[str], indentation: int = 4) -> str:
         indentation = ' '*indentation
-        # Fixme: strip empty lines
-        return '\n'.join([indentation + line.rstrip() for line in lines]) + '\n' # Fixme: if out ???
+        # Fixme: if out ???
+        # strip empty lines at the begining and end
+        first_line = 0
+        last_line = len(lines)
+        for first_line, line in enumerate(lines):
+            if line:
+                break
+        for i, line in enumerate(reversed(lines)):
+            if line:
+                last_line -= i
+                break
+        return NEWLINE.join([indentation + _.rstrip() for _ in lines[first_line:last_line]]) + NEWLINE
 
     ##############################################
 
@@ -87,21 +108,59 @@ class Node(metaclass=MarkupRegistry):
     ##############################################
 
     @staticmethod
-    def directive(name, args=(), flags=(), kwargs={}):
-        args_string = ' '.join([str(arg) for arg in args])
-        rst = '\n.. {}:: {}\n'.format(name, args_string)
-        indentation = ' '*4
-        for flag in flags:
-            rst += indentation + ':{}:\n'.format(flag)
+    def directive(
+        name: str,
+        args: list = (),
+        flags: list = (),
+        kwargs: dict = {},
+        use_myst: bool = False,
+    ) -> str:
+        args_string = ' '.join([str(_) for _ in args])
+        if use_myst:
+            rst = f'{NEWLINE}```{{{name}}} {args_string}{NEWLINE}'
+            indentation = ''
+        else:
+            rst = f'{NEWLINE}.. {name}:: {args_string}{NEWLINE}'
+            indentation = ' '*4
+        for _ in flags:
+            rst += f'{indentation}:{_}:{NEWLINE}'
         for key, value in kwargs.items():
-            rst += indentation + ':{}: {}\n'.format(key, value)
-        return rst + '\n'
+            rst += f'{indentation}:{key}: {value}{NEWLINE}'
+        rst += NEWLINE
+        return rst
+
+    # @staticmethod
+    # def rst_directive(name, args=(), flags=(), kwargs={}) -> str:
+    #     return Node.directive(name, args, kwargs, use_myst=False)
+
+    @staticmethod
+    def myst_directive(
+        name: str,
+        args: list = (),
+        flags: list = (),
+        kwargs: dict = {},
+    ) -> str:
+        return Node.directive(name, args, kwargs, use_myst=True)
+
+    # Fixme:
+    @staticmethod
+    def close_directive(
+        use_myst: bool = False,
+    ) -> str:
+        if use_myst:
+            return '```' + NEWLINE
+        else:
+            return ''
 
     ##############################################
 
     @classmethod
-    def code_block_directive(cls, lexer):
-        return cls.directive('code-block', (lexer,))
+    def code_block_directive(
+        cls,
+        lexer: str,
+        use_myst: bool = False,
+    ) -> str:
+        return cls.directive('code-block', args=(lexer,), use_myst=use_myst)
 
     ##############################################
 
@@ -223,7 +282,14 @@ class Node(metaclass=MarkupRegistry):
 
     ##############################################
 
-    def to_cell(self):
+    def to_myst(self) -> str:
+        # return ''
+        # return self.to_markdown()
+        return f'{self.__class__} NotImplementedError'
+
+    ##############################################
+
+    def to_cell(self) -> NotebookNode:
         raise NotImplementedError
 
 ####################################################################################################
@@ -254,6 +320,16 @@ class MarkdownCellMixin:
     def to_cell(self) -> NotebookNode:
         markdown = self.to_markdown()
         return nbv4.new_markdown_cell(markdown)
+
+####################################################################################################
+
+class MystMixin:
+
+    def to_rst(self) -> str:
+        return self._to_rst(use_myst=False)
+
+    def to_myst(self) -> str:
+        return self._to_rst(use_myst=True)
 
 ####################################################################################################
 
