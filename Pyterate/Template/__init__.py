@@ -20,7 +20,7 @@
 
 ####################################################################################################
 
-from jinja2 import Environment, FileSystemLoader # PackageLoader
+from jinja2 import Environment, FileSystemLoader   # PackageLoader
 
 from . import Filters
 
@@ -32,8 +32,7 @@ class TemplateEnvironment:
 
     ##############################################
 
-    def __init__(self, search_path):
-
+    def __init__(self, search_path: str) -> None:
         """
 
         Parameters:
@@ -42,10 +41,8 @@ class TemplateEnvironment:
              list of strings
 
         """
-
         # string or list of strings
         self._search_path = [str(x) for x in search_path]
-
         self._environment = Environment(
             # loader=PackageLoader('', 'templates'),
             loader=FileSystemLoader(self._search_path),
@@ -54,27 +51,21 @@ class TemplateEnvironment:
             # lstrip_blocks=True,
             # keep_trailing_newline
         )
-
         for function in Filters.__all__:
             self._environment.filters[function] = getattr(Filters, function)
 
     ##############################################
 
-    def render(self, template, **kwargs):
-
+    def render(self, template: str, **kwargs) -> str:
         if template is None:
             return ''
-
         if not template.endswith(self.JINJA_EXTENSION):
             template += self.JINJA_EXTENSION
-
         jinja_template = self._environment.get_template(template)
-
         # if isinstance(template, str):
         #     jinja_template = self._environment.get_template(template)
         # else:
         #     raise ValueError("Wrong template {}".format(template))
-
         return jinja_template.render(**kwargs)
 
 ####################################################################################################
@@ -83,38 +74,31 @@ class TemplateAggregator:
 
     ##############################################
 
-    def __init__(self, template_environment):
-
+    def __init__(self, template_environment: TemplateEnvironment) -> None:
         self._environment = template_environment
         self._output = ''
 
     ##############################################
 
-    def __str__(self):
-
+    def __str__(self) -> str:
         return self._output
 
     ##############################################
 
     @staticmethod
-    def _fix_output(output):
-
+    def _fix_output(output: str) -> str:
         output = output.replace(' \n', '\n')
         output = output.replace('\n\n\n', '\n\n')
-
         return output
 
     ##############################################
 
-    def _render(self, template, **kwargs):
-
+    def _render(self, template: str, **kwargs) -> str:
         output = self._environment.render(template, **kwargs)
         output = self._fix_output(output)
-
         return output
 
     ##############################################
 
-    def append(self, template, **kwargs):
-
+    def append(self, template: str, **kwargs) -> None:
         self._output += self._render(template, **kwargs)

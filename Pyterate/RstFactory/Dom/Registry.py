@@ -52,7 +52,7 @@ class MarkupRegistry(type):
 
     ##############################################
 
-    def __init__(cls, class_name, base_classes, attributes):
+    def __init__(cls, class_name, base_classes, attributes) -> None:
         type.__init__(cls, class_name, base_classes, attributes)
         cls._registry_.append(cls)
         if hasattr(cls, 'MARKUP') and cls.MARKUP:
@@ -72,11 +72,11 @@ class MarkupRegistry(type):
     ##############################################
 
     @classmethod
-    def is_valid_makup(cls, markup):
+    def is_valid_makup(cls, markup) -> bool:
         return markup in cls._markups_
 
     @classmethod
-    def is_valid_enclosing_makup(cls, markup):
+    def is_valid_enclosing_makup(cls, markup) -> bool:
         return markup in cls._enclosing_markups_
 
     @classmethod
@@ -98,7 +98,7 @@ class MarkupRegistry(type):
     ##############################################
 
     @classmethod
-    def do_check_environment(cls):
+    def do_check_environment(cls) -> None:
         for cls in MarkupRegistry._registry_:
             if hasattr(cls, 'check_environment'):
                 cls.check_environment()
