@@ -29,23 +29,24 @@ p {
     font-size: 100%; /* 16 px */
 }
 
-div[class^="highlight"] {
+.rst-content div[class^="highlight"] {
     border: 0;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    background: #ffffff;
 }
 
-div[class^="highlight"] pre {
+.rst-content div[class^="highlight"] pre {
     font-size: 100%; /* 16 px */
 }
 
-div.highlight-pytb {
+.rst-content div.highlight-pytb div.highlight {
     background: #ffcfcf;
     border-left-width: 10px;
     border-left-color: #fc4545;
     border-left-style: solid;
 }
 
-div.highlight-none {
+.rst-content div.highlight-none div.highlight {
     background: #d2ffcf;
     border-left-width: 10px;
     border-left-color: #1ada52;
