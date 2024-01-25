@@ -23,5 +23,3 @@
 
 .. |Tikz| replace:: Tikz
 .. _Tikz: http://www.texample.net/tikz
-
-.. End
