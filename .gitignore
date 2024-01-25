@@ -1,6 +1,8 @@
 *~
 __pycache__
 
+nogit/
+
 texput.log
 doc/sphinx/build/
 doc/sphinx/source/api/
@@ -15,7 +17,7 @@ dist/
 
 __TRASH__/
 du.log
-ressources/
+resources
 sphinx-extensions
 
 doc.txt
@@ -38,3 +40,9 @@ test/untitled.png
 
 tools/license-model-gpl.py
 tools/upload-www
+
+Pyterate-backup/
+doc/sphinx/build-rst/
+full-test.md
+full-test.rst
+jbook-test/
