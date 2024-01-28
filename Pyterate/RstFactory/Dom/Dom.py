@@ -39,17 +39,17 @@ __all__ = [
 
 ####################################################################################################
 
+from typing import TYPE_CHECKING, Iterable
 import logging
 import os
 import subprocess
-from typing import TYPE_CHECKING, Iterable
 
 # https://nbformat.readthedocs.io/en/latest/api.html#module-nbformat.v4
-from nbformat import v4 as nbv4
 from nbformat import NotebookNode
+from nbformat import v4 as nbv4
 
-from Pyterate.Tools.MarkupConverter import rest_to_markdown
 from .Registry import MarkupRegistry
+from Pyterate.Tools.MarkupConverter import rest_to_markdown
 
 if TYPE_CHECKING:
     from ..Document import Document
