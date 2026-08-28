@@ -9,5 +9,7 @@
 ####################################################################################################
 
 import sys
-from Pyterate.Scripts.pyterate import main
+
+from pyterate.Scripts.pyterate import main
+
 sys.exit(main())

@@ -37,7 +37,7 @@ from nbformat import NotebookNode
 from nbformat import v4 as nbv4
 
 from .Registry import MarkupRegistry
-from Pyterate.Tools.MarkupConverter import rest_to_markdown
+from pyterate.Tools.MarkupConverter import rest_to_markdown
 
 if TYPE_CHECKING:
     from ..Document import Document

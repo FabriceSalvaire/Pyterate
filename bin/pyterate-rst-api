@@ -8,5 +8,6 @@
 #
 ####################################################################################################
 
-from Pyterate.Scripts.pyterate_rst_api import main
+from pyterate.Scripts.pyterate_rst_api import main
+
 main()

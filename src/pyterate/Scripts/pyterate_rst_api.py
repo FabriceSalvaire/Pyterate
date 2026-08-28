@@ -8,7 +8,7 @@
 
 ####################################################################################################
 
-import Pyterate.Logging.Logging as Logging
+import pyterate.Logging.Logging as Logging
 logger = Logging.setup_logging()
 
 ####################################################################################################
@@ -17,8 +17,8 @@ from pathlib import Path
 import argparse
 import os
 
-import Pyterate
-from Pyterate.ApiRstFactory import ApiRstFactory
+import pyterate
+from pyterate.ApiRstFactory import ApiRstFactory
 
 ####################################################################################################
 

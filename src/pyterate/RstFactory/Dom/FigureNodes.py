@@ -31,7 +31,7 @@ from typing import TYPE_CHECKING, Iterable
 
 from nbformat import v4 as nbv4
 
-from Pyterate.Tools.Timestamp import timestamp
+from pyterate.Tools.Timestamp import timestamp
 from .Dom import Node, MystMixin
 
 if TYPE_CHECKING:

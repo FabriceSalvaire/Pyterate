@@ -36,7 +36,7 @@ from typing import TYPE_CHECKING, Iterable
 from nbformat import v4 as nbv4
 from nbformat import NotebookNode
 
-from Pyterate.Tools.MarkupConverter import markdown_to_rest
+from pyterate.Tools.MarkupConverter import markdown_to_rest
 from .Dom import Node, ExecutedNode, TextNode, MarkdownCellMixin, MystMixin
 from .FigureNodes import ImageNode, TableFigureNode, SaveFigureNode
 from .LitteralIncludeNodes import LiteralIncludeNode

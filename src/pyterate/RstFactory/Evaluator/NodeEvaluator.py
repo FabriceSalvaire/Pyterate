@@ -20,7 +20,7 @@ import json
 import logging
 import tempfile
 
-from Pyterate.Jupyter import JupyterClient
+from pyterate.Jupyter import JupyterClient
 from ..Dom.Markups import GuardedCodeNode, FigureNode
 from ..Dom.Registry import MarkupRegistry
 

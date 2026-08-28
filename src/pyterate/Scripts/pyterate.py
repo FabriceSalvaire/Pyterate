@@ -13,7 +13,7 @@ __all__ = ['main']
 from pathlib import Path
 import argparse
 
-import Pyterate.Logging.Logging as Logging
+import pyterate.Logging.Logging as Logging
 _logger = Logging.setup_logging()
 
 ####################################################################################################
@@ -76,7 +76,7 @@ def main():
     ##############################################
 
     if args.version:
-        import Pyterate
+        import pyterate
         Pyterate.show_version()
         return
 
@@ -84,7 +84,7 @@ def main():
 
     if not Path(args.config).exists():
         _logger.info('Any config file, use default settings')
-        from Pyterate.RstFactory.Settings import DefaultRstFactorySettings
+        from pyterate.RstFactory.Settings import DefaultRstFactorySettings
         settings = DefaultRstFactorySettings()
     else:
         _logger.info('Load config file %s', args.config)
@@ -104,10 +104,10 @@ def main():
         settings.make_rst = False
         settings.run_code = True
 
-    from Pyterate.RstFactory.RstFactory import RstFactory
+    from pyterate.RstFactory.RstFactory import RstFactory
 
     if not args.only_run:
-        from Pyterate.RstFactory.Dom.Registry import MarkupRegistry
+        from pyterate.RstFactory.Dom.Registry import MarkupRegistry
         MarkupRegistry.do_check_environment()
 
     # Process ...
@@ -118,8 +118,8 @@ def main():
     rst_factory = RstFactory(settings)
 
     if args.document_path:
-        from Pyterate.RstFactory.Document import Document
-        from Pyterate.RstFactory.Topic import Topic
+        from pyterate.RstFactory.Document import Document
+        from pyterate.RstFactory.Topic import Topic
         document_path = Path(args.document_path)
         settings = rst_factory.settings
         document_path = settings.relative_input_path(document_path)
