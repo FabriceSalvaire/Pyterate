@@ -51,7 +51,7 @@ except:
 ####################################################################################################
 
 # exec(compile(open(os.path.join(Pyterate_path, 'setup_data.py')).read(), 'setup_data.py', 'exec'))
-import Pyterate
+import pyterate
 
 ####################################################################################################
 #
@@ -99,7 +99,7 @@ copyright = '{0.year}, Fabrice Salvaire'.format(datetime.now())
 # built documents.
 #
 # The full version, including alpha/beta/rc tags.
-release = Pyterate.__version__
+release = pyterate.__version__
 # The short X.Y version.
 version = '.'.join(release.split('.')[:2])
 
