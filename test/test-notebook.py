@@ -6,10 +6,10 @@ import nbformat
 from nbformat.v4 import (
     new_notebook,
     new_code_cell, new_markdown_cell, new_raw_cell,
-    new_output, output_from_msg
+    new_output
 )
 
-#  nbformat.write(nb, fp, version=nbformat.NO_CONVERT, **kwargs)
+# nbformat.write(nb, fp, version=nbformat.NO_CONVERT, **kwargs)
 # nbformat.v4.new_notebook(**kwargs)
 # nbformat.v4.new_code_cell(source='', **kwargs)
 # nbformat.v4.new_markdown_cell(source='', **kwargs)
@@ -50,18 +50,18 @@ print(type(notebook))
 # Official Jupyter metadata, as used by Jupyter frontends should be placed in the metadata.jupyter namespace, for example metadata.jupyter.foo = “bar”.
 #
 # The following metadata keys are defined at the cell level:
-# Key 	Value 	Interpretation
-# collapsed 	bool 	Whether the cell’s output container should be collapsed
-# autoscroll 	bool or ‘auto’ 	Whether the cell’s output is scrolled, unscrolled, or autoscrolled
-# deletable 	bool 	If False, prevent deletion of the cell
-# format 	‘mime/type’ 	The mime-type of a Raw NBConvert Cell
-# name 	str 	A name for the cell. Should be unique across the notebook. Uniqueness must be verified outside of the json schema.
-# tags 	list of str 	A list of string tags on the cell. Commas are not allowed in a tag
+# Key   Value   Interpretation
+# collapsed     bool    Whether the cell’s output container should be collapsed
+# autoscroll    bool or ‘auto’  Whether the cell’s output is scrolled, unscrolled, or autoscrolled
+# deletable     bool    If False, prevent deletion of the cell
+# format        ‘mime/type’     The mime-type of a Raw NBConvert Cell
+# name  str     A name for the cell. Should be unique across the notebook. Uniqueness must be verified outside of the json schema.
+# tags  list of str     A list of string tags on the cell. Commas are not allowed in a tag
 #
 # The following metadata keys are defined at the cell level within the jupyter namespace
-# Key 	Value 	Interpretation
-# source_hidden 	bool 	Whether the cell’s source should be shown
-# outputs_hidden 	bool 	Whether the cell’s outputs should be shown
+# Key   Value   Interpretation
+# source_hidden         bool    Whether the cell’s source should be shown
+# outputs_hidden        bool    Whether the cell’s outputs should be shown
 
 notebook.metadata.update({
     'kernelspec': {
