@@ -2,7 +2,7 @@
 
 ####################################################################################################
 
-from Pyterate.RstFactory.Settings import DefaultRstFactorySettings
+from pyterate.RstFactory.Settings import DefaultRstFactorySettings
 
 ####################################################################################################
 
