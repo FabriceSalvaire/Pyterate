@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 ####################################################################################################
 #
 # Pyterate - Sphinx add-ons to create API documentation for Python projects
@@ -24,7 +22,6 @@
 
 ####################################################################################################
 
-import sys, os
 from datetime import datetime
 
 # http://www.sphinx-doc.org/en/stable/extdev/logging.html
@@ -59,7 +56,7 @@ import pyterate
 #
 
 # If your documentation needs a minimal Sphinx version, state it here.
-#needs_sphinx = '1.0'
+# needs_sphinx = '1.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
@@ -85,14 +82,14 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 
 # The encoding of source files.
-#source_encoding = 'utf-8-sig'
+# source_encoding = 'utf-8-sig'
 
 # The master toctree document.
 master_doc = 'index'
 
 # General information about the project.
 project = 'Pyterate'
-copyright = '{0.year}, Fabrice Salvaire'.format(datetime.now())
+copyright = f'{datetime.now().year}, Fabrice Salvaire'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -160,7 +157,7 @@ autodoc_default_flags = [
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-#html_theme = 'Pyterate'
+# html_theme = 'Pyterate'
 html_theme = 'PyterateRtd'
 # html_theme = 'sphinx_rtd_theme'
 
@@ -238,7 +235,7 @@ html_static_path = ['_static']
 # If true, an OpenSearch description file will be output, and all pages will
 # contain a <link> tag referring to it.  The value of this option must be the
 # base URL from which the finished HTML is served.
-#html_use_opensearch = ''
+# html_use_opensearch = ''
 
 # This is the file name suffix for HTML files (e.g. ".xhtml").
 # html_file_suffix = None
@@ -300,7 +297,7 @@ man_pages = [
 ]
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'http://docs.python.org/': None}
+intersphinx_mapping = {'python': ('https://docs.python.org/3', None)}
 
 ####################################################################################################
 #
