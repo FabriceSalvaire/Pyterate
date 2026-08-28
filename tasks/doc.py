@@ -6,17 +6,10 @@
 #
 ####################################################################################################
 
-####################################################################################################
-
-from pathlib import Path
-import os
 import shutil
+from pathlib import Path
 
 from invoke import task
-# import sys
-
-from .clean import flycheck as _clean_flycheck
-from .release import update_git_sha as _update_git_sha
 
 ####################################################################################################
 
@@ -44,14 +37,13 @@ def clean_api(ctx):
     if API_PATH.exists():
         shutil.rmtree(API_PATH, ignore_errors=True)
 
-
 # Fixme: fails if setenv.sh
 
 # _update_git_sha,
-@task(_clean_flycheck, clean_api)
+@task(clean_api)
 def make_api(ctx):
     print('\nGenerate RST API files')
-    ctx.run('pyterate-rst-api {0.Package}'.format(ctx))
+    ctx.run(f'pyterate-rst-api {ctx.Package}')
     run_sphinx(ctx)
 
 ####################################################################################################
@@ -64,7 +56,6 @@ def clean_examples(ctx):
 # _update_git_sha
 @task()
 def make_examples(ctx, clean=False, no_html=False, force=False):
-
     # Regenerate from scratch
     if clean and EXAMPLES_PATH.exists():
         clean_examples(ctx)
@@ -82,7 +73,7 @@ def make_examples(ctx, clean=False, no_html=False, force=False):
     print('Generate RST examples files')
     command = [
         'pyterate',
-        '--config={}'.format(setting_path),
+        f'--config={setting_path}',
     ]
     if force:
         command.append('--force')

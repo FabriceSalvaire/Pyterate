@@ -6,21 +6,14 @@
 #
 ####################################################################################################
 
-####################################################################################################
-
 from invoke import task
 
 ####################################################################################################
 
 @task
-def flycheck(ctx):
-    with ctx.cd(ctx.Package):
-        ctx.run(r'find . -name "flycheck*.py" -exec rm {} \;')
-
-@task
 def emacs_backup(ctx):
     ctx.run(r'find . -name "*~" -type f -exec rm -f {} \;')
 
-@task(flycheck, emacs_backup)
+@task(emacs_backup)
 def clean(ctx):
     pass
